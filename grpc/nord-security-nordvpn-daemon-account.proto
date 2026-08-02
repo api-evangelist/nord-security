@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/NordSecurity/nordvpn-linux/daemon/pb";
+
+import "common.proto";
+
+message DedidcatedIPService {
+  repeated int64 server_ids = 1;
+  string dedicated_ip_expires_at = 2;
+}
+
+message AccountResponse {
+  int64 type = 1;
+  string username = 2;
+  string email = 3;
+  string subscription_expires_at = 4;
+  int64 dedicated_ip_status = 5;
+  string last_dedicated_ip_expires_at = 6;
+  repeated DedidcatedIPService dedicated_ip_services = 7;
+  TriState mfa_status = 8;
+  string created_on = 9;
+  int64 dedicated_server_status = 10;
+  string dedicated_servers_service_expires_at = 11;
+}
+
+message AccountRequest {
+  bool full = 1;
+}

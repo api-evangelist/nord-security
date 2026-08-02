@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package snappb;
+option go_package = "github.com/NordSecurity/nordvpn-linux/snapconf/pb";
+
+// ErrMissingConnections defines that some of the snap interfaces that are required for the gRPC
+// call to be executed are not connected.
+message ErrMissingConnections {
+	repeated string missing_connections = 1;
+}

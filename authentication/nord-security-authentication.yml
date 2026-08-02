@@ -1,0 +1,92 @@
+generated: '2026-08-01'
+method: searched
+docs: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+docs_notes:
+- 'Two documented methods for the enterprise APIs: API key header and HTTP Basic.'
+- API tokens are created, listed and revoked in the NordStellar platform UI; docs cover rotation, access controls and audit/monitoring practice.
+- Published guidance explicitly warns against exposing API keys in client-side code.
+non_spec_schemes:
+- surface: NordLayer Partner / MSP API
+  scheme: apiKey
+  detail: >-
+    Keys are self-issued in the NordLayer Service Management Portal (Integrations > Custom), with a
+    named key, an explicit expiry and one-time visibility, supporting rotation without downtime.
+  docs: https://help.nordlayer.com/docs/api-key-management-for-smp
+- surface: NordLayer SCIM 2.0 provisioning
+  scheme: http bearer (SCIM secret token)
+  detail: >-
+    A Secret Token is issued in the NordLayer Control Panel under Settings > Access management and
+    pasted into the Okta or Microsoft Entra ID provisioning configuration.
+  docs: https://help.nordlayer.com/docs/user-provisioning
+- surface: NordStellar MCP server
+  scheme: bearer session established by browser login
+  detail: >-
+    The local nordstellar-mcp proxy opens a browser window for NordStellar login and stores the session
+    in the OS credential store under the service name "NordStellar MCP", refreshing tokens as needed.
+    An unauthenticated tools/list returns HTTP 401 "no bearer token". No RFC 8414 or RFC 9728 discovery
+    document is published.
+  docs: https://docs.nordstellar.com/platform/mcp/setup
+- surface: NordLayer / NordPass administrator sign-in
+  scheme: SSO + SCIM
+  detail: >-
+    SSO via Google Workspace, Okta, Microsoft Entra ID, JumpCloud and OneLogin, with centrally enforced
+    2FA (SMS or TOTP) and the option to disable username/password login entirely.
+  docs: https://help.nordlayer.com/docs/single-sign-on-sso-setup
+oauth2:
+  present: false
+  note: >-
+    No oauth2 or openIdConnect security scheme appears in any of the seven harvested specs, and
+    /.well-known/openid-configuration and /.well-known/oauth-authorization-server return 404 on every
+    host probed. scopes/ is therefore not emitted — there is no scope surface to record.
+derived_from: openapi/nord-security-nordstellar-company-risk-scoring-api-openapi.json, openapi/nord-security-nordstellar-cybersec-api-openapi.json,
+  openapi/nord-security-nordstellar-enterprise-data-api-openapi.json, openapi/nord-security-nordstellar-partners-api-openapi.json,
+  openapi/nord-security-nordstellar-platform-integration-api-v1-openapi.json, openapi/nord-security-nordstellar-platform-integration-api-v2-openapi.json,
+  openapi/nord-security-nordstellar-platform-integration-api-v3-openapi.json
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: APIKeyHeader
+  type: apiKey
+  in: header
+  parameter: X-API-Key
+  sources:
+  - openapi/nord-security-nordstellar-company-risk-scoring-api-openapi.json
+- name: HTTPBasic
+  type: http
+  scheme: basic
+  sources:
+  - openapi/nord-security-nordstellar-company-risk-scoring-api-openapi.json
+  - openapi/nord-security-nordstellar-enterprise-data-api-openapi.json
+- name: ApiKeyAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: 'Set token with a prefix like this: `token:69405a802dba4f57804e5fff11061946a579d159d1a51760d19a50aec241adc9`'
+  sources:
+  - openapi/nord-security-nordstellar-cybersec-api-openapi.json
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: X-API-KEY
+  sources:
+  - openapi/nord-security-nordstellar-enterprise-data-api-openapi.json
+- name: ApiKey
+  type: apiKey
+  in: header
+  parameter: Api-Key
+  description: API key to access the API
+  sources:
+  - openapi/nord-security-nordstellar-partners-api-openapi.json
+- name: Bearer
+  type: http
+  scheme: Bearer
+  bearerFormat: JWT
+  description: Please enter a valid token.
+  sources:
+  - openapi/nord-security-nordstellar-platform-integration-api-v1-openapi.json
+  - openapi/nord-security-nordstellar-platform-integration-api-v2-openapi.json
+  - openapi/nord-security-nordstellar-platform-integration-api-v3-openapi.json

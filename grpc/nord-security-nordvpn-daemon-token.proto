@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/NordSecurity/nordvpn-linux/daemon/pb";
+
+message TokenInfoResponse {
+  int64 type = 1;
+  string token = 2;
+  string expires_at = 3;
+  string trusted_pass_token = 4;
+  string trusted_pass_owner_id = 5;
+}

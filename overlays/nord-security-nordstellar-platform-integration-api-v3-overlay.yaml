@@ -1,0 +1,39 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the NordStellar Platform Integrations API v3
+  version: 1.0.0
+extends: openapi/nord-security-nordstellar-platform-integration-api-v3-openapi.json
+x-generated: '2026-08-01'
+x-method: generated
+x-source: >-
+  Harvested verbatim from
+  https://docs.nordstellar.com/api/platform-integrations-api-swagger?version=v3 on 2026-08-01.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: nord-security
+    x-apievangelist-product: NordStellar
+    x-apievangelist-harvested: '2026-08-01'
+    x-apievangelist-source: https://docs.nordstellar.com/api/platform-integrations-api-swagger?version=v3
+    x-apievangelist-reference: https://docs.nordstellar.com/platform/integrations-api/swagger
+    x-apievangelist-operations: 15
+    x-apievangelist-error-envelope: rfc9457 (application/problem+json, ProblemDetails)
+    x-apievangelist-idempotency: none
+    x-apievangelist-sibling-versions:
+    - openapi/nord-security-nordstellar-platform-integration-api-v1-openapi.json
+    - openapi/nord-security-nordstellar-platform-integration-api-v2-openapi.json
+- target: $.info
+  description: >-
+    No operationIds are declared on any of the 15 operations, so nothing in this spec can be referenced
+    by id from an Arazzo workflow, an MCP tool binding or a generated SDK. Recorded as a gap, not
+    patched — inventing ids would misrepresent the provider's contract.
+  update:
+    x-apievangelist-gap-operation-ids: 0 of 15 operations declare an operationId
+- target: $.components
+  update:
+    x-apievangelist-consumers:
+    - n8n community node (npm n8n-nodes-nordstellar)
+    - SIEM forwarding (Microsoft Sentinel, CrowdStrike)
+    x-apievangelist-note: >-
+      This is the closest REST analogue to the MCP/GraphQL surface (Events + Projects), but no MCP tool
+      binds to it — see mcp/nord-security-tool-crosswalk.yml.

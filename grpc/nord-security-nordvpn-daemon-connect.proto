@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/NordSecurity/nordvpn-linux/daemon/pb";
+
+message ConnectRequest {
+  string server_tag = 1;
+  string server_group = 11;
+}

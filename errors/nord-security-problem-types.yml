@@ -1,0 +1,108 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/nord-security-nordstellar-*.json (4xx/5xx responses)
+format: mixed
+summary: >-
+  Nord Security's NordStellar estate carries TWO incompatible error contracts. The two APIs generated
+  from the newer platform stack (Platform Integrations API v1/v2/v3 and the Partners API) are RFC 9457
+  end to end — every 400/401/403/500 returns application/problem+json against a `ProblemDetails` /
+  `ValidationProblemDetails` schema with required type/title/status/detail/instance. The older data
+  plane (Enterprise Data API, Cybersec API, Company Risk Scoring API) returns plain application/json
+  with bespoke envelopes. Agents integrating across the estate must handle both.
+envelopes:
+- id: rfc9457
+  media_type: application/problem+json
+  schemas: [ProblemDetails, ValidationProblemDetails]
+  required_fields: [type, title, status, detail, instance]
+  used_by:
+  - openapi/nord-security-nordstellar-platform-integration-api-v3-openapi.json
+  - openapi/nord-security-nordstellar-platform-integration-api-v2-openapi.json
+  - openapi/nord-security-nordstellar-platform-integration-api-v1-openapi.json
+  - openapi/nord-security-nordstellar-partners-api-openapi.json
+  confirmed_live: >-
+    https://platform-partners-api.nordstellar.com/.well-known/security.txt returns HTTP 401 with
+    content-type application/problem+json and a datatracker.ietf.org type URI.
+- id: errors-body
+  media_type: application/json
+  shape: '{"errors": {"body": "<error description>"}}'
+  used_by:
+  - openapi/nord-security-nordstellar-enterprise-data-api-openapi.json
+  note: Single free-text string; no machine-readable error code, no type URI.
+- id: cybersec-json
+  media_type: application/json
+  used_by:
+  - openapi/nord-security-nordstellar-cybersec-api-openapi.json
+  note: >-
+    Per-operation JSON error schemas; the only API in the estate that documents 429 (2 operations) and
+    a Retry-After header.
+- id: validation-422
+  media_type: application/json
+  used_by:
+  - openapi/nord-security-nordstellar-company-risk-scoring-api-openapi.json
+  note: FastAPI-style HTTPValidationError on 422 for every operation.
+problems:
+- status: 400
+  title: Bad request
+  count: 153
+  spread: all five APIs
+  format: 'problem+json (platform/partners) | errors.body (enterprise-data) | json (cybersec)'
+- status: 401
+  title: Unauthorized
+  count: 148
+  spread: all APIs except Company Risk Scoring
+- status: 403
+  title: Forbidden
+  count: 63
+  spread: platform integrations v1-v3, partners, cybersec
+  note: >-
+    On the Enterprise Data API a 403 additionally signals monthly quota exhaustion (distinct from the
+    429 rate-limit signal) per the rate-limit-and-quota documentation.
+- status: 404
+  title: Not found
+  count: 28
+  spread: enterprise-data (23), cybersec (3), company-risk-scoring (2)
+- status: 409
+  title: Conflict
+  count: 3
+  spread: company-risk-scoring (2), enterprise-data (1)
+- status: 412
+  title: Precondition failed
+  count: 1
+  spread: enterprise-data
+- status: 413
+  title: Payload too large
+  count: 9
+  spread: enterprise-data (4), cybersec (5)
+- status: 422
+  title: Unprocessable entity / validation error
+  count: 23
+  spread: company-risk-scoring (14), cybersec (5), enterprise-data (4)
+- status: 429
+  title: Too many requests
+  count: 2
+  spread: cybersec only
+  remediation: Honour the Retry-After header; back off using X-RateLimit-Reset.
+  note: >-
+    Only the Cybersec API declares 429 in its spec. The Enterprise Data API documents 429 in prose
+    (rate-limit-and-quota page) but declares no 429 response on any of its 85 operations — an agent
+    reading the spec alone would not know to handle it.
+- status: 500
+  title: Internal server error
+  count: 60
+  spread: platform integrations v1-v3, partners, cybersec
+- status: 502
+  title: Bad gateway
+  count: 1
+  spread: cybersec
+- status: 503
+  title: Service unavailable
+  count: 21
+  spread: cybersec
+docs:
+  rate_limit_and_quota: https://docs.nordstellar.com/enterprise-apis/product-integrations/rate-limit-and-quota
+  authentication: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+gaps:
+- No provider-published error-code registry exists for any Nord Security API.
+- >-
+  The Enterprise Data API — the largest surface at 85 operations — declares only 400/401 (plus a few
+  404/413/422). No 429 and no 5xx are described anywhere in the spec.

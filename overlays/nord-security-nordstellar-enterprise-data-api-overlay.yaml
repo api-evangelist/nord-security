@@ -1,0 +1,35 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the NordStellar Enterprise Data API
+  version: 1.0.0
+extends: openapi/nord-security-nordstellar-enterprise-data-api-openapi.json
+x-generated: '2026-08-01'
+x-method: generated
+x-source: >-
+  Harvested verbatim from https://docs.nordstellar.com/api/enterprise-data-api-swagger on 2026-08-01.
+  This overlay records API Evangelist annotations only; the original document is never mutated.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-provider: nord-security
+    x-apievangelist-product: NordStellar
+    x-apievangelist-harvested: '2026-08-01'
+    x-apievangelist-source: https://docs.nordstellar.com/api/enterprise-data-api-swagger
+    x-apievangelist-reference: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+    x-apievangelist-operations: 85
+    x-apievangelist-error-envelope: bespoke ({"errors":{"body":"..."}}) — not RFC 9457
+    x-apievangelist-idempotency: none
+- target: $.servers
+  description: >-
+    The published document declares only the relative server /api/v3/data. The absolute host is carried
+    on the reference page as baseServerURL and is recorded here so the spec is resolvable standalone.
+  update:
+    x-apievangelist-base-url: https://enterprise-data-api.nordstellar.com
+- target: $.components
+  update:
+    x-apievangelist-rate-limit-headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset]
+    x-apievangelist-quota-headers: [X-Quota-Limit, X-Quota-Remaining, X-Quota-Reset]
+    x-apievangelist-rate-limit-docs: https://docs.nordstellar.com/enterprise-apis/product-integrations/rate-limit-and-quota
+    x-apievangelist-note: >-
+      429 is documented in prose but declared on none of the 85 operations; agents must handle it
+      defensively.

@@ -1,0 +1,89 @@
+generated: '2026-08-01'
+method: derived
+source: >-
+  openapi/nord-security-nordstellar-*.json + docs.nordstellar.com (authentication, rate-limit-and-quota,
+  code-examples) + github.com/NordStellar/nordstellar-mcp
+scope: NordStellar enterprise + platform APIs (the only Nord Security surface with published contracts)
+authentication:
+  styles:
+  - api_key_header
+  - http_basic
+  - http_bearer
+  detail: >-
+    The Enterprise Data API accepts an X-API-KEY header or HTTP Basic; the Company Risk Scoring API
+    accepts an API key header or HTTP Basic; the Cybersec API and the Platform Integrations API use
+    bearer tokens; the Partners API uses an API key header. Tokens are created and rotated in the
+    NordStellar platform UI. No OAuth 2.0 flow is declared in any spec and no OIDC discovery document
+    exists anywhere in the estate.
+  docs: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  artifact: authentication/nord-security-authentication.yml
+idempotency:
+  supported: false
+  evidence: >-
+    No Idempotency-Key header, parameter or extension appears in any of the seven harvested specs, and
+    no idempotency contract is documented. Recorded as absent — no Idempotency pointer is emitted in
+    apis.yml.
+pagination:
+  styles:
+  - style: offset
+    params: [take, skip]
+    surface: GraphQL (via MCP) — every published skill pages with take/skip
+  - style: page
+    surface: REST — page parameters appear across the Enterprise Data and Platform Integrations specs
+  - style: cursor
+    surface: Enterprise Data API (cursor referenced in the spec)
+  note: >-
+    Pagination is not uniform across the estate. The GraphQL core is take/skip; the REST APIs are
+    page-based with cursor support in places. No shared envelope is documented.
+  response_fields: [items, totalCount]
+  response_fields_note: items/totalCount are the GraphQL projection shape used throughout the skills.
+field_expansion:
+  supported: false
+  note: No expand / sparse-fieldset parameter is documented on any REST surface. The GraphQL core makes field selection native.
+metadata:
+  supported: false
+  note: No customer-controlled metadata bag is exposed on any object.
+request_tracing:
+  request_id_header: none published
+  note: No X-Request-Id / correlation header is documented or declared in any spec.
+versioning:
+  scheme: uri-path
+  detail: >-
+    URI-path major versions (/v3/events/...). The Platform Integrations API is unusual in publishing
+    v1, v2 and v3 side by side from the same reference page, each with its own OpenAPI, with v3 marked
+    default. The Enterprise Data API serves /api/v3/data. No date-based or header-based versioning and
+    no version-negotiation header.
+  artifact: lifecycle/nord-security-lifecycle.yml
+error_envelope:
+  formats: [rfc9457, bespoke]
+  detail: >-
+    application/problem+json (ProblemDetails / ValidationProblemDetails) on the Platform Integrations
+    and Partners APIs; a bespoke {"errors":{"body":"..."}} envelope on the Enterprise Data API; per-
+    operation JSON schemas on the Cybersec API; FastAPI HTTPValidationError on Company Risk Scoring.
+  artifact: errors/nord-security-problem-types.yml
+rate_limit_signaling:
+  headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-Quota-Limit, X-Quota-Remaining, X-Quota-Reset, Retry-After]
+  exceeded: 429 for rate limit, 403 for quota exhaustion
+  artifact: rate-limits/nord-security-rate-limits.yml
+content_negotiation:
+  request: application/json
+  response: application/json, application/problem+json
+webhooks:
+  supported: true
+  detail: >-
+    NordStellar documents generic webhooks alongside email, Slack and Microsoft Teams alerting, plus
+    SIEM forwarding to Microsoft Sentinel and CrowdStrike. No webhook payload catalogue, no signing
+    scheme and no AsyncAPI document are published, so no asyncapi/ artifact is emitted.
+  docs: https://docs.nordstellar.com/platform/alerts
+agent_surface:
+  mcp: https://platform-mcp.nordstellar.com/mcp
+  skills: skills/_index.yml
+  note: >-
+    The agent surface bypasses REST entirely — the MCP server proxies GraphQL. See
+    mcp/nord-security-tool-crosswalk.yml for the divergence.
+cross_links:
+  authentication: authentication/nord-security-authentication.yml
+  errors: errors/nord-security-problem-types.yml
+  lifecycle: lifecycle/nord-security-lifecycle.yml
+  rate_limits: rate-limits/nord-security-rate-limits.yml
+  conformance: conformance/nord-security-conformance.yml

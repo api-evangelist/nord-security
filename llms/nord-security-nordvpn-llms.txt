@@ -1,0 +1,50 @@
+# llms.txt for NordVPN
+
+> NordVPN
+A leading Virtual Private Network (VPN) service provider founded in 2012 and headquartered in Panama. NordVPN offers:
+Encrypted Internet Tunnels
+AES-256-GCM encryption, a strict no-logs policy and an automatic kill switch to ensure user data and online activities remain private and secure.
+Global Server Network
+Thousands of servers across 127 countries, optimized for speed, secure browsing, streaming, P2P file sharing.
+Advanced Privacy Features
+Obfuscated servers to defeat VPN blocking, Double VPN for multi-hop encryption, Onion over VPN integration, and DNS/IPv6 leak protection.
+Cross-Platform Support
+Native apps for Windows, macOS, Linux, Android, iOS and browser extensions, plus manual setup on routers and other devices.
+Use cases include protecting sensitive data on public Wi-Fi, maintaining privacy online, accessing home content while away, and evading censorship.
+
+## Company Information
+[Meet NordVPN](https://nordvpn.com/about-us/)
+[Panama City, Panama](https://nordvpn.com/about-us/)
+[Founded in 2012](https://nordvpn.com/about-us/)
+[Sitemap](https://nordvpn.com/sitemap.xml)
+
+## Core VPN services
+[Basic plan](https://nordvpn.com/pricing/)
+[Plus plan](https://nordvpn.com/pricing/)
+[Complete plan](https://nordvpn.com/pricing/)
+[Prime plan](https://nordvpn.com/pricing/): US only.
+
+## Key Features
+[Threat protection Pro](https://nordvpn.com/features/threat-protection/)
+[Dark web monitoring](https://nordvpn.com/features/dark-web-monitor/)
+[Dedicated IP](https://nordvpn.com/features/dedicated-ip/)
+
+## Key statistics
+[Servers in 165 locations](https://nordvpn.com/servers/)
+[Over 8000 servers in the world](https://nordvpn.com/servers/)
+[One of the fastest VPNs on the market](https://nordvpn.com/features/high-speed-vpn/)
+[No-log VPN service](https://nordvpn.com/features/no-log-vpn/)
+
+## Additional Tools
+[Is it down](https://nordvpn.com/is-it-down/)
+[Link checker](https://nordvpn.com/link-checker/)
+[File checker](https://nordvpn.com/file-checker/)
+[DNS leak test](https://nordvpn.com/dns-leak-test/)
+[IP lookup](https://nordvpn.com/ip-lookup/)
+[What is my IP](https://nordvpn.com/what-is-my-ip/)
+
+## NordVPN Resources
+[Blog](https://nordvpn.com/blog/)
+[Cybersecurity Glossary](https://nordvpn.com/cybersecurity/glossary/)
+[Threat center](https://nordvpn.com/cybersecurity/threat-center/)
+[NordVPN support center](https://support.nordvpn.com/hc/en-us/)

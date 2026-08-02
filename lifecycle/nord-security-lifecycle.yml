@@ -1,0 +1,62 @@
+generated: '2026-08-01'
+method: searched
+source: docs.nordstellar.com + help.nordlayer.com + status pages
+versioning:
+  scheme: uri-path
+  current:
+    nordstellar_platform_integrations_api: v3
+    nordstellar_enterprise_data_api: v3.1 (served at /api/v3/data)
+    nordstellar_partners_api: v1
+    nordstellar_cybersec_api: v1.0.0
+    nordstellar_company_risk_scoring_api: v0.1.0
+  docs: https://docs.nordstellar.com/platform/integrations-api/swagger
+  note: >-
+    The Platform Integrations API reference serves v1, v2 and v3 concurrently from one page with v3 as
+    default — three separately downloadable OpenAPI documents, all harvested here. Nord Security
+    publishes no written versioning policy explaining how long v1/v2 remain available.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  note: >-
+    No deprecation policy, no RFC 8594 Sunset/Deprecation header support, and not one operation across
+    the 169 harvested is flagged `deprecated: true`. The only lifecycle signal available to a consumer
+    is the presence or absence of a version path.
+sla:
+  url: null
+  uptime_target: null
+  note: No public SLA or uptime commitment is published for any NordStellar API.
+status_pages:
+- product: NordVPN
+  url: https://status.nordvpn.com/
+  platform: Better Stack
+  http_status: 200
+- product: NordLayer
+  url: https://status.nordlayer.com/
+  platform: Atlassian Statuspage
+  http_status: 200
+- product: NordPass
+  url: https://status.nordpass.com/
+  platform: Atlassian Statuspage
+  http_status: 200
+status_page: https://status.nordvpn.com/
+status_page_gaps:
+- >-
+  There is no status page for NordStellar — the only product with a public API estate. The three status
+  pages that exist cover the consumer/business apps, not the APIs.
+release_notes:
+- product: NordLayer Service Management Portal
+  url: https://help.nordlayer.com/docs/release-notes
+  latest_entry: '2026-04-15'
+- product: NordBrowser (Windows)
+  url: https://help.nordlayer.com/docs/release-notes-1
+  latest_entry: '2026-07-22'
+changelog_artifact: changelog/nord-security-changelog.yml
+x-evidence:
+  fetched: '2026-08-01'
+  probes:
+  - {url: 'https://status.nordvpn.com/', http_status: 200, generator: Better Stack}
+  - {url: 'https://status.nordlayer.com/', http_status: 200, generator: Atlassian Statuspage}
+  - {url: 'https://status.nordpass.com/', http_status: 200, generator: Atlassian Statuspage}

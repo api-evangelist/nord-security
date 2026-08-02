@@ -1,0 +1,4 @@
+Canonical: https://nordlayer.com/.well-known/security.txt
+Contact: mailto:support@nordlayer.com
+Expires: 2026-12-31T00:00:00Z
+Preferred-Languages: en

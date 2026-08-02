@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/NordSecurity/nordvpn-linux/daemon/pb";
+
+message Empty {}
+
+message Bool {
+  bool value = 1;
+}
+
+message Payload {
+  int64 type = 1;
+  repeated string data = 2;
+}
+
+// InjectVpnConnectionErrorRequest is the request for the DEV-only endpoint.
+message InjectVpnConnectionErrorRequest {
+  // Raw libtelio (teliogo) ENS code
+  int32 telio_code = 1;
+  // Optional. When empty, the daemon stamps the currently-connected server's
+  // endpoint
+  string endpoint = 2;
+}
+
+message Allowlist {
+  Ports ports = 1;
+  repeated string subnets = 2;
+}
+
+message Ports {
+  repeated int64 udp = 1;
+  repeated int64 tcp = 2;
+}
+
+message ServerGroup {
+  string name = 1;
+  bool virtualLocation = 2;
+}
+
+message ServerGroupsList {
+  int64 type = 1;
+  repeated ServerGroup servers = 2;
+}
+
+enum TriState {
+  UNKNOWN = 0;
+  DISABLED = 1;
+  ENABLED = 2;
+}
+
+enum ClientID {
+  UNKNOWN_CLIENT = 0;
+  CLI = 1;
+  GUI = 2;
+  TRAY = 3;
+}
+
+enum DiagnosticsErrorCode {
+  DIAGNOSTICS_ERROR_CODE_UNSPECIFIED = 0;
+  DIAGNOSTICS_ERROR_CODE_INTERNAL = 1;
+  DIAGNOSTICS_ERROR_CODE_FAILED_TO_CREATE_ZIP = 2;
+  DIAGNOSTICS_ERROR_CODE_CHOWN_FAILED = 3;
+  DIAGNOSTICS_ERROR_CODE_ZIP_TOO_LARGE = 4;
+  DIAGNOSTICS_ERROR_CODE_COLLECTION_FAILED = 5;
+  DIAGNOSTICS_ERROR_CODE_FAILED_TO_CLOSE_ZIP = 6;
+  DIAGNOSTICS_ERROR_CODE_NO_DAEMON_LOG_SOURCE = 7;
+}
+
+message DiagnosticsProgress {
+  string step = 1;
+  string file_path = 2;
+  DiagnosticsErrorCode error_code = 3;
+}

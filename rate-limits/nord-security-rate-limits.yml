@@ -1,0 +1,58 @@
+generated: '2026-08-01'
+method: searched
+source: https://docs.nordstellar.com/enterprise-apis/product-integrations/rate-limit-and-quota
+summary: >-
+  NordStellar documents a two-tier throttling model — short-window RATE LIMITS and long-window
+  (typically monthly) QUOTAS — and signals both with response headers. No numeric limits or quota
+  allocations are published: the documentation describes the mechanism and the headers, and says
+  endpoint-specific rate limits exist and that increases are negotiated, but the actual values are
+  contract-specific. No counts are recorded here because none are published.
+model:
+  tiers:
+  - id: rate-limit
+    window: short (per second / per minute)
+    definition: Maximum requests allowed in the current time window.
+    scope: per endpoint (documented as "endpoint-specific rate limits")
+    exceeded_status: 429
+  - id: quota
+    window: long (typically monthly)
+    definition: Total usage allowed over the billing period.
+    exceeded_status: 403
+headers:
+  rate_limit:
+  - name: X-RateLimit-Limit
+    meaning: Maximum number of requests allowed in the current time window.
+  - name: X-RateLimit-Remaining
+    meaning: Requests remaining in the current time window.
+  - name: X-RateLimit-Reset
+    meaning: When the rate-limit counter resets.
+  quota:
+  - name: X-Quota-Limit
+    meaning: Total quota for the current period.
+  - name: X-Quota-Remaining
+    meaning: Requests remaining in the quota.
+  - name: X-Quota-Reset
+    meaning: When the quota resets.
+  retry:
+  - name: Retry-After
+    meaning: Declared on the Cybersec API 429 responses.
+    apis: [NordStellar Cybersec API]
+spec_evidence:
+  headers_present_in_spec:
+  - spec: openapi/nord-security-nordstellar-enterprise-data-api-openapi.json
+    headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-Quota-Limit, X-Quota-Remaining, X-Quota-Reset]
+  - spec: openapi/nord-security-nordstellar-cybersec-api-openapi.json
+    headers: [X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After]
+  not_present_in_spec:
+  - openapi/nord-security-nordstellar-platform-integration-api-v3-openapi.json
+  - openapi/nord-security-nordstellar-partners-api-openapi.json
+  - openapi/nord-security-nordstellar-company-risk-scoring-api-openapi.json
+guidance_published:
+- Read X-RateLimit-Reset from the 429 response and back off until that timestamp.
+- On quota exhaustion (403) either wait for the reset or request a quota increase.
+- Documented best practices cover efficient request design, request distribution, monitoring/alerting and quota planning.
+limit_increases:
+  process: Negotiated with NordStellar (documented as "Limit Increases"); no self-serve tier table is published.
+gaps:
+- No published numeric rate limit or quota values for any plan or endpoint.
+- No pricing/plan table ties quota allocations to a purchasable tier.

@@ -1,0 +1,81 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/nord-security-nordstellar-*.json + docs.nordstellar.com + help.nordlayer.com + nordlayer.com/compliance/
+standards:
+- id: openapi-3.1
+  conforms: true
+  evidence: >-
+    Enterprise Data API and Company Risk Scoring API declare openapi 3.1.0 and parse cleanly.
+- id: openapi-3.0
+  conforms: true
+  evidence: Cybersec API (3.0.0), Partners API and Platform Integrations API v1-v3 (3.0.4).
+- id: rfc9457-problem-details
+  conforms: partial
+  evidence: >-
+    Platform Integrations API v1/v2/v3 and the Partners API return application/problem+json with a
+    ProblemDetails schema requiring type/title/status/detail/instance on every 400/401/403/500;
+    confirmed live by an anonymous 401 from platform-partners-api.nordstellar.com. The Enterprise Data,
+    Cybersec and Company Risk Scoring APIs use bespoke JSON envelopes instead.
+- id: rfc9116-security-txt
+  conforms: partial
+  evidence: >-
+    nordlayer.com and api.nordlayer.com serve a valid security.txt with Canonical/Contact/Expires/
+    Preferred-Languages, but no Policy field, and no other Nord Security domain publishes one.
+- id: scim-2.0
+  conforms: true
+  evidence: >-
+    NordLayer documents SCIM provisioning with Okta and Microsoft Entra ID covering create users,
+    update user attributes, deactivate users and group push. NordPass Business is likewise listed in
+    the Microsoft Entra ID provisioning gallery. No SCIM schema/ServiceProviderConfig is published.
+  docs: https://help.nordlayer.com/docs/user-provisioning
+- id: model-context-protocol
+  conforms: true
+  evidence: >-
+    Remote MCP server at https://platform-mcp.nordstellar.com/mcp; open-source proxy on PyPI; .mcpb
+    bundle for Claude Desktop; 16 published Agent Skills. tools/list responds with a JSON-RPC-layer 401.
+- id: oauth2
+  conforms: false
+  evidence: >-
+    No oauth2 securityScheme in any of the seven specs and no RFC 8414 authorization-server metadata
+    on any host. The MCP proxy performs a browser login but publishes no OAuth discovery.
+- id: openid-connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returns 404 on every probed host.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404 on every probed host.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation header support is documented; no operation is marked deprecated in any spec.
+- id: asyncapi
+  conforms: false
+  evidence: >-
+    No AsyncAPI document is published. Webhooks and SIEM forwarding exist as product features but carry
+    no event catalogue or schema.
+- id: json-api
+  conforms: false
+  evidence: No application/vnd.api+json media type anywhere in the estate.
+- id: grpc-protobuf
+  conforms: true
+  evidence: >-
+    43 proto3 service/message definitions published in github.com/NordSecurity/nordvpn-linux and
+    github.com/NordSecurity/llt-proto, covering the NordVPN daemon, meshnet, fileshare, norduser,
+    telemetry and snapconf surfaces. Saved verbatim in grpc/.
+- id: a2a-agent-card
+  conforms: false
+  evidence: >-
+    /.well-known/agent-card.json and /.well-known/agent.json return 404 (or an SPA HTML catch-all, which
+    is rejected) on every Nord Security and NordStellar host probed.
+compliance_program:
+  published: true
+  url: https://nordlayer.com/compliance/
+  certifications: [ISO 27001, SOC 2 Type II, HIPAA, PCI DSS]
+  scope: NordLayer
+  artifact: security/nord-security-trust-center.yml
+  frameworks_supported: [SOC 2, ISO 27001, HIPAA, NIS2, PCI DSS, GDPR]
+security_frameworks_as_product:
+  note: >-
+    NordStellar additionally ships compliance-evidence workflows as published Agent Skills covering
+    ISO/IEC 27001:2022, SOC 2 TSC, PCI DSS v4.0.1, NIST SP 800-53 Rev. 5, NIST CSF 2.0 and CIS Controls
+    v8/v8.1. These are audit tooling for customers, not certifications held by Nord Security.
+  artifact: skills/_index.yml

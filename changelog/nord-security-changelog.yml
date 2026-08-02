@@ -1,0 +1,69 @@
+generated: '2026-08-01'
+method: searched
+source: https://help.nordlayer.com/docs/release-notes
+scheme: dated
+scope: >-
+  The only dated, publicly published changelogs in the Nord Security estate belong to NordLayer — the
+  Service Management Portal (partner/MSP console) and the NordBrowser clients. NordStellar, which
+  carries every public API, publishes NO changelog: no release notes page, no versioned API history,
+  and no announcement feed. API consumers have no published record of what changed between Platform
+  Integrations API v1, v2 and v3.
+feeds:
+- id: nordlayer-smp
+  title: NordLayer Service Management Portal release notes
+  url: https://help.nordlayer.com/docs/release-notes
+  current_version: dated (no semantic version)
+  latest_entry: '2026-04-15'
+- id: nordlayer-nordbrowser-windows
+  title: NordBrowser Windows release notes
+  url: https://help.nordlayer.com/docs/release-notes-1
+  current_version: 1.3.3
+  latest_entry: '2026-07-22'
+entries:
+- feed: nordlayer-nordbrowser-windows
+  version: Windows 1.3.3
+  date: '2026-07-22'
+  breaking: false
+  additions: [Crash reporting — diagnostic information collected and submitted on crash]
+- feed: nordlayer-nordbrowser-windows
+  version: Windows 1.3.2
+  date: '2026-07-16'
+  breaking: false
+  additions: [Automatic background updates delivered silently without interrupting browsing sessions]
+- feed: nordlayer-nordbrowser-windows
+  version: Windows 1.2.0
+  date: '2026-06-17'
+  breaking: false
+  additions: []
+  highlights: [Minor fixes and improvements]
+- feed: nordlayer-smp
+  version: null
+  date: '2026-04-15'
+  breaking: false
+  additions:
+  - Organizations list export — owners download the full organization list as CSV; administrators export only their assigned organizations.
+  - Service Management Portal redesign, aligned to the current NordLayer brand and web accessibility guidelines.
+- feed: nordlayer-smp
+  version: null
+  date: '2026-01-28'
+  breaking: false
+  additions:
+  - >-
+    API key management in the Service Management Portal — partners self-serve generate and revoke API
+    keys, with one-time key visibility, expiry and secure storage, enabling rotation without downtime.
+  relevance: This is the release that created NordLayer's partner API key surface.
+- feed: nordlayer-smp
+  version: null
+  date: '2025-11-07'
+  breaking: false
+  additions: [Redesigned signup and login flow across web and mobile]
+- feed: nordlayer-smp
+  version: null
+  date: '2025-10-24'
+  breaking: false
+  additions:
+  - Dashboards in the Service Management Portal — license usage (used vs available) and plan distribution across Lite, Core and Premium.
+gaps:
+- NordStellar publishes no changelog for any of its five APIs.
+- No RSS/Atom feed is exposed for either NordLayer changelog; both are help-centre pages.
+- SMP entries are undated by version — only by publication date.

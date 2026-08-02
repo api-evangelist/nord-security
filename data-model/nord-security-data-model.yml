@@ -1,0 +1,104 @@
+generated: '2026-08-01'
+method: derived
+source: >-
+  openapi/nord-security-nordstellar-enterprise-data-api-openapi.json (103 schemas) and
+  openapi/nord-security-nordstellar-platform-integration-api-v3-openapi.json (54 schemas)
+summary:
+  schemas_total: 341
+  by_spec:
+    enterprise-data-api: 103
+    platform-integration-api-v3: 54
+    platform-integration-api-v2: 51
+    platform-integration-api-v1: 46
+    cybersec-api: 40
+    company-risk-scoring-api: 31
+    partners-api: 16
+  note: >-
+    Two disjoint models. The Enterprise Data API is an IDENTIFIER-CENTRIC lookup model — you present an
+    email, phone, domain, credit card or national ID and receive the breach records that touch it. The
+    Platform Integrations API is a PROJECT/EVENT model — a Project scopes Assets, and every finding is
+    an Event subtype carrying project_id + asset_id. Nothing in the Enterprise Data model references a
+    project; nothing in the Platform model references the identifier lookups.
+domains:
+- id: platform-events
+  spec: openapi/nord-security-nordstellar-platform-integration-api-v3-openapi.json
+  root: Project
+  description: >-
+    Project is the tenancy root. Every event subtype carries project_id and (for attack-surface events)
+    asset_id, plus shared enums for event type, module, risk level and vulnerability type.
+  entities:
+  - {name: 'ListProjects.Project', role: root}
+  - {name: 'AttackSurfaceVulnerability.AttackSurfaceDnsVulnerability', role: event}
+  - {name: 'AttackSurfaceVulnerability.AttackSurfaceNetworkServiceVulnerability', role: event}
+  - {name: 'AttackSurfaceVulnerability.AttackSurfaceWebApplicationVulnerability', role: event}
+  - {name: 'DarkWebMarketplace.DarkWebMarketplacePostV3', role: event}
+  - {name: 'DarkWebRansomware.DarkWebRansomwarePost', role: event}
+  - {name: 'DataBreach.DataBreach', role: event}
+  - {name: 'DomainPermutation.DomainPermutation', role: event}
+  shared_enums: ['Models.EventTypeV2', 'Models.EventTypeV3', 'Models.ModuleTypeV2', 'Models.RiskLevel',
+    'AttackSurfaceVulnerability.AttackSurfaceVulnerabilityType', 'AttackSurfaceVulnerability.AttackSurfaceVulnerabilitySourceType']
+- id: breach-intelligence
+  spec: openapi/nord-security-nordstellar-enterprise-data-api-openapi.json
+  root: none (identifier lookup)
+  description: >-
+    Identifier samples (Email, Phone, CreditCard, NationalId, Domain, Password, Cookie) each fan out to
+    the same three evidence collections — databases, malware_logs and credential_lists — with a
+    risk_assessment attached to each evidence item. Zero-knowledge variants mirror the same shapes for
+    privacy-preserving lookups.
+  entities:
+  - {name: EmailSample, role: identifier}
+  - {name: PhoneSample, role: identifier}
+  - {name: DatabaseDataItem, role: evidence}
+  - {name: MalwareDataItem, role: evidence}
+  - {name: CredentialDataItem, role: evidence}
+  - {name: MalwareLogDetailsLite, role: evidence-detail}
+  - {name: MalwareLogSystemInfoSampleItem, role: evidence-detail}
+  - {name: ZeroKnowledgeSample, role: privacy-variant}
+  - {name: UserDetails, role: account}
+  - {name: AccessToken, role: account}
+relationships:
+- {from: 'AttackSurfaceVulnerability.AttackSurfaceDnsVulnerability', type: belongs_to, to: Project, via: project_id}
+- {from: 'AttackSurfaceVulnerability.AttackSurfaceDnsVulnerability', type: belongs_to, to: Asset, via: asset_id}
+- {from: 'AttackSurfaceVulnerability.AttackSurfaceDnsVulnerability', type: belongs_to, to: CVE, via: cve_id}
+- {from: 'AttackSurfaceVulnerability.AttackSurfaceNetworkServiceVulnerability', type: belongs_to, to: Project, via: project_id}
+- {from: 'AttackSurfaceVulnerability.AttackSurfaceNetworkServiceVulnerability', type: belongs_to, to: Asset, via: asset_id}
+- {from: 'AttackSurfaceVulnerability.AttackSurfaceWebApplicationVulnerability', type: belongs_to, to: Project, via: project_id}
+- {from: 'AttackSurfaceVulnerability.AttackSurfaceWebApplicationVulnerability', type: belongs_to, to: Asset, via: asset_id}
+- {from: 'DarkWebMarketplace.DarkWebMarketplacePostV3', type: belongs_to, to: Project, via: project_id}
+- {from: 'DarkWebRansomware.DarkWebRansomwarePost', type: belongs_to, to: Project, via: project_id}
+- {from: 'DarkWebRansomware.DarkWebRansomwarePost', type: has_one, to: 'DarkWebRansomware.Victim', via: victim_information}
+- {from: 'DarkWebRansomware.Victim', type: has_many, to: 'DarkWebRansomware.Social', via: socials}
+- {from: 'DomainPermutation.DomainPermutation', type: has_one, to: 'DomainPermutation.WhoisInfo', via: whois}
+- {from: 'DomainPermutation.DomainPermutation', type: has_one, to: 'DomainPermutation.ThreatAnalysis', via: threat_analysis}
+- {from: 'DomainPermutation.DomainPermutation', type: has_one, to: 'DomainPermutation.AiAnalysis', via: ai_analysis}
+- {from: 'DomainPermutation.DomainPermutation', type: has_one, to: 'DomainPermutation.GeoIp', via: geo_ip}
+- {from: 'DomainPermutation.DomainPermutation', type: has_many, to: 'DomainPermutation.Redirect', via: redirects}
+- {from: EmailSample, type: has_many, to: DatabaseDataItem, via: databases}
+- {from: EmailSample, type: has_many, to: MalwareDataItem, via: malware_logs}
+- {from: EmailSample, type: has_many, to: CredentialDataItem, via: credential_lists}
+- {from: PhoneSample, type: has_many, to: DatabaseDataItem, via: databases}
+- {from: PhoneSample, type: has_many, to: MalwareDataItem, via: malware_logs}
+- {from: PhoneSample, type: has_many, to: CredentialDataItem, via: credential_lists}
+- {from: DatabaseDataItem, type: has_one, to: RiskAssessment, via: risk_assessment}
+- {from: MalwareDataItem, type: has_one, to: RiskAssessment, via: risk_assessment}
+- {from: CredentialDataItem, type: has_one, to: RiskAssessment, via: risk_assessment}
+- {from: MalwareDataItem, type: has_one, to: MalwareLogDetailsLite, via: details}
+- {from: MalwareLogDetailsLite, type: has_one, to: MalwareLogSystemInfoSampleItem, via: system_info}
+- {from: MalwareLogSystemInfoSampleItem, type: belongs_to, to: Hardware, via: hardware_id}
+- {from: MalwareLogSystemInfoSampleItem, type: belongs_to, to: Machine, via: machine_id}
+- {from: EmailsSample, type: has_many, to: EmailSample, via: data}
+- {from: PhonesSample, type: has_many, to: PhoneSample, via: data}
+- {from: ZeroKnowledgeMultiSample, type: has_many, to: ZeroKnowledgeSample, via: data}
+- {from: UserDetails, type: has_one, to: SubscriptionEndpointSample, via: endpoint}
+id_conventions:
+  format: uuid
+  fields: [id, project_id, asset_id, cve_id]
+  note: >-
+    UUIDs throughout the Platform Integrations model; no typed/prefixed identifiers anywhere in the
+    estate. The Enterprise Data model is keyed on the natural identifier presented (email address,
+    phone number, domain), not on synthetic ids.
+graphql_note: >-
+  The MCP/GraphQL core exposes a third projection of this data (projectsV2, eventsProjectionsV2,
+  assetsProjections, attackSurface*, domainPermutations*, malwareInfections*) with items/totalCount
+  envelopes. No SDL is published, so its type graph is not modelled here — see
+  mcp/nord-security-tool-crosswalk.yml.

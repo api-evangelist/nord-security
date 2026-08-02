@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package norduserpb;
+
+option go_package = "github.com/NordSecurity/nordvpn-linux/norduser/pb";
+
+message Empty{}
+
+message StopNorduserRequest {
+	bool disable = 1;
+	bool restart = 2;
+}

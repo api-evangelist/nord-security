@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/NordSecurity/nordvpn-linux/daemon/pb";
+
+message CountriesResponse {
+  repeated Country countries = 1;
+}
+
+message Country {
+  string name = 1;
+  string code = 2;
+}

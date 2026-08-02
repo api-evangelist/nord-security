@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/NordSecurity/nordvpn-linux/daemon/pb";
+
+import "config/protocol.proto";
+import "config/technology.proto";
+import "config/group.proto";
+import "google/protobuf/timestamp.proto";
+
+enum ConnectionSource {
+  UNKNOWN_SOURCE = 0;
+  MANUAL = 1;
+  AUTO = 2;
+}
+
+enum ConnectionState {
+    UNKNOWN_STATE = 0;
+    DISCONNECTED = 1;
+    CONNECTING = 2;
+    CONNECTED = 3;
+    PAUSED = 4;
+}
+
+message ConnectionParameters {
+  ConnectionSource source = 1;
+  string country = 2;
+  string city = 3;
+  config.ServerGroup group = 4;
+  string server_name = 5;
+  string country_code = 6;
+}
+
+message StatusResponse {
+  ConnectionState state = 1;
+  config.Technology technology = 2;
+  config.Protocol protocol = 3;
+  string ip = 4;
+  string hostname = 5;
+  string country = 6;
+  string city = 7;
+  uint64 download = 8;
+  uint64 upload = 9;
+  int64 uptime = 10;
+  string name = 11;
+  bool virtualLocation = 12;
+  ConnectionParameters parameters = 13;
+  bool postQuantum = 14;
+  bool is_mesh_peer = 15;
+  bool by_user = 16;
+  string country_code = 17;
+  bool obfuscated = 18;
+  google.protobuf.Timestamp paused_at = 19;
+  uint32 pause_remaining_duration_sec = 20;
+}

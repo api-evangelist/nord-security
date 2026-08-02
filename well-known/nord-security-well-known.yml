@@ -1,0 +1,131 @@
+generated: '2026-08-01'
+method: searched
+source: live GET of /.well-known/* across every apis.yml baseURL, OpenAPI servers[] host and the docs host
+summary:
+  hosts_probed: 13
+  paths_probed_per_host: 5
+  hits: 2
+  note: >-
+    The only /.well-known/ document Nord Security serves anywhere in the estate is an RFC 9116
+    security.txt on the NordLayer product domain, served identically from both nordlayer.com and
+    api.nordlayer.com. No OIDC discovery, no RFC 8414 authorization-server metadata, no RFC 9727
+    api-catalog and no ai-plugin.json anywhere — including the NordStellar API hosts and the MCP host.
+hosts:
+- host: https://nordlayer.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain; charset=utf-8
+    file: nord-security-nordlayer-security.txt
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://api.nordlayer.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain; charset=utf-8
+    file: nord-security-nordlayer-security.txt
+    note: byte-identical to the nordlayer.com copy; Canonical points at nordlayer.com
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+- host: https://nordsecurity.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://docs.nordstellar.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://nordstellar.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://enterprise-data-api.nordstellar.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://platform-integration-api.nordstellar.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://platform-partners-api.nordstellar.com
+  documents:
+  - {path: /.well-known/security.txt, status: 401, content_type: 'application/problem+json'}
+  - {path: /.well-known/openid-configuration, status: 401}
+  - {path: /.well-known/oauth-authorization-server, status: 401}
+  - {path: /.well-known/api-catalog, status: 401}
+  - {path: /.well-known/ai-plugin.json, status: 401}
+  note: >-
+    Every path on this host returns an authenticated-only RFC 9457 problem document, so absence cannot
+    be distinguished from access denial. The 401 body itself confirms the API is RFC 9457 end to end.
+- host: https://platform-mcp.nordstellar.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  note: >-
+    The MCP server publishes neither RFC 8414 authorization-server metadata nor RFC 9728
+    oauth-protected-resource metadata; auth is brokered by the local nordstellar-mcp proxy via a
+    browser login flow instead of MCP-native OAuth discovery.
+- host: https://enterprise-crs-api.nordstellar.com
+  documents:
+  - {path: /.well-known/security.txt, status: 403}
+  - {path: /.well-known/openid-configuration, status: 403}
+  - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/api-catalog, status: 403}
+  - {path: /.well-known/ai-plugin.json, status: 403}
+  note: WAF-blocked to unauthenticated clients; absence not determinable.
+- host: https://cybersec.nordstellar.com
+  documents:
+  - {path: /.well-known/security.txt, status: 0}
+  - {path: /.well-known/openid-configuration, status: 0}
+  - {path: /.well-known/oauth-authorization-server, status: 0}
+  - {path: /.well-known/api-catalog, status: 0}
+  - {path: /.well-known/ai-plugin.json, status: 0}
+  note: Connection reset / no response to unauthenticated probes.
+- host: https://api.nordpass.com
+  documents:
+  - {path: /.well-known/security.txt, status: 403}
+  - {path: /.well-known/openid-configuration, status: 403}
+  - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/api-catalog, status: 403}
+  - {path: /.well-known/ai-plugin.json, status: 403}
+- host: https://api.nordvpn.com
+  documents:
+  - {path: /.well-known/security.txt, status: 403}
+  - {path: /.well-known/openid-configuration, status: 403}
+  - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/api-catalog, status: 403}
+  - {path: /.well-known/ai-plugin.json, status: 403}
+x-evidence:
+  fetched: '2026-08-01'
+  user_agent: browser UA (Cloudflare fronts most Nord hosts and blocks default curl UA)

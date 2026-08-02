@@ -1,23 +1,376 @@
 aid: nord-security
 name: Nord Security
-description: 'Nord Security is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Nord Security is a Lithuania-founded digital security and privacy company whose consumer and business
+  portfolio spans NordVPN, NordPass, NordLocker, NordLayer (network access security for business),
+  NordProtect/Coveron, Saily (eSIM) and NordStellar (external threat exposure management). Its
+  developer-facing surface is concentrated in NordStellar, which publishes five OpenAPI-described
+  enterprise APIs — the Enterprise Data (Dark Web) API, Company Risk Scoring API, Cybersec API,
+  Partners API and Platform Integrations API — plus a remote MCP server, sixteen provider-published
+  agent skills, an n8n community node and SIEM integrations (Microsoft Sentinel, CrowdStrike).
+  NordLayer adds SCIM 2.0 user provisioning and a partner/MSP API key surface, while the NordSecurity
+  GitHub organization publishes the NordVPN Linux client together with 43 gRPC/protobuf service
+  definitions covering the daemon, meshnet, fileshare, norduser and telemetry surfaces.
+image: https://res.cloudinary.com/nordsec/image/upload/q_auto,f_auto/v1/nord-security-web/global/meta/social-logo.png
 url: https://raw.githubusercontent.com/api-evangelist/nord-security/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment
 specificationVersion: '0.20'
 created: '2026-08-01'
 modified: '2026-08-01'
 tags:
+- Cybersecurity
+- Threat Intelligence
+- Dark Web Monitoring
+- Attack Surface Management
+- Breach Intelligence
+- VPN
+- Password Management
+- Network Security
+- Zero Trust
+- Privacy
+- MCP
+- Agent Skills
+- gRPC
 - Company
-apis: []
+apis:
+- name: NordStellar Enterprise Data API
+  description: >-
+    Also marketed as the NordStellar Dark Web API. Breach-intelligence data API over malware/infostealer
+    logs, breached databases, credential lists, cookie and password intelligence, and dark web sources,
+    with domain, email, phone, credit card and national-ID intelligence endpoints plus API user and
+    subscription management. 85 operations across 15 tagged capability areas, OpenAPI 3.1.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - breach-intelligence
+  - dark-web
+  - threat-intelligence
+  - credential-monitoring
+  - malware-logs
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-nordstellar-enterprise-data-api-openapi.json
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: Overlay
+    url: overlays/nord-security-nordstellar-enterprise-data-api-overlay.yaml
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+- name: NordStellar Company Risk Scoring API
+  description: >-
+    Evaluates the cybersecurity risk of an external company identified primarily by domain name,
+    returning scored risk assessments for third-party/vendor risk workflows. 14 operations, OpenAPI 3.1,
+    API key header or HTTP Basic authentication.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  baseURL: https://enterprise-crs-api.nordstellar.com
+  tags:
+  - risk-scoring
+  - third-party-risk
+  - vendor-risk
+  - threat-intelligence
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-nordstellar-company-risk-scoring-api-openapi.json
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+- name: NordStellar Cybersec API
+  description: >-
+    URL and file scanning API with allow/deny list management and account usage control (AUC).
+    23 operations, OpenAPI 3.0, bearer-token authentication, with documented X-RateLimit headers and
+    Retry-After handling on 429.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  baseURL: https://cybersec.nordstellar.com
+  tags:
+  - url-scanning
+  - file-scanning
+  - threat-detection
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-nordstellar-cybersec-api-openapi.json
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+- name: NordStellar Partners API
+  description: >-
+    Partner-facing API for managing partner accounts and customer relationships, including creating and
+    managing customer organizations. 5 operations, OpenAPI 3.0.4, API key header auth, RFC 9457
+    application/problem+json error responses on every operation.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  baseURL: https://platform-partners-api.nordstellar.com
+  tags:
+  - partner-api
+  - msp
+  - account-management
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-nordstellar-partners-api-openapi.json
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+- name: NordStellar Platform Integrations API
+  description: >-
+    Connects NordStellar's monitoring features to external security tools, dashboards and automated
+    workflows — events, alerts and platform data for SIEM/SOAR forwarding. Three published versions
+    (v1/v2/v3) are served side by side from the same reference; v3 is the default. Bearer authentication,
+    RFC 9457 problem+json errors. Also consumed by the NordStellar n8n community node.
+  humanURL: https://docs.nordstellar.com/platform/integrations-api
+  baseURL: https://platform-integration-api.nordstellar.com
+  tags:
+  - integrations
+  - siem
+  - soar
+  - events
+  - automation
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-nordstellar-platform-integration-api-v3-openapi.json
+  - type: OpenAPI
+    url: openapi/nord-security-nordstellar-platform-integration-api-v2-openapi.json
+  - type: OpenAPI
+    url: openapi/nord-security-nordstellar-platform-integration-api-v1-openapi.json
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+  - type: Overlay
+    url: overlays/nord-security-nordstellar-platform-integration-api-v3-overlay.yaml
+- name: NordStellar MCP Server
+  description: >-
+    Remote MCP server that lets any MCP-compatible assistant query the NordStellar platform in natural
+    language. Clients connect through the open-source nordstellar-mcp auth proxy (PyPI, run via uvx, or a
+    one-click .mcpb bundle for Claude Desktop), which performs a browser login and stores session tokens
+    in the OS credential store. The server fronts NordStellar's GraphQL core and exposes graphql_query,
+    graphql_batch, search_types and get_type_definition. Live tools/list is auth-gated (HTTP 401
+    "no bearer token").
+  humanURL: https://docs.nordstellar.com/platform/mcp
+  baseURL: https://platform-mcp.nordstellar.com/mcp
+  tags:
+  - mcp
+  - agent-native
+  - threat-intelligence
+  - graphql
+  properties:
+  - type: MCPServer
+    url: mcp/nord-security-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/nord-security-tool-crosswalk.yml
+  - type: MCP
+    url: https://platform-mcp.nordstellar.com/mcp
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/mcp/setup
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: SourceCode
+    url: https://github.com/NordStellar/nordstellar-mcp
+- name: NordLayer Partner / MSP API
+  description: >-
+    Partner-facing API behind the NordLayer Service Management Portal. API keys are self-issued in the
+    SMP Integrations tab with expiry and one-time visibility, and let MSPs create client organizations,
+    retrieve account details and statuses, and track license usage. The help centre links a "NordLayer MSP
+    API Documentation" PDF for the full specification, but that published link currently returns 404, so
+    no machine-readable contract is publicly retrievable.
+  humanURL: https://help.nordlayer.com/docs/api-key-management-for-smp
+  baseURL: https://api.nordlayer.com/
+  tags:
+  - msp
+  - partner-api
+  - provisioning
+  - network-security
+  properties:
+  - type: Documentation
+    url: https://help.nordlayer.com/docs/api-key-management-for-smp
+  - type: Authentication
+    url: authentication/nord-security-authentication.yml
+  x-evidence:
+    fetched: '2026-08-01'
+    base_url_probe:
+      url: https://api.nordlayer.com/
+      http_status: 404
+      content_type: application/json
+      body: '{"code":404,"message":"Resource not found"}'
+      note: >-
+        Host resolves and answers a JSON error envelope; individual endpoint paths are not published
+        outside the partner-gated MSP API PDF.
+    spec_link:
+      url: https://cdn.document360.io/fc1049cd-8f71-4b89-b9b8-dbca9fdcdd16/Images/Documentation/NordLayer%20MSP%20API%20Documentation.pdf
+      http_status: 404
+      note: Linked from help.nordlayer.com/docs/api-key-management-for-smp; asset no longer present.
+- name: NordLayer SCIM 2.0 Provisioning
+  description: >-
+    SCIM-based user provisioning surface used to create users, update user attributes, deactivate users
+    and push groups from Okta and Microsoft Entra ID into NordLayer. The SCIM secret token is issued in
+    the NordLayer Control Panel under Settings > Access management; the endpoint is configured through
+    the identity provider's NordLayer application rather than published as a standalone base URL.
+  humanURL: https://help.nordlayer.com/docs/user-provisioning
+  baseURL: https://api.nordlayer.com/
+  tags:
+  - scim
+  - provisioning
+  - identity
+  - sso
+  properties:
+  - type: Documentation
+    url: https://help.nordlayer.com/docs/user-provisioning
+  - type: Conformance
+    url: conformance/nord-security-conformance.yml
+- name: NordPass Provider API
+  description: >-
+    Usage-reporting API for NordPass provider/MSP partners, documented in the NordPass help centre.
+    NordPass separately supports SCIM provisioning from Okta and Microsoft Entra ID for NordPass Business.
+    The provider API reference sits behind a bot-protected help centre and no machine-readable contract is
+    published.
+  humanURL: https://support.nordpass.com/hc/en-us/articles/23164869782801-Provider-API-for-Usage-Reporting
+  baseURL: https://api.nordpass.com/
+  tags:
+  - msp
+  - usage-reporting
+  - password-management
+  - scim
+  properties:
+  - type: Documentation
+    url: https://support.nordpass.com/hc/en-us/articles/23164869782801-Provider-API-for-Usage-Reporting
+  x-evidence:
+    fetched: '2026-08-01'
+    base_url_probe:
+      url: https://api.nordpass.com/
+      http_status: 403
+      content_type: application/json
+      body: '{"status":403,"title":"Access Forbidden","type":"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"}'
+      note: Host resolves and answers a problem-shaped JSON envelope; endpoint paths are not published.
+- name: NordVPN Public Server API
+  description: >-
+    Unauthenticated JSON API that NordVPN's own clients and the open-source Linux client use to enumerate
+    the server estate — servers, countries, cities, groups and technologies. It is publicly reachable and
+    widely consumed, but Nord Security publishes no developer documentation, no OpenAPI and no terms for
+    it, so it should be treated as an internal client API rather than a supported product API.
+  humanURL: https://github.com/NordSecurity/nordvpn-linux
+  baseURL: https://api.nordvpn.com/v1
+  tags:
+  - vpn
+  - server-directory
+  - undocumented
+  properties:
+  - type: SourceCode
+    url: https://github.com/NordSecurity/nordvpn-linux
+  x-evidence:
+    fetched: '2026-08-01'
+    probes:
+    - url: https://api.nordvpn.com/v1/servers/countries
+      http_status: 200
+      content_type: application/json
+    - url: https://api.nordvpn.com/v1/technologies
+      http_status: 200
+      content_type: application/json
+    - url: https://api.nordvpn.com/openapi.json
+      http_status: 403
+      note: No OpenAPI published; host bot-protects non-client paths.
+common:
+- type: Website
+  url: https://nordsecurity.com/
+- type: DeveloperPortal
+  url: https://docs.nordstellar.com/
+- type: Documentation
+  url: https://docs.nordstellar.com/
+- type: APIReference
+  url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+- type: GettingStarted
+  url: https://docs.nordstellar.com/quick-start
+- type: Support
+  url: https://nordsecurity.com/contact-us
+- type: HelpCenter
+  url: https://help.nordlayer.com/docs/
+- type: Blog
+  url: https://nordsecurity.com/blog
+- type: GitHubOrganization
+  url: https://github.com/NordSecurity
+- type: Pricing
+  url: https://nordstellar.com/pricing/
+- type: SignUp
+  url: https://platform.nordstellar.com/login
+- type: Login
+  url: https://platform.nordstellar.com/login
+- type: TermsOfService
+  url: https://business.nordsec.com/legal/terms-of-service
+- type: PrivacyPolicy
+  url: https://nordsecurity.com/privacy-policy
+- type: StatusPage
+  url: https://status.nordvpn.com/
+- type: Compliance
+  url: https://nordlayer.com/compliance/
+- type: Security
+  url: https://nordlayer.com/.well-known/security.txt
+- type: SecurityTxt
+  url: well-known/nord-security-nordlayer-security.txt
+- type: WellKnown
+  url: well-known/nord-security-well-known.yml
+- type: VulnerabilityDisclosure
+  url: security/nord-security-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/nord-security-domain-security.yml
+- type: TrustCenter
+  url: security/nord-security-trust-center.yml
+- type: Authentication
+  url: authentication/nord-security-authentication.yml
+- type: Conventions
+  url: conventions/nord-security-conventions.yml
+- type: Conformance
+  url: conformance/nord-security-conformance.yml
+- type: ErrorCatalog
+  url: errors/nord-security-problem-types.yml
+- type: DataModel
+  url: data-model/nord-security-data-model.yml
+- type: Lifecycle
+  url: lifecycle/nord-security-lifecycle.yml
+- type: ChangeLog
+  url: changelog/nord-security-changelog.yml
+- type: RateLimits
+  url: rate-limits/nord-security-rate-limits.yml
+- type: Packages
+  url: packages/nord-security-packages.yml
+- type: SDKs
+  url: packages/nord-security-packages.yml
+- type: MCPServer
+  url: mcp/nord-security-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/nord-security-tool-crosswalk.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/nord-security-nordvpn-llms.txt
+- type: LLMsTxt
+  url: llms/nord-security-nordlayer-llms.txt
+- type: Protobuf
+  url: grpc/nord-security-nordvpn-daemon-service.proto
+- type: Protobuf
+  url: grpc/nord-security-nordvpn-meshnet-service.proto
+- type: Protobuf
+  url: grpc/nord-security-nordvpn-fileshare-service.proto
+- type: Protobuf
+  url: grpc/nord-security-nordvpn-norduser-service.proto
+- type: Protobuf
+  url: grpc/nord-security-nordvpn-daemon-telemetry-v1-service.proto
+- type: Protobuf
+  url: grpc/nord-security-llt-ens.proto
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
-common:
-- type: Website
-  url: https://forgeglobal.com/nord-security_stock/
+x-enrichment:
+  date: '2026-08-01'
+  status: enriched
+  artifacts_added: 87
+  pass: local-v1

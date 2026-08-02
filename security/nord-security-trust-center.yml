@@ -1,0 +1,64 @@
+generated: '2026-08-01'
+method: searched
+probe: true
+url: https://trust.nordlayer.com/
+trust_centers:
+- url: https://trust.nordlayer.com/
+  product: NordLayer
+  http_status: 200
+  title: Trust Center
+  rendering: client-side (document body is JS-rendered; certification list not retrievable anonymously)
+- url: https://trust.nordpass.com/
+  product: NordPass
+  http_status: 200
+  title: Trust Center
+  rendering: client-side (document body is JS-rendered; certification list not retrievable anonymously)
+- url: https://trust.nordsecurity.com/
+  product: Nord Security (corporate)
+  http_status: 0
+  note: Host does not resolve — there is no corporate-level trust center.
+compliance_page:
+  url: https://nordlayer.com/compliance/
+  http_status: 200
+certifications:
+- name: ISO 27001
+  claimed_by: NordLayer
+  claim: ISO 27001 compliant
+  source: https://nordlayer.com/compliance/
+- name: SOC 2 Type II
+  claimed_by: NordLayer
+  claim: SOC 2 compliant / SOC 2 Type II
+  source: https://nordlayer.com/compliance/
+- name: HIPAA
+  claimed_by: NordLayer
+  claim: HIPAA compliant
+  source: https://nordlayer.com/compliance/
+- name: PCI DSS
+  claimed_by: NordLayer
+  claim: PCI-DSS compliant
+  source: https://nordlayer.com/compliance/
+frameworks_supported:
+  note: >-
+    Frameworks NordLayer positions itself as helping customers meet, rather than holding certification
+    against.
+  items: [SOC 2, ISO 27001, HIPAA, NIS2, PCI DSS, GDPR]
+evidence:
+- source: https://nordlayer.com/compliance/
+  keywords: [iso 27001, soc 2, soc 2 type ii, hipaa, pci-dss, nis2, gdpr]
+  fetched: '2026-08-01'
+- source: https://trust.nordlayer.com/
+  keywords: [trust center]
+  http_status: 200
+  fetched: '2026-08-01'
+- source: https://trust.nordpass.com/
+  keywords: [trust center]
+  http_status: 200
+  fetched: '2026-08-01'
+- source: https://nordsecurity.com/
+  keywords: [iso 27001, soc 2, hipaa, gdpr]
+  fetched: '2026-08-01'
+gaps:
+- Both trust centers render entirely client-side, so no machine-readable certification manifest exists.
+- >-
+    The published certification claims are scoped to NordLayer. NordStellar — the product that carries
+    the entire public API surface — publishes no trust center and no certification page of its own.

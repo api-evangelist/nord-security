@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/NordSecurity/nordvpn-linux/daemon/pb";
+
+enum LoginType {
+  LoginType_UNKNOWN = 0;
+  LoginType_LOGIN = 1;
+  LoginType_SIGNUP = 2;
+}
+
+message LoginOAuth2Request {
+  LoginType type = 1;
+}
+
+message LoginOAuth2CallbackRequest {
+  string token = 1;
+  LoginType type = 2;
+}
+
+message LoginResponse {
+  int64 type = 1;
+  string url = 5;
+}
+
+enum LoginStatus {
+  SUCCESS = 0;
+  UNKNOWN_OAUTH2_ERROR = 1;
+  ALREADY_LOGGED_IN = 2;
+  NO_NET = 3;
+  CONSENT_MISSING = 4;
+}
+
+message LoginOAuth2Response {
+  LoginStatus status = 1;
+  string url = 2;
+}
+
+message LoginOAuth2CallbackResponse {
+  LoginStatus status = 1;
+}
+
+message IsLoggedInResponse {
+  bool is_logged_in = 1;
+  LoginStatus status = 2;
+}

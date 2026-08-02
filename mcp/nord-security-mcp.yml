@@ -1,0 +1,73 @@
+generated: '2026-08-01'
+method: searched
+status: published
+source: https://docs.nordstellar.com/platform/mcp
+server:
+  name: nordstellar
+  vendor: Nord Security (NordStellar)
+  transport: http
+  url: https://platform-mcp.nordstellar.com/mcp
+  docs: https://docs.nordstellar.com/platform/mcp
+  setup_docs: https://docs.nordstellar.com/platform/mcp/setup
+  source_code: https://github.com/NordStellar/nordstellar-mcp
+  license: GPL-3.0
+  architecture: >-
+    Remote MCP server fronted by a local auth proxy. Clients run the open-source `nordstellar-mcp`
+    Python proxy (PyPI, launched with `uvx nordstellar-mcp https://platform-mcp.nordstellar.com/mcp`)
+    or install the prebuilt .mcpb bundle in Claude Desktop. On first use the proxy opens a browser
+    window for NordStellar login, then stores the session in the OS credential store (macOS Keychain,
+    Windows Credential Locker, Freedesktop Secret Service) under the service name "NordStellar MCP"
+    and relays tool calls to the remote server.
+  backing_surface: GraphQL
+  backing_surface_note: >-
+    The server is a thin MCP facade over NordStellar's GraphQL core, not over the REST OpenAPI estate.
+    Its README states the point is that you "no need to ... write GraphQL by hand".
+authentication:
+  scheme: bearer
+  flow: browser login handled by the local proxy; session tokens refreshed automatically
+  credential_store: OS keyring (service name "NordStellar MCP")
+  logout: nordstellar-mcp --logout
+  oauth_metadata:
+    well_known_oauth_authorization_server: 404
+    well_known_oauth_protected_resource: 404
+    note: No RFC 8414 / RFC 9728 discovery documents are published on the MCP host.
+introspection:
+  attempted: '2026-08-01'
+  method: 'POST tools/list (jsonrpc 2.0, Accept: application/json, text/event-stream)'
+  http_status: 401
+  body: no bearer token
+  result: >-
+    Live tools/list is auth-gated. The tool set below is taken from NordStellar's own published agent
+    skills (github.com/NordStellar/nordstellar-mcp/skills/*/SKILL.md), which name the tools they call.
+    Input schemas require authenticated introspection and are NOT recorded here.
+tools:
+- name: graphql_query
+  description: Execute a GraphQL query against the NordStellar platform.
+  source: skills/nord-security-nordstellar-general.md
+  input_schema: unknown (auth-gated)
+- name: graphql_batch
+  description: Execute multiple GraphQL queries in one batched call.
+  source: skills/nord-security-dark-web-search.md
+  input_schema: unknown (auth-gated)
+- name: search_types
+  description: Search the NordStellar GraphQL schema for types by name/keyword.
+  source: skills/nord-security-attack-surface-management.md
+  input_schema: unknown (auth-gated)
+- name: get_type_definition
+  description: Return the full definition of a named GraphQL type, for query construction.
+  source: skills/nord-security-attack-surface-management.md
+  input_schema: unknown (auth-gated)
+skills:
+  published_by_provider: true
+  count: 16
+  source: https://github.com/NordStellar/nordstellar-mcp/tree/main/skills
+  bundle: https://github.com/NordStellar/nordstellar-mcp/releases/download/skills-latest/nordstellar.zip
+  install: npx skills add https://github.com/NordStellar/nordstellar-mcp
+  index: skills/_index.yml
+x-evidence:
+  fetched: '2026-08-01'
+  probes:
+  - {url: 'https://platform-mcp.nordstellar.com/mcp', method: POST, jsonrpc_method: tools/list, http_status: 401, body: 'no bearer token'}
+  - {url: 'https://platform-mcp.nordstellar.com/.well-known/oauth-authorization-server', http_status: 404}
+  - {url: 'https://platform-mcp.nordstellar.com/.well-known/oauth-protected-resource', http_status: 404}
+  - {url: 'https://pypi.org/pypi/nordstellar-mcp/json', http_status: 200, version: 0.1.4}

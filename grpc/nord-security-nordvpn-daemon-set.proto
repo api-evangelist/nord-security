@@ -1,0 +1,137 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "github.com/NordSecurity/nordvpn-linux/daemon/pb";
+
+import "config/protocol.proto";
+import "config/technology.proto";
+
+enum SetErrorCode {
+  FAILURE = 0;
+  CONFIG_ERROR = 1;
+  ALREADY_SET = 2;
+}
+
+message SetAutoconnectRequest {
+  bool enabled = 1;
+  string server_tag = 2;
+  string server_group = 3;
+}
+
+message SetGenericRequest {
+  bool enabled = 1;
+}
+
+message SetUint32Request {
+  uint32 value = 1;
+}
+
+message SetThreatProtectionLiteRequest {
+  bool threat_protection_lite = 1;
+}
+
+enum SetThreatProtectionLiteStatus {
+  TPL_CONFIGURED = 0;
+  TPL_CONFIGURED_DNS_RESET = 1;
+}
+
+message SetThreatProtectionLiteResponse {
+  oneof response {
+    SetErrorCode error_code = 1;
+    SetThreatProtectionLiteStatus set_threat_protection_lite_status = 2;
+  }
+}
+
+message SetDNSRequest {
+  repeated string dns = 2;
+  bool threat_protection_lite = 3;
+}
+
+enum SetDNSStatus {
+  DNS_CONFIGURED = 0;
+  DNS_CONFIGURED_TPL_RESET = 1;
+  INVALID_DNS_ADDRESS = 2;
+  TOO_MANY_VALUES = 3;
+}
+
+message SetDNSResponse {
+  oneof response {
+    SetErrorCode error_code = 2;
+    SetDNSStatus set_dns_status = 3;
+  }
+}
+
+message SetKillSwitchRequest {
+  bool kill_switch = 2;
+}
+
+message SetNotifyRequest {
+  bool notify = 3;
+}
+
+message SetTrayRequest {
+  reserved 2;
+  reserved "uid";
+  bool tray = 3;
+}
+
+message SetProtocolRequest {
+  config.Protocol protocol = 2;
+}
+
+enum SetProtocolStatus {
+  PROTOCOL_CONFIGURED = 0;
+  PROTOCOL_CONFIGURED_VPN_ON = 1;
+  INVALID_TECHNOLOGY = 2;
+}
+
+message SetProtocolResponse {
+  oneof response {
+    SetErrorCode error_code = 1;
+    SetProtocolStatus set_protocol_status = 2;
+  }
+}
+
+message SetTechnologyRequest {
+  config.Technology technology = 2;
+}
+
+message PortRange {
+  int64 start_port = 1;
+  int64 end_port = 2;
+}
+
+message SetAllowlistSubnetRequest {
+  string subnet = 1;
+  bool force = 2;
+}
+
+message SetAllowlistPortsRequest {
+  bool is_udp = 1;
+  bool is_tcp = 2;
+  PortRange port_range = 3;
+}
+
+message SetAllowlistRequest {
+  oneof request {
+    SetAllowlistSubnetRequest set_allowlist_subnet_request = 1;
+    SetAllowlistPortsRequest set_allowlist_ports_request = 2;
+  }
+}
+
+message SetLANDiscoveryRequest {
+  bool enabled = 1;
+}
+
+enum SetLANDiscoveryStatus {
+  DISCOVERY_CONFIGURED = 0;
+  DISCOVERY_CONFIGURED_ALLOWLIST_RESET = 1;
+}
+
+message SetLANDiscoveryResponse {
+  oneof response {
+    SetErrorCode error_code = 1;
+    SetLANDiscoveryStatus set_lan_discovery_status = 2;
+  }
+}

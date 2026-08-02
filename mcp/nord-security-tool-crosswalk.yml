@@ -1,0 +1,119 @@
+generated: '2026-08-01'
+method: derived
+source: >-
+  mcp/nord-security-mcp.yml (tool names from NordStellar's own published SKILL.md files) crossed with
+  openapi/nord-security-nordstellar-*.json
+headline: >-
+  NordStellar's MCP surface and its REST surface are projections of DIFFERENT cores, and they do not
+  overlap at the operation level. The MCP server exposes four generic GraphQL meta-tools over the
+  platform's GraphQL schema; the OpenAPI estate describes 169 REST operations across five separate
+  APIs. Not one MCP tool binds to a REST operationId, and not one REST operation has a dedicated tool.
+  Recording this divergence honestly is the point of this artifact — a name-similarity crosswalk here
+  would be fabrication.
+surfaces:
+  openapi:
+    files:
+    - openapi/nord-security-nordstellar-enterprise-data-api-openapi.json
+    - openapi/nord-security-nordstellar-company-risk-scoring-api-openapi.json
+    - openapi/nord-security-nordstellar-cybersec-api-openapi.json
+    - openapi/nord-security-nordstellar-partners-api-openapi.json
+    - openapi/nord-security-nordstellar-platform-integration-api-v3-openapi.json
+    - openapi/nord-security-nordstellar-platform-integration-api-v2-openapi.json
+    - openapi/nord-security-nordstellar-platform-integration-api-v1-openapi.json
+    operations: 169
+    gated: false
+  graphql:
+    endpoint: unpublished
+    reachable_via: the MCP server's graphql_query / graphql_batch tools
+    introspection: gated (no anonymous GraphQL endpoint is documented or discoverable)
+    note: >-
+      The GraphQL schema is real and is the platform's primary internal contract — NordStellar's
+      published skills contain dozens of concrete queries against it — but Nord Security publishes no
+      GraphQL endpoint URL, no SDL and no introspection surface. The root fields below were read out of
+      the provider's own SKILL.md files; they are evidence of the surface, not a schema.
+  mcp:
+    url: https://platform-mcp.nordstellar.com/mcp
+    tools_list: gated (HTTP 401 "no bearer token")
+    tools_named: 4
+crosswalk: []
+mcp_only:
+- tool: graphql_query
+  reason: >-
+    Generic GraphQL execution tool. Its capability is the whole GraphQL schema, not a single REST
+    operation; no REST operationId corresponds to it.
+- tool: graphql_batch
+  reason: Batched GraphQL execution; the REST APIs expose no batch endpoint.
+- tool: search_types
+  reason: GraphQL schema introspection helper; no REST equivalent exists.
+- tool: get_type_definition
+  reason: GraphQL schema introspection helper; no REST equivalent exists.
+graphql_root_fields_observed:
+  note: >-
+    Root fields named in NordStellar's published skills, grouped by capability. None of these are
+    reachable through the REST APIs.
+  projects: [projectsV2]
+  events: [eventsProjectionsV2, assetProjectionsCounts, assetsProjections, assetTopUnresolvedAssetOccurrencesStatistics]
+  attack_surface: [attackSurfaceIps, attackSurfaceIp, attackSurfaceIpsProviders, attackSurfaceDomains,
+    attackSurfaceSslCertificates, attackSurfaceTargetAssets, attackSurfaceScanProjections,
+    attackSurfaceVulnerabilities, attackSurfaceVulnerabilitiesCounts,
+    attackSurfaceVulnerabilityEventActivityLogProjections, networkServiceProjections,
+    networkServiceAttackSurfaceVulnerability, dnsAttackSurfaceVulnerability]
+  web_applications: [webApplicationProjections, webApplication, webApplicationsTechnologies, webApplicationAttackSurfaceVulnerability]
+  dark_web: [forumsSearchContents, telegramSearchContents, ransomwareSearchContents, marketplacesSearchContents,
+    searchContentsTags, darkWebMonitoringRules]
+  malware: [malwareInfectionsAssetsOccurrences, malwareInfectionAssetOccurrenceV2]
+  domain_squatting: [domainPermutationsProjections, domainPermutation, domainPermutationsOriginalDomains, domainSquattingCounts]
+rest_only:
+- api: NordStellar Enterprise Data API
+  spec: openapi/nord-security-nordstellar-enterprise-data-api-openapi.json
+  operations: 85
+  groups:
+    Email Intelligence: 19
+    Subscription Management: 14
+    Malware Logs Intelligence: 12
+    Credit Card Intelligence: 7
+    Phone Intelligence: 6
+    Dark Web Intelligence: 6
+    API User Management: 5
+    Profiling: 4
+    Breached Databases: 3
+    National Identification Number Intelligence: 3
+    Credential Lists: 2
+    Password Intelligence: 2
+    Cookie Intelligence: 2
+- api: NordStellar Cybersec API
+  spec: openapi/nord-security-nordstellar-cybersec-api-openapi.json
+  operations: 23
+  groups: {Files: 8, Urls: 4, Lists: 3, AUC: 2, 'ML Models': 2, 'URL scanner': 1, Applications: 1, Cookies: 1, 'Crypto Addresses': 1}
+- api: NordStellar Company Risk Scoring API
+  spec: openapi/nord-security-nordstellar-company-risk-scoring-api-openapi.json
+  operations: 14
+  groups: {Results: 8, 'Company Details': 4, Scanning: 2}
+- api: NordStellar Platform Integrations API (v3)
+  spec: openapi/nord-security-nordstellar-platform-integration-api-v3-openapi.json
+  operations: 15
+  groups: {Events: 13, Projects: 2}
+  note: >-
+    This is the closest REST analogue to the MCP surface — Events and Projects mirror the
+    eventsProjectionsV2 / projectsV2 GraphQL roots — but the shapes differ (REST returns paged event
+    projections; the GraphQL roots are richer and take different filters), so no operation-level
+    binding is asserted.
+- api: NordStellar Partners API
+  spec: openapi/nord-security-nordstellar-partners-api-openapi.json
+  operations: 5
+  groups: {Partners: 5}
+coverage:
+  tools_named: 4
+  tools_bound_to_rest: 0
+  mcp_only: 4
+  rest_operations_total: 169
+  rest_operations_with_a_tool: 0
+  binding_rate: 0.0
+gaps:
+- >-
+  Because every MCP tool is a generic GraphQL executor, agents get no per-capability tool schemas.
+  Discoverability depends entirely on the 16 published skills, not on tools/list.
+- >-
+  The 169 REST operations are invisible to MCP clients. An agent connected to the NordStellar MCP
+  server cannot reach the Enterprise Data (Dark Web) API, the Company Risk Scoring API, the Cybersec
+  API or the Partners API at all.

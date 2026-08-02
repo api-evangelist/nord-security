@@ -1,0 +1,400 @@
+# NordLayer
+
+> Knowledge base documentation for NordLayer.
+
+## v1
+
+- [Welcome](https://help.nordlayer.com/docs/welcome.md)
+- [How NordLayer works](https://help.nordlayer.com/docs/how-nordlayer-works.md): NordLayer works through a series of security layers that when utilized together, they protect users and ensure secure access across the entire corporate network.
+- [Getting Started](https://help.nordlayer.com/docs/get-started.md)
+- [Clients](https://help.nordlayer.com/docs/clients.md)
+- [Set up your account](https://help.nordlayer.com/docs/set-up-your-account.md)
+- [Step 1: Sign up for NordLayer and choose your plan](https://help.nordlayer.com/docs/step-1-choose-plan-and-sign-up.md): NordLayer is the latest version of NordLayer's cloud-based cloud-storage service.The NordLayer app is available now.The process of signing up differs depending on your role in the organization.
+- [Set up NordLayer](https://help.nordlayer.com/docs/set-up-nordlayer.md)
+- [Step 2: Onboarding and management](https://help.nordlayer.com/docs/step-2-onboarding-members.md): In the Members section, the owner can invite users to join the platform, assign them roles, and manage their access.To access the section, click Organization -&gt; Members.
+- [Step 3: Gateway and server management](https://help.nordlayer.com/docs/step-3-set-up.md): In the Teams section, the owner can create various teams, assign and remove members, and manage their devices.The network is managed via the Control Panel on the NordLayer website.
+- [Step 4: Install app and configure the settings](https://help.nordlayer.com/docs/step-4-install-and-configure.md): The NordLayer application is available for download and install.The exact functionalities vary depending on your app’s environment and operating system.
+- [Partners](https://help.nordlayer.com/docs/service-management-portal.md)
+- [Partner onboarding](https://help.nordlayer.com/docs/partner-onboarding.md)
+- [How to become a Partner](https://help.nordlayer.com/docs/how-to-become-a-partner.md)
+- [How to find your Partner ID for NordLayer's Service Management Portal](https://help.nordlayer.com/docs/how-to-find-your-partner-id.md)
+- [How to use the SMP (Service Management Portal)](https://help.nordlayer.com/docs/how-to-use-the-smp-service-management-portal.md)
+- [Partner organization setup](https://help.nordlayer.com/docs/partner-organization-setup.md)
+- [How to manage an organization](https://help.nordlayer.com/docs/how-to-manage-an-organization.md): In the Teams section, the owner can create various teams, assign and remove members, and manage their devices.In the Gateways section, owners can create gateways and add teams and servers to them.
+- [How to assign the Delegated Administrator role in the Service Management Portal?](https://help.nordlayer.com/docs/how-to-assign-the-delegated-administrator-role-in-the-service-management-portal.md): Learn how to designate administrative role to individuals in managed companies and streamline network management.
+- [Owner/Administrator authentication](https://help.nordlayer.com/docs/user-authentication.md)
+- [Multi-factor authentication](https://help.nordlayer.com/docs/multi-factor-authentication.md)
+- [How to enable 2FA in the Service Management Portal](https://help.nordlayer.com/docs/how-to-enable-2fa-in-the-service-management-portal.md): NordLayer Service Management Portal supports two-factor authentication via SMS or TOTP.2FA can be enabled centrally implemented across your entire partner organization.
+- [Centrally enforce 2FA for Service Management Platform](https://help.nordlayer.com/docs/centrally-implement-2fa-for-an-organization-smp.md)
+- [Single sign-on (SSO) setup](https://help.nordlayer.com/docs/single-sign-on-sso-setup.md)
+- [Google SSO for NordLayer Service Management Portal](https://help.nordlayer.com/docs/enabling-google-sso-for-nordlayer-service-management-portal.md): Discover how to integrate Google Single Sign-On (SSO) with the NordLayer Service Management Portal, simplifying user authentication.
+- [Okta SSO for Service Management Portal](https://help.nordlayer.com/docs/enabling-okta-sso-for-service-management-portal.md): Explore how to streamline access to your Service Management Portal using Okta Single Sign-On (SSO). This guide offers step-by-step instructions for setup.
+- [Entra ID (Azure AD) SSO for NordLayer Service Management Portal](https://help.nordlayer.com/docs/setting-up-entra-id-azure-ad-sso-for-nordlayer-service-management-portal.md): Learn how to seamlessly integrate Entra ID (Azure AD) Single Sign-On (SSO) with NordLayer Service Management Portal for streamlined access management
+- [Organization management](https://help.nordlayer.com/docs/organization-management.md)
+- [User provisioning](https://help.nordlayer.com/docs/user-provisioning.md)
+- [User Provisioning setup with Okta](https://help.nordlayer.com/docs/user-provisioning-setup-with-okta-smp.md): This guide teaches you how to create and configure SCIM integrations.Connect your SCIM API service to Okta.Set the name of your application, choose if it’s hidden from general and mobile users.
+- [User Provisioning setup with Entra ID (Azure AD)](https://help.nordlayer.com/docs/user-provisioning-setup-with-microsoft-azure-ad-smp.md): User provisioning is the IAM process of creating user accounts with specifically designated rights and permissions per the user’s role within a company.
+- [How to enable the NordLayer Browser for SMP organizations](https://help.nordlayer.com/docs/how-to-enable-the-nordlayer-browser-on-smp.md)
+- [Third-party authentication for organizations](https://help.nordlayer.com/docs/third-party-authentication-for-organizations.md)
+- [3rd party authentication for end customers via the Service Management Portal](https://help.nordlayer.com/docs/3rd-party-authentication-for-end-customers-smp.md)
+- [Entra ID (Azure AD) 3rd party authentication](https://help.nordlayer.com/docs/azure-ad-3rd-party-authentication-smp.md): .
+- [Google SSO 3rd party authentication](https://help.nordlayer.com/docs/google-sso-3rd-party-authentication-smp.md)
+- [JumpCloud 3rd party authentication](https://help.nordlayer.com/docs/jumpcloud-3rd-party-authentication-smp.md)
+- [Okta 3rd party authentication](https://help.nordlayer.com/docs/okta-3rd-party-authentication-smp.md): In order to enable Okta SSO as a login option for NordLayer, you will need to do the following: Log in to your Okta dashboard.Copy Client ID and Client secret values to enable SSO.
+- [OneLogin 3rd party authentication](https://help.nordlayer.com/docs/onelogin-3rd-party-authentication-smp.md): .
+- [Disable username/password login option](https://help.nordlayer.com/docs/disable-usernamepassword-login-option-smp.md)
+- [Monitoring & analytics](https://help.nordlayer.com/docs/monitoring-analytics.md)
+- [Service Management Portal Dashboards](https://help.nordlayer.com/docs/service-management-portal-dashboards.md)
+- [Integrations](https://help.nordlayer.com/docs/integrations-2.md)
+- [ConnectWise PSA integration](https://help.nordlayer.com/docs/connectwise-psa-integration.md)
+- [API key management for SMP](https://help.nordlayer.com/docs/api-key-management-for-smp.md)
+- [Members](https://help.nordlayer.com/docs/members.md)
+- [NordLayer guide for Members](https://help.nordlayer.com/docs/nordlayer-guide-for-members.md)
+- [Installation Manuals](https://help.nordlayer.com/docs/installation-manuals.md)
+- [Applications](https://help.nordlayer.com/docs/applications.md)
+- [Operating systems](https://help.nordlayer.com/docs/operating-systems.md): Find out which operating systems support our apps for optimal user experience, new features, and the highest level of security.
+- [Installing on Windows](https://help.nordlayer.com/docs/installing-on-windows.md)
+- [Installing on macOS](https://help.nordlayer.com/docs/installing-on-macos.md)
+- [Installing on Android](https://help.nordlayer.com/docs/installing-on-android.md): Setting Up NordLayer App on Android: A Step-by-Step Guide
+- [Installing on iOS](https://help.nordlayer.com/docs/installing-on-ios.md): Setting Up NordLayer App on iOS: A Step-by-Step Guide
+- [Installing on Linux](https://help.nordlayer.com/docs/installing-on-linux.md)
+- [Extension](https://help.nordlayer.com/docs/extension.md)
+- [Setting up Browser Extension](https://help.nordlayer.com/docs/setting-up-browser-extension.md): NordLayer Browser Extension is a lightweight solution used to secure online connections when accessing web-based resources.It can be used even without the NordLayer desktop app installed.
+- [Can I enable URL-based split tunneling on NordLayer Browser Extension?](https://help.nordlayer.com/docs/enable-url-based-split-tunneling.md)
+- [Manual Setup](https://help.nordlayer.com/docs/manual-setup.md)
+- [Setting up manual OpenVPN connection](https://help.nordlayer.com/docs/setting-up-openvpn.md)
+- [Setting up manual OpenVPN connection on Linux using Terminal](https://help.nordlayer.com/docs/setting-up-openvpn-linux-using-terminal.md)
+- [Setting up manual OpenVPN connection on Linux using Network Manager](https://help.nordlayer.com/docs/setting-up-openvpn-linux-using-network-manager.md): The manual OpenVPN connection method through the Network Manager is one of the alternative methods to connect to NordLayer private gateway on your Linux machine.
+- [Setting up manual OpenVPN connection on Android](https://help.nordlayer.com/docs/setting-up-openvpn-android.md): The OpenVPN Connect application can be used as an alternative way to connect to NordLayer private gateway on your Android device.
+- [Setting up manual OpenVPN connection on iOS](https://help.nordlayer.com/docs/setting-up-openvpn-ios.md)
+- [Setting up manual OpenVPN connection on macOS](https://help.nordlayer.com/docs/setting-up-openvpn-macos.md): The Tunnelblick application is one of the alternative ways to connect to NordLayer private gateway on your Mac.
+- [Setting up manual OpenVPN connection on Windows](https://help.nordlayer.com/docs/setting-up-openvpn-windows.md): The OpenVPN app is an alternative option to connect to NordLayer dedicated gateways.It lacks the additional features of the NordLayer native app but still uses two of the same VPN protocols.
+- [Centralized Distribution](https://help.nordlayer.com/docs/centralized-distribution-1.md)
+- [Guide to presetting Organization ID in NordLayer](https://help.nordlayer.com/docs/guide-to-presetting-organization-id-in-nordlayer.md): Discover how to preset your Organization ID in NordLayer with our comprehensive guide.
+- [How to preset NordLayer application settings](https://help.nordlayer.com/docs/how-to-preset-nordlayer-application-settings.md)
+- [Centralised Distribution - Jamf Cloud](https://help.nordlayer.com/docs/centralised-distribution-jamf-cloud.md)
+- [Centralised Distribution - SCCM Agent Deployment](https://help.nordlayer.com/docs/sccm-agent-deployment.md): If devices in your organization are managed through a central desktop management tool, you may prefer remote installation instead of having team members download and install the app on their own.
+- [Centralized Distribution - Microsoft Intune](https://help.nordlayer.com/docs/centralized-distribution-microsoft-intune.md)
+- [Centralized Distribution - Hexnode UEM](https://help.nordlayer.com/docs/centralized-distribution-hexnode-uem.md)
+- [NordLayer deployment scripts](https://help.nordlayer.com/docs/nordlayer-deployment-scripts.md)
+- [Features](https://help.nordlayer.com/docs/features.md)
+- [Network security](https://help.nordlayer.com/docs/network-security.md)
+- [Network segmentation](https://help.nordlayer.com/docs/network-segmentation.md): In the Teams section, the owner can create various teams, assign and remove members.In the Gateways section, owners can create gateways and add teams and servers to them.
+- [Secure Web Gateway (SWG)](https://help.nordlayer.com/docs/secure-web-gateway-swg.md)
+- [Cloud Firewall](https://help.nordlayer.com/docs/cloud-firewall.md): Explore Cloud Firewall & NordLayer Protection (Firewall-as-a-Service) - Enhanced Security for Hybrid Infrastructure
+- [Device security](https://help.nordlayer.com/docs/device-security.md)
+- [Jailbroken / rooted device detection](https://help.nordlayer.com/docs/jailbroken-rooted-device-detection.md)
+- [Device Posture security](https://help.nordlayer.com/docs/device-posture-security.md): Device Posture Security is a security feature that allows Organization Admins to check and evaluate Member devices according to predefined security rules.
+- [Allowlisting](https://help.nordlayer.com/docs/allowlisting.md)
+- [Allowlisting dedicated server IP on Amazon RDS](https://help.nordlayer.com/docs/allowlisting-amazon-rds.md): This article describes the process you'll need to follow in order to allowlist the IP address of your NordLayer private gateway on the Amazon RDS platform.
+- [Allowlisting dedicated server IP on Salesforce](https://help.nordlayer.com/docs/allowlisting-salesforce.md)
+- [Allowlisting dedicated server IP on AWS](https://help.nordlayer.com/docs/allowlisting-aws.md): This article describes the process you'll need to follow in order to allowlist the IP addresses of your NordLayer private gateway on the AWS Management Console.
+- [Allowlisting dedicated server IP on Azure](https://help.nordlayer.com/docs/allowlisting-azure.md): This article describes the process you'll need to follow in order to allowlist the IP address of your NordLayer private gateway on the Microsoft Azure Portal.
+- [Allowlisting dedicated server IP on Google Cloud](https://help.nordlayer.com/docs/allowlisting-google-cloud.md): This article describes the process you'll need to follow in order to allowlist the IP address of your NordLayer private gateway on the Google Cloud Platform.
+- [Internet access security](https://help.nordlayer.com/docs/internet-access-security.md)
+- [NordLynx](https://help.nordlayer.com/docs/nordlynx.md): NordLynx encrypts your user data while it's traveling to and from the VPN server.It protects your privacy when you’re connected to NordLayer.
+- [DNS security](https://help.nordlayer.com/docs/dns-security.md)
+- [DNS filtering by category](https://help.nordlayer.com/docs/request-dns-filtering-by-category.md)
+- [Custom DNS](https://help.nordlayer.com/docs/request-custom-dns.md)
+- [Web Protection](https://help.nordlayer.com/docs/threatblock.md)
+- [Download Protection](https://help.nordlayer.com/docs/download-protection.md)
+- [Application blocker](https://help.nordlayer.com/docs/application-blocker.md)
+- [Network connectors](https://help.nordlayer.com/docs/network-connectors.md)
+- [Cloud LAN](https://help.nordlayer.com/docs/cloud-lan.md)
+- [How to set up the Cloud LAN feature](https://help.nordlayer.com/docs/how-to-set-up-cloud-lan-feature.md): Smart remote access feature gives you the ability to connect endpoint to endpoint, when they are connected to the same server.
+- [Setting up the device name for Cloud LAN](https://help.nordlayer.com/docs/setting-up-the-device-name-for-cloud-lan.md): Once a device name is set, upon next VPN connection you will see your full device name listed near private gateways as seen in the screenshot below.
+- [Cloud LAN use cases](https://help.nordlayer.com/docs/cloud-lan-use-cases.md): This article demonstrates how to use Smart Remote Access for different purposes.Each section presents a specific use case, showing you how to make Smart Remote access work for your needs.
+- [How to share through Cloud LAN](https://help.nordlayer.com/docs/how-to-share-through-cloud-lan.md): You will need to enable file sharing in Windows as other operating systems cannot access Windows home groups.You can also connect directly to a computer if you know the full name of the device.
+- [Cloud LAN troubleshooting](https://help.nordlayer.com/docs/cloud-lan-troubleshooting.md): You need to be able to see other devices on the same local network.Windows Defender could be blocking File Sharing, Remote Desktop or Remote Assistance.
+- [Site-to-Site](https://help.nordlayer.com/docs/site-to-site-1.md)
+- [Site-to-site Cloud resources](https://help.nordlayer.com/docs/site-to-site-cloud-resources.md)
+- [Setting up site-to-site on Alibaba Cloud](https://help.nordlayer.com/docs/site-to-site-alibaba-cloud.md): Log in to the VPC console in the Management Platform on the left side, choose VPN &gt; IPsec Connections Select a region, select a region and select the IPsec-VPN connection.
+- [Setting up site-to-site on Google Cloud Platform](https://help.nordlayer.com/docs/site-to-site-gcp.md): Initial Google Cloud platform configuration GCP includes a few steps throughout the configuration and needs to be applied for every VPC.
+- [Setting up site-to-site on Google Cloud (VPC peering)](https://help.nordlayer.com/docs/site-to-site-gcp-vpc.md)
+- [Setting up site-to-site on IBM Cloud](https://help.nordlayer.com/docs/site-to-site-ibm.md): Using the IBM Cloud Console, you can configure a VPN gateway at the NordLayer Control Panel.If your device/service supports SHA256 and DH group 14, it is recommended to use these settings instead.
+- [Setting up site-to-site on AWS Virtual Gateway](https://help.nordlayer.com/docs/site-to-site-aws-virtual-gateway.md): The choice between Transit Gateway or a simple Virtual Gateway depends on your AWS architecture.If your device/service supports SHA256 and DH group 14, it is recommended to use these settings instead.
+- [Setting up site-to-site on AWS Transit Gateway](https://help.nordlayer.com/docs/site-to-site-aws-transit-gateway.md): The choice between Transit Gateway or a simple Virtual Gateway depends on your AWS architecture.If your device/service supports SHA256 and DH group 14, it is recommended to use these settings instead.
+- [Setting up site-to-site on Microsoft Azure](https://help.nordlayer.com/docs/site-to-site-microsoft-azure.md): In your Azure Management Portal, navigate to the Virtual networks Select the name of the Virtual Network to which you'd like to create a gateway.
+- [Guide to AWS Configuration](https://help.nordlayer.com/docs/aws-configuration-details.md): This article explains how to get the required information for setting up a site-to-site connection between NordLayer and AWS.Step 1: Download AWS configuration Log in to the AWS Management Console.
+- [Site-to-site on-premises resources](https://help.nordlayer.com/docs/site-to-site-on-premises.md)
+- [Setting up site-to-site on SmartRG router](https://help.nordlayer.com/docs/setting-up-site-to-site-on-smartrg-router.md)
+- [Setting up site-to-site on UniFi USG](https://help.nordlayer.com/docs/site-to-site-unifi-usg.md)
+- [Setting up site-to-site on TP-Link router](https://help.nordlayer.com/docs/site-to-site-tp-link-router.md): To verify the settings needed for the setup, please log into the router's management portal: Configuring the tunnel.
+- [Setting up site-to-site on Synology router](https://help.nordlayer.com/docs/site-to-site-synology-router.md): Follow the steps below to establish a Site-to-Site VPN connection between a pair of Synology Router.
+- [Setting up site-to-site on D-Link DIR-130/330](https://help.nordlayer.com/docs/site-to-site-d-link-dir-130-330.md): Site-to-site VPN connection can be set up using D-Link router management console.If your device/service supports SHA256 and DH group 14, it is recommended to use these settings instead.
+- [Setting up site-to-site on Linux server](https://help.nordlayer.com/docs/site-to-site-linux.md)
+- [Setting up site-to-site on Zyxel USG](https://help.nordlayer.com/docs/site-to-site-zyxel-usg.md): Go to ZyXel USG interface and add a VPN Gateway.Set the local policy to your LAN subnet and remote policy to the NordLayer subnet.
+- [Setting up site-to-site on WatchGuard](https://help.nordlayer.com/docs/site-to-site-watchguard.md): Using the WatchGuard Management Interface Open Fireware Web UI in the left panel, select VPN, then Branch Office VPN Under Gateways select ADD.
+- [Setting up site-to-site on Untangle NG](https://help.nordlayer.com/docs/site-to-site-untangle-ng.md)
+- [Setting up site-to-site on Sophos XG](https://help.nordlayer.com/docs/site-to-site-sophos-xg.md): Sophos XG interface adds a local and remote LAN.Add two firewall rules allowing VPN traffic.Set the Authentication Type to preshared key.
+- [Setting up site-to-site on SonicWall](https://help.nordlayer.com/docs/site-to-site-sonicwall.md): Site-to-Site creation is required to create a new VPN policy.If your device/service supports SHA256 and DH group 14, it is recommended to use these settings instead.
+- [Setting up Site-to-Site VPN on pfSense](https://help.nordlayer.com/docs/site-to-site-pfsense.md): pfSense IPSEC tunnel creation Go to VPN -&gt; IPsec Select +Add P1 Key Exchange Version: IKEv2 Internet Protocol: IPv4 Interface: Remote Gateway.
+- [Setting up site-to-site on Palo Alto](https://help.nordlayer.com/docs/site-to-site-palo-alto.md): Using the Palo Alto WebGUI, you can configure the tunnel in the WebGUI.If your device/service supports SHA256 and DH group 14, it is recommended to use these settings instead.
+- [Setting up site-to-site on Netgear BR500 router](https://help.nordlayer.com/docs/site-to-site-netgear-br500-router.md): Using the Netgear management interface, configure the VPN using the Net-2-Net Remote Gateway IP.If your device/service supports SHA256 and DH group 14, it is recommended to use these settings instead.
+- [Setting up site-to-site on Linksys router](https://help.nordlayer.com/docs/site-to-site-linksys-router.md): Using the Linksys management interface, you can configure the VPN using the web interface.If your device/service supports SHA256 and DH group 14, it is recommended to use these settings instead.
+- [Setting up site-to-site on Juniper (JunOS) SRX](https://help.nordlayer.com/docs/site-to-site-juniper-junos-srx.md): Each step is accompanied by a command that needs to be executed at the JunOS interface.If your device/service supports SHA256 and DH group 14, it is recommended to use these settings instead.
+- [Setting up site-to-site on FortiGate](https://help.nordlayer.com/docs/site-to-site-fortigate.md): Open the FortiGate Management Interface in the left panel, select VPN, then IPsec Tunnels, and select Create New In the VPN Creation Wizard window set the Name to NordLayer.
+- [Setting up site-to-site on DrayTek Vigor 3900](https://help.nordlayer.com/docs/site-to-site-draytek-vigor-3900.md): DrayTek VPN Profiles can be added to the NordLayer Control Panel.If your device/service supports SHA256 and DH group 14, it is recommended to use these settings instead.The default values are 10.6.
+- [Setting up site-to-site on Cisco Meraki](https://help.nordlayer.com/docs/site-to-site-cisco-meraki.md): This article describes how to configure a site-to-site connection between NordLayer dedicated server and Cisco Meraki device using the management interface.
+- [Setting up site-to-site on Check Point](https://help.nordlayer.com/docs/site-to-site-check-point.md): Make sure you have the IP of your NordLayer dedicated server.Add a shared secret that contains at least 20 characters.Set VPN Tunnel Sharing to One VPN tunnel per Gateway pair.
+- [Setting up site-to-site on Barracuda](https://help.nordlayer.com/docs/site-to-site-barracuda.md): In the Barracuda Management Interface, create a new VPN tunnel using IPsec IKEv2 Tunnels.If your device/service supports SHA256 and DH group 14, it is recommended to use these settings instead.
+- [Setting up site-to-site on Asus BRT-AC828](https://help.nordlayer.com/docs/site-to-site-on-asus-brt-ac828.md)
+- [Setting up site-to-site on Ubiquiti EdgeRouter / EdgeMax](https://help.nordlayer.com/docs/site-to-site-ubiquiti-edgerouter-edgemax.md): On the EdgeRouter/Edgemax device go to the CLI and enter configuration mode.
+- [Sites](https://help.nordlayer.com/docs/site-to-site.md): Securely Connect to Business LAN via Site-to-Site VPN | Control Panel Request Form
+- [User authentication and management](https://help.nordlayer.com/docs/integrations.md)
+- [Local network access](https://help.nordlayer.com/docs/app-connection-automation-controls.md)
+- [Multi-factor authentication](https://help.nordlayer.com/docs/mfa-sso.md)
+- [Set up 2FA](https://help.nordlayer.com/docs/set-up-2fa.md)
+- [Google 3rd party authentication](https://help.nordlayer.com/docs/google-sso-3rd-party.md): In order to login to NordLayer apps or Control Panel, users can authenticate their identity via Google SSO.
+- [Entra ID (Azure AD) 3rd party authentication](https://help.nordlayer.com/docs/azure-3rd-party-authentication.md): In order to login to NordLayer apps or Control Panel, users can authenticate their identity via Azure AD SSO.
+- [Okta 3rd party authentication](https://help.nordlayer.com/docs/sso-okta-3rd-party-authentication.md): In order to enable Okta SSO as a login option for NordLayer, you will need to do the following: Log in to your Okta dashboard.Copy Client ID and Client secret values to enable SSO.
+- [OneLogin 3rd party authentication](https://help.nordlayer.com/docs/sso-onelogin-3rd-party-authentication.md): .
+- [Disable the username/password login option](https://help.nordlayer.com/docs/disable-the-usernamepassword-login-option.md)
+- [JumpCloud 3rd party authentication](https://help.nordlayer.com/docs/jumpcloud-3rd-party.md): In order to login to NordLayer apps or Control Panel, users can authenticate their identity via JumpCloud SSO.
+- [Biometric authentication](https://help.nordlayer.com/docs/biometric-authentication.md)
+- [Single sign-on (SSO)](https://help.nordlayer.com/docs/single-sign-on-sso.md)
+- [Entra ID (Azure AD) 3rd party authentication](https://help.nordlayer.com/docs/azure-ad-3rd-party-authentication.md): In order to login to NordLayer apps or Control Panel, users can authenticate their identity via Azure AD SSO.
+- [Google 3rd party authentication](https://help.nordlayer.com/docs/google-3rd-party-authentication.md): In order to login to NordLayer apps or Control Panel, users can authenticate their identity via Google SSO.
+- [JumpCloud 3rd party authentication](https://help.nordlayer.com/docs/jumpcloud-3rd-party-authentication.md): In order to login to NordLayer apps or Control Panel, users can authenticate their identity via JumpCloud SSO.
+- [Okta 3rd party authentication](https://help.nordlayer.com/docs/okta-3rd-party-authentication.md): In order to enable Okta SSO as a login option for NordLayer, you will need to do the following: Log in to your Okta dashboard.Copy Client ID and Client secret values to enable SSO.
+- [OneLogin 3rd party authentication](https://help.nordlayer.com/docs/onelogin-3rd-party-authentication.md): .
+- [User provisioning](https://help.nordlayer.com/docs/user-provisioning-setup.md)
+- [User provisioning setup with Entra ID](https://help.nordlayer.com/docs/user-provisioning-with-microsoft-azure-ad.md): User provisioning is the IAM process of creating user accounts with specifically designated rights and permissions per the user’s role within a company.
+- [User provisioning setup with Okta](https://help.nordlayer.com/docs/user-provisioning-setup-with-okta.md): This guide teaches you how to create and configure SCIM integrations.Make sure you have enough NordLayer member licenses for all Azure AD users.
+- [Network monitoring](https://help.nordlayer.com/docs/network-monitoring.md)
+- [Activity information](https://help.nordlayer.com/docs/activity-information.md): Activity monitoring allows admins to react if someone from the organization breaches company security requirements quickly.It also collects helpful information for Security Compliance audits.
+- [Server usage analytics](https://help.nordlayer.com/docs/server-usage-analytics.md): Insights is a page on Control Panel that is designed to enhance data analytics, spot anomalies, and ensure seamless server usage.
+- [Usage dashboard](https://help.nordlayer.com/docs/usage-dashboard.md)
+- [Security dashboard](https://help.nordlayer.com/docs/security-dashboard.md)
+- [Security controls](https://help.nordlayer.com/docs/security-controls.md)
+- [Always On VPN](https://help.nordlayer.com/docs/always-on-vpn.md): Always On VPN is a security feature that ensures a VPN connection is used to access the internet to prevent any potential leaks.
+- [App connection automation controls](https://help.nordlayer.com/docs/app-connection-automation-control.md)
+- [Kill switch](https://help.nordlayer.com/docs/kill-switch.md)
+- [NordLayer session duration control options explained](https://help.nordlayer.com/docs/session-duration-control.md)
+- [Integrations](https://help.nordlayer.com/docs/integrations-1.md)
+- [Setting up custom integration](https://help.nordlayer.com/docs/custom-integration.md)
+- [CrowdStrike integration with NordLayer](https://help.nordlayer.com/docs/crowdstrike-integration-with-nordlayer.md)
+- [Setting up SentinelOne Integration with NordLayer](https://help.nordlayer.com/docs/sentinelone-integration-setup.md)
+- [Forwarding NordLayer Logs to CrowdStrike via SIEM](https://help.nordlayer.com/docs/forwarding-nordlayer-logs-to-crowdstrike-via-siem.md)
+- [How to automate NordLayer logouts with CrowdStrike](https://help.nordlayer.com/docs/automate-nordlayer-logouts-crowdstrike.md)
+- [Troubleshooting](https://help.nordlayer.com/docs/troubleshooting.md)
+- [Issues with the application](https://help.nordlayer.com/docs/issues-with-the-application.md)
+- [Windows](https://help.nordlayer.com/docs/windows-issues.md)
+- ['Verify that you have sufficient privileges to start system services' error on Windows 10](https://help.nordlayer.com/docs/verification-error-on-windows-10.md)
+- [Troubleshooting Trusted Wi-Fi in NordLayer on Windows 11](https://help.nordlayer.com/docs/troubleshooting-trusted-wi-fi-in-nordlayer-on-windows-11.md)
+- [I always get "Failed" IP error in Windows software](https://help.nordlayer.com/docs/failed-ip-error-in-windows.md)
+- [What should I do if my antivirus reports a virus in NordLayer software?](https://help.nordlayer.com/docs/antivirus-reports-virus-in-nordlayer.md)
+- [Re-installing NordLayer on Windows](https://help.nordlayer.com/docs/re-installing-nordlayer-on-windows.md)
+- [How to take a screenshot on Windows?](https://help.nordlayer.com/docs/how-to-take-a-screenshot-on-windows.md)
+- [Executable restrictions under Group Policies](https://help.nordlayer.com/docs/executable-restrictions-under-group-policies.md)
+- [How to retrieve NordLayer app logs for Windows](https://help.nordlayer.com/docs/how-to-retrieve-nordlayer-app-logs-for-windows.md)
+- [How to restart RAS service](https://help.nordlayer.com/docs/how-to-restart-ras-service.md)
+- [NordLayer auto launch/auto start in Windows registries](https://help.nordlayer.com/docs/nordlayer-auto-launch-auto-start-in-windows-registries.md)
+- [Network sharing in Windows](https://help.nordlayer.com/docs/network-sharing-in-windows.md)
+- ["App service is not running" on Windows using NordLayer](https://help.nordlayer.com/docs/app-service-is-not-running-on-windows-using-nordlayer.md)
+- [NordLayer application for Windows in .msi format for deployment](https://help.nordlayer.com/docs/nordlayer-application-for-windows-in-msi-format-for-deployment.md)
+- [How to reset network settings on Windows?](https://help.nordlayer.com/docs/how-to-reset-network-settings-on-windows.md)
+- [Unable to connect to NordLayer service on Windows](https://help.nordlayer.com/docs/unable-to-connect-to-nordlayer-service-on-windows.md): Some of our work or home networks may have restrictions that may block the VPN connection.
+- [How to change the VPN connection protocol for Windows?](https://help.nordlayer.com/docs/how-to-change-the-vpn-connection-protocol-for-windows.md)
+- [Improve VPN connection speed on Windows](https://help.nordlayer.com/docs/improve-vpn-connection-speed-on-windows.md): In this article, you will learn what might cause slow connection issues on your Windows device when connected to NordLayer.Keep in mind that some decrease in speed is expected when using a VPN.
+- [How to disable IPv6 on Windows 7?](https://help.nordlayer.com/docs/disable-ipv6-on-windows-7.md)
+- [How to disable IPv6 on Windows 8/10?](https://help.nordlayer.com/docs/disable-ipv6-on-windows-8-10.md)
+- [Improve VPN connection stability on Windows](https://help.nordlayer.com/docs/improve-vpn-connection-stability-on-windows.md): There are many factors involved in making a VPN connection, e.g., your VPN app settings, network settings, other software, type of network, etc.
+- [How to change DNS on Windows?](https://help.nordlayer.com/docs/how-to-change-dns-on-windows.md): This guide will show you how to edit, add, or remove DNS settings on your Windows device.This method can help you improve connection quality and in some cases - speed.
+- [macOS](https://help.nordlayer.com/docs/macos-issues.md)
+- [How to remove NordLayer from macOS?](https://help.nordlayer.com/docs/how-to-remove-nordlayer-from-macos.md)
+- [Re-installing NordLayer on macOS](https://help.nordlayer.com/docs/re-installing-nordlayer-on-macos.md)
+- [How to retrieve NordLayer app logs for macOS](https://help.nordlayer.com/docs/how-to-retrieve-nordlayer-app-logs-for-macos.md)
+- [VPN authentication errors on Mac using NordLayer](https://help.nordlayer.com/docs/vpn-authentication-errors-on-mac-using-nordlayer.md)
+- [Unable to log in to the NordLayer application on Mac](https://help.nordlayer.com/docs/unable-to-log-in-to-the-nordlayer-application-on-mac.md)
+- [How to change the VPN connection protocol for macOS?](https://help.nordlayer.com/docs/how-to-change-the-protocol-on-nordlayer-application-for-macos.md)
+- [Unable to connect to NordLayer service on macOS](https://help.nordlayer.com/docs/unable-to-connect-to-nordlayer-service-on-macos.md): Some of our work or home networks are very different from each other.Some of them may have restrictions that may block the VPN connection.
+- [How to reset network settings on macOS?](https://help.nordlayer.com/docs/how-to-reset-network-settings-on-macos.md)
+- [Improve VPN connection speed on macOS](https://help.nordlayer.com/docs/improve-vpn-connection-speed-on-macos.md): In this article, you will learn what might cause slow connection issues when connected to NordLayer.Keep in mind that some decrease in speed is expected when using a VPN.
+- [How to change DNS on macOS?](https://help.nordlayer.com/docs/how-to-change-dns-on-macos.md)
+- [Improve VPN connection stability on macOS](https://help.nordlayer.com/docs/improve-vpn-connection-stability-on-macos.md): There are many factors involved in making a VPN connection, e.g., your VPN app settings, network settings, other software, type of network, etc.
+- [How to disable IPv6 on macOS - step-by-step guide](https://help.nordlayer.com/docs/how-to-disable-ipv6-on-macos.md)
+- [How to take a screenshot on macOS?](https://help.nordlayer.com/docs/how-to-take-a-screenshot-on-macos.md)
+- [Linux](https://help.nordlayer.com/docs/linux-issues.md)
+- [How to change the protocol on NordLayer application for Linux?](https://help.nordlayer.com/docs/how-to-change-the-protocol-on-nordlayer-application-for-linux.md)
+- [Linux Diagnostic Tool](https://help.nordlayer.com/docs/linux-diagnostic-tool.md)
+- [Re-installing NordLayer on Linux (RHEL)](https://help.nordlayer.com/docs/re-installing-nordlayer-on-linux-rhel.md)
+- [Re-installing NordLayer on Linux (Debian)](https://help.nordlayer.com/docs/re-installing-nordlayer-on-linux-debian.md)
+- [NordLayer application for Linux encountered unrecoverable state (database corrupted)](https://help.nordlayer.com/docs/nordlayer-application-for-linux-encountered-unrecoverable-state.md)
+- [NordLayer application for Linux has hung and is not responsive](https://help.nordlayer.com/docs/nordlayer-application-for-linux-has-hung-and-is-not-responsive.md)
+- [NordLayer application on Linux does not start on system start-up](https://help.nordlayer.com/docs/nordlayer-application-on-linux-does-not-start-on-system-start-up.md)
+- [What should I do if the NordLayer application on Linux is not running, has crashed, etc.](https://help.nordlayer.com/docs/nordlayer-application-on-linux-is-not-running-has-crashed.md)
+- [How do I check if the NordLayer application on Linux is running?](https://help.nordlayer.com/docs/how-do-i-check-if-the-nordlayer-application-on-linux-is-running.md)
+- [How to retrieve NordLayer app logs on Linux](https://help.nordlayer.com/docs/how-to-retrieve-nordlayer-app-logs-on-linux.md)
+- [How to take a screenshot on Linux?](https://help.nordlayer.com/docs/how-to-take-a-screenshot-on-linux.md)
+- [How to reset network settings on Linux?](https://help.nordlayer.com/docs/how-to-reset-network-settings-on-linux.md)
+- [Unable to connect to NordLayer service on Linux](https://help.nordlayer.com/docs/unable-to-connect-to-nordlayer-service-on-linux.md): In this guide, you will learn how to troubleshoot connection issues on your Linux device.Usually, this particular problem can be resolved in a few easy steps.
+- [Improve VPN connection speed on Linux](https://help.nordlayer.com/docs/improve-vpn-connection-speed-on-linux.md): In this article, you will learn what might cause slow connection issues on your Linux device when connected to NordLayer.Keep in mind that some decrease in speed is expected when using a VPN.
+- [How to disable IPv6 on Linux?](https://help.nordlayer.com/docs/how-to-disable-ipv6-on-linux.md)
+- [Improve VPN connection stability on Linux](https://help.nordlayer.com/docs/improve-vpn-connection-stability-on-linux.md): There are many factors involved in making a VPN connection, e.g., your VPN app settings, network settings, other software, type of network, etc.
+- [How to change DNS on Linux?](https://help.nordlayer.com/docs/how-to-change-dns-on-linux.md)
+- [NordLayer application usage on Linux](https://help.nordlayer.com/docs/nordlayer-application-usage-on-linux.md)
+- [iOS](https://help.nordlayer.com/docs/ios-issues.md)
+- [How to reset network settings on iOS?](https://help.nordlayer.com/docs/how-to-reset-network-settings-on-ios.md)
+- [Improve VPN connection speed on iOS](https://help.nordlayer.com/docs/improve-vpn-connection-speed-on-ios.md): In this article, you will learn what might cause slow connection issues on your iOS device when connected to NordLayer.Keep in mind that some decrease in speed is expected when using a VPN.
+- [How to retrieve NordLayer app logs for iOS](https://help.nordlayer.com/docs/how-to-retrieve-nordlayer-app-logs-for-ios.md): Learn how to get NordLayer app logs on iOS easily. Just shake your device or use 'Share diagnostics' in Settings. It's a simple guide to help you troubleshoot
+- [Unable to connect to NordLayer service on iOS](https://help.nordlayer.com/docs/unable-to-connect-to-nordlayer-service-on-ios.md): You might be unable to connect to one particular server as it could be experiencing some issues.You might have a specific port blocked on your work or home network.
+- [Improve VPN connection stability on iOS](https://help.nordlayer.com/docs/improve-vpn-connection-stability-on-ios.md): There are many factors involved in making a VPN connection, e.g., your VPN app settings, network settings, other software, type of network, etc.
+- [How to change the VPN connection protocol for iOS?](https://help.nordlayer.com/docs/how-to-change-the-vpn-connection-protocol-for-ios.md)
+- [How to take a screenshot on iOS?](https://help.nordlayer.com/docs/how-to-take-a-screenshot-on-ios.md)
+- [How to change DNS on iOS?](https://help.nordlayer.com/docs/how-to-change-dns-on-ios.md)
+- [Android](https://help.nordlayer.com/docs/android-issues.md)
+- ["Please enable your browser" error on Android OS](https://help.nordlayer.com/docs/please-enable-your-browser-error-on-android-os.md)
+- [How to reset network settings on Android?](https://help.nordlayer.com/docs/how-to-reset-network-settings-on-android.md)
+- [How to reset network settings on Chromebook?](https://help.nordlayer.com/docs/how-to-reset-network-settings-on-chromebook.md)
+- [How to retrieve NordLayer app logs on Android](https://help.nordlayer.com/docs/how-to-retrieve-nordlayer-app-logs-on-android.md): Learn how to access and share diagnostic logs in the NordLayer app. Simplify troubleshooting with our step-by-step guide to accessing logs within the application
+- [Unable to connect to NordLayer service on Android](https://help.nordlayer.com/docs/unable-to-connect-to-nordlayer-service-on-android.md): Some of our work or home networks may have restrictions that may block the VPN connection.
+- [Improve VPN connection speed on Android](https://help.nordlayer.com/docs/improve-vpn-connection-speed-on-android.md): In this article, you will learn what might be causing slow connection issues on your Android when connected to a VPN and how to avoid them.
+- [How to disable IPv6 on Android?](https://help.nordlayer.com/docs/how-to-disable-ipv6-on-android.md)
+- [How to change the VPN protocol for Android](https://help.nordlayer.com/docs/how-to-change-the-vpn-protocol-for-android.md)
+- [Improve VPN connection stability on Android](https://help.nordlayer.com/docs/improve-vpn-connection-stability-on-android.md): There are many factors involved in making a VPN connection, e.g., your VPN app settings, network settings, other software, type of network, etc.
+- [How to change DNS on Chromebook?](https://help.nordlayer.com/docs/how-to-change-dns-on-chromebook.md)
+- [How to take a screenshot on Android?](https://help.nordlayer.com/docs/how-to-take-a-screenshot-on-android.md)
+- [How to change DNS on Android?](https://help.nordlayer.com/docs/how-to-change-dns-on-android.md)
+- [Issues with the VPN connection](https://help.nordlayer.com/docs/issues-with-the-vpn-connection.md)
+- [Device limit reached](https://help.nordlayer.com/docs/device-limit-reached.md)
+- [Unable to connect to NordLayer service](https://help.nordlayer.com/docs/unable-to-connect-to-nordlayer-service.md): Check if you can connect your device to the VPN on other networks, Wi-Fi, Ethernet, and mobile hotspots.If you cannot connect to only one of these, the connection is possibly blocked by something.
+- [Improve VPN connection speed on any device](https://help.nordlayer.com/docs/improve-vpn-connection-speed-on-any-device.md): When you connect to the Internet without a VPN, all of your traffic flows from your device to the final destination and then back to you.
+- [How to disable IPv6 on any device?](https://help.nordlayer.com/docs/how-to-disable-ipv6-on-any-device.md)
+- [Unable to access network printer while connected to NordLayer](https://help.nordlayer.com/docs/unable-to-access-network-printer-while-connected-to-nordlayer.md)
+- [Issues with Kubernetes](https://help.nordlayer.com/docs/issues-with-kubernetes.md)
+- [Why can't I send email messages?](https://help.nordlayer.com/docs/why-cant-i-send-email-messages.md)
+- [Looker queries time-out](https://help.nordlayer.com/docs/looker-queries-time-out.md): The Looker query timeout is caused by one of the technologies we are using.
+- [Docker MTU Configuration](https://help.nordlayer.com/docs/docker-mtu-configuration.md): When using Docker with NordLayer you may experience connectivity issues.This is caused by how Docker is configuring the MTU or by the network path itself not supporting Path MTU Discovery.
+- [Maximizing Uptime with a Backup Server with a Dedicated IP](https://help.nordlayer.com/docs/virtual-private-gateway-uptime-assurance.md): An organization operating on a single dedicated server is exposed to the risk of losing connectivity to company resources.
+- [Control Panel](https://help.nordlayer.com/docs/control-panel.md)
+- [Forgot my Organization ID](https://help.nordlayer.com/docs/forgot-my-organization-id.md)
+- [Forgot my account password. How do I reset it?](https://help.nordlayer.com/docs/forgot-my-account-password-how-do-i-reset-it.md)
+- [Member has not received the invitation email to NordLayer](https://help.nordlayer.com/docs/member-has-not-received-the-invitation-email-to-nordlayer.md)
+- [Clear Chrome local storage / Unexpected error](https://help.nordlayer.com/docs/clear-chrome-local-storage-unexpected-error.md)
+- [I can't see device names in the Control Panel under my account](https://help.nordlayer.com/docs/i-cant-see-device-names-in-the-cp-under-my-account.md)
+- [I didn't receive an invitation email](https://help.nordlayer.com/docs/i-didnt-receive-an-invitation-email.md)
+- [How to delete a member from your organization](https://help.nordlayer.com/docs/how-to-delete-a-member-from-your-organization.md)
+- [Disabling Auto-app updates](https://help.nordlayer.com/docs/disabling-auto-app-updates.md): Auto-app updates show a prompt every time a new NordLayer version is available.
+- [Can the organization owner reset a member's password?](https://help.nordlayer.com/docs/can-the-organization-owner-reset-a-members-password.md)
+- [How to change the organization ID or name?](https://help.nordlayer.com/docs/how-to-change-the-organization-id-or-name.md)
+- [I have received an invitation to join an organization on NordLayer. What do I do? ](https://help.nordlayer.com/docs/received-an-invitation-to-join-an-organization-on-nordlayer.md)
+- [Frameworks and Certificates](https://help.nordlayer.com/docs/frameworks-and-certificates.md)
+- [Does NordLayer offer a HIPAA BAA?](https://help.nordlayer.com/docs/nordlayer-hipaa-baa.md)
+- [Proactive IP reputation monitoring and server reachability checks](https://help.nordlayer.com/docs/proactive-ip-reputation-monitoring-and-server-reachability-checks.md)
+- [Implement SSE](https://help.nordlayer.com/docs/implement-sse.md)
+- [Implement ZTNA](https://help.nordlayer.com/docs/implement-ztna.md): NordLayer's NordLayer remote access solution uses a Zero Trust principle law to “trust none, verify all” on every attempt to connect to a network.
+- [Security & Compliance](https://help.nordlayer.com/docs/security-compliance.md): NordLayer’s information security management systems are certified according to ISO 27001:2013.
+- [How to request NordLayer security and compliance documents](https://help.nordlayer.com/docs/how-to-request-nordlayer-security-and-compliance-documents.md)
+- [Billing & Subscription](https://help.nordlayer.com/docs/billing-and-subscription.md)
+- [Payments](https://help.nordlayer.com/docs/payments.md)
+- [Can I change or update my payment method?](https://help.nordlayer.com/docs/can-i-change-my-payment-method.md)
+- [What is your refund policy?](https://help.nordlayer.com/docs/what-is-your-refund-policy.md)
+- [What currency are your prices in?](https://help.nordlayer.com/docs/what-currency-are-your-prices-in.md)
+- [What payment methods do you accept?](https://help.nordlayer.com/docs/what-payment-methods-do-you-accept.md)
+- [I have been charged twice](https://help.nordlayer.com/docs/i-have-been-charged-twice.md)
+- [How to remove organization's credit card information?](https://help.nordlayer.com/docs/how-can-i-remove-organizations-credit-card-information.md)
+- [How do I receive an invoice?](https://help.nordlayer.com/docs/how-do-i-receive-an-invoice.md)
+- [I can't make a payment](https://help.nordlayer.com/docs/i-cant-make-a-payment.md)
+- [How to change your billing details and invoice email](https://help.nordlayer.com/docs/how-to-change-an-invoice-recipient.md)
+- [Is my organization linked with my payment?](https://help.nordlayer.com/docs/is-my-organization-linked-with-my-payment.md)
+- [Subscription](https://help.nordlayer.com/docs/subscription.md)
+- [How do I check my subscription details?](https://help.nordlayer.com/docs/how-do-i-check-my-subscription-details.md)
+- [How to transfer a NordLayer subscription to another company?](https://help.nordlayer.com/docs/how-to-transfer-a-nordlayer-subscription-to-another-company.md)
+- [How do I change the number of users or dedicated server licenses?](https://help.nordlayer.com/docs/how-do-i-change-the-amount-of-users-or-dedicated-server-licenses.md)
+- [Why wasn't my recurring payment charged?](https://help.nordlayer.com/docs/why-wasnt-my-recurring-payment-charged.md)
+- [I have just paid. Will I be charged again?](https://help.nordlayer.com/docs/i-have-just-paid-will-i-be-charged-again.md)
+- [How to cancel NordLayer subscription?](https://help.nordlayer.com/docs/how-to-cancel-nordlayer-subscription.md)
+- [Information linked to my account](https://help.nordlayer.com/docs/information-linked-to-my-account.md)
+- [The process of migrating to a new NordLayer subscription plan](https://help.nordlayer.com/docs/migrating-subscription-plan.md): NordLayer introduced a new offering distributed via subscription plans Lite, Core, Premium, and Custom.These new subscription options will replace legacy plans Basic and Advanced over time.
+- [How to upgrade your subscription plan](https://help.nordlayer.com/docs/upgrade-subscription-plan.md)
+- [Release Notes](https://help.nordlayer.com/docs/release-notes.md)
+- [Service Management Portal](https://help.nordlayer.com/docs/service-management-portal-1.md): Explore the latest NordLayer Service Management Portal updates designed for managed service providers. Discover improved security, user-friendly interfaces, and efficient account management tools in our latest releases.
+- [Windows](https://help.nordlayer.com/docs/windows.md): Windows 2.5.1 August 23, 2022 Bug Fixes Minor fixes and improvements.NordLayer will now first try to connect you to NordLynx, our fastest VPN protocol.
+- [macOS](https://help.nordlayer.com/docs/macos.md): NordLynx on the sideloaded NordLayer app is available on macOS Catalina or a higher version of the app.SWG Browser Extension is live on all the major browsers via third party proxy add-ons.
+- [iOS](https://help.nordlayer.com/docs/ios.md)
+- [Android](https://help.nordlayer.com/docs/android.md)
+- [Linux](https://help.nordlayer.com/docs/linux.md)
+- [Control Panel](https://help.nordlayer.com/docs/control-panel-2.md): Two-factor authentication is live! All Control Panel Members can now set up 2FA to increase security when logging in to the Control Panel.
+- [Browser Extension](https://help.nordlayer.com/docs/browser-extension.md)
+- [FAQ](https://help.nordlayer.com/docs/faq.md)
+- [Account Management](https://help.nordlayer.com/docs/account-management.md)
+- [Can I create members instead of inviting them?](https://help.nordlayer.com/docs/can-i-create-members-instead-of-inviting-them.md)
+- [How to reset a Member’s two-factor authentication (2FA)](https://help.nordlayer.com/docs/how-to-reset-a-members-two-factor-authentication-2fa.md)
+- [How to export the list of members in your NordLayer organization](https://help.nordlayer.com/docs/how-to-export-the-list-of-members-in-your-nordlayer-organization.md)
+- [What are the Owner, Team Administrator, and Member roles?](https://help.nordlayer.com/docs/what-are-the-owner-team-administrator-and-member-roles.md)
+- [How do I change a member's email address?](https://help.nordlayer.com/docs/how-do-i-change-a-members-email-address.md)
+- [How long is the member invitation link active for?](https://help.nordlayer.com/docs/how-long-is-the-member-invitation-link-active-for.md)
+- [How to force sync between NordLayer and Microsoft Entra ID SCIM?](https://help.nordlayer.com/docs/how-to-force-sync-between-nordlayer-and-microsoft-entra-id-scim.md)
+- [How to force sync between NordLayer and Okta SCIM?](https://help.nordlayer.com/docs/how-to-force-sync-between-nordlayer-and-okta-scim.md)
+- [Setup and Configuration](https://help.nordlayer.com/docs/setup-and-configuration.md)
+- [Can I disable shared gateways for the whole organization?](https://help.nordlayer.com/docs/disable-shared-gateways.md)
+- [Configuring NordLayer system extensions on macOS](https://help.nordlayer.com/docs/configuring-nordlayer-system-extensions.md)
+- [How to check if you have the NordLayer application installed](https://help.nordlayer.com/docs/how-to-check-if-you-have-the-nordlayer-application-installed.md)
+- [Can I add a server with dedicated IP to various gateways?](https://help.nordlayer.com/docs/can-i-add-one-dedicated-server-to-various-gateways.md)
+- [Server with dedicated IP address](https://help.nordlayer.com/docs/dedicated-server-with-fixed-ip.md)
+- [Set up MS Office, OneDrive, or Adobe Cloud with NordLayer](https://help.nordlayer.com/docs/set-up-ms-office-onedrive-or-adobe-cloud-with-nordlayer.md)
+- [Can I use remote desktop with NordLayer?](https://help.nordlayer.com/docs/can-i-use-remote-desktop-with-nordlayer.md)
+- [Can I access windows shared drives remotely while NordLayer is set up?](https://help.nordlayer.com/docs/can-i-access-windows-shared-drives-remotely-while-nordlayer-is-set-up.md)
+- [Can I pin and sort shared gateways on NordLayer apps?](https://help.nordlayer.com/docs/pin-and-sort-gateways.md): Learn how to pin and sort your shared gateways easily using our drag-and-drop feature for a more personalized user experience
+- [Enable additional features in NordLayer](https://help.nordlayer.com/docs/enable-additional-features-in-nordlayer.md): Advanced plan users with dedicated servers can enable our beta features and set up custom network security solutions by filling out a self-service form in the Control Panel.
+- [How to take a screenshot?](https://help.nordlayer.com/docs/how-to-take-a-screenshot.md)
+- [How to check your macOS version number](https://help.nordlayer.com/docs/macos-version-number.md)
+- [How to find your Windows version number](https://help.nordlayer.com/docs/windows-version-number.md)
+- [How to find your Linux version number](https://help.nordlayer.com/docs/linux-version-number.md)
+- [How to find your iOS version number](https://help.nordlayer.com/docs/ios-version-number.md)
+- [How to find your Android version number](https://help.nordlayer.com/docs/android-version-number.md)
+- [Network and Connectivity](https://help.nordlayer.com/docs/network-and-connectivity.md)
+- [What are NordLayer VPN split tunneling options?](https://help.nordlayer.com/docs/what-are-nordlayer-vpn-split-tunneling-options.md)
+- [Does NordLayer support the IKEv2 VPN protocol?](https://help.nordlayer.com/docs/does-nordlayer-support-the-ikev2-vpn-protocol.md)
+- [How is traffic load calculated?](https://help.nordlayer.com/docs/how-is-traffic-load-calculated.md)
+- [Application download links](https://help.nordlayer.com/docs/application-download-links.md)
+- [What is OpenVPN?](https://help.nordlayer.com/docs/what-is-openvpn.md)
+- [How to use NordLayer on Wi-Fi with a captive portal?](https://help.nordlayer.com/docs/how-to-use-nordlayer-on-wi-fi-with-a-captive-portal.md): Stay secure on public Wi-Fi with NordLayer. This guide shows you how to navigate captive portals and protect your data.
+- [How to enable split tunneling via the Control Panel](https://help.nordlayer.com/docs/enable-ip-based-split-tunneling.md): Learn how to request split tunneling through the Control Panel. This guide provides clear instructions to help you efficiently set up split tunneling.
+- [Security](https://help.nordlayer.com/docs/security.md)
+- [Do you offer any open ports?](https://help.nordlayer.com/docs/do-you-offer-any-open-ports.md)
+- [What does my ISP see when I am connected to VPN?](https://help.nordlayer.com/docs/what-does-my-isp-see-when-i-am-connected-to-vpn.md): When you connect to a NordLayer server, your internet service provider can see that you are connected to an IP owned by a VPN service.
+- [Will I get a different IP every time?](https://help.nordlayer.com/docs/will-i-get-a-different-ip-every-time.md)
+- [Server restart and cache](https://help.nordlayer.com/docs/is-there-an-option-to-clear-server-caching-restartreset-the-server.md)
+- [Support and General Information](https://help.nordlayer.com/docs/support-and-general-information.md)
+- [How to join the NordLayer Affiliate program?](https://help.nordlayer.com/docs/how-to-join-the-nordlayer-affiliate-program.md)
+- [How will update enforcement impact NordLayer app users?](https://help.nordlayer.com/docs/how-will-update-enforcement-impact-nordlayer-app-users.md)
+- [How do I contact NordLayer customer support?](https://help.nordlayer.com/docs/how-do-i-contact-nordlayer-customer-support.md)
+- [What are your Server limitations?](https://help.nordlayer.com/docs/what-are-your-server-limitations.md)
+- [How many devices can be used with a NordLayer account?](https://help.nordlayer.com/docs/how-many-devices-can-be-used-with-a-nordlayer-account.md)
+- [Where is NordLayer based?](https://help.nordlayer.com/docs/where-is-nordlayer-based.md)
+- [Is NordLayer tailored for OT?](https://help.nordlayer.com/docs/is-nordlayer-tailored-for-ot.md)
+- [How do I check the version of NordLayer?](https://help.nordlayer.com/docs/how-do-i-check-the-version-of-nordlayer.md)
+- [How to clear your browser cache](https://help.nordlayer.com/docs/how-to-clear-your-browser-cache.md): You may occasionally run into instances where you need to clear your browser cache.If you are unsure how to do that, this article will help you out.
+- [NordLayer Browser](https://help.nordlayer.com/docs/nordlayer-browser.md)
+- [Quick start guide](https://help.nordlayer.com/docs/quick-start-guide.md)
+- [How to set up NordLayer Browser](https://help.nordlayer.com/docs/how-to-set-up-nordlayer-browser.md)
+- [NordBrowser guide for Members](https://help.nordlayer.com/docs/nordbrowser-guide-for-members.md)
+- [User authentication](https://help.nordlayer.com/docs/user-authentication-1.md)
+- [Multi-factor authentication](https://help.nordlayer.com/docs/multi-factor-authentication-1.md)
+- [Set up 2FA](https://help.nordlayer.com/docs/set-up-2fa-1.md)
+- [Disable the username/password login option](https://help.nordlayer.com/docs/disable-the-usernamepassword-login-option-1.md)
+- [Single sign-on (SSO) setup](https://help.nordlayer.com/docs/single-sign-on-sso-setup-1.md)
+- [Entra ID (Azure AD) 3rd party authentication](https://help.nordlayer.com/docs/entra-id-azure-ad-3rd-party-authentication.md): In order to login to NordLayer apps or Control Panel, users can authenticate their identity via Azure AD SSO.
+- [Google 3rd party authentication](https://help.nordlayer.com/docs/google-3rd-party-authentication-1.md): In order to login to NordLayer apps or Control Panel, users can authenticate their identity via Google SSO.
+- [JumpCloud 3rd party authentication](https://help.nordlayer.com/docs/jumpcloud-3rd-party-authentication-1.md): In order to login to NordLayer apps or Control Panel, users can authenticate their identity via JumpCloud SSO.
+- [Okta 3rd party authentication](https://help.nordlayer.com/docs/okta-3rd-party-authentication-1.md): In order to enable Okta SSO as a login option for NordLayer, you will need to do the following: Log in to your Okta dashboard.Copy Client ID and Client secret values to enable SSO.
+- [OneLogin 3rd party authentication](https://help.nordlayer.com/docs/onelogin-3rd-party-authentication-1.md): .
+- [Organization management](https://help.nordlayer.com/docs/organization-management-1.md)
+- [User provisioning](https://help.nordlayer.com/docs/user-provisioning-1.md)
+- [User provisioning setup with Entra ID](https://help.nordlayer.com/docs/user-provisioning-setup-with-entra-id.md): User provisioning is the IAM process of creating user accounts with specifically designated rights and permissions per the user’s role within a company.
+- [User provisioning setup with Okta](https://help.nordlayer.com/docs/user-provisioning-setup-with-okta-1.md): This guide teaches you how to create and configure SCIM integrations.Make sure you have enough NordLayer member licenses for all Azure AD users.
+- [Monitoring & analytics](https://help.nordlayer.com/docs/monitoring-analytics-1.md)
+- [NordLayer Browser activity logging](https://help.nordlayer.com/docs/nordlayer-browser-activity-logging.md)
+- [Installation manuals](https://help.nordlayer.com/docs/installation-manuals-1.md)
+- [Windows installation guide](https://help.nordlayer.com/docs/windows-installation-guide.md)
+- [macOS installation guide](https://help.nordlayer.com/docs/macos-installation-guide.md)
+- [Features](https://help.nordlayer.com/docs/features-1.md)
+- [NordLayer Browser routing policies](https://help.nordlayer.com/docs/nordlayer-browser-routing-policies.md)
+- [NordLayer Browser security policies](https://help.nordlayer.com/docs/nordlayer-browser-security-policies.md)
+- [Release notes](https://help.nordlayer.com/docs/release-notes-1.md)
+- [NordBrowser Windows](https://help.nordlayer.com/docs/nordbrowser-windows.md)
+- [NordBrowser macOS](https://help.nordlayer.com/docs/nordbrowser-macos.md)
+- [FAQ](https://help.nordlayer.com/docs/faq-1.md)
+- [Importing bookmarks to NordBrowser](https://help.nordlayer.com/docs/importing-bookmarks-to-nordbrowser.md)
