@@ -167,7 +167,7 @@ apis:
     url: mcp/nord-security-mcp.yml
   - type: ToolCrosswalk
     url: mcp/nord-security-tool-crosswalk.yml
-  - type: MCP
+  - type: MCPServer
     url: https://platform-mcp.nordstellar.com/mcp
   - type: Documentation
     url: https://docs.nordstellar.com/platform/mcp/setup
