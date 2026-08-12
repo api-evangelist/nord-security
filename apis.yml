@@ -278,6 +278,19 @@ apis:
       http_status: 403
       note: No OpenAPI published; host bot-protects non-client paths.
 common:
+- type: IssueTracker
+  url: https://github.com/NordStellar/nordstellar-mcp/issues
+- type: Releases
+  url: https://github.com/NordStellar/nordstellar-mcp/releases
+- type: SecurityPolicy
+  url: https://github.com/NordStellar/nordstellar-mcp/blob/main/SECURITY.md
+- type: CodeOfConduct
+  url: https://github.com/NordStellar/nordstellar-mcp/blob/main/CODE_OF_CONDUCT.md
+- type: ContributionGuide
+  url: https://github.com/NordStellar/nordstellar-mcp/blob/main/CONTRIBUTING.md
+- type: License
+  name: GPL-3.0
+  url: https://github.com/NordStellar/nordstellar-mcp/blob/main/LICENSE
 - type: Website
   url: https://nordsecurity.com/
 - type: DeveloperPortal
