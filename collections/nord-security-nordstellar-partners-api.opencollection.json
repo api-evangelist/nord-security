@@ -1,0 +1,139 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Nordstellar Partners API",
+    "version": "1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Api-Key",
+      "value": "{{Api-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Partners",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Invite multiple administrators to a partner.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform-partners-api.nordstellar.com/v1/partners/:partner-id/administrator-invitations",
+            "params": [
+              {
+                "name": "partner-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the partner"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invite multiple administrators to a partner account in a single request. Sends emails with registration instructions.\nResponse lists successful and failed invitations."
+        },
+        {
+          "info": {
+            "name": "Retrieves historical usage data for a specific partner.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-partners-api.nordstellar.com/v1/partners/:partner-id/usage-reports",
+            "params": [
+              {
+                "name": "date_from",
+                "value": "",
+                "type": "query",
+                "description": "Start full-date notation as defined by RFC 3339, section 5.6, for example, 2017-07-21"
+              },
+              {
+                "name": "date_to",
+                "value": "",
+                "type": "query",
+                "description": "End full-date notation as defined by RFC 3339, section 5.6, for example, 2017-07-21"
+              },
+              {
+                "name": "partner-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the partner"
+              }
+            ]
+          },
+          "docs": "Retrieves historical usage data for a specific partner organization.\nData includes daily snapshots of billable/non-billable asset counts, plan group, and project breakdowns. Supports date filtering."
+        },
+        {
+          "info": {
+            "name": "Retrieves detailed information about a specific partner.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-partners-api.nordstellar.com/v1/partners/:partner-id",
+            "params": [
+              {
+                "name": "partner-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the partner"
+              }
+            ]
+          },
+          "docs": "Provides comprehensive information about a specific partner.\nIncludes basic profile information and usage statistics, including billable and non-billable asset counts.\nAlso returns a breakdown of projects associated with the partner."
+        },
+        {
+          "info": {
+            "name": "Retrieves list of partners for a specific organization.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-partners-api.nordstellar.com/v1/partners",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Numeric offset of the first element provided on a page representing a collection request"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit to restrict the number of entries on a page"
+              }
+            ]
+          },
+          "docs": "Retrieves a paginated list of all partner organizations. Each partner entry includes basic identifying information.\nSupports `limit` and `offset` query params for pagination. Partners are listed by creation date, most recent first."
+        },
+        {
+          "info": {
+            "name": "Creates a new partner.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://platform-partners-api.nordstellar.com/v1/partners",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new partner. Requires partner email domain, title, optional billing and package selection."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

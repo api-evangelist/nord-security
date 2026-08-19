@@ -1,0 +1,2810 @@
+{
+  "item": [
+    {
+      "id": "e32f192b-08f9-41e9-8279-03b6167e26f1",
+      "name": "Company Details",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "84d10fa8-b909-4f4d-9db8-6cea711d4c0a",
+          "name": "List Company Details",
+          "request": {
+            "name": "List Company Details",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "company-details",
+                "list"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6392f2d6-30dd-4b86-a2e3-6d595236f5bc",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    "list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"name\": \"\",\n      \"shorthand_name\": \"string\",\n      \"website\": \"\",\n      \"domain\": \"\",\n      \"revenue\": 3366,\n      \"revenue_range\": \"string\",\n      \"company_type\": \"string\",\n      \"employee_count\": 228,\n      \"employee_count_range\": \"string\",\n      \"year_founded\": \"string\",\n      \"location_data\": {\n        \"city\": \"string\",\n        \"state\": \"string\",\n        \"street\": \"string\",\n        \"zipcode\": \"string\",\n        \"country_code\": \"string\",\n        \"country_name\": \"string\",\n        \"full_address\": \"string\"\n      },\n      \"contact_data\": {\n        \"facebook\": \"string\",\n        \"linkedin\": \"string\"\n      },\n      \"ceo_data\": {\n        \"first_name\": \"string\",\n        \"last_name\": \"string\",\n        \"title\": \"string\"\n      },\n      \"industry_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"related_company_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"related_company_domain_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"total_funding\": 880.1901337411589,\n      \"linkedin_description\": \"string\",\n      \"owler_description\": \"string\",\n      \"g2_description\": \"string\"\n    },\n    {\n      \"name\": \"\",\n      \"shorthand_name\": \"string\",\n      \"website\": \"\",\n      \"domain\": \"\",\n      \"revenue\": 6778,\n      \"revenue_range\": \"string\",\n      \"company_type\": \"string\",\n      \"employee_count\": 1148,\n      \"employee_count_range\": \"string\",\n      \"year_founded\": \"string\",\n      \"location_data\": {\n        \"city\": \"string\",\n        \"state\": \"string\",\n        \"street\": \"string\",\n        \"zipcode\": \"string\",\n        \"country_code\": \"string\",\n        \"country_name\": \"string\",\n        \"full_address\": \"string\"\n      },\n      \"contact_data\": {\n        \"facebook\": \"string\",\n        \"linkedin\": \"string\"\n      },\n      \"ceo_data\": {\n        \"first_name\": \"string\",\n        \"last_name\": \"string\",\n        \"title\": \"string\"\n      },\n      \"industry_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"related_company_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"related_company_domain_list\": [\n        \"string\",\n        \"string\"\n      ],\n      \"total_funding\": 5222.982630450819,\n      \"linkedin_description\": \"string\",\n      \"owler_description\": \"string\",\n      \"g2_description\": \"string\"\n    }\n  ],\n  \"total\": 9972,\n  \"limit\": 8895,\n  \"offset\": 5618\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0af6ed39-e12e-4172-951a-0fd029aea13d",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    "list"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2585f40e-99a4-48fb-87b9-d30951d5d437",
+          "name": "Domain Company Details",
+          "request": {
+            "name": "Domain Company Details",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "company-details",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b479009f-afc1-4869-ac1c-6d6d50a85c2a",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"\",\n  \"shorthand_name\": \"string\",\n  \"website\": \"\",\n  \"domain\": \"\",\n  \"revenue\": 9675,\n  \"revenue_range\": \"string\",\n  \"company_type\": \"string\",\n  \"employee_count\": 1424,\n  \"employee_count_range\": \"string\",\n  \"year_founded\": \"string\",\n  \"location_data\": {\n    \"city\": \"string\",\n    \"state\": \"string\",\n    \"street\": \"string\",\n    \"zipcode\": \"string\",\n    \"country_code\": \"string\",\n    \"country_name\": \"string\",\n    \"full_address\": \"string\"\n  },\n  \"contact_data\": {\n    \"facebook\": \"string\",\n    \"linkedin\": \"string\"\n  },\n  \"ceo_data\": {\n    \"first_name\": \"string\",\n    \"last_name\": \"string\",\n    \"title\": \"string\"\n  },\n  \"industry_list\": [\n    \"string\",\n    \"string\"\n  ],\n  \"related_company_list\": [\n    \"string\",\n    \"string\"\n  ],\n  \"related_company_domain_list\": [\n    \"string\",\n    \"string\"\n  ],\n  \"total_funding\": 600.1094431364429,\n  \"linkedin_description\": \"string\",\n  \"owler_description\": \"string\",\n  \"g2_description\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "21e19945-30d1-4d93-8936-b6f9f41f4099",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "64f46456-da2f-4006-9e23-95848c8d928c",
+          "name": "Onboard Company",
+          "request": {
+            "name": "Onboard Company",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "company-details",
+                "onboard",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "21efeac9-41b3-4c21-98b8-e1f254125d73",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    "onboard",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"domain\": \"string\",\n  \"company_details\": {\n    \"name\": \"\",\n    \"shorthand_name\": \"string\",\n    \"website\": \"\",\n    \"domain\": \"\",\n    \"revenue\": 1070,\n    \"revenue_range\": \"string\",\n    \"company_type\": \"string\",\n    \"employee_count\": 2496,\n    \"employee_count_range\": \"string\",\n    \"year_founded\": \"string\",\n    \"location_data\": {\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"street\": \"string\",\n      \"zipcode\": \"string\",\n      \"country_code\": \"string\",\n      \"country_name\": \"string\",\n      \"full_address\": \"string\"\n    },\n    \"contact_data\": {\n      \"facebook\": \"string\",\n      \"linkedin\": \"string\"\n    },\n    \"ceo_data\": {\n      \"first_name\": \"string\",\n      \"last_name\": \"string\",\n      \"title\": \"string\"\n    },\n    \"industry_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"related_company_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"related_company_domain_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"total_funding\": 9029.185581626058,\n    \"linkedin_description\": \"string\",\n    \"owler_description\": \"string\",\n    \"g2_description\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b6612870-c378-4ca6-8882-bd9c96cebd60",
+              "name": "Company details were not found and the company onboarding failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    "onboard",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "498898cb-cf91-46ba-9a16-ef853f8d4df6",
+              "name": "Company already onboarded, request can't be repeated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    "onboard",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "af306e0d-61c3-4de1-a871-bc6b2dc31ce5",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    "onboard",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e856bbaa-a62b-47ce-857c-da195517070a",
+          "name": "Manual Onboard Company",
+          "request": {
+            "name": "Manual Onboard Company",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "company-details",
+                "manual",
+                "onboard",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domain\": \"<string>\",\n  \"employee_count\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "de2d0a67-452a-4b6e-8f4a-e76af0ca720f",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    "manual",
+                    "onboard",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"<string>\",\n  \"employee_count\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"domain\": \"string\",\n  \"company_details\": {\n    \"name\": \"\",\n    \"shorthand_name\": \"string\",\n    \"website\": \"\",\n    \"domain\": \"\",\n    \"revenue\": 1070,\n    \"revenue_range\": \"string\",\n    \"company_type\": \"string\",\n    \"employee_count\": 2496,\n    \"employee_count_range\": \"string\",\n    \"year_founded\": \"string\",\n    \"location_data\": {\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"street\": \"string\",\n      \"zipcode\": \"string\",\n      \"country_code\": \"string\",\n      \"country_name\": \"string\",\n      \"full_address\": \"string\"\n    },\n    \"contact_data\": {\n      \"facebook\": \"string\",\n      \"linkedin\": \"string\"\n    },\n    \"ceo_data\": {\n      \"first_name\": \"string\",\n      \"last_name\": \"string\",\n      \"title\": \"string\"\n    },\n    \"industry_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"related_company_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"related_company_domain_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"total_funding\": 9029.185581626058,\n    \"linkedin_description\": \"string\",\n    \"owler_description\": \"string\",\n    \"g2_description\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "46d3023a-350c-4fc5-8d45-4597eb2fb041",
+              "name": "Company details were not found and the company onboarding failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    "manual",
+                    "onboard",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"<string>\",\n  \"employee_count\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "993aedfe-30a2-4c48-b608-7ba767769bbe",
+              "name": "Company already onboarded, request can't be repeated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    "manual",
+                    "onboard",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"<string>\",\n  \"employee_count\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cfcdfc5a-5d16-4d3f-b3fa-f7e6da586355",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "company-details",
+                    "manual",
+                    "onboard",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"<string>\",\n  \"employee_count\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "5d81ad69-c3ff-4c40-9a4a-e5e2d151e88a",
+      "name": "Results",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8ef69134-79aa-4899-82b4-99b496a867b6",
+          "name": "Domain Software Patching",
+          "request": {
+            "name": "Domain Software Patching",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "software-patching",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "scan_job_id",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d7c36b37-1567-4129-8e04-72cced88f2d7",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "software-patching",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"critical_vulnerabilities\": 2,\n  \"high_vulnerabilities\": 3,\n  \"low_vulnerabilities\": 1,\n  \"medium_vulnerabilities\": 12,\n  \"security_score\": 6.11,\n  \"services\": [\n    {\n      \"count\": 2,\n      \"instances\": [\n        \"198.51.100.1:22\",\n        \"198.51.100.2:22\"\n      ],\n      \"port\": 22,\n      \"service\": \"OpenSSH\"\n    }\n  ],\n  \"total_ips_found\": 15,\n  \"total_services\": 41,\n  \"total_vulnerabilities\": 18,\n  \"vulnerabilities\": [\n    {\n      \"cve\": \"CVE-2023-38408\",\n      \"cvss\": 9.8,\n      \"epss\": 0.02751,\n      \"instances\": [\n        \"198.51.100.1:22\"\n      ],\n      \"summary\": \"The PKCS#11 feature in ssh-agent in OpenSSH before 9.3p2 has an insufficiently trustworthy search path, leading to remote code execution if an agent is forwarded to an attacker-controlled system.\"\n    }\n  ],\n  \"vulnerability_density\": 0.44\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "11d9f564-0cc1-4338-b685-9d3917300680",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "software-patching",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7e078cf8-2f0b-4b5c-9df9-863cce1e4fc0",
+          "name": "Domain Web Application Security",
+          "request": {
+            "name": "Domain Web Application Security",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "web-application-security",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "scan_job_id",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "28ff343c-6543-4850-a46c-d8e5d13514a8",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "web-application-security",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"critical_vulnerabilities\": 1,\n  \"high_vulnerabilities\": 0,\n  \"low_vulnerabilities\": 17,\n  \"medium_vulnerabilities\": 3,\n  \"scan_results\": [\n    {\n      \"description\": \"Outdated and vulnerable version of Apache Struts detected, potentially leading to remote code execution.\",\n      \"instances\": [\n        \"app.examplecorp.com:8080\"\n      ],\n      \"name\": \"Apache Struts RCE Vulnerability (CVE-2017-5638)\",\n      \"severity\": \"critical\"\n    },\n    {\n      \"description\": \"A weak cipher is defined as an encryption/decryption algorithm that uses a key of insufficient length.\",\n      \"instances\": [\n        \"auth.partners.examplecorp.com:443\",\n        \"cdn.partners.examplecorp.com:443\"\n      ],\n      \"name\": \"Weak Cipher Suites Detection\",\n      \"severity\": \"low\"\n    }\n  ],\n  \"security_score\": 7.5,\n  \"total_vulnerabilities\": 21\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c70b871f-d832-4d3c-b47b-1e10ea56e598",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "web-application-security",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8c1f268d-0d1e-41c7-aa8a-dd286cab6e85",
+          "name": "Domain Email Security",
+          "request": {
+            "name": "Domain Email Security",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "email-security",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "scan_job_id",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f48cc2f8-faa6-4796-aca9-e2c44123e2d5",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "email-security",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"scan_results\": [\n    {\n      \"dmarc_policy\": \"none\",\n      \"dmarc_record\": \"v=DMARC1; p=none; rua=mailto:dmarc@examplecorp.com; ruf=mailto:dmarc@examplecorp.com; fo=1\",\n      \"domain\": \"examplecorp.com\",\n      \"spf_record\": \"v=spf1 include:spf.protection.outlook.com include:_spf.mlsend.com include:spf.serveriai.lt include:_spf.google.com include:_spf-dc55.sapsf.eu include:mail.zendesk.com ip4:192.0.2.1 ip4:192.0.2.2 ip4:192.0.2.3  -all\",\n      \"spoofable\": 4,\n      \"spoofable_comment\": \"Spoofing might be possible (mailbox dependent) for this domain.\"\n    }\n  ],\n  \"security_score\": 9.74,\n  \"total_potentially_spoofable\": 2,\n  \"total_spoofable\": 0\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "beb66881-3b15-44cb-a212-bf065449cf96",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "email-security",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eaba2e13-0fde-4302-86c7-3b8c4c8b0d80",
+          "name": "Domain System Reputation",
+          "request": {
+            "name": "Domain System Reputation",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "system-reputation",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "scan_job_id",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "ed1eab5b-0cbf-48bb-b2ec-4b1927041593",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "system-reputation",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"scan_results\": [\n    {\n      \"abuse_confidence_score\": 20,\n      \"abuse_tags\": [\n        \"web_scan\",\n        \"ssh_brute_force\"\n      ],\n      \"ip_address\": \"203.0.113.1\"\n    },\n    {\n      \"abuse_confidence_score\": 5,\n      \"abuse_tags\": [\n        \"port_scan\"\n      ],\n      \"ip_address\": \"198.51.100.1\"\n    }\n  ],\n  \"security_score\": 9.2,\n  \"total_issues\": 2\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2d3865a-259d-41be-8dd8-6d0c66b5b471",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "system-reputation",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e11b593e-137f-43d6-9eac-5e71b48ddd69",
+          "name": "Domain Ssl Configuration",
+          "request": {
+            "name": "Domain Ssl Configuration",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "ssl-configuration",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "scan_job_id",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0e05cfbb-d346-49e6-b074-f9f8f663f0ac",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "ssl-configuration",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"issue_totals_by_criteria\": {\n    \"certificate_path_validation\": 6,\n    \"certificate_signatures\": 26,\n    \"certificate_types\": 26,\n    \"ciphers\": 26,\n    \"ciphersuites\": 0,\n    \"maximum_certificate_lifespan\": 9,\n    \"tls_versions\": 26,\n    \"tls_vulnerability_renegotiation\": 0\n  },\n  \"issues\": [\n    {\n      \"criteria\": \"certificate_types\",\n      \"description\": \"Deployed certificate types are {'rsa'}, should have at least one of {'ecdsa'}.\",\n      \"instances\": [\n        \"auth-admin.partners.examplecorp.com\",\n        \"external-api.partners.examplecorp.com\"\n      ]\n    }\n  ],\n  \"security_score\": 2.14,\n  \"total_issues\": 119\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63798e39-50ff-42e1-b991-38082f14974e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "ssl-configuration",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "367bd86b-4522-41ad-93dd-76a4d2ff9993",
+          "name": "Domain System Hosting",
+          "request": {
+            "name": "Domain System Hosting",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "system-hosting",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "scan_job_id",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "edd773d0-8f91-443f-9228-b2240faf377a",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "system-hosting",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_ips\": 4535,\n  \"total_cloud_hosted\": 9112,\n  \"total_cdn_protected\": 2861,\n  \"unique_providers\": [\n    \"string\",\n    \"string\"\n  ],\n  \"detected_isps\": [\n    \"string\",\n    \"string\"\n  ],\n  \"detected_cloud_providers\": [\n    \"string\",\n    \"string\"\n  ],\n  \"detected_cdn_services\": [\n    \"string\",\n    \"string\"\n  ],\n  \"cloud_hosted_ratio\": 5855.862578663659,\n  \"cdn_protected_ratio\": 8101.4637182097995,\n  \"isp_diversity_ratio\": 3141.957064941241,\n  \"security_score\": 10,\n  \"total_issues\": 0\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1359dbe-6f8b-4889-bac5-e89eead3d066",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "system-hosting",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e8594a96-434b-4a87-9287-f300b7dfb2ed",
+          "name": "Domain Data Breach",
+          "request": {
+            "name": "Domain Data Breach",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "data-breach",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "scan_job_id",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "9b3c5f7e-174d-4fbd-8fc5-93e09dac5f20",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "data-breach",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"exposed_data_points\": [\n    \"string\",\n    \"string\"\n  ],\n  \"corporate_credential_count\": 4348,\n  \"total_credential_count\": 954,\n  \"password_reuse_count\": 6527,\n  \"password_reuse_count_per_employee\": 5862,\n  \"unique_email_count\": 6681,\n  \"total_exposed_records\": 648,\n  \"corporate_credential_percentage\": 2850.776943852651,\n  \"password_reuse_percentage\": 6307.587842277941,\n  \"security_score\": 10,\n  \"total_incidents\": 0,\n  \"latest_breach_date\": \"string\",\n  \"days_since_latest_breach\": 4324\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c3bf9be7-1353-4743-8ccc-a585fc79522d",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "data-breach",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2c612f04-30bd-452a-99d6-9676ee40f69a",
+          "name": "Domain Results Combined",
+          "request": {
+            "name": "Domain Results Combined",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "combined",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "scan_job_id",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "31755c3c-056e-4aef-86e1-f83770d6853a",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "combined",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"company_details\": {\n    \"name\": \"\",\n    \"shorthand_name\": \"string\",\n    \"website\": \"\",\n    \"domain\": \"\",\n    \"revenue\": 3539,\n    \"revenue_range\": \"string\",\n    \"company_type\": \"string\",\n    \"employee_count\": 6428,\n    \"employee_count_range\": \"string\",\n    \"year_founded\": \"string\",\n    \"location_data\": {\n      \"city\": \"string\",\n      \"state\": \"string\",\n      \"street\": \"string\",\n      \"zipcode\": \"string\",\n      \"country_code\": \"string\",\n      \"country_name\": \"string\",\n      \"full_address\": \"string\"\n    },\n    \"contact_data\": {\n      \"facebook\": \"string\",\n      \"linkedin\": \"string\"\n    },\n    \"ceo_data\": {\n      \"first_name\": \"string\",\n      \"last_name\": \"string\",\n      \"title\": \"string\"\n    },\n    \"industry_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"related_company_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"related_company_domain_list\": [\n      \"string\",\n      \"string\"\n    ],\n    \"total_funding\": 4130.100847825026,\n    \"linkedin_description\": \"string\",\n    \"owler_description\": \"string\",\n    \"g2_description\": \"string\"\n  },\n  \"security_score\": {\n    \"overall_score\": 9971.55701275236,\n    \"category_scores\": {\n      \"software_patching\": 10,\n      \"web_application_security\": 10,\n      \"email_security\": 10,\n      \"system_reputation\": 10,\n      \"system_hosting\": 10,\n      \"data_breach\": 10,\n      \"ssl_configuration\": 10\n    },\n    \"date_created\": \"2025-10-11T23:53:42.466Z\",\n    \"highlights\": [\n      {\n        \"category\": \"string\",\n        \"description\": \"string\",\n        \"index\": 5483\n      },\n      {\n        \"category\": \"string\",\n        \"description\": \"string\",\n        \"index\": 1943\n      }\n    ]\n  },\n  \"software_patching\": {\n    \"critical_vulnerabilities\": 2,\n    \"high_vulnerabilities\": 3,\n    \"low_vulnerabilities\": 1,\n    \"medium_vulnerabilities\": 12,\n    \"security_score\": 6.11,\n    \"services\": [\n      {\n        \"count\": 2,\n        \"instances\": [\n          \"198.51.100.1:22\",\n          \"198.51.100.2:22\"\n        ],\n        \"port\": 22,\n        \"service\": \"OpenSSH\"\n      }\n    ],\n    \"total_ips_found\": 15,\n    \"total_services\": 41,\n    \"total_vulnerabilities\": 18,\n    \"vulnerabilities\": [\n      {\n        \"cve\": \"CVE-2023-38408\",\n        \"cvss\": 9.8,\n        \"epss\": 0.02751,\n        \"instances\": [\n          \"198.51.100.1:22\"\n        ],\n        \"summary\": \"The PKCS#11 feature in ssh-agent in OpenSSH before 9.3p2 has an insufficiently trustworthy search path, leading to remote code execution if an agent is forwarded to an attacker-controlled system.\"\n      }\n    ],\n    \"vulnerability_density\": 0.44\n  },\n  \"web_application_security\": {\n    \"critical_vulnerabilities\": 1,\n    \"high_vulnerabilities\": 0,\n    \"low_vulnerabilities\": 17,\n    \"medium_vulnerabilities\": 3,\n    \"scan_results\": [\n      {\n        \"description\": \"Outdated and vulnerable version of Apache Struts detected, potentially leading to remote code execution.\",\n        \"instances\": [\n          \"app.examplecorp.com:8080\"\n        ],\n        \"name\": \"Apache Struts RCE Vulnerability (CVE-2017-5638)\",\n        \"severity\": \"critical\"\n      },\n      {\n        \"description\": \"A weak cipher is defined as an encryption/decryption algorithm that uses a key of insufficient length.\",\n        \"instances\": [\n          \"auth.partners.examplecorp.com:443\",\n          \"cdn.partners.examplecorp.com:443\"\n        ],\n        \"name\": \"Weak Cipher Suites Detection\",\n        \"severity\": \"low\"\n      }\n    ],\n    \"security_score\": 7.5,\n    \"total_vulnerabilities\": 21\n  },\n  \"email_security\": {\n    \"scan_results\": [\n      {\n        \"dmarc_policy\": \"none\",\n        \"dmarc_record\": \"v=DMARC1; p=none; rua=mailto:dmarc@examplecorp.com; ruf=mailto:dmarc@examplecorp.com; fo=1\",\n        \"domain\": \"examplecorp.com\",\n        \"spf_record\": \"v=spf1 include:spf.protection.outlook.com include:_spf.mlsend.com include:spf.serveriai.lt include:_spf.google.com include:_spf-dc55.sapsf.eu include:mail.zendesk.com ip4:192.0.2.1 ip4:192.0.2.2 ip4:192.0.2.3  -all\",\n        \"spoofable\": 4,\n        \"spoofable_comment\": \"Spoofing might be possible (mailbox dependent) for this domain.\"\n      }\n    ],\n    \"security_score\": 9.74,\n    \"total_potentially_spoofable\": 2,\n    \"total_spoofable\": 0\n  },\n  \"system_reputation\": {\n    \"scan_results\": [\n      {\n        \"abuse_confidence_score\": 20,\n        \"abuse_tags\": [\n          \"web_scan\",\n          \"ssh_brute_force\"\n        ],\n        \"ip_address\": \"203.0.113.1\"\n      },\n      {\n        \"abuse_confidence_score\": 5,\n        \"abuse_tags\": [\n          \"port_scan\"\n        ],\n        \"ip_address\": \"198.51.100.1\"\n      }\n    ],\n    \"security_score\": 9.2,\n    \"total_issues\": 2\n  },\n  \"ssl_configuration\": {\n    \"issue_totals_by_criteria\": {\n      \"certificate_path_validation\": 6,\n      \"certificate_signatures\": 26,\n      \"certificate_types\": 26,\n      \"ciphers\": 26,\n      \"ciphersuites\": 0,\n      \"maximum_certificate_lifespan\": 9,\n      \"tls_versions\": 26,\n      \"tls_vulnerability_renegotiation\": 0\n    },\n    \"issues\": [\n      {\n        \"criteria\": \"certificate_types\",\n        \"description\": \"Deployed certificate types are {'rsa'}, should have at least one of {'ecdsa'}.\",\n        \"instances\": [\n          \"auth-admin.partners.examplecorp.com\",\n          \"external-api.partners.examplecorp.com\"\n        ]\n      }\n    ],\n    \"security_score\": 2.14,\n    \"total_issues\": 119\n  },\n  \"system_hosting\": {\n    \"total_ips\": 8629,\n    \"total_cloud_hosted\": 6302,\n    \"total_cdn_protected\": 7163,\n    \"unique_providers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"detected_isps\": [\n      \"string\",\n      \"string\"\n    ],\n    \"detected_cloud_providers\": [\n      \"string\",\n      \"string\"\n    ],\n    \"detected_cdn_services\": [\n      \"string\",\n      \"string\"\n    ],\n    \"cloud_hosted_ratio\": 2734.372604058647,\n    \"cdn_protected_ratio\": 8840.713679553628,\n    \"isp_diversity_ratio\": 6864.9749060888935,\n    \"security_score\": 10,\n    \"total_issues\": 0\n  },\n  \"data_breach\": {\n    \"exposed_data_points\": [\n      \"string\",\n      \"string\"\n    ],\n    \"corporate_credential_count\": 6807,\n    \"total_credential_count\": 9258,\n    \"password_reuse_count\": 6602,\n    \"password_reuse_count_per_employee\": 9875,\n    \"unique_email_count\": 8535,\n    \"total_exposed_records\": 4485,\n    \"corporate_credential_percentage\": 117.91284251400525,\n    \"password_reuse_percentage\": 5117.486255715048,\n    \"security_score\": 10,\n    \"total_incidents\": 0,\n    \"latest_breach_date\": \"string\",\n    \"days_since_latest_breach\": 9410\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b6e788be-484d-485a-9cac-aac5db11e545",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "combined",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "scan_job_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "4ff15f78-32b6-40a9-9205-a4c16664e1c1",
+      "name": "Scanning",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "51acb441-57ff-49ae-9f65-3b1299a2a296",
+          "name": "Submit Scan",
+          "request": {
+            "name": "Submit Scan",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "scan",
+                "submit",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6850ed21-8427-44af-b622-09a136a2292a",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "scan",
+                    "submit",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"scan_job_id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc559cb1-2dc2-46c1-9b59-86a83e614686",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "scan",
+                    "submit",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1462a74e-201f-4807-85ae-e19fc27e3e0c",
+          "name": "Get Scan Jobs For Domain",
+          "request": {
+            "name": "Get Scan Jobs For Domain",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "b2b",
+                "crs",
+                "scan",
+                "jobs",
+                ":domain"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "domain",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-Key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "de525e9b-e750-4007-a412-5e6c9361c993",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "scan",
+                    "jobs",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"domain\": \"string\",\n  \"scan_jobs\": [\n    {\n      \"id\": \"string\",\n      \"date_created\": \"1956-05-20T06:03:14.716Z\",\n      \"date_updated\": \"2023-12-05T21:43:45.749Z\",\n      \"finished\": false,\n      \"cancelled\": false\n    },\n    {\n      \"id\": \"string\",\n      \"date_created\": \"1958-12-09T06:46:30.396Z\",\n      \"date_updated\": \"1996-10-07T04:50:48.928Z\",\n      \"finished\": true,\n      \"cancelled\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8bc2b30a-40a7-4790-b84f-a6d9295d2b69",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "b2b",
+                    "crs",
+                    "scan",
+                    "jobs",
+                    ":domain"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "domain",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "78ff6b7a-41da-48bb-a504-7c825c479b9a",
+    "name": "Company Risk Scoring API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "**Company Risk Scoring API v0.1.0**\n\nThis API provides a comprehensive service for evaluating the cybersecurity risk associated with external companies, primarily identified by their domain name. It's designed for B2B use cases like vendor risk management, cyber insurance underwriting, or competitive analysis.\n\n**Key Features:**\n\n* **Company Onboarding:** Add companies to the system for monitoring, either automatically by domain or manually with additional details.\n* **Security Scanning:** Initiate asynchronous scans against a company's domain to gather security data. Track scan job progress.\n* **Detailed Risk Categories:** Retrieve granular security assessment results for specific areas:\n    * Software Patching & Vulnerabilities\n    * Web Application Security\n    * Email Security (SPF, DMARC)\n    * System Reputation (IP blacklisting, abuse reports)\n    * SSL/TLS Configuration Strength\n    * System Hosting Environment (Cloud/CDN usage, ISP diversity)\n    * Data Breach History (Exposed credentials, breach dates)\n* **Overall Security Score:** Get a consolidated security score derived from individual category assessments.\n* **Company Firmographics:** Access essential company details like name, website, revenue, employee count, location, industry, and more.\n* **Flexible Data Retrieval:** Fetch results for individual risk categories or retrieve a combined report with all data points for a specific domain and scan job.\n* **Search & Listing:** List onboarded companies with pagination and search capabilities.\n\n**Authentication:**\n\nAccess requires either an API Key provided in the `X-API-Key` header or standard HTTP Basic Authentication.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,351 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Platform Integration API",
+    "version": "3"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves attack surface DNS vulnerability event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/attack-surface-dns-vulnerabilities/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ]
+          },
+          "docs": "Retrieves attack surface DNS vulnerability event details."
+        },
+        {
+          "info": {
+            "name": "Retrieves attack surface network service vulnerability event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/attack-surface-network-service-vulnerabilities/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ]
+          },
+          "docs": "Retrieves attack surface network service vulnerability event details."
+        },
+        {
+          "info": {
+            "name": "Retrieves attack surface web application vulnerability event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/attack-surface-web-application-vulnerabilities/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ]
+          },
+          "docs": "Retrieves attack surface web application vulnerability event details."
+        },
+        {
+          "info": {
+            "name": "Retrieves combo list event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/combo-lists/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ]
+          },
+          "docs": "Retrieves combo list event details."
+        },
+        {
+          "info": {
+            "name": "Retrieves consumer credential event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/consumer-credentials/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              },
+              {
+                "name": "reveal-passwords",
+                "value": "",
+                "type": "query",
+                "description": "When `true`, includes the consumer credential passwords in the response. Default value `false`."
+              }
+            ]
+          },
+          "docs": "Retrieves consumer credential event details."
+        },
+        {
+          "info": {
+            "name": "Retrieves dark web forum post event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/dark-web-forum-posts/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ]
+          },
+          "docs": "Retrieves dark web forum post event details."
+        },
+        {
+          "info": {
+            "name": "Retrieves dark web marketplace post event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/dark-web-marketplace-posts/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ]
+          },
+          "docs": "Retrieves dark web marketplace post event details."
+        },
+        {
+          "info": {
+            "name": "Retrieves dark web Ransomware post event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/dark-web-ransomware-posts/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ]
+          },
+          "docs": "Retrieves dark web Ransomware post event details."
+        },
+        {
+          "info": {
+            "name": "Retrieves dark web Telegram post event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/dark-web-telegram-posts/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ]
+          },
+          "docs": "Retrieves dark web Telegram post event details."
+        },
+        {
+          "info": {
+            "name": "Retrieves data breach event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/data-breaches/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ]
+          },
+          "docs": "Retrieves data breach event details."
+        },
+        {
+          "info": {
+            "name": "Retrieves domain permutation event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/domain-permutations/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ]
+          },
+          "docs": "Retrieves domain permutation event details."
+        },
+        {
+          "info": {
+            "name": "Retrieves malware infection event details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/malware-infections/:event-id",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ]
+          },
+          "docs": "Retrieves malware infection event details."
+        },
+        {
+          "info": {
+            "name": "Resolves an event",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://platform-integration-api.nordstellar.com/v3/events/:event-id/is_resolved",
+            "params": [
+              {
+                "name": "event-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the event"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Resolves an event"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Projects",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves events for a specific project within a given date and time range.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/projects/:project-id/events",
+            "params": [
+              {
+                "name": "project-id",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier of the project"
+              },
+              {
+                "name": "date-added-from",
+                "value": "",
+                "type": "query",
+                "description": "Start datetime for filtering events (ISO 8601 format). Supported format: `YYYY-MM-DDTHH:MM:SS.000Z`"
+              },
+              {
+                "name": "date-added-to",
+                "value": "",
+                "type": "query",
+                "description": "End datetime for filtering events (ISO 8601 format). Supported format: `YYYY-MM-DDTHH:MM:SS.000Z`"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Numeric offset of the first element provided on a page representing a collection request"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit to restrict the number of entries on a page"
+              }
+            ]
+          },
+          "docs": "Retrieves events for a specific project within a given date and time range."
+        },
+        {
+          "info": {
+            "name": "This endpoint is designed to retrieve projects.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://platform-integration-api.nordstellar.com/v3/projects",
+            "params": [
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Numeric offset of the first element provided on a page representing a collection request"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit to restrict the number of entries on a page"
+              }
+            ]
+          },
+          "docs": "This endpoint is designed to retrieve projects."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

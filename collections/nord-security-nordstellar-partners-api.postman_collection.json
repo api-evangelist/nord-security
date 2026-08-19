@@ -1,0 +1,1786 @@
+{
+  "item": [
+    {
+      "id": "2952ff3f-f49f-41aa-8364-bb851ecb2763",
+      "name": "Partners",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "7c0d5737-7db8-40c1-93e8-53559ea0e398",
+          "name": "Invite multiple administrators to a partner.",
+          "request": {
+            "name": "Invite multiple administrators to a partner.",
+            "description": {
+              "content": "Invite multiple administrators to a partner account in a single request. Sends emails with registration instructions.\nResponse lists successful and failed invitations.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "partners",
+                ":partner-id",
+                "administrator-invitations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "partner-id",
+                  "description": "(Required) Unique identifier of the partner"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  },\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "24fe8ad1-e281-4ebc-9fcd-fa66f4ac4a9e",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id",
+                    "administrator-invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  },\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5569197-43bb-4f8a-99b3-02fd263dd0f8",
+              "name": "The request has succeeded, but the response contains multiple status codes for different parts of the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id",
+                    "administrator-invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  },\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Multi-Status (WebDAV) (RFC 4918)",
+              "code": 207,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"successful\": [\n    {\n      \"id\": \"4b92e32d-0068-460f-85d2-644dc80f4586\",\n      \"email\": \"example@example.com\"\n    }\n  ],\n  \"failed\": [\n    {\n      \"request\": {\n        \"email\": \"example2@example.com\",\n        \"user_name\": null\n      },\n      \"details\": \"Failed to invite partner admin due to some reason.\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9e46b94-0b14-4b09-9ebb-2386e26b6874",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id",
+                    "administrator-invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  },\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "723f60bf-bcb2-421b-b453-1810b1393d4a",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id",
+                    "administrator-invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  },\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1367cac-f1b9-4f72-8be7-fd083c06ab7b",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id",
+                    "administrator-invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  },\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "782da834-6d0f-4be2-8cd5-903dc582267c",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id",
+                    "administrator-invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  },\n  {\n    \"email\": \"<string>\",\n    \"user_name\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1c32530d-e727-4fe8-80fa-99d0bfbf31a2",
+          "name": "Retrieves historical usage data for a specific partner.",
+          "request": {
+            "name": "Retrieves historical usage data for a specific partner.",
+            "description": {
+              "content": "Retrieves historical usage data for a specific partner organization.\nData includes daily snapshots of billable/non-billable asset counts, plan group, and project breakdowns. Supports date filtering.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "partners",
+                ":partner-id",
+                "usage-reports"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "date_from",
+                  "value": "<date>",
+                  "description": "Start full-date notation as defined by RFC 3339, section 5.6, for example, 2017-07-21"
+                },
+                {
+                  "disabled": false,
+                  "key": "date_to",
+                  "value": "<date>",
+                  "description": "End full-date notation as defined by RFC 3339, section 5.6, for example, 2017-07-21"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "partner-id",
+                  "description": "(Required) Unique identifier of the partner"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "00b829a8-b870-4f66-a395-526b94c34ea9",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id",
+                    "usage-reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date_from",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "date_to",
+                      "value": "<date>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"date\": \"2024-05-15\",\n    \"billable_assets_count\": 1123,\n    \"non_billable_assets_count\": 113,\n    \"billable_domains_count\": 345,\n    \"non_billable_domains_count\": 12,\n    \"plan_group\": \"NSMSP5\",\n    \"projects\": [\n      {\n        \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n        \"is_billable\": false,\n        \"assets_count\": 1236,\n        \"domains_count\": 357\n      }\n    ]\n  },\n  {\n    \"date\": \"2024-05-16\",\n    \"billable_assets_count\": 1200,\n    \"non_billable_assets_count\": 100,\n    \"billable_domains_count\": 400,\n    \"non_billable_domains_count\": 15,\n    \"plan_group\": \"NSMSP5\",\n    \"projects\": [\n      {\n        \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n        \"is_billable\": true,\n        \"assets_count\": 1236,\n        \"domains_count\": 357\n      },\n      {\n        \"project_id\": \"2f5d3e85-2b42-4c1a-bb6f-9a7e8c4d5f6a\",\n        \"is_billable\": true,\n        \"assets_count\": 64,\n        \"domains_count\": 58\n      }\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d6afd013-6a0e-4869-9be7-59f1648fad63",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id",
+                    "usage-reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date_from",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "date_to",
+                      "value": "<date>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea9354bf-ac14-4f97-86b8-a39807c5be47",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id",
+                    "usage-reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date_from",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "date_to",
+                      "value": "<date>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e638c503-c6d3-4b6c-9e19-9e73ac038426",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id",
+                    "usage-reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date_from",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "date_to",
+                      "value": "<date>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc3edb11-bc23-4dfb-b7c7-044fcc293951",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id",
+                    "usage-reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date_from",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "date_to",
+                      "value": "<date>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "491dde40-fe9c-45a7-b69f-48193ce04d44",
+          "name": "Retrieves detailed information about a specific partner.",
+          "request": {
+            "name": "Retrieves detailed information about a specific partner.",
+            "description": {
+              "content": "Provides comprehensive information about a specific partner.\nIncludes basic profile information and usage statistics, including billable and non-billable asset counts.\nAlso returns a breakdown of projects associated with the partner.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "partners",
+                ":partner-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "partner-id",
+                  "description": "(Required) Unique identifier of the partner"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c5f65bfe-cce0-43fb-9295-425e5c07f72e",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n  \"title\": \"Security\",\n  \"billable_assets_count\": 0,\n  \"non_billable_assets_count\": 0,\n  \"billable_domains_count\": 0,\n  \"non_billable_domains_count\": 0,\n  \"plan_group\": \"NSMSP0\",\n  \"projects\": [\n    {\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"project_name\": \"Security Project\",\n      \"is_billable\": false,\n      \"assets_count\": 234,\n      \"domains_count\": 23\n    },\n    {\n      \"project_id\": \"2f5d3e85-2b42-4c1a-bb6f-9a7e8c4d5f6a\",\n      \"project_name\": \"Infrastructure Monitoring\",\n      \"is_billable\": true,\n      \"assets_count\": 123,\n      \"domains_count\": 18\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0be67715-63ce-44fc-915f-08c9641c09aa",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "424daf62-8389-42dc-b560-b226debaf6a9",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6bf512c9-2706-45c8-97af-393b05386fd9",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4d2f683e-8e25-464a-ae65-d71abd871300",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners",
+                    ":partner-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "partner-id",
+                      "description": "(Required) Unique identifier of the partner"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5a0af3a3-ac90-4680-a31a-1a11fe434add",
+          "name": "Retrieves list of partners for a specific organization.",
+          "request": {
+            "name": "Retrieves list of partners for a specific organization.",
+            "description": {
+              "content": "Retrieves a paginated list of all partner organizations. Each partner entry includes basic identifying information.\nSupports `limit` and `offset` query params for pagination. Partners are listed by creation date, most recent first.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "partners"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Numeric offset of the first element provided on a page representing a collection request"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Limit to restrict the number of entries on a page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5d109627-b95b-4372-9f72-131aea2a2f30",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"title\": \"Security\"\n    },\n    {\n      \"id\": \"2f5d3e85-2b42-4c1a-bb6f-9a7e8c4d5f6a\",\n      \"title\": \"SecureFolio\"\n    },\n    {\n      \"id\": \"3a6b4f96-3c53-5d2b-cd7f-a8b9e5d6f7b8\",\n      \"title\": \"Inspection\"\n    },\n    {\n      \"id\": \"4c7d5e87-4e64-6f3c-de8f-b9a0e6d7f8a9\",\n      \"title\": \"InvestSecure+\"\n    },\n    {\n      \"id\": \"5e8f6a98-5f75-7d4e-ea9f-c0b1f8d9e0a1\",\n      \"title\": \"TechSentinel\"\n    }\n  ],\n  \"self\": \"https://example.com/v1/partners?limit=5\",\n  \"next\": \"https://example.com/v1/partners?offset=5&limit=5\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d373e83b-38ee-423c-ad90-0fb9cd951a89",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd0e19d4-74d9-4369-97d6-0525ee3c22e5",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91355992-4ea1-46fa-8b13-8333350a2218",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "339aaccd-f11c-4ba7-b96c-3ed2ccbfecd7",
+          "name": "Creates a new partner.",
+          "request": {
+            "name": "Creates a new partner.",
+            "description": {
+              "content": "Creates a new partner. Requires partner email domain, title, optional billing and package selection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "partners"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email_domain\": \"<string>\",\n  \"title\": \"<string>\",\n  \"package_id\": \"<integer>\",\n  \"billing_information\": {\n    \"country\": \"<string>\",\n    \"city\": \"<string>\",\n    \"address_line1\": \"<string>\",\n    \"address_line2\": \"<string>\",\n    \"postal_code\": \"<string>\",\n    \"state\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2ba48ecf-362a-4c7f-afde-be4acaf0b9fb",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email_domain\": \"<string>\",\n  \"title\": \"<string>\",\n  \"package_id\": \"<integer>\",\n  \"billing_information\": {\n    \"country\": \"<string>\",\n    \"city\": \"<string>\",\n    \"address_line1\": \"<string>\",\n    \"address_line2\": \"<string>\",\n    \"postal_code\": \"<string>\",\n    \"state\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "\"\"",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0c5b86cf-d2cf-41e5-8a1a-4123fcf16cb8",
+              "name": "The request has succeeded and a new resource has been created as a result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email_domain\": \"<string>\",\n  \"title\": \"<string>\",\n  \"package_id\": \"<integer>\",\n  \"billing_information\": {\n    \"country\": \"<string>\",\n    \"city\": \"<string>\",\n    \"address_line1\": \"<string>\",\n    \"address_line2\": \"<string>\",\n    \"postal_code\": \"<string>\",\n    \"state\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n  \"email_domain\": \"example.com\",\n  \"title\": \"Example Partner\",\n  \"package_id\": 2,\n  \"billing_information\": {\n    \"country\": \"US\",\n    \"city\": \"New York\",\n    \"address_line1\": \"123 Example St\",\n    \"address_line2\": \"Suite 456\",\n    \"postal_code\": \"10001\",\n    \"state\": \"NY\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d655dc5-a61a-40c2-95e4-9c73d552a9f4",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email_domain\": \"<string>\",\n  \"title\": \"<string>\",\n  \"package_id\": \"<integer>\",\n  \"billing_information\": {\n    \"country\": \"<string>\",\n    \"city\": \"<string>\",\n    \"address_line1\": \"<string>\",\n    \"address_line2\": \"<string>\",\n    \"postal_code\": \"<string>\",\n    \"state\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "55580a5d-31cb-4b07-b4cb-d328e257136a",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email_domain\": \"<string>\",\n  \"title\": \"<string>\",\n  \"package_id\": \"<integer>\",\n  \"billing_information\": {\n    \"country\": \"<string>\",\n    \"city\": \"<string>\",\n    \"address_line1\": \"<string>\",\n    \"address_line2\": \"<string>\",\n    \"postal_code\": \"<string>\",\n    \"state\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b1f0a67-982b-4d8c-8133-96a914f26304",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email_domain\": \"<string>\",\n  \"title\": \"<string>\",\n  \"package_id\": \"<integer>\",\n  \"billing_information\": {\n    \"country\": \"<string>\",\n    \"city\": \"<string>\",\n    \"address_line1\": \"<string>\",\n    \"address_line2\": \"<string>\",\n    \"postal_code\": \"<string>\",\n    \"state\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4b28a591-72a0-4c86-9cee-80aa23290635",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "partners"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Api-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email_domain\": \"<string>\",\n  \"title\": \"<string>\",\n  \"package_id\": \"<integer>\",\n  \"billing_information\": {\n    \"country\": \"<string>\",\n    \"city\": \"<string>\",\n    \"address_line1\": \"<string>\",\n    \"address_line2\": \"<string>\",\n    \"postal_code\": \"<string>\",\n    \"state\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://platform-partners-api.nordstellar.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Api-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1db09e1c-5a4a-4260-a12f-6d739e54081e",
+    "name": "Nordstellar Partners API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The NordStellar Partners API provides a suite of tools for partners to manage their accounts and customer relationships. It enables partners to create and manage partner entities, onboard administrators, and access detailed usage reports for billing and monitoring purposes.\n\nContact Support:\n Name: Vakaris Noreika\n Email: vakaris.noreika@nordsec.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,2381 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "NordStellar Enterprise Data API",
+    "version": "3.1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "API User Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get user information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/user",
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Used for getting the profile information associated with the user's credentials used to make the API call.\n\n**Rate limit: 10 per minute.**"
+        },
+        {
+          "info": {
+            "name": "Update user endpoint information",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/user/subscription-endpoint",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Used for updating the subscription webhook endpoint information tied to current user.\nUsername and password are optional, these values should only be set if the subscription service uses BasicAuth to connect to the provided endpoint\n\n**Rate limit: 10 per minute.**"
+        },
+        {
+          "info": {
+            "name": "Create API access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/auth/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Used for creating the API access token.\n\nAPI access token can then be used for authentication to other non-administrative endpoints.\n\nThe **id** parameter is optional in the request body. Any unique name of alphanumeric characters\nto identify the holder or purpose of this token can be used. If left blank, the id will be assigned randomly.\n\n**Rate limit: 10 per minute.**"
+        },
+        {
+          "info": {
+            "name": "Get API access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/auth/token/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "A token id to lookup."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Used for getting the API access token.\n\nAPI access token can then be used for authentication to other non-auth endpoints.\n\nToken IDs can be looked up via /user endpoint or created via /auth/token enpoint.\n\n**Rate limit: 10 per minute.**"
+        },
+        {
+          "info": {
+            "name": "Delete API access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v3/data/auth/token/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "A token id to lookup."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Used for deleting the API access token.\n\nThis operation is non-reversible and the token will not be active anymore with no way to reactivate it.\n\n**Rate limit: 10 per minute.**"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Credit Card Intelligence",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Credit card search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/zero-knowledge/cc/:hash-type/:hash",
+            "params": [
+              {
+                "name": "hash-type",
+                "value": "",
+                "type": "path",
+                "description": "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints.  "
+              },
+              {
+                "name": "hash",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\n\nThe request must include the credit card number product (**SHA-1** or **Argon2id** hash),\ngenerated using specific secure algorithm.\n\nHashed credit card number is returned in a response that start with the filter characters provided in the request,\ntogether with the list of data categories, that are found in data related to these credit cards.\nReturned data is grouped by **origin*"
+        },
+        {
+          "info": {
+            "name": "Credit cards search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/zero-knowledge/cc/:hash-type/:hash-range",
+            "params": [
+              {
+                "name": "hash-type",
+                "value": "",
+                "type": "path",
+                "description": "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints.  "
+              },
+              {
+                "name": "hash-range",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\n\nThe request must include first 5 characters of the credit card number product (**SHA-1** or **Argon2id** hash),\ngenerated using specific secure algorithm.\n\nHashed credit card numbers are returned in a response that start with the filter characters provided in the request,\ntogether with the list of data categories, that are found in data related to these credit cards.\nReturned data"
+        },
+        {
+          "info": {
+            "name": "Bulk credit cards search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/zero-knowledge/cc",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\n\nThe request must include a list of first 5 characters of credit card number products (**SHA-1** or **Argon2id** hash),\ngenerated using specific secure algorithm.\n\nHashed credit card numbers are returned in a response that start with the filter characters provided in the request,\ntogether with the list of data categories, that are found in data related to these credit cards.\nReturn"
+        },
+        {
+          "info": {
+            "name": "Bulk lite credit cards search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/zero-knowledge/cc/lite",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\n\nThe request must include a list of first 5 characters of credit card number products (**SHA-1** or **Argon2id** hash),\ngenerated using specific secure algorithm.\n\nHashed credit card numbers are returned in a response that start with the filter characters provided in the request,\ntogether with the list of data categories, that are found in data related to these credit cards.\nReturn"
+        },
+        {
+          "info": {
+            "name": "Partial credit cards count lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/zero-knowledge/cc/partial/sha256/:hash",
+            "params": [
+              {
+                "name": "hash",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\nEndpoint is used to lookup the count of compromised credit cards that match the partial hash.\n\nThe request should include a SHA256 hash generated from the first 6 and last 4 digits of the credit card number. \nFor instance, given the credit card number **1234 5678 9012 3456**, the hash should be derived from the exact string **1234563456** (without spaces).\n\nThe response provides th"
+        },
+        {
+          "info": {
+            "name": "Generates a salt based on the provided input data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/zero-knowledge/salt/:sha256-prefix",
+            "params": [
+              {
+                "name": "sha256-prefix",
+                "value": "",
+                "type": "path",
+                "description": "First 5 symbols of SHA256 hash of the lookup value"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "A specific salt is required to successfully use zero knowledge credit card and national identification number lookups.\n\nTo get a salt, hash lookup value (CC or NIN) as SHA256, then use this endpoint and provide first 5 symbols of a lookup value hash.\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Generates many salts based on the provided input data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/zero-knowledge/salt",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "A specific salt is required to successfully use zero knowledge credit card and national identification number lookups.\n\nTo get a salt, hash lookup value (CC or NIN) as SHA256, then use this endpoint and provide first 5 symbols of a lookup value hash.\n**Rate limit: 200 per second.**"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "National Identification Number Intelligence",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "National identification number search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/zero-knowledge/nin/:hash-type/:hash",
+            "params": [
+              {
+                "name": "hash-type",
+                "value": "",
+                "type": "path",
+                "description": "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints.  "
+              },
+              {
+                "name": "hash",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\n\nThe request must include the national identification number product (**SHA-1** or **Argon2id** hash),\ngenerated using specific secure algorithm.\n\nHashed national identification number is returned in a response that start with the filter characters provided in the request,\ntogether with the list of data categories, that are found in data related to these credit cards.\nReturned data"
+        },
+        {
+          "info": {
+            "name": "National identification numbers search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/zero-knowledge/nin/:hash-type/:hash-range",
+            "params": [
+              {
+                "name": "hash-type",
+                "value": "",
+                "type": "path",
+                "description": "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints.  "
+              },
+              {
+                "name": "hash-range",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\n\nThe request must include first 5 characters of the national identification number product (**SHA-1** or **Argon2id** hash),\ngenerated using specific secret and secure algorithm.\n\nHashed national identification numbers are returned in a response that start with the filter characters provided in the request,\ntogether with the list of data categories, that are found in data related t"
+        },
+        {
+          "info": {
+            "name": "Bulk national identification numbers search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/zero-knowledge/nin",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\n\nThe request must include a list of first 5 characters of the national identification number products (**SHA-1** or **Argon2id** hash),\ngenerated using specific secret and secure algorithm.\n\nHashed national identification numbers are returned in a response that start with the filter characters provided in the request,\ntogether with the list of data categories, that are found in dat"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Email Intelligence",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Domain search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/email/domain/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the count of records in results"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the results by an integer"
+              },
+              {
+                "name": "last-id",
+                "value": "",
+                "type": "query",
+                "description": "A faster pagination alternative to offset. Set this instead of offset to get response for further pages quicker."
+              },
+              {
+                "name": "recommendations_enabled",
+                "value": "",
+                "type": "query",
+                "description": "If you need data breach resolution recommendations, set this to true."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up all email addresses and their data for a specific domain.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n*Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.\nIf a document contains more malware logs than could "
+        },
+        {
+          "info": {
+            "name": "Lite Domain search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/email/domain/:domain/lite",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the count of records in results"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the results by an integer"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up all email addresses and their data for a specific domain.\n\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n*Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.\nIf a document contains more malware logs than could"
+        },
+        {
+          "info": {
+            "name": "Email Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/email/:email-sha256",
+            "params": [
+              {
+                "name": "email-sha256",
+                "value": "",
+                "type": "path",
+                "description": "Hashed lower-cased email address using SHA256 algorithm"
+              },
+              {
+                "name": "recommendations_enabled",
+                "value": "",
+                "type": "query",
+                "description": "If you need data breach resolution recommendations, set this to true."
+              },
+              {
+                "name": "inclusive-projection",
+                "value": "malware_logs,databases",
+                "type": "query",
+                "description": "Return **only** the listed fields, omitting everything else. Useful for trimming large responses (e.g. fetching just malware logs) and reducing payload size.\n\nValues are a comma-separated list (`?inclusive-projection=databases,malware_logs`) or repeated parameters (`?inclusive-projection=databases&inclusive-projection=malware_logs`).\n\nThe record's envelope fields (its `id`, the `email`/`phone` value, and `meta`) are always returned regardless of the projection.\n\n**Top-level sections:**\n- `databases` — breached database records (the `databases` response field).\n- `combo_lists` — credential list records (returned in the `credential_lists` response field; email endpoints only).\n- `malware_logs` — malware infection logs.\n\n`databases` and `malware_logs` also support selecting individual sub-fields with dot notation, e.g. `databases.identifier`, `malware_logs.credentials`, `malware_logs.cookies`. Only the listed sub-fields are returned — there are no implicit includes beyond the always-present `id`.\n\n**`id` is special:** each record's `id` is always present and may be named explicitly (e.g. `malware_logs.id`), but it can never be excluded — the only way to omit it is to exclude the whole enclosing object.\n\nMutually exclusive with **exclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              },
+              {
+                "name": "exclusive-projection",
+                "value": "malware_logs",
+                "type": "query",
+                "description": "Return the full email document **except** the listed fields. Useful for dropping heavy parts of the response (e.g. excluding malware logs) while keeping everything else.\n\nValues are a comma-separated list (`?exclusive-projection=malware_logs,combo_lists`) or repeated parameters (`?exclusive-projection=malware_logs&exclusive-projection=combo_lists`).\n\n**Top-level sections:**\n- `databases` — breached database records (the `databases` response field).\n- `combo_lists` — credential list records (returned in the `credential_lists` response field; email endpoints only).\n- `malware_logs` — malware infection logs.\n\n`databases` and `malware_logs` also support excluding individual sub-fields with dot notation, e.g. `malware_logs.cookies`, `malware_logs.installed_software`, `databases.data`. The rest of each record is still returned.\n\n**`id` cannot be excluded.** Any exclusion path that targets an `id` (e.g. `id` or `malware_logs.id`) returns `400 Bad Request` — to omit an object's id, exclude the whole object instead.\n\nMutually exclusive with **inclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their data.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe returned sections can be narrowed using the **inclusive-projection** and **exclusive-projection** query parameters\n(see the parameter descriptions for the available sections, e.g. `databases`, `combo_lists`, `malware_logs`).\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Lite Email Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/email/:email-sha256/lite",
+            "params": [
+              {
+                "name": "email-sha256",
+                "value": "",
+                "type": "path",
+                "description": "Hashed lower-cased email address using SHA256 algorithm"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their data.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\n**Lite version of /email endpoint, which only includes credentials from malware logs.**\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Email databases lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/email/:email-sha256/databases",
+            "params": [
+              {
+                "name": "email-sha256",
+                "value": "",
+                "type": "path",
+                "description": "Hashed lower-cased email address using SHA256 algorithm"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their databases.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Email malware logs lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/email/:email-sha256/malware-logs",
+            "params": [
+              {
+                "name": "email-sha256",
+                "value": "",
+                "type": "path",
+                "description": "Hashed lower-cased email address using SHA256 algorithm"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their malware logs.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Email credential lists lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/email/:email-sha256/credential-lists",
+            "params": [
+              {
+                "name": "email-sha256",
+                "value": "",
+                "type": "path",
+                "description": "Hashed lower-cased email address using SHA256 algorithm"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their credential lists.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Single email ATO prevention",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/email/:email-sha256/password",
+            "params": [
+              {
+                "name": "email-sha256",
+                "value": "",
+                "type": "path",
+                "description": "Hashed lower-cased email address using SHA256 algorithm"
+              },
+              {
+                "name": "fuzzing-intensity",
+                "value": "",
+                "type": "query",
+                "description": "Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up an email address and its fuzzed passwords. Fuzzed passwords are passwords transformed according to pre-defined rules. The rule set, and thus the number of fuzzed passwords returned depends on the fuzzing_intensity parameter, which ranges from **0** to **10**, **0** being no fuzzing, only original password returned, and **10** being the biggest rule set that returns over 50,000 fuzzed passwords per original password.\n**Rate limit: 10 per second.**"
+        },
+        {
+          "info": {
+            "name": "Bulk Email Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/email",
+            "params": [
+              {
+                "name": "recommendations_enabled",
+                "value": "",
+                "type": "query",
+                "description": "If you need data breach resolution recommendations, set this to true."
+              },
+              {
+                "name": "inclusive-projection",
+                "value": "malware_logs,databases",
+                "type": "query",
+                "description": "Return **only** the listed fields, omitting everything else. Useful for trimming large responses (e.g. fetching just malware logs) and reducing payload size.\n\nValues are a comma-separated list (`?inclusive-projection=databases,malware_logs`) or repeated parameters (`?inclusive-projection=databases&inclusive-projection=malware_logs`).\n\nThe record's envelope fields (its `id`, the `email`/`phone` value, and `meta`) are always returned regardless of the projection.\n\n**Top-level sections:**\n- `databases` — breached database records (the `databases` response field).\n- `combo_lists` — credential list records (returned in the `credential_lists` response field; email endpoints only).\n- `malware_logs` — malware infection logs.\n\n`databases` and `malware_logs` also support selecting individual sub-fields with dot notation, e.g. `databases.identifier`, `malware_logs.credentials`, `malware_logs.cookies`. Only the listed sub-fields are returned — there are no implicit includes beyond the always-present `id`.\n\n**`id` is special:** each record's `id` is always present and may be named explicitly (e.g. `malware_logs.id`), but it can never be excluded — the only way to omit it is to exclude the whole enclosing object.\n\nMutually exclusive with **exclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              },
+              {
+                "name": "exclusive-projection",
+                "value": "malware_logs",
+                "type": "query",
+                "description": "Return the full email document **except** the listed fields. Useful for dropping heavy parts of the response (e.g. excluding malware logs) while keeping everything else.\n\nValues are a comma-separated list (`?exclusive-projection=malware_logs,combo_lists`) or repeated parameters (`?exclusive-projection=malware_logs&exclusive-projection=combo_lists`).\n\n**Top-level sections:**\n- `databases` — breached database records (the `databases` response field).\n- `combo_lists` — credential list records (returned in the `credential_lists` response field; email endpoints only).\n- `malware_logs` — malware infection logs.\n\n`databases` and `malware_logs` also support excluding individual sub-fields with dot notation, e.g. `malware_logs.cookies`, `malware_logs.installed_software`, `databases.data`. The rest of each record is still returned.\n\n**`id` cannot be excluded.** Any exclusion path that targets an `id` (e.g. `id` or `malware_logs.id`) returns `400 Bad Request` — to omit an object's id, exclude the whole object instead.\n\nMutually exclusive with **inclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their data in bulk.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\nThe returned sections can be narrowed using the **inclusive-projection** and **exclusive-projection** query parameters\n(see the parameter descriptions for the available sections,"
+        },
+        {
+          "info": {
+            "name": "Lite Bulk Email Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/email/lite",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their data in bulk.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n*Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.\nIf a document contains more malware logs than could be retrieved, **20"
+        },
+        {
+          "info": {
+            "name": "Bulk email databases lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/email/databases",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their databases in bulk.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Bulk email malware logs lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/email/malware-logs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their malware logs in bulk.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n*Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.\nIf a document contains more malware logs than could be retriev"
+        },
+        {
+          "info": {
+            "name": "Bulk email credential lists lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/email/credential-lists",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their credential lists in bulk.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Bulk email ATO prevention",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/email/password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their fuzzed passwords in bulk. Fuzzed passwords are passwords transformed according to pre-defined rules. The rule set, and thus the number of fuzzed passwords returned depends on the **fuzzing_intensity** parameter, which ranges from **0** to **10**, **0** being no fuzzing, only original password returned, and **10** being the biggest rule set that returns over 50,000 fuzzed passwords per original password.\nThe data is returned using pagination by defaul"
+        },
+        {
+          "info": {
+            "name": "Single email ATO prevention with filtering",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/email/password/filtered",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up an email address and its fuzzed passwords. Fuzzed passwords are passwords transformed according to pre-defined rules. The rule set, and thus the number of fuzzed passwords returned depends on the fuzzing_intensity parameter, which ranges from **0** to **10**, **0** being no fuzzing, only original password returned, and **10** being the biggest rule set that returns over 50,000 fuzzed passwords per original password.\nThis endpoint provides the ability to only return fuzzed pas"
+        },
+        {
+          "info": {
+            "name": "Bulk email ATO prevention",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/email/password/filtered/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up email addresses and their fuzzed passwords in bulk. Fuzzed passwords are passwords transformed according to pre-defined rules. The rule set, and thus the number of fuzzed passwords returned depends on the **fuzzing_intensity** parameter, which ranges from **0** to **10**, **0** being no fuzzing, only original password returned, and **10** being the biggest rule set that returns over 50,000 fuzzed passwords per original password.\nThis endpoint provides the ability to only retu"
+        },
+        {
+          "info": {
+            "name": "Email statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/email/statistics/:email-sha256",
+            "params": [
+              {
+                "name": "email-sha256",
+                "value": "",
+                "type": "path",
+                "description": "Hashed lower-cased email address using SHA256 algorithm"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API endpoint is designed for retrieving statistics associated with a specific email address.\nThe information regarding this email, including their associated data, is sourced and aggregated from\na multitude of databases that are publicly accessible on the internet.\n\nEach email can be affected by **three** incident types - data breaches, malware infections, and stolen credential lists.\n\n**Rate limit: 100 per second.**"
+        },
+        {
+          "info": {
+            "name": "Email domain statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/email/domain/statistics/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API endpoint is designed for retrieving statistics associated with all email addresses under a specific domain.\nThe information regarding these email addresses, including their associated data, is sourced and aggregated from\na multitude of databases that are publicly accessible on the internet.\n\nEach email can be affected by **three** incident types - data breaches, malware infections, and stolen credential lists.\n\n**Rate limit: 10 per second.**"
+        },
+        {
+          "info": {
+            "name": "Email domain blacklist",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/email/domain/blacklist",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the count of records in results"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the results by an integer"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This API endpoint is designed to retrieve a list of public email \ndomains that are blacklisted and cannot be used for domain lookup or subscription operations.\n\n**Rate limit: 20 per second.**"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Phone Intelligence",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Phone lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/phone/:phone-sha256",
+            "params": [
+              {
+                "name": "phone-sha256",
+                "value": "",
+                "type": "path",
+                "description": "Hashed phone number using SHA256 algorithm"
+              },
+              {
+                "name": "recommendations_enabled",
+                "value": "",
+                "type": "query",
+                "description": "If you need data breach resolution recommendations, set this to true."
+              },
+              {
+                "name": "inclusive-projection",
+                "value": "malware_logs,databases",
+                "type": "query",
+                "description": "Return **only** the listed fields, omitting everything else. Useful for trimming large responses (e.g. fetching just malware logs) and reducing payload size.\n\nValues are a comma-separated list (`?inclusive-projection=databases,malware_logs`) or repeated parameters (`?inclusive-projection=databases&inclusive-projection=malware_logs`).\n\nThe record's envelope fields (its `id`, the `email`/`phone` value, and `meta`) are always returned regardless of the projection.\n\n**Top-level sections:**\n- `databases` — breached database records (the `databases` response field).\n- `combo_lists` — credential list records (returned in the `credential_lists` response field; email endpoints only).\n- `malware_logs` — malware infection logs.\n\n`databases` and `malware_logs` also support selecting individual sub-fields with dot notation, e.g. `databases.identifier`, `malware_logs.credentials`, `malware_logs.cookies`. Only the listed sub-fields are returned — there are no implicit includes beyond the always-present `id`.\n\n**`id` is special:** each record's `id` is always present and may be named explicitly (e.g. `malware_logs.id`), but it can never be excluded — the only way to omit it is to exclude the whole enclosing object.\n\nMutually exclusive with **exclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              },
+              {
+                "name": "exclusive-projection",
+                "value": "malware_logs",
+                "type": "query",
+                "description": "Return the full email document **except** the listed fields. Useful for dropping heavy parts of the response (e.g. excluding malware logs) while keeping everything else.\n\nValues are a comma-separated list (`?exclusive-projection=malware_logs,combo_lists`) or repeated parameters (`?exclusive-projection=malware_logs&exclusive-projection=combo_lists`).\n\n**Top-level sections:**\n- `databases` — breached database records (the `databases` response field).\n- `combo_lists` — credential list records (returned in the `credential_lists` response field; email endpoints only).\n- `malware_logs` — malware infection logs.\n\n`databases` and `malware_logs` also support excluding individual sub-fields with dot notation, e.g. `malware_logs.cookies`, `malware_logs.installed_software`, `databases.data`. The rest of each record is still returned.\n\n**`id` cannot be excluded.** Any exclusion path that targets an `id` (e.g. `id` or `malware_logs.id`) returns `400 Bad Request` — to omit an object's id, exclude the whole object instead.\n\nMutually exclusive with **inclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up phone numbers and their data.\nThese phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Phone databases lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/phone/:phone-sha256/databases",
+            "params": [
+              {
+                "name": "phone-sha256",
+                "value": "",
+                "type": "path",
+                "description": "Hashed phone number using SHA256 algorithm"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up phone numbers and their databases.\nThese phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Phone malware logs lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/phone/:phone-sha256/malware-logs",
+            "params": [
+              {
+                "name": "phone-sha256",
+                "value": "",
+                "type": "path",
+                "description": "Hashed phone number using SHA256 algorithm"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up phone numbers and their malware logs.\nThese phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Bulk phone lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/phone",
+            "params": [
+              {
+                "name": "recommendations_enabled",
+                "value": "",
+                "type": "query",
+                "description": "If you need data breach resolution recommendations, set this to true."
+              },
+              {
+                "name": "inclusive-projection",
+                "value": "malware_logs,databases",
+                "type": "query",
+                "description": "Return **only** the listed fields, omitting everything else. Useful for trimming large responses (e.g. fetching just malware logs) and reducing payload size.\n\nValues are a comma-separated list (`?inclusive-projection=databases,malware_logs`) or repeated parameters (`?inclusive-projection=databases&inclusive-projection=malware_logs`).\n\nThe record's envelope fields (its `id`, the `email`/`phone` value, and `meta`) are always returned regardless of the projection.\n\n**Top-level sections:**\n- `databases` — breached database records (the `databases` response field).\n- `combo_lists` — credential list records (returned in the `credential_lists` response field; email endpoints only).\n- `malware_logs` — malware infection logs.\n\n`databases` and `malware_logs` also support selecting individual sub-fields with dot notation, e.g. `databases.identifier`, `malware_logs.credentials`, `malware_logs.cookies`. Only the listed sub-fields are returned — there are no implicit includes beyond the always-present `id`.\n\n**`id` is special:** each record's `id` is always present and may be named explicitly (e.g. `malware_logs.id`), but it can never be excluded — the only way to omit it is to exclude the whole enclosing object.\n\nMutually exclusive with **exclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              },
+              {
+                "name": "exclusive-projection",
+                "value": "malware_logs",
+                "type": "query",
+                "description": "Return the full email document **except** the listed fields. Useful for dropping heavy parts of the response (e.g. excluding malware logs) while keeping everything else.\n\nValues are a comma-separated list (`?exclusive-projection=malware_logs,combo_lists`) or repeated parameters (`?exclusive-projection=malware_logs&exclusive-projection=combo_lists`).\n\n**Top-level sections:**\n- `databases` — breached database records (the `databases` response field).\n- `combo_lists` — credential list records (returned in the `credential_lists` response field; email endpoints only).\n- `malware_logs` — malware infection logs.\n\n`databases` and `malware_logs` also support excluding individual sub-fields with dot notation, e.g. `malware_logs.cookies`, `malware_logs.installed_software`, `databases.data`. The rest of each record is still returned.\n\n**`id` cannot be excluded.** Any exclusion path that targets an `id` (e.g. `id` or `malware_logs.id`) returns `400 Bad Request` — to omit an object's id, exclude the whole object instead.\n\nMutually exclusive with **inclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up phones numbers and their data in bulk.\nThese phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n*Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.\nIf a document contains more malware logs than could be retrieved, **206**"
+        },
+        {
+          "info": {
+            "name": "Bulk phone databases lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/phone/databases",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up phones numbers and their databases in bulk.\nThese phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Bulk phone malware logs lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/phone/malware-logs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up phones numbers and their malware logs in bulk.\nThese phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n*Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.\nIf a document contains more malware logs than could be retrieved,"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Breached Databases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Database Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/data-source/database/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Record ID to lookup. ID should consist of 24 hexadecimal digits."
+              },
+              {
+                "name": "inclusive-projection",
+                "value": "name,breach_date",
+                "type": "query",
+                "description": "Return **only** the listed fields of the database record, omitting everything else.\n\nValues are a comma-separated list (`?inclusive-projection=name,breach_date`) or repeated parameters (`?inclusive-projection=name&inclusive-projection=breach_date`).\n\n**Available fields:** `id`, `name`, `identifier`, `type`, `domain`, `breach_date`, `description`, `logo_url`, `data_keys`, `unique_email_count`, `unique_phone_count`, `published` (controls the `published_date` response field).\n\nOnly the listed fields are returned — there are no implicit includes beyond the always-present `id`.\n\n**`id` is special:** it is always present and may be named explicitly, but it can never be excluded.\n\nMutually exclusive with **exclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              },
+              {
+                "name": "exclusive-projection",
+                "value": "data_keys",
+                "type": "query",
+                "description": "Return the full database record **except** the listed fields.\n\nValues are a comma-separated list (`?exclusive-projection=data_keys,description`) or repeated parameters (`?exclusive-projection=data_keys&exclusive-projection=description`).\n\n**Available fields:** `name`, `identifier`, `type`, `domain`, `breach_date`, `description`, `logo_url`, `data_keys`, `unique_email_count`, `unique_phone_count`, `published` (controls the `published_date` response field).\n\n**`id` cannot be excluded** — supplying `id` returns `400 Bad Request`.\n\nMutually exclusive with **inclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up breached databases, that are publicly accessible on the internet, and their metadata.\nThese databases may have been collected from both clearnet and deep/dark web.\nThe breach date of these databases is by no means exact, since, if no official statement by the breached company is made, it is taken from the data publication source, be it a hacker forum, a ransomware group website or some place else.\nDatabase description can not exceed 1000 characters.\n\n**Rate limit: 200 per second."
+        },
+        {
+          "info": {
+            "name": "Database Lookup by Domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/data-source/database/domain/:domain",
+            "params": [
+              {
+                "name": "domain",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "inclusive-projection",
+                "value": "name,breach_date",
+                "type": "query",
+                "description": "Return **only** the listed fields of the database record, omitting everything else.\n\nValues are a comma-separated list (`?inclusive-projection=name,breach_date`) or repeated parameters (`?inclusive-projection=name&inclusive-projection=breach_date`).\n\n**Available fields:** `id`, `name`, `identifier`, `type`, `domain`, `breach_date`, `description`, `logo_url`, `data_keys`, `unique_email_count`, `unique_phone_count`, `published` (controls the `published_date` response field).\n\nOnly the listed fields are returned — there are no implicit includes beyond the always-present `id`.\n\n**`id` is special:** it is always present and may be named explicitly, but it can never be excluded.\n\nMutually exclusive with **exclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              },
+              {
+                "name": "exclusive-projection",
+                "value": "data_keys",
+                "type": "query",
+                "description": "Return the full database record **except** the listed fields.\n\nValues are a comma-separated list (`?exclusive-projection=data_keys,description`) or repeated parameters (`?exclusive-projection=data_keys&exclusive-projection=description`).\n\n**Available fields:** `name`, `identifier`, `type`, `domain`, `breach_date`, `description`, `logo_url`, `data_keys`, `unique_email_count`, `unique_phone_count`, `published` (controls the `published_date` response field).\n\n**`id` cannot be excluded** — supplying `id` returns `400 Bad Request`.\n\nMutually exclusive with **inclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up breached databases, that are publicly accessible on the internet, and their metadata.\nThese databases may have been collected from both clearnet and deep/dark web.\nThe breach date of these databases is by no means exact, since, if no official statement by the breached company is made, it is taken from the data publication source, be it a hacker forum, a ransomware group website or some place else.\nDatabase description can not exceed 1000 characters. \n\n**Rate limit: 200 per second"
+        },
+        {
+          "info": {
+            "name": "Bulk databases lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/data-source/database",
+            "params": [
+              {
+                "name": "inclusive-projection",
+                "value": "name,breach_date",
+                "type": "query",
+                "description": "Return **only** the listed fields of the database record, omitting everything else.\n\nValues are a comma-separated list (`?inclusive-projection=name,breach_date`) or repeated parameters (`?inclusive-projection=name&inclusive-projection=breach_date`).\n\n**Available fields:** `id`, `name`, `identifier`, `type`, `domain`, `breach_date`, `description`, `logo_url`, `data_keys`, `unique_email_count`, `unique_phone_count`, `published` (controls the `published_date` response field).\n\nOnly the listed fields are returned — there are no implicit includes beyond the always-present `id`.\n\n**`id` is special:** it is always present and may be named explicitly, but it can never be excluded.\n\nMutually exclusive with **exclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              },
+              {
+                "name": "exclusive-projection",
+                "value": "data_keys",
+                "type": "query",
+                "description": "Return the full database record **except** the listed fields.\n\nValues are a comma-separated list (`?exclusive-projection=data_keys,description`) or repeated parameters (`?exclusive-projection=data_keys&exclusive-projection=description`).\n\n**Available fields:** `name`, `identifier`, `type`, `domain`, `breach_date`, `description`, `logo_url`, `data_keys`, `unique_email_count`, `unique_phone_count`, `published` (controls the `published_date` response field).\n\n**`id` cannot be excluded** — supplying `id` returns `400 Bad Request`.\n\nMutually exclusive with **inclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up breached databases, that are publicly accessible on the internet, and their metadata in bulk.\nThese databases may have been collected from both clearnet and deep/dark web.\nThe breach date of these databases is by no means exact, since, if no official statement by the breached company is made, it is taken from the data publication source, be it a hacker forum, a ransomware group website or some place else.\nDatabase description can not exceed 1000 characters.\n\n**One of the followin"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Credential Lists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Credential list Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/data-source/credential-list/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Record ID to lookup. ID should consist of 24 hexadecimal digits."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up credential lists that are publicly accessible on the internet, and their metadata.\nThese credential lists may have been collected from both clearnet and deep/dark web.\nThe origin of these credential lists is not known, they might have been collected from breached databases, by stuffing attacks or other means.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Bulk credential lists lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/data-source/credential-list",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up credential lists that are publicly accessible on the internet, and their metadata in bulk.\nThese credential lists may have been collected from both clearnet and deep/dark web.\nThe origin of these credential lists is not known, they might have been collected from breached databases, by stuffing attacks or other means.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n**Rate limit: 200 per second.**"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Malware Logs Intelligence",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Malware Log Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/data-source/malware-log/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Record ID to lookup. ID should consist of 24 hexadecimal digits."
+              },
+              {
+                "name": "inclusive-projection",
+                "value": "credentials,cookies",
+                "type": "query",
+                "description": "Return **only** the listed fields of each malware log, omitting everything else. Useful for trimming large responses (malware logs can be very large) and reducing payload size.\n\nValues are a comma-separated list (`?inclusive-projection=credentials,cookies`) or repeated parameters (`?inclusive-projection=credentials&inclusive-projection=cookies`).\n\n**Available fields:** `id`, `identifier`, `type`, `system_info`, `identification_level`, `credentials`, `credit_cards`, `cookies`, `autofills`, `grabbed_files`, `secrets`, `metadata`, `ftp`, `installed_software`, `process_list`, `rdp`, `rac`, `ssh`, `vpn`, `email_clients`, `downloads`.\n\nOnly the listed fields are returned — there are no implicit includes beyond the always-present `id`.\n\n**`id` is special:** it is always present and may be named explicitly, but it can never be excluded.\n\nMutually exclusive with **exclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              },
+              {
+                "name": "exclusive-projection",
+                "value": "cookies,grabbed_files",
+                "type": "query",
+                "description": "Return each full malware log **except** the listed fields. Useful for dropping heavy parts of the response (e.g. excluding cookies or grabbed files) while keeping everything else.\n\nValues are a comma-separated list (`?exclusive-projection=cookies,grabbed_files`) or repeated parameters (`?exclusive-projection=cookies&exclusive-projection=grabbed_files`).\n\n**Available fields:** `identifier`, `type`, `system_info`, `identification_level`, `credentials`, `credit_cards`, `cookies`, `autofills`, `grabbed_files`, `secrets`, `metadata`, `ftp`, `installed_software`, `process_list`, `rdp`, `rac`, `ssh`, `vpn`, `email_clients`, `downloads`.\n\n**`id` cannot be excluded** — supplying `id` returns `400 Bad Request`.\n\nMutually exclusive with **inclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up malware logs that are publicly accessible on the internet, and their metadata.\nThese malware logs may have been collected from both clearnet and deep/dark web.\nEach malware log record pertains to a particular instance of infection and contains data gathered from the affected machine at the time of the attack.\n\nThe returned sections can be narrowed using the **inclusive-projection** and **exclusive-projection** query parameters\n(see the parameter descriptions for the available sec"
+        },
+        {
+          "info": {
+            "name": "Bulk Malware Log Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/data-source/malware-log",
+            "params": [
+              {
+                "name": "inclusive-projection",
+                "value": "credentials,cookies",
+                "type": "query",
+                "description": "Return **only** the listed fields of each malware log, omitting everything else. Useful for trimming large responses (malware logs can be very large) and reducing payload size.\n\nValues are a comma-separated list (`?inclusive-projection=credentials,cookies`) or repeated parameters (`?inclusive-projection=credentials&inclusive-projection=cookies`).\n\n**Available fields:** `id`, `identifier`, `type`, `system_info`, `identification_level`, `credentials`, `credit_cards`, `cookies`, `autofills`, `grabbed_files`, `secrets`, `metadata`, `ftp`, `installed_software`, `process_list`, `rdp`, `rac`, `ssh`, `vpn`, `email_clients`, `downloads`.\n\nOnly the listed fields are returned — there are no implicit includes beyond the always-present `id`.\n\n**`id` is special:** it is always present and may be named explicitly, but it can never be excluded.\n\nMutually exclusive with **exclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              },
+              {
+                "name": "exclusive-projection",
+                "value": "cookies,grabbed_files",
+                "type": "query",
+                "description": "Return each full malware log **except** the listed fields. Useful for dropping heavy parts of the response (e.g. excluding cookies or grabbed files) while keeping everything else.\n\nValues are a comma-separated list (`?exclusive-projection=cookies,grabbed_files`) or repeated parameters (`?exclusive-projection=cookies&exclusive-projection=grabbed_files`).\n\n**Available fields:** `identifier`, `type`, `system_info`, `identification_level`, `credentials`, `credit_cards`, `cookies`, `autofills`, `grabbed_files`, `secrets`, `metadata`, `ftp`, `installed_software`, `process_list`, `rdp`, `rac`, `ssh`, `vpn`, `email_clients`, `downloads`.\n\n**`id` cannot be excluded** — supplying `id` returns `400 Bad Request`.\n\nMutually exclusive with **inclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up malware logs that are publicly accessible on the internet, and their metadata.\nThese malware logs may have been collected from both clearnet and deep/dark web.\nEach malware log record pertains to a particular instance of infection and contains data gathered from the affected machine at the time of the attack.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\nThe returned sections can be narrowed usi"
+        },
+        {
+          "info": {
+            "name": "Bulk Malware Log Details Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/data-source/malware-log/details",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up malware log details (identifier, malware type, published date, updated date and system information) for a list of malware log IDs.\nReturns a lightweight representation of each malware log, including the identifier, type, published date, updated date, and system information.\nThis endpoint does not return the full malware log data (credentials, cookies, etc.).\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** para"
+        },
+        {
+          "info": {
+            "name": "Bulk Malware Log Statistics Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/data-source/malware-log/stats",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns the number of records held in each data category of a malware log, without returning the records themselves.\n\nFor a set of malware log identifiers, each result reports how many credentials, cookies, autofills, credit cards, secrets and other artifacts were recovered from the infected machine, together with its system information, metadata and identification level. This offers a lightweight way to assess the size and composition of a malware log before retrieving its full contents.\n\n**Rat"
+        },
+        {
+          "info": {
+            "name": "Malware Log IDs Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/data-source/malware-log/credentials/url/:credentials_url/id",
+            "params": [
+              {
+                "name": "credentials_url",
+                "value": "",
+                "type": "path",
+                "description": "Credentials URL that must be sanitized, excluding protocols and any extraneous details."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the count of records in results"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the results by an integer"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up malware logs ids that contains specified url domain/subdomain values in their credentials.\n\nNote that  domain/subdomain values need to be exact match. That means for example:\nIf 'domain.com' is given in the request. The response credentials will not contain 'subdomain.domain.com'. \nFor those cases, 'subdomain.domain.com' should be given in the request.\n\nThe request data requires pagination object. Pagination behaviour can be modified using **limit** and **offset** parameters.\nDef"
+        },
+        {
+          "info": {
+            "name": "Malware Log Credentials Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/data-source/malware-log/:id/credentials/url/:credentials_url",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Record ID to lookup. ID should consist of 24 hexadecimal digits."
+              },
+              {
+                "name": "credentials_url",
+                "value": "",
+                "type": "path",
+                "description": "Credentials URL that must be sanitized, excluding protocols and any extraneous details."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up a malware log by ID and credential url. \nThe credentials of the malware will be filtered out to match the request url by domain/subdomain.\n\nNote that  domain/subdomain values need to be exact match. That means for example:\nIf 'domain.com' is given in the request. The response credentials will not contain 'subdomain.domain.com'. \nFor those cases, 'subdomain.domain.com' should be given in the request.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Malware Log IDs With Secrets Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/data-source/malware-log/secrets/type/:type/id",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Any of the following: \n  - 1password-secret-key\n  - 1password-service-account-token\n  - adafruit-api-key\n  - adobe-client-id\n  - adobe-client-secret\n  - age-secret-key\n  - airtable-api-key\n  - airtable-personnal-access-token\n  - algolia-api-key\n  - alibaba-access-key-id\n  - alibaba-secret-key\n  - anthropic-admin-api-key\n  - anthropic-api-key\n  - artifactory-api-key\n  - artifactory-reference-token\n  - asana-client-id\n  - asana-client-secret\n  - assemblyai-api-key\n  - atlassian-api-token\n  - authress-service-client-access-key\n  - aws-access-token\n  - aws-amazon-bedrock-api-key-long-lived\n  - aws-amazon-bedrock-api-key-short-lived\n  - aws-secret-key\n  - azure-ad-client-secret\n  - beamer-api-token\n  - bitbucket-client-id\n  - bitbucket-client-secret\n  - bittrex-access-key\n  - bittrex-secret-key\n  - cerebras-api-key\n  - cisco-meraki-api-key\n  - clickhouse-cloud-api-secret-key\n  - clojars-api-token\n  - cloudflare-api-key\n  - cloudflare-global-api-key\n  - cloudflare-origin-ca-key\n  - codecov-access-token\n  - cohere-api-token\n  - coinbase-access-token\n  - confluent-access-token\n  - confluent-secret-key\n  - contentful-delivery-api-token\n  - curl-auth-header\n  - curl-auth-user\n  - cursor-api-key\n  - databricks-api-token\n  - datadog-access-token\n  - deepgram-api-key\n  - deepseek-api-key\n  - defined-networking-api-token\n  - digitalocean-access-token\n  - digitalocean-pat\n  - digitalocean-refresh-token\n  - discord-api-token\n  - discord-client-id\n  - discord-client-secret\n  - doppler-api-token\n  - droneci-access-token\n  - dropbox-api-token\n  - dropbox-long-lived-api-token\n  - dropbox-short-lived-api-token\n  - duffel-api-token\n  - dynatrace-api-token\n  - easypost-api-token\n  - easypost-test-api-token\n  - elevenlabs-api-key\n  - endorlabs-api-key\n  - endorlabs-api-secret\n  - etsy-access-token\n  - facebook-access-token\n  - facebook-page-access-token\n  - facebook-secret\n  - fastly-api-token\n  - figma-personal-access-header-token\n  - figma-personal-access-token\n  - finicity-api-token\n  - finicity-client-secret\n  - finnhub-access-token\n  - flickr-access-token\n  - flutterwave-encryption-key\n  - flutterwave-public-key\n  - flutterwave-secret-key\n  - flyio-access-token\n  - frameio-api-token\n  - freemius-secret-key\n  - freshbooks-access-token\n  - gcp-api-key\n  - gcp-service-account-json\n  - gitea-access-token\n  - github-app-token\n  - github-fine-grained-pat\n  - github-oauth\n  - github-pat\n  - github-refresh-token\n  - gitlab-cicd-job-token\n  - gitlab-deploy-token\n  - gitlab-feature-flag-client-token\n  - gitlab-feed-token\n  - gitlab-kubernetes-agent-token\n  - gitlab-oauth-app-secret\n  - gitlab-pat\n  - gitlab-pat-routable\n  - gitlab-ptt\n  - gitlab-rrt\n  - gitlab-runner-authentication-token\n  - gitlab-runner-authentication-token-routable\n  - gitlab-scim-token\n  - gitlab-session-cookie\n  - gitter-access-token\n  - gocardless-api-token\n  - grafana-api-key\n  - grafana-cloud-api-token\n  - grafana-service-account-token\n  - greptile-api-key\n  - groq-api-key\n  - harness-api-key\n  - hashicorp-tf-api-token\n  - hashicorp-tf-password\n  - heroku-api-key\n  - hubspot-api-key\n  - huggingface-access-token\n  - huggingface-organization-api-token\n  - infracost-api-token\n  - intercom-api-key\n  - intra42-client-secret\n  - jfrog-api-key\n  - jfrog-identity-token\n  - kraken-access-token\n  - kubernetes-secret-yaml\n  - kucoin-access-token\n  - kucoin-secret-key\n  - launchdarkly-access-token\n  - linear-api-key\n  - linear-client-secret\n  - linkedin-client-id\n  - linkedin-client-secret\n  - lob-api-key\n  - lob-pub-api-key\n  - looker-client-id\n  - looker-client-secret\n  - mailchimp-api-key\n  - mailgun-private-api-token\n  - mailgun-pub-key\n  - mailgun-signing-key\n  - mapbox-api-token\n  - mattermost-access-token\n  - maxmind-license-key\n  - messagebird-api-token\n  - messagebird-client-id\n  - microsoft-teams-webhook\n  - mistral-api-key\n  - mongodb-atlas-service-account-id\n  - mongodb-atlas-service-account-secret\n  - mongodb-connection-string\n  - netlify-access-token\n  - new-relic-browser-api-token\n  - new-relic-insert-key\n  - new-relic-user-api-id\n  - new-relic-user-api-key\n  - nexos-ai-user-api-key\n  - npm-access-token\n  - nuget-config-password\n  - nvidia-api-key\n  - nytimes-access-token\n  - octopus-deploy-api-key\n  - okta-access-token\n  - ollama-api-key\n  - openai-api-key\n  - openrouter-api-key\n  - openshift-user-token\n  - ovh-application-key\n  - ovh-application-secret\n  - ovh-consumer-key\n  - perplexity-api-key\n  - pkcs12-file\n  - plaid-api-token\n  - plaid-client-id\n  - plaid-secret-key\n  - planetscale-api-token\n  - planetscale-id\n  - planetscale-oauth-token\n  - planetscale-password\n  - polymarket-address\n  - polymarket-api-key\n  - polymarket-api-secret\n  - polymarket-passphrase\n  - polymarket-private-key\n  - posthog-personal-api-key\n  - posthog-project-api-key\n  - postman-api-token\n  - prefect-api-token\n  - private-key\n  - privateai-api-token\n  - pulumi-api-token\n  - pypi-upload-token\n  - rapidapi-access-token\n  - readme-api-token\n  - replicate-api-token\n  - rubygems-api-token\n  - scalingo-api-token\n  - sendbird-access-id\n  - sendbird-access-token\n  - sendgrid-api-token\n  - sendinblue-api-token\n  - sentry-access-token\n  - sentry-org-token\n  - sentry-user-token\n  - settlemint-application-access-token\n  - settlemint-personal-access-token\n  - settlemint-service-access-token\n  - shippo-api-token\n  - shopify-access-token\n  - shopify-custom-access-token\n  - shopify-private-app-access-token\n  - shopify-shared-secret\n  - sidekiq-secret\n  - sidekiq-sensitive-url\n  - slack-app-token\n  - slack-bot-token\n  - slack-config-access-token\n  - slack-config-refresh-token\n  - slack-legacy-bot-token\n  - slack-legacy-token\n  - slack-legacy-workspace-token\n  - slack-session-cookie\n  - slack-session-token\n  - slack-user-token\n  - slack-webhook-url\n  - snyk-api-token\n  - sonar-api-token\n  - sourcegraph-access-token\n  - square-access-token\n  - squarespace-access-token\n  - stability-ai-api-key\n  - stripe-access-token\n  - sumologic-access-id\n  - sumologic-access-token\n  - telegram-bot-api-token\n  - togetherai-api-key\n  - travisci-access-token\n  - twilio-api-key\n  - twitch-api-token\n  - twitter-access-secret\n  - twitter-access-token\n  - twitter-api-key\n  - twitter-api-secret\n  - twitter-bearer-token\n  - typeform-api-token\n  - vault-batch-token\n  - vault-service-token\n  - vercel-ai-gateway-key\n  - vercel-api-token\n  - vercel-app-access-token\n  - vercel-app-refresh-token\n  - vercel-integration-token\n  - vercel-personal-access-token\n  - weights-and-biases-api-key\n  - weights-and-biases-api-key-v1\n  - xai-api-key\n  - yandex-access-token\n  - yandex-api-key\n  - yandex-aws-access-token\n  - zendesk-secret-key"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the count of records in results"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the results by an integer"
+              },
+              {
+                "name": "published_ts_from",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp of the earliest published date to include in the results"
+              },
+              {
+                "name": "published_ts_to",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp of the latest published date to include in the results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up malware logs ids that contains specified secret type values in their secrets list.\n    \n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Malware Log Secrets Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/data-source/malware-log/:id/secrets/type/:type",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Record ID to lookup. ID should consist of 24 hexadecimal digits."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "Any of the following: \n  - 1password-secret-key\n  - 1password-service-account-token\n  - adafruit-api-key\n  - adobe-client-id\n  - adobe-client-secret\n  - age-secret-key\n  - airtable-api-key\n  - airtable-personnal-access-token\n  - algolia-api-key\n  - alibaba-access-key-id\n  - alibaba-secret-key\n  - anthropic-admin-api-key\n  - anthropic-api-key\n  - artifactory-api-key\n  - artifactory-reference-token\n  - asana-client-id\n  - asana-client-secret\n  - assemblyai-api-key\n  - atlassian-api-token\n  - authress-service-client-access-key\n  - aws-access-token\n  - aws-amazon-bedrock-api-key-long-lived\n  - aws-amazon-bedrock-api-key-short-lived\n  - aws-secret-key\n  - azure-ad-client-secret\n  - beamer-api-token\n  - bitbucket-client-id\n  - bitbucket-client-secret\n  - bittrex-access-key\n  - bittrex-secret-key\n  - cerebras-api-key\n  - cisco-meraki-api-key\n  - clickhouse-cloud-api-secret-key\n  - clojars-api-token\n  - cloudflare-api-key\n  - cloudflare-global-api-key\n  - cloudflare-origin-ca-key\n  - codecov-access-token\n  - cohere-api-token\n  - coinbase-access-token\n  - confluent-access-token\n  - confluent-secret-key\n  - contentful-delivery-api-token\n  - curl-auth-header\n  - curl-auth-user\n  - cursor-api-key\n  - databricks-api-token\n  - datadog-access-token\n  - deepgram-api-key\n  - deepseek-api-key\n  - defined-networking-api-token\n  - digitalocean-access-token\n  - digitalocean-pat\n  - digitalocean-refresh-token\n  - discord-api-token\n  - discord-client-id\n  - discord-client-secret\n  - doppler-api-token\n  - droneci-access-token\n  - dropbox-api-token\n  - dropbox-long-lived-api-token\n  - dropbox-short-lived-api-token\n  - duffel-api-token\n  - dynatrace-api-token\n  - easypost-api-token\n  - easypost-test-api-token\n  - elevenlabs-api-key\n  - endorlabs-api-key\n  - endorlabs-api-secret\n  - etsy-access-token\n  - facebook-access-token\n  - facebook-page-access-token\n  - facebook-secret\n  - fastly-api-token\n  - figma-personal-access-header-token\n  - figma-personal-access-token\n  - finicity-api-token\n  - finicity-client-secret\n  - finnhub-access-token\n  - flickr-access-token\n  - flutterwave-encryption-key\n  - flutterwave-public-key\n  - flutterwave-secret-key\n  - flyio-access-token\n  - frameio-api-token\n  - freemius-secret-key\n  - freshbooks-access-token\n  - gcp-api-key\n  - gcp-service-account-json\n  - gitea-access-token\n  - github-app-token\n  - github-fine-grained-pat\n  - github-oauth\n  - github-pat\n  - github-refresh-token\n  - gitlab-cicd-job-token\n  - gitlab-deploy-token\n  - gitlab-feature-flag-client-token\n  - gitlab-feed-token\n  - gitlab-kubernetes-agent-token\n  - gitlab-oauth-app-secret\n  - gitlab-pat\n  - gitlab-pat-routable\n  - gitlab-ptt\n  - gitlab-rrt\n  - gitlab-runner-authentication-token\n  - gitlab-runner-authentication-token-routable\n  - gitlab-scim-token\n  - gitlab-session-cookie\n  - gitter-access-token\n  - gocardless-api-token\n  - grafana-api-key\n  - grafana-cloud-api-token\n  - grafana-service-account-token\n  - greptile-api-key\n  - groq-api-key\n  - harness-api-key\n  - hashicorp-tf-api-token\n  - hashicorp-tf-password\n  - heroku-api-key\n  - hubspot-api-key\n  - huggingface-access-token\n  - huggingface-organization-api-token\n  - infracost-api-token\n  - intercom-api-key\n  - intra42-client-secret\n  - jfrog-api-key\n  - jfrog-identity-token\n  - kraken-access-token\n  - kubernetes-secret-yaml\n  - kucoin-access-token\n  - kucoin-secret-key\n  - launchdarkly-access-token\n  - linear-api-key\n  - linear-client-secret\n  - linkedin-client-id\n  - linkedin-client-secret\n  - lob-api-key\n  - lob-pub-api-key\n  - looker-client-id\n  - looker-client-secret\n  - mailchimp-api-key\n  - mailgun-private-api-token\n  - mailgun-pub-key\n  - mailgun-signing-key\n  - mapbox-api-token\n  - mattermost-access-token\n  - maxmind-license-key\n  - messagebird-api-token\n  - messagebird-client-id\n  - microsoft-teams-webhook\n  - mistral-api-key\n  - mongodb-atlas-service-account-id\n  - mongodb-atlas-service-account-secret\n  - mongodb-connection-string\n  - netlify-access-token\n  - new-relic-browser-api-token\n  - new-relic-insert-key\n  - new-relic-user-api-id\n  - new-relic-user-api-key\n  - nexos-ai-user-api-key\n  - npm-access-token\n  - nuget-config-password\n  - nvidia-api-key\n  - nytimes-access-token\n  - octopus-deploy-api-key\n  - okta-access-token\n  - ollama-api-key\n  - openai-api-key\n  - openrouter-api-key\n  - openshift-user-token\n  - ovh-application-key\n  - ovh-application-secret\n  - ovh-consumer-key\n  - perplexity-api-key\n  - pkcs12-file\n  - plaid-api-token\n  - plaid-client-id\n  - plaid-secret-key\n  - planetscale-api-token\n  - planetscale-id\n  - planetscale-oauth-token\n  - planetscale-password\n  - polymarket-address\n  - polymarket-api-key\n  - polymarket-api-secret\n  - polymarket-passphrase\n  - polymarket-private-key\n  - posthog-personal-api-key\n  - posthog-project-api-key\n  - postman-api-token\n  - prefect-api-token\n  - private-key\n  - privateai-api-token\n  - pulumi-api-token\n  - pypi-upload-token\n  - rapidapi-access-token\n  - readme-api-token\n  - replicate-api-token\n  - rubygems-api-token\n  - scalingo-api-token\n  - sendbird-access-id\n  - sendbird-access-token\n  - sendgrid-api-token\n  - sendinblue-api-token\n  - sentry-access-token\n  - sentry-org-token\n  - sentry-user-token\n  - settlemint-application-access-token\n  - settlemint-personal-access-token\n  - settlemint-service-access-token\n  - shippo-api-token\n  - shopify-access-token\n  - shopify-custom-access-token\n  - shopify-private-app-access-token\n  - shopify-shared-secret\n  - sidekiq-secret\n  - sidekiq-sensitive-url\n  - slack-app-token\n  - slack-bot-token\n  - slack-config-access-token\n  - slack-config-refresh-token\n  - slack-legacy-bot-token\n  - slack-legacy-token\n  - slack-legacy-workspace-token\n  - slack-session-cookie\n  - slack-session-token\n  - slack-user-token\n  - slack-webhook-url\n  - snyk-api-token\n  - sonar-api-token\n  - sourcegraph-access-token\n  - square-access-token\n  - squarespace-access-token\n  - stability-ai-api-key\n  - stripe-access-token\n  - sumologic-access-id\n  - sumologic-access-token\n  - telegram-bot-api-token\n  - togetherai-api-key\n  - travisci-access-token\n  - twilio-api-key\n  - twitch-api-token\n  - twitter-access-secret\n  - twitter-access-token\n  - twitter-api-key\n  - twitter-api-secret\n  - twitter-bearer-token\n  - typeform-api-token\n  - vault-batch-token\n  - vault-service-token\n  - vercel-ai-gateway-key\n  - vercel-api-token\n  - vercel-app-access-token\n  - vercel-app-refresh-token\n  - vercel-integration-token\n  - vercel-personal-access-token\n  - weights-and-biases-api-key\n  - weights-and-biases-api-key-v1\n  - xai-api-key\n  - yandex-access-token\n  - yandex-api-key\n  - yandex-aws-access-token\n  - zendesk-secret-key"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up a malware log by ID and secret type. \nThe secrets of the malware will be filtered out to match the secret type.\n    \nThe request data requires pagination object. Pagination behaviour can be modified using **limit** and **offset** parameters.\nDefault is the maximum limit of 2000. \n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Malware Log IDs With Unspecified Secrets Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/data-source/malware-log/secrets/type/id",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the count of records in results"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the results by an integer"
+              },
+              {
+                "name": "published_ts_from",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp of the earliest published date to include in the results"
+              },
+              {
+                "name": "published_ts_to",
+                "value": "",
+                "type": "query",
+                "description": "Unix timestamp of the latest published date to include in the results"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up malware logs ids that contains any secrets types.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Malware Log Unspecified Secrets Lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/data-source/malware-log/:id/secrets/type",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Record ID to lookup. ID should consist of 24 hexadecimal digits."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used to look up a malware log by ID. \nThe secret list of the log will not be filtered.\n    \nThe request data requires pagination object. Pagination behaviour can be modified using **limit** and **offset** parameters.\nDefault is the maximum limit of 2000. \n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Malware Log Secrets Feed",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/data-source/malware-log/secrets/feed",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "\nUsed to get a feed of malware logs secrets based on specified secret type(s) & date ranges.\nDates can be specified either with exact values (range) or relative value (lookback days).\nIf no secret values are specified, all secret types will be returned.\n\nThe data is returned using pagination by default, \npagination behaviour can be modified using **limit** and **offset** parameters.\n\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Malware Log Credentials Feed",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/data-source/malware-log/credentials/feed",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "\nUsed to get a feed of malware logs credentials based on specified date ranges.\nDates can be specified either with exact values (range) or relative value (lookback days).\n\nBecause some malware logs can contain an abnormally large number of credentials,\nthe number of credentials returned is capped. When the cap is reached the response\ncontains fewer malware logs than the pagination limit and is returned with HTTP\nstatus **206 Partial Content**. Continue paging (using the id of the last returned\nr"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Password Intelligence",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Passwords search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/zero-knowledge/password/:hash-type/:hash-range",
+            "params": [
+              {
+                "name": "hash-type",
+                "value": "",
+                "type": "path",
+                "description": "Currently only **sha256**"
+              },
+              {
+                "name": "hash-range",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\n\nUsed for checking if the password has been compromised previously. The\nrequest must include first 6 characters of the password, hashed using\n**SHA-256** algorithm.\n\nHashed passwords are returned in a response that start with the filter characters provided in the request.\n**Rate limit: 200 per second.**"
+        },
+        {
+          "info": {
+            "name": "Bulk passwords search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/zero-knowledge/password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\n\nUsed for checking if the password has been compromised previously. The\nrequest must include first 6 characters of the password, hashed using\n**SHA-256** algorithm.\n\nHashed passwords are returned in a response that start with the filter characters provided in the request.\n**Rate limit: 200 per second.**"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Cookie Intelligence",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Cookies search",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/zero-knowledge/cookie/:hash-type/:hash-range",
+            "params": [
+              {
+                "name": "hash-type",
+                "value": "",
+                "type": "path",
+                "description": "Currently only **sha256**"
+              },
+              {
+                "name": "hash-range",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\n\nUsed for checking if the specific cookie has been compromised. The\nrequest must include first 8 characters of the *cookie* value, hashed using\n**SHA-256** algorithm.\n\nHashed cookies are returned in a response that start with the filter characters provided in the request.\n**Rate limit: 1000 per second.**"
+        },
+        {
+          "info": {
+            "name": "Bulk cookies search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/zero-knowledge/cookie",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\n\nUsed for checking if the specific cookie has been compromised. The\nrequest must include an array of first 8 characters of the *cookie value*, hashed using\n**SHA-256** algorithm.\n\nHashed cookies are returned in a response that start with the filter characters provided in the request.\nOne request may have up to *100* hash ranges.\n\n**Rate limit: 500 per second.**"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Subscription Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get user subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/subscription",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Limit the count of records in results"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset the results by an integer"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up current users subscriptions.\nDefault limit is the maximum limit of 1000 records"
+        },
+        {
+          "info": {
+            "name": "Create email subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/subscription/email-sha256",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for creating an email address subscription for current user.\nWhen a new data breach is added, that affects this email address,\nthis subscription will generate and send out events to the user according to their custom event handling mechanism."
+        },
+        {
+          "info": {
+            "name": "Create phone subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/subscription/phone-sha256",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for creating a phone number subscription for current user.\nWhen a new data breach is added, that affects this phone number,\nthis subscription will generate and send out events to the user according to their custom event handling mechanism."
+        },
+        {
+          "info": {
+            "name": "Create domain subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/subscription/domain",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for creating a domain subscription for the current user.\nWhen a new data breach is added, that affects any of email addresses with this domain,\nthis subscription will generate and send out events to the user according to their custom event handling mechanism."
+        },
+        {
+          "info": {
+            "name": "Create zero knowledge credit card subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/subscription/:cc-hash-type",
+            "params": [
+              {
+                "name": "cc-hash-type",
+                "value": "",
+                "type": "path",
+                "description": "**cc-argon2id** or **cc-sha1**."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for creating a zero knowledge credit card subscription for current user.\nWhen a new data breach is added, that affects this credit card,\nthis subscription will generate and send out events to the user according to their custom event handling mechanism."
+        },
+        {
+          "info": {
+            "name": "Create zero knowledge national identification number subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/subscription/:nin-hash-type",
+            "params": [
+              {
+                "name": "nin-hash-type",
+                "value": "",
+                "type": "path",
+                "description": "**nin-argon2id** or **nin-sha1**."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for creating a zero knowledge national identification number subscription for current user.\nWhen a new data breach is added, that affects this national identification number,\nthis subscription will generate and send out events to the user according to their custom event handling mechanism."
+        },
+        {
+          "info": {
+            "name": "Create email subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/subscription/email-sha256/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for creating multiple email address subscriptions for current user.\nWhen a new data breach is added, that affects these email addresses,\nthis subscription will generate and send out events to the user according to their custom event handling mechanism."
+        },
+        {
+          "info": {
+            "name": "Create phone subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/subscription/phone-sha256/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for creating multiple phone number subscriptions for current user.\nWhen a new data breach is added, that affects these phone numbers,\nthis subscription will generate and send out events to the user according to their custom event handling mechanism."
+        },
+        {
+          "info": {
+            "name": "Create domain subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/subscription/domain/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for creating multipe domain subscriptions for the current user.\nWhen a new data breach is added, that affects any of email addresses with these domains,\nthis subscription will generate and send out events to the user according to their custom event handling mechanism."
+        },
+        {
+          "info": {
+            "name": "Create zero knowledge credit card subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/subscription/:cc-hash-type/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for creating multiple zero knowledge credit card subscriptions for current user.\nWhen a new data breach is added, that affects these credit cards,\nthis subscription will generate and send out events to the user according to their custom event handling mechanism."
+        },
+        {
+          "info": {
+            "name": "Create zero knowledge national identification number subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/subscription/:nin-hash-type/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for creating multiple zero knowledge national identification number subscriptions for current user.\nWhen a new data breach that affects these national identification numbers is added,\nthis subscription will generate and send out events to the user according to their custom event handling mechanism."
+        },
+        {
+          "info": {
+            "name": "Delete subscriptions",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v3/data/subscription/bulk",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for deleting multiple subscriptions for the current user.\nAccepts between 1 and 1000 subscription IDs.\n\n**This operation is non-reversible.**"
+        },
+        {
+          "info": {
+            "name": "Get subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/subscription/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID which was provided upon subscription creation"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for looking up a subscription for current user.\nThis endpoint allows to lookup the subscription by the ID."
+        },
+        {
+          "info": {
+            "name": "Delete subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "/api/v3/data/subscription/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Subscription ID which was provided upon subscription creation"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Used for deleting a current users subscription.\n\n**This operation is non-reversible.**"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Profiling",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List profiling reports",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/profiling/reports",
+            "params": [
+              {
+                "name": "external_user_id",
+                "value": "",
+                "type": "query",
+                "description": "External user identifier to scope the report list"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number (1-indexed)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of reports per page"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns profiling reports for the authenticated tenant scoped to the given external user.\nResults are sorted by creation date (newest first).\nHeavy fields (accounts, activities, breaches, analysis) are excluded from the response."
+        },
+        {
+          "info": {
+            "name": "Generate a profiling report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/profiling/reports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates a new profiling report for the given email addresses and/or phone numbers.\nThe report is generated asynchronously — the response returns immediately with the report ID\nand a `pending` state. Use the GET endpoint to poll for completion.\n\nIdentifiers are normalized (emails lowercased, whitespace trimmed) and deduplicated\nbefore processing. Between 1 and 5 unique identifiers are accepted per report.\n\nIf a report for the same set of identifiers already exists in a non-failed state,\n`409 Conf"
+        },
+        {
+          "info": {
+            "name": "Get a profiling report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "/api/v3/data/profiling/reports/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Report identifier"
+              },
+              {
+                "name": "external_user_id",
+                "value": "",
+                "type": "query",
+                "description": "External user identifier"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves a full profiling report by ID, scoped to the authenticated tenant and external user.\nThe response includes activities, accounts, breaches, and LLM analysis when available.\n\nPoll this endpoint to check report completion — the `state` field transitions through:\n`pending` → `analyzing` → `completed` (or `failed`)."
+        },
+        {
+          "info": {
+            "name": "Regenerate a profiling report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/profiling/reports/:id/regenerate",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "Report identifier"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Resets a completed or failed report back to `pending` state and re-fetches all data.\nStale source records are re-fetched from OSINT, fresh cached records are reused.\n\nReturns `412 Precondition Failed` if the report is still being processed (pending or analyzing state)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Dark Web Intelligence",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Scraped forum content search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/scraped-content/forum",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint allows users to search through scraped forum content found on the dark web using a Lucene query as the main search query.\nIt provides a powerful and flexible search capability by allowing users to construct complex queries to filter and retrieve specific forum content.\n\n**Example Lucene Query:**\n- To search for posts with the word \"malware\" in the content field, authored by \"john doe\":\n\n`content:malware AND author_name:\"john doe\"`\n\nSearch phrases can be optionally highlighted in th"
+        },
+        {
+          "info": {
+            "name": "Scraped Telegram content search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/scraped-content/telegram",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint allows users to search through scraped Telegram content found on the variety of channels in Telegram Ecosystem using a Lucene query as the main search query.\nIt provides a powerful and flexible search capability by allowing users to construct complex queries to filter and retrieve specific telegram content.\n\n**Example Lucene Query:**\n- To search for messages with the word \"malware\" in the content field, authored by \"john doe\":\n\n`content:malware AND author_name:\"john doe\"`\n\nSearch p"
+        },
+        {
+          "info": {
+            "name": "Scraped ransomware content search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/scraped-content/ransomware",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint allows users to search through scraped ransomware incident content found on the variety of groups in dark web ecosystem using a Lucene query as the main search query.\nIt provides a powerful and flexible search capability by allowing users to construct complex queries to filter and retrieve specific ransomware blog content.\n\n**Example Lucene Query:**\n- To search for messages with the word \"malware\" in the content field, authored by \"john doe\":\n\n`content:malware AND author_name:\"john"
+        },
+        {
+          "info": {
+            "name": "Scraped marketplace content search",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/scraped-content/marketplace",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint allows users to search through scraped marketplace post content found on the variety of groups in dark web ecosystem using a Lucene query as the main search query.\nIt provides a powerful and flexible search capability by allowing users to construct complex queries to filter and retrieve specific marketplace content.\n\n**Example Lucene Query:**\n- To search for messages with the word \"malware\" in the content field, authored by \"john doe\":\n\n`content:malware AND author_name:\"john doe\"`\n"
+        },
+        {
+          "info": {
+            "name": "Scraped content tags lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/scraped-content/tags",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint provides a lookup for all tags currently used internally for classification of scraped content.\nBased on the specified source, it returns the tags used within that particular collection.\nThese tags help in categorizing and filtering the scraped content effectively.\n\n**Rate limit: 50 per second.**"
+        },
+        {
+          "info": {
+            "name": "Scraped content screenshot lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/api/v3/data/scraped-content/screenshot",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint provides a lookup of scraped content screenshots based on the specified source & identifier.\nThe endpoint returns the screenshot of the scraped content in JPEG format.\n\n**Rate limit: 50 per second.**"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

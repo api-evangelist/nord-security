@@ -1,0 +1,4595 @@
+{
+  "item": [
+    {
+      "id": "812f3047-fb52-4cfb-a6bf-aee1c007f89c",
+      "name": "Events",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "64e1ff3e-688a-4c60-b7db-019dc127ecf8",
+          "name": "Retrieves attack surface DNS vulnerability event details.",
+          "request": {
+            "name": "Retrieves attack surface DNS vulnerability event details.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                "attack-surface-dns-vulnerabilities",
+                ":event-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "68424c74-6f4f-4c30-807c-d48019482822",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-dns-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11111111-1111-1111-1111-111111111111\",\n  \"type\": \"ATTACK_SURFACE_DNS_VULNERABILITY\",\n  \"project_id\": \"22222222-2222-2222-2222-222222222222\",\n  \"asset_id\": \"33333333-3333-3333-3333-333333333333\",\n  \"asset_value\": \"example.com\",\n  \"title\": \"DNSSEC Not Configured\",\n  \"description\": \"The domain does not have DNSSEC configured, which could allow DNS spoofing attacks.\",\n  \"is_verified\": true,\n  \"source_type\": \"DNS\",\n  \"vulnerability_type\": \"MISCONFIGURATION\",\n  \"tags\": [\n    \"dns\",\n    \"dnssec\",\n    \"security\"\n  ],\n  \"impact_description\": \"Without DNSSEC, attackers could potentially redirect users to malicious sites through DNS cache poisoning.\",\n  \"remediation_instructions\": \"Enable DNSSEC for your domain by configuring DS records with your domain registrar.\",\n  \"references\": [\n    \"https://www.example.com/dnssec-guide\"\n  ],\n  \"risk_level\": \"MEDIUM\",\n  \"cve_id\": null,\n  \"cwe_ids\": [],\n  \"cvss2_score\": 0,\n  \"cvss3_score\": 0,\n  \"cvss_vector\": \"\",\n  \"epss_score\": 0,\n  \"evidence_url\": null,\n  \"evidence_data\": null,\n  \"evidence_curl_command\": null,\n  \"evidence_http_request\": null,\n  \"evidence_http_response\": null,\n  \"evidence_network_data\": \"DNS query results showing missing DNSSEC records\",\n  \"evidence_file_path\": null,\n  \"evidence_target\": \"example.com\",\n  \"evidence_host\": null,\n  \"evidence_port\": null,\n  \"evidence_scheme\": null,\n  \"evidence_raw_response\": null,\n  \"evidence_extracted_data\": [],\n  \"is_resolved\": false,\n  \"detected_at\": \"2024-01-01T00:00:00.000Z\",\n  \"updated_at\": \"2024-01-02T00:00:00.000Z\",\n  \"module\": \"ATTACK_SURFACE\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01bdfe02-ac90-44ff-b496-2a446969ba9a",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-dns-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "10a64051-174f-4dcf-b29b-d763f9c2a7fc",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-dns-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fda51934-d862-4f30-b205-0451ef924d85",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-dns-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "20c8f219-6aa6-4fe7-9b0a-1fe0fa34fa4d",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-dns-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0c761679-438b-4f52-a0da-0cf90a4a2406",
+          "name": "Retrieves attack surface network service vulnerability event details.",
+          "request": {
+            "name": "Retrieves attack surface network service vulnerability event details.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                "attack-surface-network-service-vulnerabilities",
+                ":event-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "52cbf411-408d-43bb-826a-e0eccfe62c48",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-network-service-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11111111-1111-1111-1111-111111111111\",\n  \"type\": \"ATTACK_SURFACE_NETWORK_SERVICE_VULNERABILITY\",\n  \"project_id\": \"22222222-2222-2222-2222-222222222222\",\n  \"asset_id\": \"33333333-3333-3333-3333-333333333333\",\n  \"asset_value\": \"192.168.1.100\",\n  \"title\": \"Outdated SSH Service\",\n  \"description\": \"The SSH service is running an outdated version with known vulnerabilities.\",\n  \"is_verified\": true,\n  \"source_type\": \"NETWORK_SERVICE\",\n  \"vulnerability_type\": \"BACKDOOR\",\n  \"tags\": [\n    \"ssh\",\n    \"outdated\",\n    \"network-service\"\n  ],\n  \"impact_description\": \"Attackers could exploit known vulnerabilities in the outdated SSH version to gain unauthorized access.\",\n  \"remediation_instructions\": \"Update SSH to the latest stable version and ensure automatic updates are enabled.\",\n  \"references\": [\n    \"https://www.example.com/security.html\"\n  ],\n  \"risk_level\": \"HIGH\",\n  \"cve_id\": \"CVE-2023-12345\",\n  \"cwe_ids\": [\n    \"CWE-327\"\n  ],\n  \"cvss2_score\": 7.5,\n  \"cvss3_score\": 9.8,\n  \"cvss_vector\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\",\n  \"epss_score\": 0.85,\n  \"evidence_url\": null,\n  \"evidence_data\": null,\n  \"evidence_curl_command\": null,\n  \"evidence_http_request\": null,\n  \"evidence_http_response\": null,\n  \"evidence_network_data\": \"SSH-2.0-OpenSSH_7.4\",\n  \"evidence_file_path\": null,\n  \"evidence_target\": \"192.168.1.100:22\",\n  \"evidence_host\": \"192.168.1.100\",\n  \"evidence_port\": \"22\",\n  \"evidence_scheme\": \"ssh\",\n  \"evidence_raw_response\": null,\n  \"evidence_extracted_data\": [],\n  \"is_resolved\": false,\n  \"detected_at\": \"2024-01-01T00:00:00.000Z\",\n  \"updated_at\": \"2024-01-02T00:00:00.000Z\",\n  \"port\": 22,\n  \"network_service_name\": \"SSH\",\n  \"protocol\": \"TCP\",\n  \"product\": \"OpenSSH\",\n  \"version\": \"7.4\",\n  \"is_active\": true,\n  \"module\": \"ATTACK_SURFACE\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df5bf398-2706-45e7-876a-7586bb33ae4d",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-network-service-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb1a7a55-f1fe-4da4-b72d-4fa15e4824f6",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-network-service-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5c9a378b-98c8-4548-ae3c-31de61b0c3fb",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-network-service-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "570d33f2-86fe-4ca1-afc0-cbd26f3fddd4",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-network-service-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7941b777-3216-4c52-bd08-0f28de663314",
+          "name": "Retrieves attack surface web application vulnerability event details.",
+          "request": {
+            "name": "Retrieves attack surface web application vulnerability event details.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                "attack-surface-web-application-vulnerabilities",
+                ":event-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8423c162-432d-4a30-bf65-6d22b823097f",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-web-application-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11111111-1111-1111-1111-111111111111\",\n  \"type\": \"ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY\",\n  \"project_id\": \"22222222-2222-2222-2222-222222222222\",\n  \"asset_id\": \"33333333-3333-3333-3333-333333333333\",\n  \"asset_value\": \"https://example.com\",\n  \"title\": \"SQL Injection Vulnerability\",\n  \"description\": \"The web application is vulnerable to SQL injection attacks in the login form.\",\n  \"is_verified\": true,\n  \"source_type\": \"WEB_APPLICATION\",\n  \"vulnerability_type\": \"BACKDOOR\",\n  \"tags\": [\n    \"sql-injection\",\n    \"web\",\n    \"critical\"\n  ],\n  \"impact_description\": \"Attackers could gain unauthorized access to the database and extract sensitive information.\",\n  \"remediation_instructions\": \"Use parameterized queries or prepared statements to prevent SQL injection. Implement input validation and sanitization.\",\n  \"references\": [\n    \"https://example.com/attacks/SQL_Injection\"\n  ],\n  \"risk_level\": \"CRITICAL\",\n  \"cve_id\": null,\n  \"cwe_ids\": [\n    \"CWE-89\"\n  ],\n  \"cvss2_score\": 9,\n  \"cvss3_score\": 9.8,\n  \"cvss_vector\": \"CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H\",\n  \"epss_score\": 0.95,\n  \"evidence_url\": \"https://example.com/login\",\n  \"evidence_data\": null,\n  \"evidence_curl_command\": \"curl -X POST https://example.com/login -d \\\"username=' OR '1'='1&password=test\\\"\",\n  \"evidence_http_request\": \"POST /login HTTP/1.1\\nHost: example.com\\nContent-Type: application/x-www-form-urlencoded\\n\\nusername=' OR '1'='1&password=test\",\n  \"evidence_http_response\": \"HTTP/1.1 200 OK\\nContent-Type: text/html\\n\\n<html>Welcome Admin</html>\",\n  \"evidence_network_data\": null,\n  \"evidence_file_path\": null,\n  \"evidence_target\": \"https://example.com/login\",\n  \"evidence_host\": \"example.com\",\n  \"evidence_port\": \"443\",\n  \"evidence_scheme\": \"https\",\n  \"evidence_raw_response\": null,\n  \"evidence_extracted_data\": [\n    \"Admin access granted\",\n    \"Database query: SELECT * FROM users WHERE username='' OR '1'='1'\"\n  ],\n  \"is_resolved\": false,\n  \"detected_at\": \"2024-01-01T00:00:00.000Z\",\n  \"updated_at\": \"2024-01-02T00:00:00.000Z\",\n  \"port\": 443,\n  \"module\": \"ATTACK_SURFACE\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f6842b31-4f65-483f-9716-64968f7796ae",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-web-application-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c2e46b76-3c61-48ff-b8ad-c0ab08cc42ae",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-web-application-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "59d43d1b-304f-49ce-a46e-231a0d4e1284",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-web-application-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ac22b60c-3b6e-472a-a13d-7d9928a2da8a",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "attack-surface-web-application-vulnerabilities",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f0e54f5b-be8f-4997-a3f4-1cb902b84690",
+          "name": "Retrieves combo list event details.",
+          "request": {
+            "name": "Retrieves combo list event details.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                "combo-lists",
+                ":event-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a9ba676b-f6b5-4126-bf0a-d81392f373b5",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "combo-lists",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"52c6fd64-8e91-46f2-ba5a-8761e103f9cf\",\n  \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n  \"type\": \"COMBO_LIST\",\n  \"module\": \"LEAKED_DATA\",\n  \"risk_level\": \"HIGH\",\n  \"is_resolved\": false,\n  \"date_added\": \"2020-05-01T08:06:32.000Z\",\n  \"asset\": {\n    \"type\": \"EMAIL\",\n    \"value\": \"test@example.com\"\n  },\n  \"tags\": [\n    \"CREDENTIALS\"\n  ],\n  \"passwords\": [\n    \"password123\",\n    \"password456\",\n    \"password789\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "913e8f46-d866-448f-a345-4173bd4379dd",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "combo-lists",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d8a593a2-da60-4bef-82da-bbf0915c49e9",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "combo-lists",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e795705-0d0c-4e33-9df3-0b9a04d47c7f",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "combo-lists",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "70ccff81-f8b9-4c82-b054-8790f1994bf2",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "combo-lists",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "31a5d9ce-76a9-4fd5-9ed2-e829dace20e0",
+          "name": "Retrieves dark web forum post event details.",
+          "request": {
+            "name": "Retrieves dark web forum post event details.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                "dark-web-forum-posts",
+                ":event-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c4c05d8a-780a-4a52-a927-093d2094b6a7",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-forum-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"d7443de3-ad45-4ec5-91d2-d465b0fe2f73\",\n  \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n  \"type\": \"DARK_WEB_FORUM_POST\",\n  \"module\": \"DARK_WEB_MONITORING\",\n  \"risk_level\": \"INFORMATIONAL\",\n  \"is_resolved\": false,\n  \"date_added\": \"2024-03-15T10:30:00.000Z\",\n  \"tags\": [\n    \"CREDIT_CARDS\",\n    \"MARKETPLACE\",\n    \"COMBO_LIST\"\n  ],\n  \"dark_web_monitoring_rule_name\": \"Company Credentials Monitor\",\n  \"forum_name\": \"DarkMarket\",\n  \"forum_title\": \"Credential Marketplace\",\n  \"forum_section\": \"Data Leaks\",\n  \"author\": \"anonymous_seller\",\n  \"posted_at\": \"2024-03-14T22:15:00.000Z\",\n  \"scraped_at\": \"2024-03-15T01:00:00.000Z\",\n  \"url\": \"https://darkmarket.example/thread/12345\",\n  \"content\": \"Selling fresh credentials from recent database breach. DM for details.\",\n  \"query\": \"example AND tags:CREDIT_CARDS\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5068d6e-1457-4eee-b287-538542dbae89",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-forum-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "603193ff-debe-41b7-9d23-a4319ac8efdb",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-forum-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f79c7ce5-8afb-4a8c-b987-c2921f3fda8c",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-forum-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57498685-2c78-4630-b427-86c540dc9702",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-forum-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "85509e0f-bc3f-4783-b9e9-6adccd5e4413",
+          "name": "Retrieves dark web marketplace post event details.",
+          "request": {
+            "name": "Retrieves dark web marketplace post event details.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                "dark-web-marketplace-posts",
+                ":event-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "73fba3d9-eda6-43bc-95e8-ede31dbc836f",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-marketplace-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"d7443de3-ad45-4ec5-91d2-d465b0fe2f73\",\n  \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n  \"type\": \"DARK_WEB_MARKETPLACE_POST\",\n  \"module\": \"DARK_WEB_MONITORING\",\n  \"risk_level\": \"INFORMATIONAL\",\n  \"is_resolved\": false,\n  \"date_added\": \"2024-03-15T10:30:00.000Z\",\n  \"tags\": [\n    \"CREDIT_CARDS\",\n    \"MARKETPLACE\",\n    \"COMBO_LIST\"\n  ],\n  \"dark_web_monitoring_rule_name\": \"Company Credentials Monitor\",\n  \"marketplace_title\": \"Credential Marketplace\",\n  \"site_domain_name\": \"example.com \",\n  \"site_subdomain_url\": \"https://example.com /malware_logs\",\n  \"price\": \"10.00$\",\n  \"marketplace_type\": \"Logs\",\n  \"author\": \"co####er [platinum]\",\n  \"posted_at\": \"2024-03-14T22:15:00.000Z\",\n  \"scraped_at\": \"2024-03-15T01:00:00.000Z\",\n  \"url\": \"https://darkmarket.example/thread/12345\",\n  \"content\": \"Stealer: lumma Country: Punjab ISP: Pakistan Telecommunication Company Limited Links: animoto.com.\",\n  \"query\": \"example AND tags:CREDIT_CARDS\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4458993d-b264-4163-858f-8df8c417332c",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-marketplace-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f091cb3-29e1-4224-8580-0a6d483d2ae7",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-marketplace-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e10af21-a66a-4554-8f64-dfb6d26cd604",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-marketplace-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa231a6e-1e24-499c-bca4-ad675b592cf5",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-marketplace-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6b5a5ce9-fe9b-43e1-8996-a97fdf84a146",
+          "name": "Retrieves dark web Ransomware post event details.",
+          "request": {
+            "name": "Retrieves dark web Ransomware post event details.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                "dark-web-ransomware-posts",
+                ":event-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "94ac51f0-be9e-4c4a-bb81-efec7baecd2a",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-ransomware-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"9e4e5325-c399-433d-a803-fdde187681f6\",\n  \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n  \"type\": \"DARK_WEB_RANSOMWARE_POST\",\n  \"module\": \"DARK_WEB_MONITORING\",\n  \"risk_level\": \"INFORMATIONAL\",\n  \"is_resolved\": false,\n  \"date_added\": \"2024-03-15T10:30:00.000Z\",\n  \"tags\": [\n    \"RANSOMWARE\",\n    \"MISSING_DOMAIN\"\n  ],\n  \"dark_web_monitoring_rule_name\": \"Company Credentials Monitor\",\n  \"ransomware_title\": \"Company targeted in ransomware attack by Akira\",\n  \"author\": \"Akira\",\n  \"posted_at\": \"2024-03-14T22:15:00.000Z\",\n  \"scraped_at\": \"2024-03-15T01:00:00.000Z\",\n  \"url\": \"https://akiral2iz6a7qgd3ayp3l6yub7xx2uep76idk3u2kollpj5z3z636bad.onion/\",\n  \"victim_information\": {\n    \"company_name\": \"Company name\",\n    \"website\": \"https://www.example.com\",\n    \"industry\": \"Public Safety\",\n    \"country\": {\n      \"name\": \"United States\",\n      \"iso2\": \"US\"\n    },\n    \"company_type\": \"Public Company\",\n    \"company_size\": \"51-200 employees\",\n    \"revenue_range\": \"$15,000,000.00 - $25,000,000.00\",\n    \"address_location\": \"Davenport, Iowa 12345, US\",\n    \"socials\": [\n      {\n        \"type\": \"Facebook\",\n        \"url\": \"https://www.facebook.com/examplecompany\"\n      }\n    ]\n  },\n  \"query\": \"example AND tags:CREDIT_CARDS\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d41774df-d92e-4e4f-a8c0-053183fb4b72",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-ransomware-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "515a17b3-32f8-4f44-aa50-0ccc941fc553",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-ransomware-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f3c8583-6ea9-468a-aac6-0ae5be69f28b",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-ransomware-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ca5cc40-7571-4ba5-9c71-950ecd26b2da",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-ransomware-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2beb4de1-fddc-4f20-85f5-9d21048aeac8",
+          "name": "Retrieves dark web Telegram post event details.",
+          "request": {
+            "name": "Retrieves dark web Telegram post event details.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                "dark-web-telegram-posts",
+                ":event-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "292fae56-7dae-43fb-b875-ce96aea8677a",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-telegram-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"d7443de3-ad45-4ec5-91d2-d465b0fe2f73\",\n  \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n  \"type\": \"DARK_WEB_TELEGRAM_POST\",\n  \"module\": \"DARK_WEB_MONITORING\",\n  \"risk_level\": \"INFORMATIONAL\",\n  \"is_resolved\": false,\n  \"date_added\": \"2024-03-15T10:30:00.000Z\",\n  \"tags\": [\n    \"CREDIT_CARDS\",\n    \"MARKETPLACE\",\n    \"COMBO_LIST\"\n  ],\n  \"dark_web_monitoring_rule_name\": \"Company Credentials Monitor\",\n  \"channel_name\": \"DataLeaksChannel\",\n  \"channel_title\": \"Data Leaks & Breaches\",\n  \"author\": \"anonymous_seller\",\n  \"posted_at\": \"2024-03-14T22:15:00.000Z\",\n  \"scraped_at\": \"2024-03-15T01:00:00.000Z\",\n  \"url\": \"https://t.me/DataLeaksChannel/12345\",\n  \"content\": \"Selling fresh credentials from recent database breach. DM for details.\",\n  \"query\": \"example AND tags:CREDIT_CARDS\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a259e25-3c4b-4ca7-9757-1e42da9d8563",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-telegram-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0873419b-456b-4dcc-a4e1-c0f475c2fb8d",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-telegram-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "65e69924-12f7-48a5-872f-a2705d20af76",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-telegram-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5114c592-6613-4164-af91-af566747fb01",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "dark-web-telegram-posts",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "74649b9e-6697-41a3-b306-f4b17c2d420e",
+          "name": "Retrieves data breach event details.",
+          "request": {
+            "name": "Retrieves data breach event details.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                "data-breaches",
+                ":event-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "abda1e8e-a036-4606-94ef-1cb7cd558061",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "data-breaches",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"52c6fd64-8e91-46f2-ba5a-8761e103f9cf\",\n  \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n  \"type\": \"DATA_BREACH\",\n  \"module\": \"LEAKED_DATA\",\n  \"risk_level\": \"HIGH\",\n  \"is_resolved\": false,\n  \"date_added\": \"2020-05-01T08:06:32.000Z\",\n  \"official_breach_date\": \"2020-01-01T08:00:00.000Z\",\n  \"asset\": {\n    \"type\": \"EMAIL\",\n    \"value\": \"test@example.com\"\n  },\n  \"tags\": [\n    \"CREDENTIALS\",\n    \"PII\"\n  ],\n  \"data_keys\": \"country,email,password\",\n  \"description\": \"Example.com experienced a data breach. Breach happened on the 1st of May 2020\",\n  \"data_breach_type\": \"IDENTIFIED\",\n  \"data_points\": [\n    {\n      \"data_key\": \"email\",\n      \"values\": [\n        \"test@example.com\"\n      ]\n    },\n    {\n      \"data_key\": \"password\",\n      \"values\": [\n        \"password123\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "781a527f-195e-4574-8496-04331771dbdd",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "data-breaches",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ca76dd43-a74e-4a0a-8856-e2f0fc37d033",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "data-breaches",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1e5e6b0-f593-4359-aa2f-26098e97a84b",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "data-breaches",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c26f14e7-900a-4de8-9775-6b9f3f8600c5",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "data-breaches",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b3759dbe-0990-4b5d-bb6c-04726d1ff277",
+          "name": "Retrieves domain permutation event details.",
+          "request": {
+            "name": "Retrieves domain permutation event details.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                "domain-permutations",
+                ":event-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0ec3599e-c838-4663-9604-e7c5e1ccb10d",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "domain-permutations",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"1ea1494c-d1e7-4e7d-a87b-e69f4165e646\",\n  \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n  \"type\": \"DOMAIN_PERMUTATION\",\n  \"module\": \"DOMAIN_SQUATTING\",\n  \"risk_level\": \"HIGH\",\n  \"is_resolved\": true,\n  \"date_added\": \"2023-02-01T05:18:00.000Z\",\n  \"tags\": [\n    \"dormant_infrastructure\",\n    \"suspicious_infrastructure\",\n    \"tld-swap\"\n  ],\n  \"original_domain\": \"example.com\",\n  \"domain\": \"examble.com\",\n  \"permutation_type\": \"dictionary\",\n  \"detected_at\": \"2023-02-01T04:18:00.000Z\",\n  \"geo_ips\": [\n    {\n      \"address\": \"109.235.74.225\",\n      \"country_name\": \"The Netherlands\",\n      \"country_code_iso2\": \"NL\"\n    }\n  ],\n  \"whois\": {\n    \"name\": \"REDACTED FOR PRIVACY\",\n    \"organization\": \"REDACTED FOR PRIVACY\",\n    \"registrar\": \"Realtime Register B.V.\",\n    \"contacts\": \"rtr-security-threats@realtimeregister.com\",\n    \"registration_date\": \"2024-11-19\",\n    \"expiration_date\": \"2025-11-19\"\n  },\n  \"service_banners\": {\n    \"http\": \"cloudflare\",\n    \"smtp\": \"lotus.secure-hq.com ESMTP Postcow\"\n  },\n  \"threat_analysis\": {\n    \"content_similarity\": null,\n    \"visual_similarity\": null\n  },\n  \"redirects\": [\n    {\n      \"url\": \"http://meettelesoftas.com/\",\n      \"status_code\": 301\n    }\n  ],\n  \"ai_analysis\": {\n    \"threats\": [\n      {\n        \"type\": \"affiliate_fraud\",\n        \"confidence\": 85,\n        \"evidences\": [\n          \"Redirect chain leads to the original domain (telesoftas.com)\",\n          \"Contains similar content that matches the original domain\",\n          \"Different organization in WHOIS with privacy protection\"\n        ],\n        \"severity\": \"CRITICAL\"\n      }\n    ],\n    \"recommendations\": [\n      {\n        \"action\": \"Monitor the domain and its activity closely\",\n        \"rationale\": \"High risk of affiliate fraud with potential attempts to intercept traffic to the legitimate site.\"\n      }\n    ]\n  },\n  \"name_servers\": [\n    \"ns2.yoursrs.com\",\n    \"ns1.yoursrs.com\"\n  ],\n  \"mail_servers\": [\n    \"lotus.secure-hq.com\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1747c387-dbff-4efc-abd3-7d62704fec70",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "domain-permutations",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "91eab761-9d7b-4610-ab56-c64b197d6327",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "domain-permutations",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df4dbe40-588f-4e60-926f-69a085f56f3d",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "domain-permutations",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ad259a5-bd05-42b9-9a74-d27992fe19da",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "domain-permutations",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9da29963-9eb9-4d00-96d5-614ee42c9b65",
+          "name": "Retrieves malware infection event details.",
+          "request": {
+            "name": "Retrieves malware infection event details.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                "malware-infections",
+                ":event-id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c8bb9add-258a-4157-bf6f-8428ebe0a38f",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "malware-infections",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"52c6fd64-8e91-46f2-ba5a-8761e103f9cf\",\n  \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n  \"type\": \"MALWARE_INFECTION\",\n  \"stealer_name\": \"redline\",\n  \"identifier\": \"53956e45779669337341fd33337c7328e5a85b42576152b99ferdf26d736321f\",\n  \"module\": \"LEAKED_DATA\",\n  \"risk_level\": \"HIGH\",\n  \"is_resolved\": false,\n  \"date_added\": \"2020-05-01T08:06:32.000Z\",\n  \"infection_date\": \"2020-01-01T08:00:00.000Z\",\n  \"asset\": {\n    \"type\": \"EMAIL\",\n    \"value\": \"test@example.com\"\n  },\n  \"tags\": [\n    \"CORPORATE_CREDENTIALS\",\n    \"CORPORATE_COOKIES\",\n    \"CREDENTIALS\"\n  ],\n  \"files\": [\n    {\n      \"path\": \"path/path/path/file1.txt\"\n    },\n    {\n      \"path\": \"path/path/path/file2.pdf\"\n    }\n  ],\n  \"corporate_domain_cookies\": [\n    {\n      \"domain\": \"<redacted>\",\n      \"expired_cookies_count\": 1,\n      \"valid_cookies_count\": 1,\n      \"cookies\": [\n        {\n          \"name\": \"cache\",\n          \"value\": \"xnhgvsssffcsbs\",\n          \"expires_on\": \"2024-05-01T08:06:32.000Z\",\n          \"expired_for\": 1002145\n        },\n        {\n          \"name\": \"machine\",\n          \"value\": \"localhost\",\n          \"expires_on\": \"2025-05-01T08:06:32.000Z\",\n          \"expired_for\": null\n        }\n      ]\n    }\n  ],\n  \"credentials\": [\n    {\n      \"url\": \"<redacted>\",\n      \"application\": \"Google Chrome\",\n      \"email\": \"test@example.com\",\n      \"username\": \"example\",\n      \"password\": \"asdjnashyssuasa\",\n      \"is_corporate\": true\n    },\n    {\n      \"url\": \"<redacted>\",\n      \"application\": \"Google Chrome\",\n      \"email\": \"email@example.com\",\n      \"username\": \"Username\",\n      \"password\": \"Jonam@321\",\n      \"is_corporate\": false\n    }\n  ],\n  \"corporate_auto_fills\": [\n    {\n      \"name\": \"website\",\n      \"value\": \"<redacted>\",\n      \"browser\": \"Firefox\"\n    },\n    {\n      \"name\": \"mobilePhone\",\n      \"value\": \"12354789\",\n      \"browser\": \"Internet Explorer\"\n    }\n  ],\n  \"credit_cards\": [\n    {\n      \"card_holder_name\": \"Name Surname\",\n      \"card_number\": \"xxxx-xxxx-xxxx\",\n      \"cvv\": \"123\",\n      \"expires_on\": \"01/01\"\n    }\n  ],\n  \"device_info\": {\n    \"ip\": \"192.16.0.1\",\n    \"hardware_id\": \"191C0049FB5931205A5AFF3CD86DE984E\",\n    \"machine_id\": \"dddc5250b54c430eb942eb21e3df0fe5\",\n    \"os\": \"Windows 11 Home (10.0.22631) x64\",\n    \"user_name\": \"PICA\",\n    \"system_name\": \"User\"\n  },\n  \"location\": {\n    \"zip_code\": \"4789456\",\n    \"country\": \"MA\",\n    \"location_name\": \"Casablanca, Casablanca-Settat\",\n    \"language\": \"en-GB\",\n    \"time_zone\": \"(UTC+01:00) Casablanca\",\n    \"date\": \"2020-05-01T08:06:32.000Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1cbb3aeb-0174-4ea6-90b4-d18eec4ab26f",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "malware-infections",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "747ba28e-21e1-43b8-8053-326fe3b53d05",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "malware-infections",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d36492b8-9ba2-4f16-ae37-5fd5ff71525b",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "malware-infections",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d2906cc-1aec-4788-8798-ac3daa7887f5",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    "malware-infections",
+                    ":event-id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "206f2dd2-288e-49c4-a9ac-035e3e1c3223",
+          "name": "Resolves an event",
+          "request": {
+            "name": "Resolves an event",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "events",
+                ":event-id",
+                "is_resolved"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "event-id",
+                  "description": "(Required) Unique identifier of the event"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_resolved\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d7fde958-f3e7-4823-9ff1-9e498f390cd4",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    ":event-id",
+                    "is_resolved"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"is_resolved\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"52c6fd64-8e91-46f2-ba5a-8761e103f9cf\",\n  \"is_resolved\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "874b47e8-6bfc-49a3-94c9-f7b2b64c57c0",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    ":event-id",
+                    "is_resolved"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"is_resolved\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c85dc23-5023-4613-8efa-712150aff0de",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    ":event-id",
+                    "is_resolved"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"is_resolved\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8feb254b-987e-4d70-a2e8-2a31bd27beea",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    ":event-id",
+                    "is_resolved"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"is_resolved\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0c231cca-4f10-4a4e-b0a1-5b340391adc0",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "events",
+                    ":event-id",
+                    "is_resolved"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "event-id",
+                      "description": "(Required) Unique identifier of the event"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"is_resolved\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "15c50be9-876d-4c7c-baaf-2625186737d8",
+      "name": "Projects",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6270e9d4-a46e-4e9d-98d4-d70ac69c8154",
+          "name": "Retrieves events for a specific project within a given date and time range.",
+          "request": {
+            "name": "Retrieves events for a specific project within a given date and time range.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "projects",
+                ":project-id",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "date-added-from",
+                  "value": "<dateTime>",
+                  "description": "Start datetime for filtering events (ISO 8601 format). Supported format: `YYYY-MM-DDTHH:MM:SS.000Z`"
+                },
+                {
+                  "disabled": false,
+                  "key": "date-added-to",
+                  "value": "<dateTime>",
+                  "description": "End datetime for filtering events (ISO 8601 format). Supported format: `YYYY-MM-DDTHH:MM:SS.000Z`"
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Numeric offset of the first element provided on a page representing a collection request"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Limit to restrict the number of entries on a page"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "project-id",
+                  "description": "(Required) Unique identifier of the project"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1c7049d5-6640-4ce1-85ca-109645eb5235",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects",
+                    ":project-id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date-added-from",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "date-added-to",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project-id",
+                      "description": "(Required) Unique identifier of the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"52c6fd64-8e91-46f2-ba5a-8761e103f9cf\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"DATA_BREACH\",\n      \"module\": \"LEAKED_DATA\",\n      \"risk_level\": \"INFORMATIONAL\",\n      \"is_resolved\": false,\n      \"date_added\": \"2020-05-01T08:06:32.000Z\",\n      \"asset\": {\n        \"type\": \"EMAIL\",\n        \"value\": \"test@example.com\"\n      },\n      \"tags\": [\n        \"CREDENTIALS\"\n      ]\n    },\n    {\n      \"id\": \"4a13e3f8-2d01-4498-b951-03aaa4c8225f\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"MALWARE_INFECTION\",\n      \"module\": \"LEAKED_DATA\",\n      \"risk_level\": \"LOW\",\n      \"is_resolved\": false,\n      \"date_added\": \"2022-02-01T00:00:00.000Z\",\n      \"asset\": {\n        \"type\": \"EMAIL\",\n        \"value\": \"test@example.com\"\n      },\n      \"tags\": [\n        \"CREDENTIALS\",\n        \"PII\"\n      ]\n    },\n    {\n      \"id\": \"cdadc286-a63f-4286-bbef-4ec793e9412f\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"COMBO_LIST\",\n      \"module\": \"LEAKED_DATA\",\n      \"risk_level\": \"HIGH\",\n      \"is_resolved\": true,\n      \"date_added\": \"2023-05-01T08:06:32.000Z\",\n      \"asset\": {\n        \"type\": \"EMAIL\",\n        \"value\": \"test@example.com\"\n      },\n      \"tags\": [\n        \"CREDENTIALS\"\n      ]\n    },\n    {\n      \"id\": \"0f4df325-fb54-4bb9-9a14-64dc004def23\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"DATA_BREACH\",\n      \"module\": \"LEAKED_DATA\",\n      \"risk_level\": \"HIGH\",\n      \"is_resolved\": false,\n      \"date_added\": \"2023-05-14T08:06:32.000Z\",\n      \"asset\": {\n        \"type\": \"PHONE\",\n        \"value\": \"5877892654\"\n      },\n      \"tags\": [\n        \"CREDENTIALS\"\n      ]\n    },\n    {\n      \"id\": \"34a1d00d-04ab-45a8-bafb-2d9421a89770\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"MALWARE_INFECTION\",\n      \"module\": \"LEAKED_DATA\",\n      \"risk_level\": \"HIGH\",\n      \"is_resolved\": true,\n      \"date_added\": \"2023-05-15T01:06:45.000Z\",\n      \"asset\": {\n        \"type\": \"EMAIL\",\n        \"value\": \"test@example.com\"\n      },\n      \"tags\": [\n        \"CREDENTIALS\",\n        \"CORPORATE_COOKIES\",\n        \"CORPORATE_CREDENTIALS\"\n      ]\n    },\n    {\n      \"id\": \"1ea1494c-d1e7-4e7d-a87b-e69f4165e646\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"DOMAIN_PERMUTATION\",\n      \"module\": \"DOMAIN_SQUATTING\",\n      \"risk_level\": \"HIGH\",\n      \"is_resolved\": true,\n      \"date_added\": \"2023-02-01T05:18:00.000Z\",\n      \"asset\": {\n        \"type\": \"DOMAIN\",\n        \"value\": \"example.com\"\n      },\n      \"tags\": [\n        \"dormant_infrastructure\",\n        \"suspicious_infrastructure\",\n        \"tld-swap\"\n      ]\n    },\n    {\n      \"id\": \"2ec1526c-c324-4b7b-bea2-5d339afed07a\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"DARK_WEB_FORUM_POST\",\n      \"module\": \"DARK_WEB_MONITORING\",\n      \"risk_level\": \"INFORMATIONAL\",\n      \"is_resolved\": true,\n      \"date_added\": \"2023-02-01T05:18:00.000Z\",\n      \"asset\": {\n        \"type\": \"DARK_WEB_MONITORING_RULE\",\n        \"value\": \"Leaked forum posts\"\n      },\n      \"tags\": [\n        \"MARKETPLACE\"\n      ]\n    },\n    {\n      \"id\": \"4743f069-c341-4d02-91a0-cd0199d02bf4\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"DARK_WEB_TELEGRAM_POST\",\n      \"module\": \"DARK_WEB_MONITORING\",\n      \"risk_level\": \"INFORMATIONAL\",\n      \"is_resolved\": true,\n      \"date_added\": \"2024-02-10T05:18:00.000Z\",\n      \"asset\": {\n        \"type\": \"DARK_WEB_MONITORING_RULE\",\n        \"value\": \"Leaked telegram posts\"\n      },\n      \"tags\": [\n        \"TOP_5000_CF\",\n        \"TOP_20000_CF\"\n      ]\n    },\n    {\n      \"id\": \"e85cd382-76db-4849-a485-cb480fc0b999\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"DARK_WEB_RANSOMWARE_POST\",\n      \"module\": \"DARK_WEB_MONITORING\",\n      \"risk_level\": \"INFORMATIONAL\",\n      \"is_resolved\": false,\n      \"date_added\": \"2025-10-15T05:18:00.000Z\",\n      \"asset\": {\n        \"type\": \"DARK_WEB_MONITORING_RULE\",\n        \"value\": \"Ransomware posts\"\n      },\n      \"tags\": [\n        \"MISSING_DOMAIN\",\n        \"RANSOMWARE\"\n      ]\n    },\n    {\n      \"id\": \"88376bc0-aca0-4f11-a097-4ead04e7b33c\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"DARK_WEB_MARKETPLACE_POST\",\n      \"module\": \"DARK_WEB_MONITORING\",\n      \"risk_level\": \"INFORMATIONAL\",\n      \"is_resolved\": false,\n      \"date_added\": \"2025-10-15T05:18:00.000Z\",\n      \"asset\": {\n        \"type\": \"DARK_WEB_MONITORING_RULE\",\n        \"value\": \"Marketplace posts\"\n      },\n      \"tags\": [\n        \"MARKETPLACE\",\n        \"TOP_50000_CF\"\n      ]\n    },\n    {\n      \"id\": \"d7443de3-ad45-4ec5-91d2-d465b0fe2f73\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY\",\n      \"module\": \"ATTACK_SURFACE\",\n      \"risk_level\": \"INFORMATIONAL\",\n      \"is_resolved\": true,\n      \"date_added\": \"2021-02-01T05:16:59.000Z\",\n      \"asset\": {\n        \"type\": \"DOMAIN\",\n        \"value\": \"example.com\"\n      },\n      \"tags\": [\n        \"CLOUD\",\n        \"CDN\"\n      ]\n    },\n    {\n      \"id\": \"55cfd1a8-9285-4fd9-bdfe-15a217d77d1f\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"ATTACK_SURFACE_NETWORK_SERVICE_VULNERABILITY\",\n      \"module\": \"ATTACK_SURFACE\",\n      \"risk_level\": \"HIGH\",\n      \"is_resolved\": true,\n      \"date_added\": \"2021-02-01T05:18:00.000Z\",\n      \"asset\": {\n        \"type\": \"IP\",\n        \"value\": \"192.168.0.1\"\n      },\n      \"tags\": [\n        \"CLOUD\",\n        \"CDN\"\n      ]\n    },\n    {\n      \"id\": \"85cfd1a8-9285-4fd9-bdfe-15a217d77d1f\",\n      \"project_id\": \"1e4d2e74-1c31-4116-a33d-8806e1b3ef29\",\n      \"type\": \"ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY\",\n      \"module\": \"ATTACK_SURFACE\",\n      \"risk_level\": \"HIGH\",\n      \"is_resolved\": true,\n      \"date_added\": \"2021-02-01T05:18:00.000Z\",\n      \"asset\": {\n        \"type\": \"DOMAIN\",\n        \"value\": \"example.com\"\n      },\n      \"tags\": [\n        \"CLOUD\",\n        \"CDN\"\n      ]\n    }\n  ],\n  \"self\": \"https://example.com/v1/projetcs/1e4d2e74-1c31-4116-a33d-8806e1b3ef29/events?limit=5\",\n  \"next\": \"https://example.com/v1/projects/1e4d2e74-1c31-4116-a33d-8806e1b3ef29/events?offset=5&limit=5\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5392dead-bf6b-4954-be94-0f3c143b8e35",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects",
+                    ":project-id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date-added-from",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "date-added-to",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project-id",
+                      "description": "(Required) Unique identifier of the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4cba1027-7b93-428c-83a2-a59e91d338fc",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects",
+                    ":project-id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date-added-from",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "date-added-to",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project-id",
+                      "description": "(Required) Unique identifier of the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "babcd978-436b-45d5-baca-48022fb684b0",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects",
+                    ":project-id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date-added-from",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "date-added-to",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project-id",
+                      "description": "(Required) Unique identifier of the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ed5fc7e0-fb7b-4548-8055-ad63b4664573",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects",
+                    ":project-id",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "date-added-from",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "date-added-to",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project-id",
+                      "description": "(Required) Unique identifier of the project"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "71740fa6-3d3b-4f65-b3e9-258537cb7372",
+          "name": "This endpoint is designed to retrieve projects.",
+          "request": {
+            "name": "This endpoint is designed to retrieve projects.",
+            "description": {},
+            "url": {
+              "path": [
+                "v2",
+                "projects"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Numeric offset of the first element provided on a page representing a collection request"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Limit to restrict the number of entries on a page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6fae2de0-445f-4cdb-83d0-dc790919c6c4",
+              "name": "The request has succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"items\": [\n    {\n      \"id\": \"52c6fd64-8e91-46f2-ba5a-8761e103f9cf\",\n      \"name\": \"Project\"\n    },\n    {\n      \"id\": \"e04fe001-6d0b-490e-957c-1234d9c08878\",\n      \"name\": \"Test project\"\n    },\n    {\n      \"id\": \"ea47fdc0-afc6-4e51-8eb0-bab8a9618b5d\",\n      \"name\": \"new project\"\n    },\n    {\n      \"id\": \"5a8bd777-9cc7-419e-b189-f35d57ed2437\",\n      \"name\": \"Test\"\n    },\n    {\n      \"id\": \"8369a0b6-e7ed-4e62-9881-f3dd233b58c5\",\n      \"name\": \"Another project\"\n    }\n  ],\n  \"self\": \"https://example.com/v1/projects?limit=5\",\n  \"next\": \"https://example.com/v1/projects/?offset=5&limit=5\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "35c7cbf3-8a18-41b2-9ef0-0303a8a2e20c",
+              "name": "The server cannot or will not process the request due to an error made by the client.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"instance\": \"/v1/resource/123\",\n  \"errors\": {\n    \"FIELD A\": [\n      \"ERROR 1\",\n      \"ERROR 2\"\n    ],\n    \"FIELD B\": [\n      \"ERROR 3\"\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "61ac50b1-5f16-49a4-8525-87e3bad5948b",
+              "name": "The server has received and understood the request but is unable to authenticate it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized\",\n  \"title\": \"Unauthorized\",\n  \"status\": 401,\n  \"detail\": \"User unauthorized.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63aa6b02-d38f-4d75-aa7c-f0d7ceb87c1c",
+              "name": "The server has received and understood the request but is unable to authorize it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden\",\n  \"title\": \"Forbidden\",\n  \"status\": 403,\n  \"detail\": \"The user is not allowed to do an action for the specified resource.\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d684ebf-ea47-4750-ab70-c9e20858dccc",
+              "name": "The server has encountered a situation it does not know how to handle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "projects"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"type\": \"https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error\",\n  \"title\": \"Internal Server Error\",\n  \"status\": 500,\n  \"detail\": \"Something went wrong\",\n  \"instance\": \"/v1/resource/123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://platform-integration-api.nordstellar.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "800ea724-693d-43ab-8c7d-f8cd11e12363",
+    "name": "Platform Integration API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API for integration with platform data.\n\nContact Support:\n Name: Vakaris Noreika\n Email: vakaris.noreika@nordsec.com",
+      "type": "text/plain"
+    }
+  }
+}

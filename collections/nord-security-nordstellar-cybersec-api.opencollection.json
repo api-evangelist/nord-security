@@ -1,0 +1,497 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cybersec API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "URL scanner",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get config",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/urlscanner/config"
+          },
+          "docs": "Get config"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Lists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get lists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/lists"
+          },
+          "docs": "Retrieves a list of available cybersec lists"
+        },
+        {
+          "info": {
+            "name": "Get list content",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/lists/:listCategory/:listIdentifier",
+            "params": [
+              {
+                "name": "listCategory",
+                "value": "",
+                "type": "path",
+                "description": "List category"
+              },
+              {
+                "name": "listIdentifier",
+                "value": "",
+                "type": "path",
+                "description": "List identfier"
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "List version"
+              }
+            ]
+          },
+          "docs": "This endpoint can return different content versions based on the optional version query parameter. Without this query parameter, it will return the latest content version. Even though it is not mandatory, you should always specify the version parameter if possible."
+        },
+        {
+          "info": {
+            "name": "Get list diff",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/lists/:listCategory/:listIdentifier/diffs",
+            "params": [
+              {
+                "name": "listCategory",
+                "value": "",
+                "type": "path",
+                "description": "List category"
+              },
+              {
+                "name": "listIdentifier",
+                "value": "",
+                "type": "path",
+                "description": "List identfier"
+              },
+              {
+                "name": "version_from",
+                "value": "",
+                "type": "query",
+                "description": "Version of the list to calculate diff from"
+              },
+              {
+                "name": "version_to",
+                "value": "",
+                "type": "query",
+                "description": "Version of the list to calculate diff from"
+              }
+            ]
+          },
+          "docs": "This endpoint returns category list file differences between two specified versions. Returned diff is formatted in unified patch format (https://www.gnu.org/software/diffutils/manual/html_node/Example-Unified.html#Example-Unified)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "AUC",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get AUC lists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/auc/lists"
+          },
+          "docs": "This endpoint is deprecated in favour of /v2/cybersec/urls/allowed-domains\n"
+        },
+        {
+          "info": {
+            "name": "Get AUC hashed lists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/auc/lists/hashed"
+          },
+          "docs": "This endpoint is deprecated in favour of /v2/cybersec/urls/allowed-domains\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Urls",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Allowed Domains lists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/urls/allowed-domains"
+          },
+          "docs": "This endpoint returns a 302 to an AWS bucket containing the domain whitelist and url exception list. The returned data might depend on the user's country.\n"
+        },
+        {
+          "info": {
+            "name": "Get Hashed Allowed Domains list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/urls/allowed-domains/hashed"
+          },
+          "docs": "This endpoint returns a 302 to an AWS bucket containing an hashed version of the domain whitelist and url exception list. The returned data might depend on the user's country.\n"
+        },
+        {
+          "info": {
+            "name": "Get URL categories",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/urls/categories"
+          },
+          "docs": "This endpoint returns URL category list for category ID mapping. Each entry contains category ID with it's description and whether it should be blocked on client side."
+        },
+        {
+          "info": {
+            "name": "Perform an URL check",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/urls/check",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint returns performs a query on provided url list for fraudulent content. Returned list contains category array for each url and status code."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get file extensions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/files/extensions"
+          },
+          "docs": "Returns a list for portable and non portable executable file extensions."
+        },
+        {
+          "info": {
+            "name": "Perform a file check",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/files/check",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint performs a malware database check on a sha256 hash-sum of the file."
+        },
+        {
+          "info": {
+            "name": "Upload a file for malware check",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/files/upload/:sha256",
+            "params": [
+              {
+                "name": "sha256",
+                "value": "",
+                "type": "path",
+                "description": "sha256 checksum of the file"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Use this endpoint for file upload for malware inspection. File is only accepted if it was previously requested by hash check."
+        },
+        {
+          "info": {
+            "name": "Upload malware file for ML models training",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/files/ml-upload/:sha256",
+            "params": [
+              {
+                "name": "sha256",
+                "value": "",
+                "type": "path",
+                "description": "sha256 checksum of the file"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Use this endpoint to upload malware file for ML models training. File is only accepted if it was previously requested by hash check and file has category malware."
+        },
+        {
+          "info": {
+            "name": "Get file mime-types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v3/cybersec/files/mime-types"
+          },
+          "docs": "Returns a list of scan and deep-scan file MIME types."
+        },
+        {
+          "info": {
+            "name": "Perform a file check",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cybersec.nordstellar.com/v3/cybersec/files/check",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint performs a malware database check on a sha256 hash-sum of the file."
+        },
+        {
+          "info": {
+            "name": "Upload a file for malware check",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cybersec.nordstellar.com/v3/cybersec/files/upload/:sha256",
+            "params": [
+              {
+                "name": "sha256",
+                "value": "",
+                "type": "path",
+                "description": "sha256 checksum of the file"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Use this endpoint for file upload for malware inspection. File is only accepted if it was previously requested by hash check."
+        },
+        {
+          "info": {
+            "name": "Upload malware file for ML models training",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cybersec.nordstellar.com/v3/cybersec/files/ml-upload/:sha256",
+            "params": [
+              {
+                "name": "sha256",
+                "value": "",
+                "type": "path",
+                "description": "sha256 checksum of the file"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "file",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Use this endpoint to upload malware file for ML models training. File is only accepted if it was previously requested by hash check and file has category malware."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "ML Models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get ML Models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/ml-models"
+          },
+          "docs": "Retrieves a ML Models available"
+        },
+        {
+          "info": {
+            "name": "Get ML Models info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/ml-models/:name/:modelVersionIdentifier",
+            "params": [
+              {
+                "name": "name",
+                "value": "",
+                "type": "path",
+                "description": "ML Model name"
+              },
+              {
+                "name": "modelVersionIdentifier",
+                "value": "",
+                "type": "path",
+                "description": "ML Model version identifier"
+              }
+            ]
+          },
+          "docs": "Returns data of an specific ML Model version, include URL to get the file and the thresholds"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Applications",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Perform a applications vulnerabilities check",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cybersec.nordstellar.com/v2/cybersec/applications/check",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint performs vulnerabilities database check on applications name, version, OS an OS version."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Cookies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Perform a leaked cookies check",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cybersec.nordstellar.com/v3/cybersec/cookies/check",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint performs leaked cookies check on supported by Serity service."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Crypto Addresses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Perform a crypto addresses check",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://cybersec.nordstellar.com/v3/cybersec/cryptoaddresses/check",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint performs a crypto addresses check."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
