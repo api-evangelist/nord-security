@@ -45,6 +45,12 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
   baseURL: https://enterprise-data-api.nordstellar.com
   tags:
+  - Breach Intelligence
+  - Dark Web
+  - Threat Intelligence
+  - Credential Monitoring
+  - malware-logs
+  tags_raw:
   - breach-intelligence
   - dark-web
   - threat-intelligence
@@ -77,6 +83,11 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/crs/swagger
   baseURL: https://enterprise-crs-api.nordstellar.com
   tags:
+  - Risk Scoring
+  - Third-Party Risk
+  - Vendor Risk
+  - Threat Intelligence
+  tags_raw:
   - risk-scoring
   - third-party-risk
   - vendor-risk
@@ -94,6 +105,10 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
   baseURL: https://cybersec.nordstellar.com
   tags:
+  - URL Scanning
+  - File Scanning
+  - Threat Detection
+  tags_raw:
   - url-scanning
   - file-scanning
   - threat-detection
@@ -110,6 +125,10 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/partner/swagger
   baseURL: https://platform-partners-api.nordstellar.com
   tags:
+  - Partner API
+  - MSP
+  - Account Management
+  tags_raw:
   - partner-api
   - msp
   - account-management
@@ -127,6 +146,12 @@ apis:
   humanURL: https://docs.nordstellar.com/platform/integrations-api
   baseURL: https://platform-integration-api.nordstellar.com
   tags:
+  - Integration
+  - SIEM
+  - SOAR
+  - Event
+  - Automation
+  tags_raw:
   - integrations
   - siem
   - soar
@@ -158,6 +183,11 @@ apis:
   humanURL: https://docs.nordstellar.com/platform/mcp
   baseURL: https://platform-mcp.nordstellar.com/mcp
   tags:
+  - MCP
+  - agent-native
+  - Threat Intelligence
+  - GraphQL
+  tags_raw:
   - mcp
   - agent-native
   - threat-intelligence
@@ -185,6 +215,11 @@ apis:
   humanURL: https://help.nordlayer.com/docs/api-key-management-for-smp
   baseURL: https://api.nordlayer.com/
   tags:
+  - MSP
+  - Partner API
+  - Provisioning
+  - Network Security
+  tags_raw:
   - msp
   - partner-api
   - provisioning
@@ -217,6 +252,11 @@ apis:
   humanURL: https://help.nordlayer.com/docs/user-provisioning
   baseURL: https://api.nordlayer.com/
   tags:
+  - SCIM
+  - Provisioning
+  - Identity
+  - SSO
+  tags_raw:
   - scim
   - provisioning
   - identity
@@ -235,6 +275,11 @@ apis:
   humanURL: https://support.nordpass.com/hc/en-us/articles/23164869782801-Provider-API-for-Usage-Reporting
   baseURL: https://api.nordpass.com/
   tags:
+  - MSP
+  - usage-reporting
+  - Password Management
+  - SCIM
+  tags_raw:
   - msp
   - usage-reporting
   - password-management
@@ -259,6 +304,10 @@ apis:
   humanURL: https://github.com/NordSecurity/nordvpn-linux
   baseURL: https://api.nordvpn.com/v1
   tags:
+  - VPN
+  - server-directory
+  - Undocumented
+  tags_raw:
   - vpn
   - server-directory
   - undocumented
