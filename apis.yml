@@ -36,150 +36,14 @@ tags:
 - gRPC
 - Company
 apis:
-- name: NordStellar Enterprise Data API
-  description: >-
-    Also marketed as the NordStellar Dark Web API. Breach-intelligence data API over malware/infostealer
-    logs, breached databases, credential lists, cookie and password intelligence, and dark web sources,
-    with domain, email, phone, credit card and national-ID intelligence endpoints plus API user and
-    subscription management. 85 operations across 15 tagged capability areas, OpenAPI 3.1.
-  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
-  baseURL: https://enterprise-data-api.nordstellar.com
-  tags:
-  - Breach Intelligence
-  - Dark Web
-  - Threat Intelligence
-  - Credential Monitoring
-  - malware-logs
-  tags_raw:
-  - breach-intelligence
-  - dark-web
-  - threat-intelligence
-  - credential-monitoring
-  - malware-logs
-  properties:
-  - type: OpenAPI
-    url: openapi/nord-security-nordstellar-enterprise-data-api-openapi.json
-  - type: Documentation
-    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
-  - type: APIReference
-    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
-  - type: Authentication
-    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
-  - type: RateLimits
-    url: rate-limits/nord-security-rate-limits.yml
-  - type: Examples
-    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
-  - type: Overlay
-    url: overlays/nord-security-nordstellar-enterprise-data-api-overlay.yaml
-  - type: DataModel
-    url: data-model/nord-security-data-model.yml
-  - type: ErrorCatalog
-    url: errors/nord-security-problem-types.yml
-- name: NordStellar Company Risk Scoring API
-  description: >-
-    Evaluates the cybersecurity risk of an external company identified primarily by domain name,
-    returning scored risk assessments for third-party/vendor risk workflows. 14 operations, OpenAPI 3.1,
-    API key header or HTTP Basic authentication.
-  humanURL: https://docs.nordstellar.com/enterprise-apis/crs/swagger
-  baseURL: https://enterprise-crs-api.nordstellar.com
-  tags:
-  - Risk Scoring
-  - Third-Party Risk
-  - Vendor Risk
-  - Threat Intelligence
-  tags_raw:
-  - risk-scoring
-  - third-party-risk
-  - vendor-risk
-  - threat-intelligence
-  properties:
-  - type: OpenAPI
-    url: openapi/nord-security-nordstellar-company-risk-scoring-api-openapi.json
-  - type: APIReference
-    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
-- name: NordStellar Cybersec API
-  description: >-
-    URL and file scanning API with allow/deny list management and account usage control (AUC).
-    23 operations, OpenAPI 3.0, bearer-token authentication, with documented X-RateLimit headers and
-    Retry-After handling on 429.
-  humanURL: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
-  baseURL: https://cybersec.nordstellar.com
-  tags:
-  - URL Scanning
-  - File Scanning
-  - Threat Detection
-  tags_raw:
-  - url-scanning
-  - file-scanning
-  - threat-detection
-  properties:
-  - type: OpenAPI
-    url: openapi/nord-security-nordstellar-cybersec-api-openapi.json
-  - type: APIReference
-    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
-- name: NordStellar Partners API
-  description: >-
-    Partner-facing API for managing partner accounts and customer relationships, including creating and
-    managing customer organizations. 5 operations, OpenAPI 3.0.4, API key header auth, RFC 9457
-    application/problem+json error responses on every operation.
-  humanURL: https://docs.nordstellar.com/enterprise-apis/partner/swagger
-  baseURL: https://platform-partners-api.nordstellar.com
-  tags:
-  - Partner API
-  - MSP
-  - Account Management
-  tags_raw:
-  - partner-api
-  - msp
-  - account-management
-  properties:
-  - type: OpenAPI
-    url: openapi/nord-security-nordstellar-partners-api-openapi.json
-  - type: APIReference
-    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
-- name: NordStellar Platform Integrations API
-  description: >-
-    Connects NordStellar's monitoring features to external security tools, dashboards and automated
-    workflows — events, alerts and platform data for SIEM/SOAR forwarding. Three published versions
-    (v1/v2/v3) are served side by side from the same reference; v3 is the default. Bearer authentication,
-    RFC 9457 problem+json errors. Also consumed by the NordStellar n8n community node.
-  humanURL: https://docs.nordstellar.com/platform/integrations-api
-  baseURL: https://platform-integration-api.nordstellar.com
-  tags:
-  - Integration
-  - SIEM
-  - SOAR
-  - Event
-  - Automation
-  tags_raw:
-  - integrations
-  - siem
-  - soar
-  - events
-  - automation
-  properties:
-  - type: OpenAPI
-    url: openapi/nord-security-nordstellar-platform-integration-api-v3-openapi.json
-  - type: OpenAPI
-    url: openapi/nord-security-nordstellar-platform-integration-api-v2-openapi.json
-  - type: OpenAPI
-    url: openapi/nord-security-nordstellar-platform-integration-api-v1-openapi.json
-  - type: Documentation
-    url: https://docs.nordstellar.com/platform/integrations-api
-  - type: APIReference
-    url: https://docs.nordstellar.com/platform/integrations-api/swagger
-  - type: Examples
-    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
-  - type: Overlay
-    url: overlays/nord-security-nordstellar-platform-integration-api-v3-overlay.yaml
 - name: NordStellar MCP Server
   description: >-
     Remote MCP server that lets any MCP-compatible assistant query the NordStellar platform in natural
-    language. Clients connect through the open-source nordstellar-mcp auth proxy (PyPI, run via uvx, or a
-    one-click .mcpb bundle for Claude Desktop), which performs a browser login and stores session tokens
+    language. Clients connect through the open-source nordstellar-mcp auth proxy (PyPI, run via uvx, or
+    a one-click .mcpb bundle for Claude Desktop), which performs a browser login and stores session tokens
     in the OS credential store. The server fronts NordStellar's GraphQL core and exposes graphql_query,
-    graphql_batch, search_types and get_type_definition. Live tools/list is auth-gated (HTTP 401
-    "no bearer token").
+    graphql_batch, search_types and get_type_definition. Live tools/list is auth-gated (HTTP 401 "no bearer
+    token").
   humanURL: https://docs.nordstellar.com/platform/mcp
   baseURL: https://platform-mcp.nordstellar.com/mcp
   tags:
@@ -209,9 +73,9 @@ apis:
   description: >-
     Partner-facing API behind the NordLayer Service Management Portal. API keys are self-issued in the
     SMP Integrations tab with expiry and one-time visibility, and let MSPs create client organizations,
-    retrieve account details and statuses, and track license usage. The help centre links a "NordLayer MSP
-    API Documentation" PDF for the full specification, but that published link currently returns 404, so
-    no machine-readable contract is publicly retrievable.
+    retrieve account details and statuses, and track license usage. The help centre links a "NordLayer
+    MSP API Documentation" PDF for the full specification, but that published link currently returns 404,
+    so no machine-readable contract is publicly retrievable.
   humanURL: https://help.nordlayer.com/docs/api-key-management-for-smp
   baseURL: https://api.nordlayer.com/
   tags:
@@ -237,10 +101,11 @@ apis:
       content_type: application/json
       body: '{"code":404,"message":"Resource not found"}'
       note: >-
-        Host resolves and answers a JSON error envelope; individual endpoint paths are not published
-        outside the partner-gated MSP API PDF.
+        Host resolves and answers a JSON error envelope; individual endpoint paths are not published outside
+        the partner-gated MSP API PDF.
     spec_link:
-      url: https://cdn.document360.io/fc1049cd-8f71-4b89-b9b8-dbca9fdcdd16/Images/Documentation/NordLayer%20MSP%20API%20Documentation.pdf
+      url: >-
+        https://cdn.document360.io/fc1049cd-8f71-4b89-b9b8-dbca9fdcdd16/Images/Documentation/NordLayer%20MSP%20API%20Documentation.pdf
       http_status: 404
       note: Linked from help.nordlayer.com/docs/api-key-management-for-smp; asset no longer present.
 - name: NordLayer SCIM 2.0 Provisioning
@@ -268,11 +133,12 @@ apis:
     url: conformance/nord-security-conformance.yml
 - name: NordPass Provider API
   description: >-
-    Usage-reporting API for NordPass provider/MSP partners, documented in the NordPass help centre.
-    NordPass separately supports SCIM provisioning from Okta and Microsoft Entra ID for NordPass Business.
-    The provider API reference sits behind a bot-protected help centre and no machine-readable contract is
+    Usage-reporting API for NordPass provider/MSP partners, documented in the NordPass help centre. NordPass
+    separately supports SCIM provisioning from Okta and Microsoft Entra ID for NordPass Business. The
+    provider API reference sits behind a bot-protected help centre and no machine-readable contract is
     published.
-  humanURL: https://support.nordpass.com/hc/en-us/articles/23164869782801-Provider-API-for-Usage-Reporting
+  humanURL: >-
+    https://support.nordpass.com/hc/en-us/articles/23164869782801-Provider-API-for-Usage-Reporting
   baseURL: https://api.nordpass.com/
   tags:
   - MSP
@@ -286,21 +152,24 @@ apis:
   - scim
   properties:
   - type: Documentation
-    url: https://support.nordpass.com/hc/en-us/articles/23164869782801-Provider-API-for-Usage-Reporting
+    url: >-
+      https://support.nordpass.com/hc/en-us/articles/23164869782801-Provider-API-for-Usage-Reporting
   x-evidence:
     fetched: '2026-08-01'
     base_url_probe:
       url: https://api.nordpass.com/
       http_status: 403
       content_type: application/json
-      body: '{"status":403,"title":"Access Forbidden","type":"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"}'
-      note: Host resolves and answers a problem-shaped JSON envelope; endpoint paths are not published.
+      body: >-
+        {"status":403,"title":"Access Forbidden","type":"https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"}
+      note: >-
+        Host resolves and answers a problem-shaped JSON envelope; endpoint paths are not published.
 - name: NordVPN Public Server API
   description: >-
     Unauthenticated JSON API that NordVPN's own clients and the open-source Linux client use to enumerate
-    the server estate — servers, countries, cities, groups and technologies. It is publicly reachable and
-    widely consumed, but Nord Security publishes no developer documentation, no OpenAPI and no terms for
-    it, so it should be treated as an internal client API rather than a supported product API.
+    the server estate — servers, countries, cities, groups and technologies. It is publicly reachable
+    and widely consumed, but Nord Security publishes no developer documentation, no OpenAPI and no terms
+    for it, so it should be treated as an internal client API rather than a supported product API.
   humanURL: https://github.com/NordSecurity/nordvpn-linux
   baseURL: https://api.nordvpn.com/v1
   tags:
@@ -326,7 +195,1168 @@ apis:
     - url: https://api.nordvpn.com/openapi.json
       http_status: 403
       note: No OpenAPI published; host bot-protects non-client paths.
+- aid: nord-security:nord-security-api-user-management-api
+  name: Nord Security API User Management API
+  description: >-
+    Endpoints for administering API keys, and web hook settings.
+
+
+    These operations enable administrators to list and manage API keys, update webhook configuration.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - API User Management
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-api-user-management-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-applications-api
+  name: Nord Security Applications API
+  description: The Applications API from Nord Security — 1 operation(s) for applications.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Applications
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-applications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-auc-api
+  name: Nord Security AUC API
+  description: The AUC API from Nord Security — 2 operation(s) for auc.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - AUC
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-auc-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-breached-databases-api
+  name: Nord Security Breached Databases API
+  description: >-
+    Endpoints for retrieving detailed metadata about breach origins, including databases.
+
+    These operations provide comprehensive context about database breach incidents, affected platforms,
+    and exposure scope to support your security investigations.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Breached Databases
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-breached-databases-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-company-details-api
+  name: Nord Security Company Details API
+  description: The Company Details API from Nord Security — 4 operation(s) for company details.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Company Details
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-company-details-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-cookie-intelligence-api
+  name: Nord Security Cookie Intelligence API
+  description: >-
+    Endpoints for comprehensive cookie data monitoring in data breaches, including zero-knowledge search
+    capabilities.
+
+    These operations enable robust cookie security protection and exposure assessment.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Cookie Intelligence
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-cookie-intelligence-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-cookies-api
+  name: Nord Security Cookies API
+  description: The Cookies API from Nord Security — 1 operation(s) for cookies.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Cookies
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-cookies-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-credential-lists-api
+  name: Nord Security Credential Lists API
+  description: >-
+    Endpoints for retrieving detailed metadata about breach origins, including credential lists.
+
+    These operations provide comprehensive context about credential list breach incidents, affected platforms,
+    and exposure scope to support your security investigations.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Credential Lists
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-credential-lists-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-credit-card-intelligence-api
+  name: Nord Security Credit Card Intelligence API
+  description: >-
+    Endpoints for comprehensive credit card data monitoring in data breaches, including zero-knowledge
+    search capabilities.
+
+    These operations enable robust credit card security protection and exposure assessment.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Credit Card Intelligence
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-credit-card-intelligence-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-crypto-addresses-api
+  name: Nord Security Crypto Addresses API
+  description: The Crypto Addresses API from Nord Security — 1 operation(s) for crypto addresses.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Crypto Addresses
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-crypto-addresses-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-dark-web-intelligence-api
+  name: Nord Security Dark Web Intelligence API
+  description: Endpoints for searching scraped content from the dark web
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Dark Web Intelligence
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-dark-web-intelligence-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-domain-intelligence-api
+  name: Nord Security Domain Intelligence API
+  description: >-
+    Endpoints for investigating domain exposure in data breaches, including detailed breach information
+    and compromise analysis.
+
+    These operations support protection against domain hijacking, phishing attacks, and other threats
+    targeting domain owners.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Domain Intelligence
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-domain-intelligence-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-email-intelligence-api
+  name: Nord Security Email Intelligence API
+  description: >-
+    Endpoints for comprehensive email address monitoring in data breaches, including detailed breach information,
+    password exposure, and statistical analysis.
+
+    These operations enable robust email security protection, account takeover prevention, and exposure
+    assessment at both individual and domain-wide levels.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Email Intelligence
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-email-intelligence-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-events-api
+  name: Nord Security Events API
+  description: The Events API from Nord Security — 36 operation(s) for events.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Events
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-events-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-files-api
+  name: Nord Security Files API
+  description: The Files API from Nord Security — 8 operation(s) for files.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Files
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-files-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-lists-api
+  name: Nord Security Lists API
+  description: The Lists API from Nord Security — 3 operation(s) for lists.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Lists
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-lists-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-malware-logs-intelligence-api
+  name: Nord Security Malware Logs Intelligence API
+  description: >-
+    Endpoints for retrieving detailed metadata about breach origins, including malware logs.
+
+    These operations provide comprehensive context about malware logs breach incidents, affected platforms,
+    and exposure scope to support your security investigations.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Malware Logs Intelligence
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-malware-logs-intelligence-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-ml-models-api
+  name: Nord Security ML Models API
+  description: The ML Models API from Nord Security — 2 operation(s) for ml models.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - ML Models
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-ml-models-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-national-identification-number-intelligence-api
+  name: Nord Security National Identification Number Intelligence API
+  description: >-
+    Endpoints for comprehensive national identification number data monitoring in data breaches, including
+    zero-knowledge search capabilities.
+
+    These operations enable robust national identification number security protection and exposure assessment.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - National Identification Number Intelligence
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-national-identification-number-intelligence-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-partners-api
+  name: Nord Security Partners API
+  description: The Partners API from Nord Security — 4 operation(s) for partners.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Partners
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-partners-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-password-intelligence-api
+  name: Nord Security Password Intelligence API
+  description: >-
+    Endpoints for comprehensive password data monitoring in data breaches, including zero-knowledge search
+    capabilities.
+
+    These operations enable robust password security protection and exposure assessment.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Password Intelligence
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-password-intelligence-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-phone-intelligence-api
+  name: Nord Security Phone Intelligence API
+  description: >-
+    Endpoints for investigating phone number exposure in data breaches, including detailed breach information
+    and compromise analysis. These operations support protection against SIM swapping, phone-based fraud,
+    and other attacks targeting mobile devices and phone numbers.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Phone Intelligence
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-phone-intelligence-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-profiling-api
+  name: Nord Security Profiling API
+  description: >-
+    Endpoints for generating OSINT-based profiling reports on email addresses and phone numbers. Reports
+    aggregate data from external intelligence sources, enrich it with internal breach data, and produce
+    an LLM-powered risk analysis.
+
+
+    Reports are processed asynchronously through a multi-stage pipeline: `pending` (data collection) →
+    `analyzing` (LLM processing) → `completed`. Use the GET endpoint to poll for completion.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Profiling
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-profiling-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-projects-api
+  name: Nord Security Projects API
+  description: The Projects API from Nord Security — 6 operation(s) for projects.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Projects
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-projects-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-results-api
+  name: Nord Security Results API
+  description: The Results API from Nord Security — 8 operation(s) for results.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Results
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-results-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-scanning-api
+  name: Nord Security Scanning API
+  description: The Scanning API from Nord Security — 2 operation(s) for scanning.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Scanning
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-scanning-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-subscription-management-api
+  name: Nord Security Subscription Management API
+  description: "Endpoints for managing user subscriptions to data breach monitoring services. These operations\
+    \ enable administrators to create, update, and delete subscriptions for email addresses, phone numbers,\
+    \ domains, and sensitive data types.\n\nWhen a subscription is created, Serity automatically sends\
+    \ requests to the user’s webhook whenever new or updated data matches the subscription criteria. The\
+    \ webhook destination must be specified through the APIs user-management endpoints.\n\n### Webhook\
+    \ Requirements\nTo ensure reliable delivery under high load, user webhooks **must support very high\
+    \ request throughput** — at least `100 requests per second`. Serity operates at scale and will **not\
+    \ throttle outbound traffic** based on slow client responses. Frequent `429 Too Many Requests` responses\
+    \ are retried, but they can **clog internal delivery queues**, thus, it is strongly recommended that\
+    \ webhook endpoints are backed by a **message queue** or similar buffering system that can **acknowledge\
+    \ requests immediately** and **process them asynchronously** at the desired pace. This ensures resilience\
+    \ and prevents backpressure issues during high traffic periods.\n\n### Delivery Semantics and Retry\
+    \ Policy\n- `2XX responses (200–299)` are treated as successful acknowledgements and are not retried.\
+    \  \n- `404 responses` trigger internal alerts and are **not retried**, as they typically indicate\
+    \ an invalid or deprecated endpoint.\n- `429 (Too Many Requests)` responses are retried with backoff,\
+    \ but can cause delivery delays if they persist.\n- `All other 4XX and 5XX responses` are **retried**\
+    \ with exponential backoff.  \n- After prolonged retry failure, events are moved to a **DLQ**. In\
+    \ such cases, the platform team will contact the user.  \n### Webhook Payload\n```\n{\n  \"subscription_id\"\
+    : \"string\",\n  \"document_type\": \"email-sha256 | phone-sha256 | cc-argon2id | nin-argon2id | cc-sha1\
+    \ | nin-sha1\",\n  \"document_identifier\": \"string\",\n  \"operation_type\": \"update | insert\"\
+    ,\n  \"databases\": [],\n  \"credential_lists\": [],\n  \"malware_logs\": [],\n}\n```\nBy default,\
+    \ users receive only documents with the *insert* operation type.  If the corresponding subscription\
+    \ has the dispatch_on_update option enabled, the webhook also sends update events."
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Subscription Management
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-subscription-management-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-url-scanner-api
+  name: Nord Security URL scanner API
+  description: The URL scanner API from Nord Security — 1 operation(s) for url scanner.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - URL scanner
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-url-scanner-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-urls-api
+  name: Nord Security URLS API
+  description: The Urls API from Nord Security — 4 operation(s) for urls.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Urls
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-urls-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
+- aid: nord-security:nord-security-utility-endpoints-api
+  name: Nord Security Utility Endpoints API
+  description: >-
+    Utility endpoints for supporting zero-knowledge functionalities, such as retrieving salts.
+
+    These operations are essential for the proper functioning of zero-knowledge security features.
+  humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  baseURL: https://enterprise-data-api.nordstellar.com
+  tags:
+  - Utility Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/nord-security-utility-endpoints-api-openapi.yml
+  - type: Documentation
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/swagger
+  - type: Authentication
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/authentication
+  - type: RateLimits
+    url: rate-limits/nord-security-rate-limits.yml
+  - type: Examples
+    url: https://docs.nordstellar.com/enterprise-apis/product-integrations/code-examples
+  - type: DataModel
+    url: data-model/nord-security-data-model.yml
+  - type: ErrorCatalog
+    url: errors/nord-security-problem-types.yml
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/crs/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/cybersec/swagger
+  - type: APIReference
+    url: https://docs.nordstellar.com/enterprise-apis/partner/swagger
+  - type: Documentation
+    url: https://docs.nordstellar.com/platform/integrations-api
+  - type: APIReference
+    url: https://docs.nordstellar.com/platform/integrations-api/swagger
+  - type: Examples
+    url: https://docs.nordstellar.com/platform/integrations-api/code-examples
 common:
+- type: Overlay
+  url: overlays/nord-security-nordstellar-enterprise-data-api-overlay.yaml
+- type: Overlay
+  url: overlays/nord-security-nordstellar-platform-integration-api-v3-overlay.yaml
 - type: IssueTracker
   url: https://github.com/NordStellar/nordstellar-mcp/issues
 - type: Releases
