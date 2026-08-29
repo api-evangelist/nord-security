@@ -11,6 +11,19 @@ description: >-
   NordLayer adds SCIM 2.0 user provisioning and a partner/MSP API key surface, while the NordSecurity
   GitHub organization publishes the NordVPN Linux client together with 43 gRPC/protobuf service
   definitions covering the daemon, meshnet, fileshare, norduser and telemetry surfaces.
+deliveryModel:
+  model: open-core
+  license: GPL-3.0
+  open_source: true
+  commercial: true
+  callable_host: false
+  label: Open core · an OSS project plus a commercial hosted product
+  confidence: high
+  source:
+  - license
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://res.cloudinary.com/nordsec/image/upload/q_auto,f_auto/v1/nord-security-web/global/meta/social-logo.png
 url: https://raw.githubusercontent.com/api-evangelist/nord-security/refs/heads/main/apis.yml
 x-type: company
