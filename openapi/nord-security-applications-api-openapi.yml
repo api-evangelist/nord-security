@@ -1,0 +1,210 @@
+openapi: 3.2.0
+info:
+  description: Cybersec API documentation
+  version: 1.0.0
+  title: Cybersec Applications API
+servers:
+- url: https://cybersec.nordstellar.com
+security:
+- ApiKeyAuth: []
+tags:
+- name: Applications
+paths:
+  /v2/cybersec/applications/check:
+    post:
+      operationId: applicationsCheck
+      tags:
+      - Applications
+      summary: Perform a applications vulnerabilities check
+      description: This endpoint performs vulnerabilities database check on applications name, version, OS an OS version.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationsCheckRequest'
+            example:
+              os: Windows
+              os_version: 11.0.1
+              applications:
+              - name: Google Chrome
+                version: 1.0.0
+              - name: Spotify
+                version: 1.0.0
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationsCheckResponse'
+              example:
+              - name: Google Chrome
+                version: 1.0.0
+                description: upated description
+                fixed_version: 2.0.2
+                severity: 3
+              - name: Spotify
+                version: 1.0.0
+                description: upated description
+                fixed_version: 2.0.2
+                severity: 7.5
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Applications parameter is missing:
+                  value:
+                    errors:
+                      code: 905176
+                      message: '''applications'' parameter is missing'
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+components:
+  responses:
+    UnprocessableEntity:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Content too large:
+              value:
+                errors:
+                  code: 904175
+                  message: Exceeded the limit of 20 records to check in a batch
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    AuthServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904178
+                  message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    ServiceForbidden:
+      description: Service is forbidden for the user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service is forbidden for the user:
+              value:
+                errors:
+                  code: 100166
+                  message: Service is forbidden for the user
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+  schemas:
+    ApplicationsCheckResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            example: Google Chrome
+          version:
+            type: string
+            example: 1.0.0
+          description:
+            type: string
+            example: Memory leak for big form inputs
+          fixed_version:
+            type: string
+            example: 1.2.0
+          severity:
+            type: number
+            format: float
+            example: 9.5
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    ApplicationsCheckRequest:
+      type: object
+      properties:
+        os:
+          type: string
+          description: OS from which applications are being checked. This field is optional, used for logging only, and will be used for filtering in next phases
+          example: Windows
+        os_version:
+          type: string
+          description: OS version from which applications are being checked. This field is optional, used for logging only, and will be used for filtering in next phases
+          example: 11.0.1
+        applications:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Google Chrome
+              version:
+                type: string
+                example: 1.0.0
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+  securitySchemes:
+    ApiKeyAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Set token with a prefix like this: `token:69405a802dba4f57804e5fff11061946a579d159d1a51760d19a50aec241adc9`'

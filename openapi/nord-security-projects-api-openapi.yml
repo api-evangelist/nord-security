@@ -1,0 +1,1464 @@
+openapi: 3.2.0
+info:
+  title: Nord Security Projects API
+  version: '3'
+  contact:
+    name: Vakaris Noreika
+    email: vakaris.noreika@nordsec.com
+  description: 'Operations tagged Projects across 3 of this provider''s published API definitions: nord-security-nordstellar-platform-integration-api-v1-openapi.json, nord-security-nordstellar-platform-integration-api-v2-openapi.json, nord-security-nordstellar-platform-integration-api-v3-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://platform-integration-api.nordstellar.com
+security:
+- Bearer: []
+tags:
+- name: Projects
+paths:
+  /v1/projects/{project-id}/events:
+    get:
+      tags:
+      - Projects
+      summary: Retrieves events for a specific project within a given date and time range.
+      parameters:
+      - name: project-id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: date-added-from
+        in: query
+        description: 'Start datetime for filtering events (ISO 8601 format). Supported format: `YYYY-MM-DDTHH:MM:SS.000Z`'
+        schema:
+          type: string
+          format: date-time
+      - name: date-added-to
+        in: query
+        description: 'End datetime for filtering events (ISO 8601 format). Supported format: `YYYY-MM-DDTHH:MM:SS.000Z`'
+        schema:
+          type: string
+          format: date-time
+      - name: offset
+        in: query
+        description: Numeric offset of the first element provided on a page representing a collection request
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: Limit to restrict the number of entries on a page
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: The request has succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V1.Response'
+              example:
+                items:
+                - id: 52c6fd64-8e91-46f2-ba5a-8761e103f9cf
+                  type: DATA_BREACH
+                  module: LEAKED_DATA
+                  risk_level: INFORMATIONAL
+                  is_resolved: false
+                  date_added: '2020-05-01T08:06:32.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                - id: 4a13e3f8-2d01-4498-b951-03aaa4c8225f
+                  type: MALWARE_INFECTION
+                  module: LEAKED_DATA
+                  risk_level: LOW
+                  is_resolved: false
+                  date_added: '2022-02-01T00:00:00.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                  - PII
+                - id: cdadc286-a63f-4286-bbef-4ec793e9412f
+                  type: COMBO_LIST
+                  module: LEAKED_DATA
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2023-05-01T08:06:32.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                - id: 0f4df325-fb54-4bb9-9a14-64dc004def23
+                  type: DATA_BREACH
+                  module: LEAKED_DATA
+                  risk_level: HIGH
+                  is_resolved: false
+                  date_added: '2023-05-14T08:06:32.000Z'
+                  asset:
+                    type: PHONE
+                    value: '5877892654'
+                  tags:
+                  - CREDENTIALS
+                - id: 34a1d00d-04ab-45a8-bafb-2d9421a89770
+                  type: MALWARE_INFECTION
+                  module: LEAKED_DATA
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2023-05-15T01:06:45.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                  - CORPORATE_COOKIES
+                  - CORPORATE_CREDENTIALS
+                - id: d7443de3-ad45-4ec5-91d2-d465b0fe2f73
+                  type: OPEN_PORT
+                  module: EXTERNAL_VULNERABILITIES
+                  risk_level: INFORMATIONAL
+                  is_resolved: true
+                  date_added: '2021-02-01T05:16:59.000Z'
+                  asset:
+                    type: IP
+                    value: 192.168.0.1
+                  tags:
+                  - CLOUD
+                  - CDN
+                - id: 55cfd1a8-9285-4fd9-bdfe-15a217d77d1f
+                  type: VULNERABILITY
+                  module: EXTERNAL_VULNERABILITIES
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2021-02-01T05:18:00.000Z'
+                  asset:
+                    type: IP
+                    value: 192.168.0.1
+                  tags:
+                  - CLOUD
+                  - EOL-PRODUCT
+                - id: 1ea1494c-d1e7-4e7d-a87b-e69f4165e646
+                  type: DOMAIN_PERMUTATION
+                  module: DOMAIN_SQUATTING
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2023-02-01T05:18:00.000Z'
+                  asset:
+                    type: DOMAIN
+                    value: example.com
+                  tags:
+                  - dormant_infrastructure
+                  - suspicious_infrastructure
+                  - tld-swap
+                - id: 2ec1526c-c324-4b7b-bea2-5d339afed07a
+                  type: DARK_WEB_FORUM_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: true
+                  date_added: '2023-02-01T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Leaked forum posts
+                  tags:
+                  - MARKETPLACE
+                - id: 4743f069-c341-4d02-91a0-cd0199d02bf4
+                  type: DARK_WEB_TELEGRAM_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: true
+                  date_added: '2024-02-10T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Leaked telegram posts
+                  tags:
+                  - TOP_5000_CF
+                  - TOP_20000_CF
+                - id: e85cd382-76db-4849-a485-cb480fc0b999
+                  type: DARK_WEB_RANSOMWARE_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: false
+                  date_added: '2025-10-15T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Ransomware posts
+                  tags:
+                  - MISSING_DOMAIN
+                  - RANSOMWARE
+                - id: 88376bc0-aca0-4f11-a097-4ead04e7b33c
+                  type: DARK_WEB_MARKETPLACE_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: false
+                  date_added: '2025-10-15T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Marketplace posts
+                  tags:
+                  - MARKETPLACE
+                  - TOP_50000_CF
+                self: https://example.com/v1/projetcs/1e4d2e74-1c31-4116-a33d-8806e1b3ef29/events?limit=5
+                next: https://example.com/v1/projects/1e4d2e74-1c31-4116-a33d-8806e1b3ef29/events?offset=5&limit=5
+        '400':
+          description: The server cannot or will not process the request due to an error made by the client.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request
+                title: Bad Request
+                status: 400
+                instance: /v1/resource/123
+                errors:
+                  FIELD A:
+                  - ERROR 1
+                  - ERROR 2
+                  FIELD B:
+                  - ERROR 3
+        '401':
+          description: The server has received and understood the request but is unable to authenticate it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized
+                title: Unauthorized
+                status: 401
+                detail: User unauthorized.
+                instance: /v1/resource/123
+        '403':
+          description: The server has received and understood the request but is unable to authorize it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: Something went wrong
+                instance: /v1/resource/123
+        '500':
+          description: The server has encountered a situation it does not know how to handle.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: Something went wrong
+                instance: /v1/resource/123
+    servers:
+    - url: https://platform-integration-api.nordstellar.com
+  /v1/projects:
+    get:
+      tags:
+      - Projects
+      summary: This endpoint is designed to retrieve projects.
+      parameters:
+      - name: offset
+        in: query
+        description: Numeric offset of the first element provided on a page representing a collection request
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: Limit to restrict the number of entries on a page
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: The request has succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjects.Response'
+              example:
+                items:
+                - id: 52c6fd64-8e91-46f2-ba5a-8761e103f9cf
+                  name: Project
+                - id: e04fe001-6d0b-490e-957c-1234d9c08878
+                  name: Test project
+                - id: ea47fdc0-afc6-4e51-8eb0-bab8a9618b5d
+                  name: new project
+                - id: 5a8bd777-9cc7-419e-b189-f35d57ed2437
+                  name: Test
+                - id: 8369a0b6-e7ed-4e62-9881-f3dd233b58c5
+                  name: Another project
+                self: https://example.com/v1/projects?limit=5
+                next: https://example.com/v1/projects/?offset=5&limit=5
+        '400':
+          description: The server cannot or will not process the request due to an error made by the client.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request
+                title: Bad Request
+                status: 400
+                instance: /v1/resource/123
+                errors:
+                  FIELD A:
+                  - ERROR 1
+                  - ERROR 2
+                  FIELD B:
+                  - ERROR 3
+        '401':
+          description: The server has received and understood the request but is unable to authenticate it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized
+                title: Unauthorized
+                status: 401
+                detail: User unauthorized.
+                instance: /v1/resource/123
+        '403':
+          description: The server has received and understood the request but is unable to authorize it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden
+                title: Forbidden
+                status: 403
+                detail: The user is not allowed to do an action for the specified resource.
+                instance: /v1/resource/123
+        '500':
+          description: The server has encountered a situation it does not know how to handle.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: Something went wrong
+                instance: /v1/resource/123
+    servers:
+    - url: https://platform-integration-api.nordstellar.com
+  /v2/projects/{project-id}/events:
+    get:
+      tags:
+      - Projects
+      summary: Retrieves events for a specific project within a given date and time range.
+      parameters:
+      - name: project-id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: date-added-from
+        in: query
+        description: 'Start datetime for filtering events (ISO 8601 format). Supported format: `YYYY-MM-DDTHH:MM:SS.000Z`'
+        schema:
+          type: string
+          format: date-time
+      - name: date-added-to
+        in: query
+        description: 'End datetime for filtering events (ISO 8601 format). Supported format: `YYYY-MM-DDTHH:MM:SS.000Z`'
+        schema:
+          type: string
+          format: date-time
+      - name: offset
+        in: query
+        description: Numeric offset of the first element provided on a page representing a collection request
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: Limit to restrict the number of entries on a page
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: The request has succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V2.Response'
+              example:
+                items:
+                - id: 52c6fd64-8e91-46f2-ba5a-8761e103f9cf
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DATA_BREACH
+                  module: LEAKED_DATA
+                  risk_level: INFORMATIONAL
+                  is_resolved: false
+                  date_added: '2020-05-01T08:06:32.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                - id: 4a13e3f8-2d01-4498-b951-03aaa4c8225f
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: MALWARE_INFECTION
+                  module: LEAKED_DATA
+                  risk_level: LOW
+                  is_resolved: false
+                  date_added: '2022-02-01T00:00:00.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                  - PII
+                - id: cdadc286-a63f-4286-bbef-4ec793e9412f
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: COMBO_LIST
+                  module: LEAKED_DATA
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2023-05-01T08:06:32.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                - id: 0f4df325-fb54-4bb9-9a14-64dc004def23
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DATA_BREACH
+                  module: LEAKED_DATA
+                  risk_level: HIGH
+                  is_resolved: false
+                  date_added: '2023-05-14T08:06:32.000Z'
+                  asset:
+                    type: PHONE
+                    value: '5877892654'
+                  tags:
+                  - CREDENTIALS
+                - id: 34a1d00d-04ab-45a8-bafb-2d9421a89770
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: MALWARE_INFECTION
+                  module: LEAKED_DATA
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2023-05-15T01:06:45.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                  - CORPORATE_COOKIES
+                  - CORPORATE_CREDENTIALS
+                - id: 1ea1494c-d1e7-4e7d-a87b-e69f4165e646
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DOMAIN_PERMUTATION
+                  module: DOMAIN_SQUATTING
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2023-02-01T05:18:00.000Z'
+                  asset:
+                    type: DOMAIN
+                    value: example.com
+                  tags:
+                  - dormant_infrastructure
+                  - suspicious_infrastructure
+                  - tld-swap
+                - id: 2ec1526c-c324-4b7b-bea2-5d339afed07a
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DARK_WEB_FORUM_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: true
+                  date_added: '2023-02-01T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Leaked forum posts
+                  tags:
+                  - MARKETPLACE
+                - id: 4743f069-c341-4d02-91a0-cd0199d02bf4
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DARK_WEB_TELEGRAM_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: true
+                  date_added: '2024-02-10T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Leaked telegram posts
+                  tags:
+                  - TOP_5000_CF
+                  - TOP_20000_CF
+                - id: e85cd382-76db-4849-a485-cb480fc0b999
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DARK_WEB_RANSOMWARE_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: false
+                  date_added: '2025-10-15T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Ransomware posts
+                  tags:
+                  - MISSING_DOMAIN
+                  - RANSOMWARE
+                - id: 88376bc0-aca0-4f11-a097-4ead04e7b33c
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DARK_WEB_MARKETPLACE_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: false
+                  date_added: '2025-10-15T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Marketplace posts
+                  tags:
+                  - MARKETPLACE
+                  - TOP_50000_CF
+                - id: d7443de3-ad45-4ec5-91d2-d465b0fe2f73
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY
+                  module: ATTACK_SURFACE
+                  risk_level: INFORMATIONAL
+                  is_resolved: true
+                  date_added: '2021-02-01T05:16:59.000Z'
+                  asset:
+                    type: DOMAIN
+                    value: example.com
+                  tags:
+                  - CLOUD
+                  - CDN
+                - id: 55cfd1a8-9285-4fd9-bdfe-15a217d77d1f
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: ATTACK_SURFACE_NETWORK_SERVICE_VULNERABILITY
+                  module: ATTACK_SURFACE
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2021-02-01T05:18:00.000Z'
+                  asset:
+                    type: IP
+                    value: 192.168.0.1
+                  tags:
+                  - CLOUD
+                  - CDN
+                - id: 85cfd1a8-9285-4fd9-bdfe-15a217d77d1f
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY
+                  module: ATTACK_SURFACE
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2021-02-01T05:18:00.000Z'
+                  asset:
+                    type: DOMAIN
+                    value: example.com
+                  tags:
+                  - CLOUD
+                  - CDN
+                self: https://example.com/v1/projetcs/1e4d2e74-1c31-4116-a33d-8806e1b3ef29/events?limit=5
+                next: https://example.com/v1/projects/1e4d2e74-1c31-4116-a33d-8806e1b3ef29/events?offset=5&limit=5
+        '400':
+          description: The server cannot or will not process the request due to an error made by the client.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request
+                title: Bad Request
+                status: 400
+                instance: /v1/resource/123
+                errors:
+                  FIELD A:
+                  - ERROR 1
+                  - ERROR 2
+                  FIELD B:
+                  - ERROR 3
+        '401':
+          description: The server has received and understood the request but is unable to authenticate it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized
+                title: Unauthorized
+                status: 401
+                detail: User unauthorized.
+                instance: /v1/resource/123
+        '403':
+          description: The server has received and understood the request but is unable to authorize it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: Something went wrong
+                instance: /v1/resource/123
+        '500':
+          description: The server has encountered a situation it does not know how to handle.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: Something went wrong
+                instance: /v1/resource/123
+    servers:
+    - url: https://platform-integration-api.nordstellar.com
+  /v2/projects:
+    get:
+      tags:
+      - Projects
+      summary: This endpoint is designed to retrieve projects.
+      parameters:
+      - name: offset
+        in: query
+        description: Numeric offset of the first element provided on a page representing a collection request
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: Limit to restrict the number of entries on a page
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: The request has succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjects.Response'
+              example:
+                items:
+                - id: 52c6fd64-8e91-46f2-ba5a-8761e103f9cf
+                  name: Project
+                - id: e04fe001-6d0b-490e-957c-1234d9c08878
+                  name: Test project
+                - id: ea47fdc0-afc6-4e51-8eb0-bab8a9618b5d
+                  name: new project
+                - id: 5a8bd777-9cc7-419e-b189-f35d57ed2437
+                  name: Test
+                - id: 8369a0b6-e7ed-4e62-9881-f3dd233b58c5
+                  name: Another project
+                self: https://example.com/v1/projects?limit=5
+                next: https://example.com/v1/projects/?offset=5&limit=5
+        '400':
+          description: The server cannot or will not process the request due to an error made by the client.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request
+                title: Bad Request
+                status: 400
+                instance: /v1/resource/123
+                errors:
+                  FIELD A:
+                  - ERROR 1
+                  - ERROR 2
+                  FIELD B:
+                  - ERROR 3
+        '401':
+          description: The server has received and understood the request but is unable to authenticate it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized
+                title: Unauthorized
+                status: 401
+                detail: User unauthorized.
+                instance: /v1/resource/123
+        '403':
+          description: The server has received and understood the request but is unable to authorize it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden
+                title: Forbidden
+                status: 403
+                detail: The user is not allowed to do an action for the specified resource.
+                instance: /v1/resource/123
+        '500':
+          description: The server has encountered a situation it does not know how to handle.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: Something went wrong
+                instance: /v1/resource/123
+    servers:
+    - url: https://platform-integration-api.nordstellar.com
+  /v3/projects/{project-id}/events:
+    get:
+      tags:
+      - Projects
+      summary: Retrieves events for a specific project within a given date and time range.
+      parameters:
+      - name: project-id
+        in: path
+        description: Unique identifier of the project
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: date-added-from
+        in: query
+        description: 'Start datetime for filtering events (ISO 8601 format). Supported format: `YYYY-MM-DDTHH:MM:SS.000Z`'
+        schema:
+          type: string
+          format: date-time
+      - name: date-added-to
+        in: query
+        description: 'End datetime for filtering events (ISO 8601 format). Supported format: `YYYY-MM-DDTHH:MM:SS.000Z`'
+        schema:
+          type: string
+          format: date-time
+      - name: offset
+        in: query
+        description: Numeric offset of the first element provided on a page representing a collection request
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: Limit to restrict the number of entries on a page
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: The request has succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/V3.Response'
+              example:
+                items:
+                - id: 52c6fd64-8e91-46f2-ba5a-8761e103f9cf
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DATA_BREACH
+                  module: LEAKED_DATA
+                  risk_level: INFORMATIONAL
+                  is_resolved: false
+                  date_added: '2020-05-01T08:06:32.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                - id: 4a13e3f8-2d01-4498-b951-03aaa4c8225f
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: MALWARE_INFECTION
+                  module: LEAKED_DATA
+                  risk_level: LOW
+                  is_resolved: false
+                  date_added: '2022-02-01T00:00:00.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                  - PII
+                - id: cdadc286-a63f-4286-bbef-4ec793e9412f
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: COMBO_LIST
+                  module: LEAKED_DATA
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2023-05-01T08:06:32.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                - id: 0f4df325-fb54-4bb9-9a14-64dc004def23
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DATA_BREACH
+                  module: LEAKED_DATA
+                  risk_level: HIGH
+                  is_resolved: false
+                  date_added: '2023-05-14T08:06:32.000Z'
+                  asset:
+                    type: PHONE
+                    value: '5877892654'
+                  tags:
+                  - CREDENTIALS
+                - id: 34a1d00d-04ab-45a8-bafb-2d9421a89770
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: MALWARE_INFECTION
+                  module: LEAKED_DATA
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2023-05-15T01:06:45.000Z'
+                  asset:
+                    type: EMAIL
+                    value: test@example.com
+                  tags:
+                  - CREDENTIALS
+                  - CORPORATE_COOKIES
+                  - CORPORATE_CREDENTIALS
+                - id: 9bc12d33-7d10-4c1b-9e76-19a89f5e9bb1
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: CONSUMER_CREDENTIAL
+                  module: LEAKED_DATA
+                  risk_level: LOW
+                  is_resolved: false
+                  date_added: '2025-11-01T08:06:32.000Z'
+                  asset:
+                    type: DOMAIN
+                    value: example.com
+                  tags:
+                  - CREDENTIALS
+                - id: 1ea1494c-d1e7-4e7d-a87b-e69f4165e646
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DOMAIN_PERMUTATION
+                  module: DOMAIN_SQUATTING
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2023-02-01T05:18:00.000Z'
+                  asset:
+                    type: DOMAIN
+                    value: example.com
+                  tags:
+                  - dormant_infrastructure
+                  - suspicious_infrastructure
+                  - tld-swap
+                - id: 2ec1526c-c324-4b7b-bea2-5d339afed07a
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DARK_WEB_FORUM_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: true
+                  date_added: '2023-02-01T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Leaked forum posts
+                  tags:
+                  - MARKETPLACE
+                - id: 4743f069-c341-4d02-91a0-cd0199d02bf4
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DARK_WEB_TELEGRAM_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: true
+                  date_added: '2024-02-10T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Leaked telegram posts
+                  tags:
+                  - TOP_5000_CF
+                  - TOP_20000_CF
+                - id: e85cd382-76db-4849-a485-cb480fc0b999
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DARK_WEB_RANSOMWARE_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: false
+                  date_added: '2025-10-15T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Ransomware posts
+                  tags:
+                  - MISSING_DOMAIN
+                  - RANSOMWARE
+                - id: 88376bc0-aca0-4f11-a097-4ead04e7b33c
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: DARK_WEB_MARKETPLACE_POST
+                  module: DARK_WEB_MONITORING
+                  risk_level: INFORMATIONAL
+                  is_resolved: false
+                  date_added: '2025-10-15T05:18:00.000Z'
+                  asset:
+                    type: DARK_WEB_MONITORING_RULE
+                    value: Marketplace posts
+                  tags:
+                  - MARKETPLACE
+                  - TOP_50000_CF
+                - id: d7443de3-ad45-4ec5-91d2-d465b0fe2f73
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY
+                  module: ATTACK_SURFACE
+                  risk_level: INFORMATIONAL
+                  is_resolved: true
+                  date_added: '2021-02-01T05:16:59.000Z'
+                  asset:
+                    type: DOMAIN
+                    value: example.com
+                  tags:
+                  - CLOUD
+                  - CDN
+                - id: 55cfd1a8-9285-4fd9-bdfe-15a217d77d1f
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: ATTACK_SURFACE_NETWORK_SERVICE_VULNERABILITY
+                  module: ATTACK_SURFACE
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2021-02-01T05:18:00.000Z'
+                  asset:
+                    type: IP
+                    value: 192.168.0.1
+                  tags:
+                  - CLOUD
+                  - CDN
+                - id: 85cfd1a8-9285-4fd9-bdfe-15a217d77d1f
+                  project_id: 1e4d2e74-1c31-4116-a33d-8806e1b3ef29
+                  type: ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY
+                  module: ATTACK_SURFACE
+                  risk_level: HIGH
+                  is_resolved: true
+                  date_added: '2021-02-01T05:18:00.000Z'
+                  asset:
+                    type: DOMAIN
+                    value: example.com
+                  tags:
+                  - CLOUD
+                  - CDN
+                self: https://example.com/v3/projects/1e4d2e74-1c31-4116-a33d-8806e1b3ef29/events?limit=5
+                next: https://example.com/v3/projects/1e4d2e74-1c31-4116-a33d-8806e1b3ef29/events?offset=5&limit=5
+        '400':
+          description: The server cannot or will not process the request due to an error made by the client.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request
+                title: Bad Request
+                status: 400
+                instance: /v1/resource/123
+                errors:
+                  FIELD A:
+                  - ERROR 1
+                  - ERROR 2
+                  FIELD B:
+                  - ERROR 3
+        '401':
+          description: The server has received and understood the request but is unable to authenticate it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized
+                title: Unauthorized
+                status: 401
+                detail: User unauthorized.
+                instance: /v1/resource/123
+        '403':
+          description: The server has received and understood the request but is unable to authorize it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: Something went wrong
+                instance: /v1/resource/123
+        '500':
+          description: The server has encountered a situation it does not know how to handle.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: Something went wrong
+                instance: /v1/resource/123
+    servers:
+    - url: https://platform-integration-api.nordstellar.com
+  /v3/projects:
+    get:
+      tags:
+      - Projects
+      summary: This endpoint is designed to retrieve projects.
+      parameters:
+      - name: offset
+        in: query
+        description: Numeric offset of the first element provided on a page representing a collection request
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: Limit to restrict the number of entries on a page
+        schema:
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: The request has succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjects.Response'
+              example:
+                items:
+                - id: 52c6fd64-8e91-46f2-ba5a-8761e103f9cf
+                  name: Project
+                - id: e04fe001-6d0b-490e-957c-1234d9c08878
+                  name: Test project
+                - id: ea47fdc0-afc6-4e51-8eb0-bab8a9618b5d
+                  name: new project
+                - id: 5a8bd777-9cc7-419e-b189-f35d57ed2437
+                  name: Test
+                - id: 8369a0b6-e7ed-4e62-9881-f3dd233b58c5
+                  name: Another project
+                self: https://example.com/v1/projects?limit=5
+                next: https://example.com/v1/projects/?offset=5&limit=5
+        '400':
+          description: The server cannot or will not process the request due to an error made by the client.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ValidationProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-400-bad-request
+                title: Bad Request
+                status: 400
+                instance: /v1/resource/123
+                errors:
+                  FIELD A:
+                  - ERROR 1
+                  - ERROR 2
+                  FIELD B:
+                  - ERROR 3
+        '401':
+          description: The server has received and understood the request but is unable to authenticate it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-401-unauthorized
+                title: Unauthorized
+                status: 401
+                detail: User unauthorized.
+                instance: /v1/resource/123
+        '403':
+          description: The server has received and understood the request but is unable to authorize it.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-403-forbidden
+                title: Forbidden
+                status: 403
+                detail: The user is not allowed to do an action for the specified resource.
+                instance: /v1/resource/123
+        '500':
+          description: The server has encountered a situation it does not know how to handle.
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+              example:
+                type: https://datatracker.ietf.org/doc/html/rfc9110#name-500-internal-server-error
+                title: Internal Server Error
+                status: 500
+                detail: Something went wrong
+                instance: /v1/resource/123
+    servers:
+    - url: https://platform-integration-api.nordstellar.com
+components:
+  schemas:
+    Models.AssetType:
+      enum:
+      - UNKNOWN
+      - EMAIL
+      - PHONE
+      - IP
+      - DARK_WEB_MONITORING_RULE
+      - DOMAIN
+      type: string
+    ValidationProblemDetails:
+      required:
+      - detail
+      - instance
+      - status
+      - title
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+          description: A URI reference that identifies the type of the problem.
+        title:
+          type: string
+          description: A short summary of the type of the problem.
+        status:
+          maximum: 599
+          minimum: 400
+          type: integer
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+          format: int32
+        detail:
+          type: string
+          description: An explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          description: A unique identifier of this occurrence of the problem. Include it in your support request.
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: A map of problems with the request that need to be solved by the requester, wherein the key is the source of the problem, and the value is its details.
+      additionalProperties: {}
+      description: Error information that describes why the request has failed. Format conforms to IETF's RFC 9457.
+      externalDocs:
+        description: RFC 9457 "Problem Details for HTTP APIs" by Internet Engineering Task Force
+        url: https://datatracker.ietf.org/doc/html/rfc9457
+    V1.Response:
+      type: object
+      properties:
+        self:
+          type: string
+          description: Url link pointing to the same page
+        next:
+          type:
+          - string
+          - 'null'
+          description: Url link pointing to the next page
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.Event'
+          description: Collection of events
+      additionalProperties: false
+    ListProjects.Project:
+      required:
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the project
+          format: uuid
+        name:
+          type: string
+          description: Name of the project
+      additionalProperties: false
+    Models.EventType:
+      enum:
+      - UNKNOWN
+      - DATA_BREACH
+      - COMBO_LIST
+      - MALWARE_INFECTION
+      - OPEN_PORT
+      - VULNERABILITY
+      - DARK_WEB_FORUM_POST
+      - DARK_WEB_TELEGRAM_POST
+      - DOMAIN_PERMUTATION
+      - DARK_WEB_RANSOMWARE_POST
+      - DARK_WEB_MARKETPLACE_POST
+      type: string
+    Models.ModuleType:
+      enum:
+      - UNKNOWN
+      - LEAKED_DATA
+      - EXTERNAL_VULNERABILITIES
+      - DARK_WEB_MONITORING
+      - DOMAIN_SQUATTING
+      type: string
+    Models.RiskLevel:
+      enum:
+      - UNKNOWN
+      - INFORMATIONAL
+      - LOW
+      - MEDIUM
+      - HIGH
+      - CRITICAL
+      type: string
+    Models.Asset:
+      required:
+      - type
+      - value
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/Models.AssetType'
+        value:
+          type: string
+      additionalProperties: false
+    ProblemDetails:
+      required:
+      - detail
+      - instance
+      - status
+      - title
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+          description: A URI reference that identifies the type of the problem.
+        title:
+          type: string
+          description: A short summary of the type of the problem.
+        status:
+          maximum: 599
+          minimum: 400
+          type: integer
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+          format: int32
+        detail:
+          type: string
+          description: An explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          description: A unique identifier of this occurrence of the problem. Include it in your support request.
+      additionalProperties: {}
+      description: Error information that describes why the request has failed. Format conforms to IETF's RFC 9457.
+      externalDocs:
+        description: RFC 9457 "Problem Details for HTTP APIs" by Internet Engineering Task Force
+        url: https://datatracker.ietf.org/doc/html/rfc9457
+    Models.Event:
+      required:
+      - asset
+      - date_added
+      - id
+      - is_resolved
+      - module
+      - risk_level
+      - tags
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/Models.EventType'
+        module:
+          $ref: '#/components/schemas/Models.ModuleType'
+        risk_level:
+          $ref: '#/components/schemas/Models.RiskLevel'
+        is_resolved:
+          type: boolean
+        date_added:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        asset:
+          $ref: '#/components/schemas/Models.Asset'
+        tags:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+    ListProjects.Response:
+      type: object
+      properties:
+        self:
+          type: string
+          description: Url link pointing to the same page
+        next:
+          type:
+          - string
+          - 'null'
+          description: Url link pointing to the next page
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListProjects.Project'
+          description: Collection of projects
+      additionalProperties: false
+    Models.EventTypeV2:
+      enum:
+      - UNKNOWN
+      - DATA_BREACH
+      - COMBO_LIST
+      - MALWARE_INFECTION
+      - DARK_WEB_FORUM_POST
+      - DARK_WEB_TELEGRAM_POST
+      - DOMAIN_PERMUTATION
+      - DARK_WEB_RANSOMWARE_POST
+      - DARK_WEB_MARKETPLACE_POST
+      - ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY
+      - ATTACK_SURFACE_NETWORK_SERVICE_VULNERABILITY
+      - ATTACK_SURFACE_DNS_VULNERABILITY
+      type: string
+    Models.ModuleTypeV2:
+      enum:
+      - UNKNOWN
+      - LEAKED_DATA
+      - DARK_WEB_MONITORING
+      - DOMAIN_SQUATTING
+      - ATTACK_SURFACE
+      type: string
+    V2.Response:
+      type: object
+      properties:
+        self:
+          type: string
+          description: Url link pointing to the same page
+        next:
+          type:
+          - string
+          - 'null'
+          description: Url link pointing to the next page
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.EventV2'
+          description: Collection of events
+      additionalProperties: false
+    Models.EventV2:
+      required:
+      - asset
+      - date_added
+      - id
+      - is_resolved
+      - module
+      - project_id
+      - risk_level
+      - tags
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        project_id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/Models.EventTypeV2'
+        module:
+          $ref: '#/components/schemas/Models.ModuleTypeV2'
+        risk_level:
+          $ref: '#/components/schemas/Models.RiskLevel'
+        is_resolved:
+          type: boolean
+        date_added:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        asset:
+          $ref: '#/components/schemas/Models.Asset'
+        tags:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+    Models.EventV3:
+      required:
+      - asset
+      - date_added
+      - id
+      - is_resolved
+      - module
+      - project_id
+      - risk_level
+      - tags
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        project_id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/Models.EventTypeV3'
+        module:
+          $ref: '#/components/schemas/Models.ModuleTypeV2'
+        risk_level:
+          $ref: '#/components/schemas/Models.RiskLevel'
+        is_resolved:
+          type: boolean
+        date_added:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        asset:
+          $ref: '#/components/schemas/Models.Asset'
+        tags:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+    Models.EventTypeV3:
+      enum:
+      - UNKNOWN
+      - DATA_BREACH
+      - COMBO_LIST
+      - MALWARE_INFECTION
+      - DARK_WEB_FORUM_POST
+      - DARK_WEB_TELEGRAM_POST
+      - DOMAIN_PERMUTATION
+      - DARK_WEB_RANSOMWARE_POST
+      - DARK_WEB_MARKETPLACE_POST
+      - ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY
+      - ATTACK_SURFACE_NETWORK_SERVICE_VULNERABILITY
+      - ATTACK_SURFACE_DNS_VULNERABILITY
+      - CONSUMER_CREDENTIAL
+      type: string
+    V3.Response:
+      type: object
+      properties:
+        self:
+          type: string
+          description: Url link pointing to the same page
+        next:
+          type:
+          - string
+          - 'null'
+          description: Url link pointing to the next page
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Models.EventV3'
+          description: Collection of events
+      additionalProperties: false
+  securitySchemes:
+    Bearer:
+      type: http
+      description: Please enter a valid token.
+      scheme: Bearer
+      bearerFormat: JWT
+x-refined-from:
+- nord-security-nordstellar-platform-integration-api-v1-openapi.json
+- nord-security-nordstellar-platform-integration-api-v2-openapi.json
+- nord-security-nordstellar-platform-integration-api-v3-openapi.json

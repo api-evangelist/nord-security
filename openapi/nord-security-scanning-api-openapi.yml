@@ -1,0 +1,157 @@
+openapi: 3.2.0
+info:
+  title: Company Risk Scoring Scanning API
+  version: 0.1.0
+  description: "**Company Risk Scoring API v0.1.0**\n\nThis API provides a comprehensive service for evaluating the cybersecurity risk associated with external companies, primarily identified by their domain name. It's designed for B2B use cases like vendor risk management, cyber insurance underwriting, or competitive analysis.\n\n**Key Features:**\n\n* **Company Onboarding:** Add companies to the system for monitoring, either automatically by domain or manually with additional details.\n* **Security Scanning:** Initiate asynchronous scans against a company's domain to gather security data. Track scan job progress.\n* **Detailed Risk Categories:** Retrieve granular security assessment results for specific areas:\n    * Software Patching & Vulnerabilities\n    * Web Application Security\n    * Email Security (SPF, DMARC)\n    * System Reputation (IP blacklisting, abuse reports)\n    * SSL/TLS Configuration Strength\n    * System Hosting Environment (Cloud/CDN usage, ISP diversity)\n    * Data Breach History (Exposed credentials, breach dates)\n* **Overall Security Score:** Get a consolidated security score derived from individual category assessments.\n* **Company Firmographics:** Access essential company details like name, website, revenue, employee count, location, industry, and more.\n* **Flexible Data Retrieval:** Fetch results for individual risk categories or retrieve a combined report with all data points for a specific domain and scan job.\n* **Search & Listing:** List onboarded companies with pagination and search capabilities.\n\n**Authentication:**\n\nAccess requires either an API Key provided in the `X-API-Key` header or standard HTTP Basic Authentication."
+tags:
+- name: Scanning
+paths:
+  /api/b2b/crs/scan/submit/{domain}:
+    post:
+      tags:
+      - Scanning
+      summary: Submit Scan
+      operationId: submit_scan_api_b2b_crs_scan_submit__domain__post
+      security:
+      - APIKeyHeader: []
+      - HTTPBasic: []
+      parameters:
+      - name: domain
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Domain
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitScanResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/b2b/crs/scan/jobs/{domain}:
+    get:
+      tags:
+      - Scanning
+      summary: Get Scan Jobs For Domain
+      operationId: get_scan_jobs_for_domain_api_b2b_crs_scan_jobs__domain__get
+      security:
+      - APIKeyHeader: []
+      - HTTPBasic: []
+      parameters:
+      - name: domain
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Domain
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScanJobsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ScanJobResult:
+      properties:
+        id:
+          type: string
+          title: Id
+        date_created:
+          type: string
+          format: date-time
+          title: Date Created
+        date_updated:
+          type: string
+          format: date-time
+          title: Date Updated
+        finished:
+          type: boolean
+          title: Finished
+        cancelled:
+          type: boolean
+          title: Cancelled
+          default: false
+      type: object
+      required:
+      - id
+      - date_created
+      - date_updated
+      - finished
+      title: ScanJobResult
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SubmitScanResponse:
+      properties:
+        scan_job_id:
+          type: string
+          title: Scan Job Id
+      type: object
+      required:
+      - scan_job_id
+      title: SubmitScanResponse
+    ScanJobsResponse:
+      properties:
+        domain:
+          type: string
+          title: Domain
+        scan_jobs:
+          items:
+            $ref: '#/components/schemas/ScanJobResult'
+          type: array
+          title: Scan Jobs
+      type: object
+      required:
+      - domain
+      - scan_jobs
+      title: ScanJobsResponse
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    HTTPBasic:
+      type: http
+      scheme: basic

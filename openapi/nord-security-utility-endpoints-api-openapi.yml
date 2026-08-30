@@ -1,0 +1,203 @@
+openapi: 3.2.0
+info:
+  title: NordStellar Enterprise Data Utility Endpoints API
+  description: '## Overview
+
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
+
+    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
+
+
+    **Key Features**:
+
+    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
+
+    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
+
+    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
+
+    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
+
+    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+  version: '3.1'
+servers:
+- url: /api/v3/data
+security:
+- ApiKeyAuth: []
+- BasicAuth: []
+tags:
+- name: Utility Endpoints
+  description: 'Utility endpoints for supporting zero-knowledge functionalities, such as retrieving salts.
+
+    These operations are essential for the proper functioning of zero-knowledge security features.'
+paths:
+  /zero-knowledge/salt/{sha256-prefix}:
+    get:
+      tags:
+      - Utility Endpoints
+      summary: Generates a salt based on the provided input data
+      description: 'A specific salt is required to successfully use zero knowledge credit card and national identification number lookups.
+
+
+        To get a salt, hash lookup value (CC or NIN) as SHA256, then use this endpoint and provide first 5 symbols of a lookup value hash.
+
+        **Rate limit: 200 per second.**'
+      operationId: salt
+      parameters:
+      - $ref: '#/components/parameters/HashPrefix'
+      responses:
+        '200':
+          description: Returns a generated salt
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /zero-knowledge/salt:
+    post:
+      tags:
+      - Utility Endpoints
+      summary: Generates many salts based on the provided input data
+      description: 'A specific salt is required to successfully use zero knowledge credit card and national identification number lookups.
+
+
+        To get a salt, hash lookup value (CC or NIN) as SHA256, then use this endpoint and provide first 5 symbols of a lookup value hash.
+
+        **Rate limit: 200 per second.**'
+      operationId: salts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZeroKnowledgeSaltsEndpoint'
+      responses:
+        '200':
+          description: Returns a generated salt
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZeroKnowledgeSaltsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+components:
+  schemas:
+    ZeroKnowledgeSaltsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
+    ZeroKnowledgeSaltsEndpoint:
+      required:
+      - sha256_prefixes
+      type: object
+      properties:
+        sha256_prefixes:
+          type: array
+          description: A list of first 5 symbols of SHA256 hashes of the lookup values
+          items:
+            type: string
+          example:
+          - '00000'
+          - fffff
+    ZeroKnowledgeSaltSample:
+      type: object
+      properties:
+        sha256_prefix:
+          type: string
+          example: 915af
+          description: Corresponding input for generated salt
+        salt:
+          type: string
+          description: Zero knowledge lookup salt, calculated using request input
+          example: 0e4f4b0e81bad42097299d18869f8d7f
+  headers:
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+  parameters:
+    HashPrefix:
+      name: sha256-prefix
+      in: path
+      required: true
+      description: First 5 symbols of SHA256 hash of the lookup value
+      schema:
+        type: string
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Authorization string. Needs to be in the standard BasicAuth format - "Basic BASE64_CREDENTIALS", where BASE64_CREDENTIALS is the user username:password encoded in base64 format.
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY

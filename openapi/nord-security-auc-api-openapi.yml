@@ -1,0 +1,40 @@
+openapi: 3.2.0
+info:
+  description: Cybersec API documentation
+  version: 1.0.0
+  title: Cybersec AUC API
+servers:
+- url: https://cybersec.nordstellar.com
+security:
+- ApiKeyAuth: []
+tags:
+- name: AUC
+  description: ''
+paths:
+  /v2/cybersec/auc/lists:
+    get:
+      operationId: aucLists
+      deprecated: true
+      tags:
+      - AUC
+      summary: Get AUC lists
+      description: 'This endpoint is deprecated in favour of /v2/cybersec/urls/allowed-domains
+
+        '
+  /v2/cybersec/auc/lists/hashed:
+    get:
+      operationId: aucListsHashed
+      deprecated: true
+      tags:
+      - AUC
+      summary: Get AUC hashed lists
+      description: 'This endpoint is deprecated in favour of /v2/cybersec/urls/allowed-domains
+
+        '
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Set token with a prefix like this: `token:69405a802dba4f57804e5fff11061946a579d159d1a51760d19a50aec241adc9`'

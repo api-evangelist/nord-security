@@ -1,0 +1,1156 @@
+openapi: 3.2.0
+info:
+  title: NordStellar Enterprise Data Phone Intelligence API
+  description: '## Overview
+
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
+
+    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
+
+
+    **Key Features**:
+
+    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
+
+    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
+
+    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
+
+    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
+
+    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+  version: '3.1'
+servers:
+- url: /api/v3/data
+security:
+- ApiKeyAuth: []
+- BasicAuth: []
+tags:
+- name: Phone Intelligence
+  description: Endpoints for investigating phone number exposure in data breaches, including detailed breach information and compromise analysis. These operations support protection against SIM swapping, phone-based fraud, and other attacks targeting mobile devices and phone numbers.
+paths:
+  /phone/{phone-sha256}:
+    get:
+      tags:
+      - Phone Intelligence
+      summary: Phone lookup
+      description: 'Used for looking up phone numbers and their data.
+
+        These phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: singlePhone
+      parameters:
+      - $ref: '#/components/parameters/Phone'
+      - $ref: '#/paths/~1email/post/parameters/0'
+      - $ref: '#/paths/~1email/post/parameters/1'
+      - $ref: '#/paths/~1email/post/parameters/2'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneSample'
+        '206':
+          description: Returns partial found data, with **errors** field on truncated records
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+                  phone:
+                    type: string
+                    example: '13855550193'
+                    description: International format phone number
+                  databases:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DatabaseDataItem'
+                  malware_logs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MalwareDataItem'
+                  errors:
+                    type: object
+                    properties:
+                      body:
+                        type: string
+                    description: Contains errors signifying partial data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /phone/{phone-sha256}/databases:
+    get:
+      tags:
+      - Phone Intelligence
+      summary: Phone databases lookup
+      description: 'Used for looking up phone numbers and their databases.
+
+        These phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: singlePhoneDatabases
+      parameters:
+      - $ref: '#/components/parameters/Phone'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneDatabasesSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /phone/{phone-sha256}/malware-logs:
+    get:
+      tags:
+      - Phone Intelligence
+      summary: Phone malware logs lookup
+      description: 'Used for looking up phone numbers and their malware logs.
+
+        These phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: singlePhoneMalwareLogs
+      parameters:
+      - $ref: '#/components/parameters/Phone'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneMalwareLogsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /phone:
+    post:
+      tags:
+      - Phone Intelligence
+      summary: Bulk phone lookup
+      description: 'Used for looking up phones numbers and their data in bulk.
+
+        These phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        *Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.
+
+        If a document contains more malware logs than could be retrieved, **206** response code alongside the *errors* string will be returned
+
+        and the rest of its malware data truncated. Truncated data contains malware IDs that can be used
+
+        to retrieve data using **data-source** endpoints*
+
+
+        **Rate limit: 200 per second.**'
+      operationId: phone
+      parameters:
+      - $ref: '#/paths/~1email/post/parameters/0'
+      - $ref: '#/paths/~1email/post/parameters/1'
+      - $ref: '#/paths/~1email/post/parameters/2'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Phone'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhonesSample'
+        '206':
+          description: Returns partial found data, with **errors** field on truncated records
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PhoneSample'
+                  limit:
+                    type: integer
+                    example: 10
+                  offset:
+                    type: integer
+                    example: 0
+                  errors:
+                    type: object
+                    properties:
+                      body:
+                        type: string
+                    description: Contains errors signifying partial data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /phone/databases:
+    post:
+      tags:
+      - Phone Intelligence
+      summary: Bulk phone databases lookup
+      description: 'Used for looking up phones numbers and their databases in bulk.
+
+        These phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: phonesDatabases
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Phone'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhonesDatabasesSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /phone/malware-logs:
+    post:
+      tags:
+      - Phone Intelligence
+      summary: Bulk phone malware logs lookup
+      description: 'Used for looking up phones numbers and their malware logs in bulk.
+
+        These phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        *Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.
+
+        If a document contains more malware logs than could be retrieved, **206** response code alongside the *errors* string will be returned
+
+        and the rest of its malware data truncated. Truncated data contains malware IDs that can be used
+
+        to retrieve data using **data-source** endpoints*
+
+
+        **Rate limit: 200 per second.**'
+      operationId: phonesMalwareLogs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Phone'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhonesMalwareLogsSample'
+        '206':
+          description: Returns partial found data, with **errors** field on truncated records
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PhoneMalwareLogsSample'
+                  limit:
+                    type: integer
+                    example: 10
+                  offset:
+                    type: integer
+                    example: 0
+                  errors:
+                    type: object
+                    properties:
+                      body:
+                        type: string
+                    description: Contains errors signifying partial data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+components:
+  headers:
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+    X-RateLimit-Reset:
+      schema:
+        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
+  schemas:
+    PhoneSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
+          type: string
+          example: '13855550193'
+          description: International format phone number
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    DatabaseDataItem:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Identifier in the following format {domain}_{top level domain}
+          example: example_com
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 66c4d3912b183418f7743576
+        published_date:
+          type: string
+          description: Date when the database data was published onto the asset
+          example: '2025-01-20T19:04:39Z'
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                description: Key of the data point, complete list can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
+                example: password
+              value:
+                type: array
+                items:
+                  type: string
+                description: Value of the data point
+                example:
+                - password1
+                - password2
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    MalwareLogSystemInfoSampleItem:
+      type: object
+      properties:
+        ip:
+          type: string
+          example: 192.168.1.1
+        username:
+          type: string
+          example: diego.lebon
+        country:
+          type: string
+          example: US
+        zip:
+          type: string
+          example: '10001'
+        location:
+          type: string
+          example: New York, USA
+        hardware_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-8f68-806e6f6e6963
+        language:
+          type: string
+          example: es-ES
+        timezone:
+          type: string
+          example: UTC1
+        os:
+          type: string
+          example: Windows 10 Pro [x64]
+        system_name:
+          type: string
+          example: DESKTOP-42R6V1I
+        guid:
+          type: string
+          example: 91788e64-8fdf-11eb-8f68-806e6f6e6963
+        machine_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-ab615454c7ef
+        date:
+          type: string
+          example: '2021-05-26T08:19:13Z'
+        execution_path:
+          type: string
+          example: C:\Program Files\Example\example.exe
+        antivirus_software:
+          type: array
+          items:
+            type: string
+            example: Norton Antivirus
+        work_dir:
+          type: string
+          example: C:\Users\appdata
+        oem_id:
+          type: string
+          example: 00000000-0000-0000-0000-0000
+        screen_size:
+          type: string
+          example: 1920x1080
+        uac:
+          type: string
+          example: AllowAll
+        process_elevation:
+          type: boolean
+          example: true
+        keyboard_layouts:
+          type: array
+          items:
+            type: string
+            example: English (United States)
+        hardwares:
+          type: array
+          items:
+            type: string
+            example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
+    PhonesDatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    MalwareDataItem:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Malware identifier composed by malicious code
+          example: US[97F6DE35E58C06E6ED60B78FC35739E4] [2023-07-21T01_15_33.9687566]
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 678e9e47098d6b3b44f75ec8
+        type:
+          type: string
+          description: Name or brand of the infostealer (may be empty or unknown)
+          example: risepro
+        published_date:
+          type: string
+          description: Date that malware log has been published
+          example: '2025-01-20T19:04:39Z'
+        data:
+          type: object
+          properties:
+            credentials:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: https://login.example.com/path/to/login
+                  cleaned_url:
+                    type: string
+                    example: login.example.com
+                  username:
+                    type: string
+                    example: username
+                  email:
+                    type: string
+                    example: example@example.com
+                  password:
+                    type: string
+                    example: password1
+                  application:
+                    type: string
+                    example: Google Chrome
+            cookies:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: SEARCH_SAMESITE
+                  value:
+                    type: string
+                    example: CgQItZIB
+                  path:
+                    type: string
+                    example: /
+                  domain:
+                    type: string
+                    example: google.com
+                  expires:
+                    type: string
+                    example: '2021-10-21T12:22:38Z'
+            autofills:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: '0000000000000000011'
+                  value:
+                    type: string
+                    example: example@example.com
+                  browser:
+                    type: string
+                    example: Google Chrome
+            grabbed_files:
+              type: array
+              items:
+                type: string
+                example: /work/important.docx
+            credit_cards:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: John Doe
+                  card_number:
+                    type: string
+                    example: '4111111111111111'
+                  cvv:
+                    type: string
+                    example: '123'
+                  expiration_date:
+                    type: string
+                    example: 12/25
+            system_info:
+              $ref: '#/components/schemas/MalwareLogSystemInfoSampleItem'
+            metadata:
+              type: object
+              properties:
+                incident_date:
+                  type: string
+                  example: '2021-05-26T08:19:13Z'
+                emails:
+                  type: array
+                  items:
+                    type: string
+                    example: example@example.com
+                phones:
+                  type: array
+                  items:
+                    type: string
+                    example: '15551234567'
+                ips:
+                  type: array
+                  items:
+                    type: string
+                    example: 203.0.113.42
+                hardware_id:
+                  type: string
+                  example: 89f3221e-2138-48c9-bbe2-8f68-806e6f6e6963
+                machine_id:
+                  type: string
+                  example: 89f3221e-2138-48c9-bbe2-ab615454c7ef
+                country:
+                  type: string
+                  example: US
+            secret:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: aws-access-token
+                  values:
+                    type: array
+                    items:
+                      type: string
+                      example: AKIAIOSFODNN7EXAMPLE
+            ftp:
+              type: array
+              items:
+                type: object
+                properties:
+                  host:
+                    type: string
+                    example: ftp.example.com
+                  port:
+                    type: integer
+                    example: 21
+                  username:
+                    type: string
+                    example: username
+                  password:
+                    type: string
+                    example: password1
+                  applications:
+                    type: array
+                    items:
+                      type: string
+                      example: FileZilla
+                  cert:
+                    type: object
+                    properties:
+                      data:
+                        type: string
+                        example: abcd123123123123123123123
+                      activation_time:
+                        type: integer
+                        example: 1652227200
+                      expiration_time:
+                        type: integer
+                        example: 1660089599
+                      host:
+                        type: string
+                        example: ftp.example.com
+                      port:
+                        type: integer
+                        example: 21
+                      trust_sans:
+                        type: integer
+                        example: 1
+            installed_software:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: FileZilla Server
+                  version:
+                    type: string
+                    example: 0.9.60
+            process_list:
+              type: array
+              items:
+                type: object
+                properties:
+                  pid:
+                    type: integer
+                    example: 11708
+                  name:
+                    type: string
+                    example: uTorrent.exe
+                  session_name:
+                    type: string
+                    example: Console
+                  cmd:
+                    type: string
+                    example: C:\Users\steam\AppData\Roaming\utorrent\uTorrent.exe  /MINIMIZED
+            rdp:
+              type: array
+              items:
+                type: object
+                properties:
+                  server:
+                    type: string
+                    example: Yandex.Browser
+                  username:
+                    type: string
+                    example: username
+                  password:
+                    type: string
+                    example: password1
+            rac:
+              type: array
+              items:
+                type: object
+                properties:
+                  private_key:
+                    type: string
+                    example: '-----BEGIN PRIVATE KEY----..***..-----END PRIVATE'
+                  certificate:
+                    type: string
+                    example: '-----BEGIN CERTIFICATE----..***..-----END CERTIFICATE'
+            ssh:
+              type: object
+              properties:
+                known_hosts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      host:
+                        type: string
+                        example: github.com
+                      key_type:
+                        type: string
+                        example: ssh-ed25519
+                      key_value:
+                        type: string
+                        example: AAAAC1NzaC2lZDI2NTE5AAAAIOMqqnkVzrm0SdG1UOoqKLsabgH5C9okWi1dh1l1GKJl
+                keys:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: id_ed25519.pub
+                      type:
+                        type: string
+                        example: public
+                      value:
+                        type: string
+                        example: AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+            vpn:
+              type: array
+              items:
+                type: object
+                properties:
+                  vpn_name:
+                    type: string
+                    example: NordVPN
+                  credentials:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        username:
+                          type: string
+                          example: username
+                        password:
+                          type: string
+                          example: password1
+                  user_config:
+                    type: array
+                    items:
+                      type: string
+                      example: 'IsThreatProtectionTurnOffByConnection: False'
+                  openvpn:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: filename.ovpn
+                        options:
+                          type: array
+                          items:
+                            type: string
+                            example: cipher AES-256-CBC
+                        openvpn_certificates:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: tls-crypt-v2
+                              data:
+                                type: string
+                                example: '-----BEGIN CERTIFICATE----..***..-----END CERTIFICATE'
+            email_clients:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Mozilla Thunderbird
+                  credentials:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        server:
+                          type: string
+                          example: imap.example.com
+                        username:
+                          type: string
+                          example: username
+                        password:
+                          type: string
+                          example: password1
+            downloads:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: https://example.com/download
+                  file_path:
+                    type: string
+                    example: /work/important.docx
+                  browser:
+                    type: string
+                    example: Google Chrome
+            identification_level:
+              type: string
+              description: Indicates how well the system information was identified during parsing. Empty string when value was not set
+              enum:
+              - ''
+              - identified
+              - partially_identified
+              - unidentified
+              example: identified
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    PhonesMalwareLogsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneMalwareLogsSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhoneMalwareLogsSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
+          type: string
+          example: '13855550193'
+          description: International format phone number
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+    Phone:
+      required:
+      - data
+      type: object
+      properties:
+        phones_sha256:
+          type: array
+          description: A list of SHA256 hashed phone numbers to lookup
+          items:
+            type: string
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        limit:
+          description: Default is the maximum limit of 100 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhoneDatabasesSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
+          type: string
+          example: '13855550193'
+          description: International format phone number
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+    PhonesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+        credential_lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialDataItem'
+        risk_assessment:
+          type: object
+          properties:
+            level:
+              type: string
+              description: 'Risk level, one of the following: info, low, medium, high, critical'
+              example: high
+            recommendations_enabled:
+              type: string
+              description: If true, user has enabled recommendations for this request. If false, recommendations are not provided. This field is taken from user provided query parameter of the same name.
+              example: 'true'
+            recommendations:
+              type: array
+              items:
+                type: object
+                properties:
+                  leaked_data_category:
+                    type: string
+                    description: Pretty name of general data category that triggered this recommendation
+                    example: Password
+                  recommendation:
+                    type: string
+                    description: Recommendation text
+                    example: Avoid using your publicly known information in passwords. Threat actors routinely use other known information, such as email addresses, phone numbers, pet names, dates of birth, first/last names and other data in stuffing attacks to uncover passwords that were otherwise never leaked online.
+  parameters:
+    Phone:
+      name: phone-sha256
+      in: path
+      required: true
+      description: Hashed phone number using SHA256 algorithm
+      schema:
+        type: string
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Authorization string. Needs to be in the standard BasicAuth format - "Basic BASE64_CREDENTIALS", where BASE64_CREDENTIALS is the user username:password encoded in base64 format.
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY

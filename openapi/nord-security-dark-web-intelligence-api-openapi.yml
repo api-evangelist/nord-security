@@ -1,0 +1,1404 @@
+openapi: 3.2.0
+info:
+  title: NordStellar Enterprise Data Dark Web Intelligence API
+  description: '## Overview
+
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
+
+    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
+
+
+    **Key Features**:
+
+    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
+
+    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
+
+    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
+
+    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
+
+    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+  version: '3.1'
+servers:
+- url: /api/v3/data
+security:
+- ApiKeyAuth: []
+- BasicAuth: []
+tags:
+- name: Dark Web Intelligence
+  description: Endpoints for searching scraped content from the dark web
+paths:
+  /scraped-content/forum:
+    post:
+      tags:
+      - Dark Web Intelligence
+      summary: Scraped forum content search
+      description: 'This endpoint allows users to search through scraped forum content found on the dark web using a Lucene query as the main search query.
+
+        It provides a powerful and flexible search capability by allowing users to construct complex queries to filter and retrieve specific forum content.
+
+
+        **Example Lucene Query:**
+
+        - To search for posts with the word "malware" in the content field, authored by "john doe":
+
+
+        `content:malware AND author_name:"john doe"`
+
+
+        Search phrases can be optionally highlighted in the search results using the `highlight_params` object.
+
+        All keywords that are matched by the query will be wrapped with passed starting and ending tags.
+
+
+        The endpoint can return a maximum of 10,000 records. An offset plus limit that exceeds 10,000 will result in a bad request
+
+
+        **Rate limit: 50 per second.**'
+      operationId: forumSearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForumSearchRequest'
+      responses:
+        '200':
+          description: Returns a list of forum threads
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForumSearchResponse'
+              examples:
+                forumPosts:
+                  summary: Example of a forum thread search response
+                  value:
+                    data:
+                    - id: 6715e928a3dd3128e8a357b4
+                      content:
+                        title: A SMALL PART OF THE LYCA MOBILE SYSTEM (UK)
+                        content: 'WE ADMIT THAT WE HAVE ATTACKED AND STAYED IN THE LYCA MOBILE COMPANY SYSTEM FOR A YEAR. THE COMPANY HAS FRAUDULENT CARD INFORMATION SECURITY BY ONLY EXPOSING THE LAST 4 DIGITS OF CUSTOMERS'' CARDS WHILE WE HAVE CONSUMED MORE THAN 2 MILLION CREDIT CARDS WITH FULL USER INFORMATION DOWNLOAD: https://example.com/Information/some-file-1.csv
+
+                          https://example.com/Information/some-file-2.csv'
+                        extracted_links:
+                        - https://example.com/Information/some-file-2.csv
+                        author_name: KryptonZambie
+                        author_url: https://breachforums.st/User-KryptonZambie
+                        date_posted: '2024-10-20T11:14:00Z'
+                        url: https://breachforums.st/Thread-DATABASE-A-SMALL-PART-OF-THE-LYCA-MOBILE-SYSTEM-UK
+                        onion_url: http://breached26tezcofqla4adzyn22notfqwcac7gpbrleg4usehljwkgqd.onion/Thread-DATABASE-A-SMALL-PART-OF-THE-LYCA-MOBILE-SYSTEM-UK
+                      metadata:
+                        tags:
+                        - DATABASE
+                        - TOP_5000_CF
+                        date_scraped: '2024-10-21T05:39:52Z'
+                      target_data:
+                        site_url: https://breachforums.st
+                        site_domain_name: breachforums.st
+                        site_subdomain_url: Forum-Databases
+                        onion_domain_name: breached26tezcofqla4adzyn22notfqwcac7gpbrleg4usehljwkgqd.onion
+                    - id: 67111ac33311a66e3bd0b195
+                      content:
+                        title: OVER 110GB OF DRIVER'S LICENSE AND BANK STATEMENTS FROM CMELITEGROUP.COM USERS (USA)
+                        content: 'Date Of Leak : 26-09-2024 Website: https://www.example-company.com/ ALL IDENTIFICATION DOCUMENTS AND BANK STATEMENTS OF THE AMERICAN STOCK EXCHANGE SYSTEM CMELITEGROUP.COM SAMPLE: https://example.com/Information/some-file-3.zip Hidden Content'
+                        extracted_links:
+                        - https://example.com/Information/some-file-3.zip
+                        - https://www.example-company.com/
+                        author_name: KryptonZambie
+                        author_url: https://breachforums.st/User-KryptonZambie
+                        date_posted: '2024-10-17T13:51:11Z'
+                        url: https://breachforums.st/Thread-DATABASE-OVER-110GB-OF-DRIVER-S-LICENSE-AND-BANK-STATEMENTS-FROM-CMELITEGROUP-COM-USERS-USA
+                        onion_url: http://breached26tezcofqla4adzyn22notfqwcac7gpbrleg4usehljwkgqd.onion/Thread-DATABASE-OVER-110GB-OF-DRIVER-S-LICENSE-AND-BANK-STATEMENTS-FROM-CMELITEGROUP-COM-USERS-USA
+                      metadata:
+                        tags:
+                        - DATABASE
+                        - TOP_50000_CF
+                        date_scraped: '2024-10-17T14:10:11Z'
+                      target_data:
+                        site_url: https://breachforums.st
+                        site_domain_name: breachforums.st
+                        site_subdomain_url: Forum-Databases
+                        onion_domain_name: breached26tezcofqla4adzyn22notfqwcac7gpbrleg4usehljwkgqd.onion
+                    - id: 67124fd618588a5f28bbd1d9
+                      content:
+                        title: OVER 110GB OF DRIVER'S LICENSE AND BANK STATEMENTS FROM CMELITEGROUP.COM USERS (USA)
+                        content: 'Date Of Leak : 26-09-2024 Website: https://www.example-company.com/ ALL IDENTIFICATION DOCUMENTS AND BANK STATEMENTS OF THE AMERICAN STOCK EXCHANGE SYSTEM CMELITEGROUP.COM SAMPLE: https://example.com/Information/some-file-3.zip Hidden Content You must reply to this thread to view this content.'
+                        extracted_links:
+                        - https://example.com/Information/some-file-3.zip
+                        - https://www.example-company.com/
+                        author_name: KryptonZambie
+                        author_url: https://breachforums.st/User-KryptonZambie
+                        date_posted: '2024-10-17T13:49:00Z'
+                        url: https://breachforums.st/Thread-OVER-110GB-OF-DRIVER-S-LICENSE-AND-BANK-STATEMENTS-FROM-CMELITEGROUP-COM-USERS-USA
+                        onion_url: http://breached26tezcofqla4adzyn22notfqwcac7gpbrleg4usehljwkgqd.onion/Thread-OVER-110GB-OF-DRIVER-S-LICENSE-AND-BANK-STATEMENTS-FROM-CMELITEGROUP-COM-USERS-USA
+                      metadata:
+                        tags:
+                        - DATABASE
+                        - TOP_50000_CF
+                        date_scraped: '2024-10-18T12:08:54Z'
+                      target_data:
+                        site_url: https://breachforums.st
+                        site_domain_name: breachforums.st
+                        site_subdomain_url: Forum-Databases-Removed-Content
+                        onion_domain_name: breached26tezcofqla4adzyn22notfqwcac7gpbrleg4usehljwkgqd.onion
+                    - id: 67111ac43311a66e3bd0b197
+                      content:
+                        title: 152GB PHILIPPINE ID CARD (WITH PHONE NUMBERS OF MORE THAN 4 MILLION PEOPLE )
+                        content: '152GB PHILIPPINES ID CARD (INCLUDING PHONE NUMBERS OF MORE THAN 4 MILLION PEOPLE) SAMPLE: https://example.com/Information/some-file-4.rar Hidden Content
+
+                          https://example.com/Information/some-file-4.rar'
+                        extracted_links:
+                        - https://example.com/Information/some-file-4.rar
+                        author_name: KryptonZambie
+                        author_url: https://breachforums.st/User-KryptonZambie
+                        date_posted: '2024-10-17T13:36:12Z'
+                        url: https://breachforums.st/Thread-DATABASE-152GB-PHILIPPINE-ID-CARD-WITH-PHONE-NUMBERS-OF-MORE-THAN-4-MILLION-PEOPLE
+                        onion_url: http://breached26tezcofqla4adzyn22notfqwcac7gpbrleg4usehljwkgqd.onion/Thread-DATABASE-152GB-PHILIPPINE-ID-CARD-WITH-PHONE-NUMBERS-OF-MORE-THAN-4-MILLION-PEOPLE
+                      metadata:
+                        tags:
+                        - CARD
+                        - PHOTO
+                        - TOP_10000_CF
+                        - TOP_5000_CF
+                        date_scraped: '2024-10-17T14:10:12Z'
+                      target_data:
+                        site_url: https://breachforums.st
+                        site_domain_name: breachforums.st
+                        site_subdomain_url: Forum-Databases
+                        onion_domain_name: breached26tezcofqla4adzyn22notfqwcac7gpbrleg4usehljwkgqd.onion
+                    total_results: 30
+        '206':
+          description: Returns a list of forum threads (Partial content if response would exceed 4MB)
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForumSearchResponse'
+        '400':
+          description: Bad request (Indicates incorrect / missing values)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Entity (Indicates invalid Lucene query)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+  /scraped-content/telegram:
+    post:
+      tags:
+      - Dark Web Intelligence
+      summary: Scraped Telegram content search
+      description: 'This endpoint allows users to search through scraped Telegram content found on the variety of channels in Telegram Ecosystem using a Lucene query as the main search query.
+
+        It provides a powerful and flexible search capability by allowing users to construct complex queries to filter and retrieve specific telegram content.
+
+
+        **Example Lucene Query:**
+
+        - To search for messages with the word "malware" in the content field, authored by "john doe":
+
+
+        `content:malware AND author_name:"john doe"`
+
+
+        Search phrases can be optionally highlighted in the search results using the `highlight_params` object.
+
+        All keywords that are matched by the query will be wrapped with passed starting and ending tags.
+
+
+        The endpoint can return a maximum of 10,000 records. An offset plus limit that exceeds 10,000 will result in a bad request
+
+
+        **Rate limit: 50 per second.**'
+      operationId: telegramSearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TelegramSearchRequest'
+        required: true
+      responses:
+        '200':
+          description: Returns a list of telegram messages
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelegramSearchResponse'
+              examples:
+                telegramMessages:
+                  summary: Example of a telegram message search response
+                  value:
+                    data:
+                    - id: 6841b62e41c5cf44ee3ffa94
+                      content:
+                        title: 'REvil-Ransomware | Announcement #101'
+                        content: 'We are back! REvil ransomware group is recruiting new affiliates for high-profile targets. Contact us for partnership. #Ransomware #REvil'
+                        author_name: REvilOfficial
+                        external_author_id: 1234567890
+                        date_posted: '2025-06-05T15:12:32Z'
+                        url: https://t.me/c/1234567890/101
+                      metadata:
+                        tags:
+                        - RANSOMWARE
+                        - MALWARE
+                        date_scraped: '2025-06-05T15:22:24Z'
+                      target_data:
+                        external_channel_id: 1234567890
+                        channel_name: REvil Official Announcements
+                        channel_identifier: REvilOfficial
+                    - id: 6841b75fd77610afbeff7a0b
+                      content:
+                        title: 'ShadowMarket | Sale #554'
+                        content: 'Fresh database from major e-commerce site for sale. 10M user records with email, password hashes, and addresses. Price: 2 BTC. DM for sample.'
+                        author_name: DataSeller
+                        external_author_id: 9876543210
+                        date_posted: '2025-06-05T14:57:53Z'
+                        url: https://t.me/c/9876543210/554
+                      metadata:
+                        tags:
+                        - DATABASE
+                        - SALE
+                        date_scraped: '2025-06-05T15:27:28Z'
+                      target_data:
+                        external_channel_id: 9876543210
+                        channel_name: Shadow Market
+                        channel_identifier: shadow_market_sales
+                    - id: 6841c68aeb9bce48fb5b3901
+                      content:
+                        title: 'CRD_TRDR | Message #5053'
+                        content: "#SecureVPN \n\n\U0001D5D8\U0001D5FA\U0001D5EE\U0001D5F6\U0001D5F9:\U0001D5E3\U0001D5EE\U0001D600\U0001D600\U0001D604\U0001D5FC\U0001D5FF\U0001D5F1\n\njohn.doe@example.com\nExamplePass1!\n\nalex.smith@example.com\nPassExample2!\n\nandy.j@example.co.uk\nAnotherP4ss!\n\nm.pont@example.fr\nFr3nchP4ss"
+                        author_name: CRD_TRDR
+                        external_author_id: 1765503461
+                        date_posted: '2025-06-05T13:52:13Z'
+                        url: https://t.me/c/1765503461/5053
+                      metadata:
+                        tags:
+                        - CREDENTIALS
+                        date_scraped: '2025-06-05T16:32:11Z'
+                      target_data:
+                        external_channel_id: 1765503461
+                        channel_name: CRD_TRDR_CHANNEL
+                        channel_identifier": CRD_TRDR
+                    - id: 683f1dc8f211bc0c044bbcfa
+                      content:
+                        title: 'PhishKits | New Product #42'
+                        content: 'New Bank of America phishing kit available. High quality, undetectable. Includes login page, CC form, and admin panel. $250 in XMR. Link: http://example-phish-kit.com/boa_kit.zip'
+                        extracted_links:
+                        - http://example-phish-kit.com/boa_kit.zip
+                        extracted_domains:
+                        - example-phish-kit.com
+                        author_name": PhishMaster
+                        external_author_id": 1034068795
+                        date_posted": '2025-06-03T12:34:47Z'
+                        url: https://t.me/c/1034068795/42
+                      metadata:
+                        tags:
+                        - PHISHING
+                        - SALE
+                        date_scraped: '2025-06-03T16:07:38Z'
+                      target_data:
+                        external_channel_id: 1034068795
+                        channel_name: Phishing Kits & Tools
+                        channel_identifier: phish_kits
+                    total_results: 5277
+        '206':
+          description: Returns a list of telegram messages (Partial content if response would exceed 4MB)
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TelegramSearchResponse'
+        '400':
+          description: Bad request (Indicates incorrect / missing values)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Entity (Indicates invalid Lucene query)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+  /scraped-content/ransomware:
+    post:
+      tags:
+      - Dark Web Intelligence
+      summary: Scraped ransomware content search
+      description: 'This endpoint allows users to search through scraped ransomware incident content found on the variety of groups in dark web ecosystem using a Lucene query as the main search query.
+
+        It provides a powerful and flexible search capability by allowing users to construct complex queries to filter and retrieve specific ransomware blog content.
+
+
+        **Example Lucene Query:**
+
+        - To search for messages with the word "malware" in the content field, authored by "john doe":
+
+
+        `content:malware AND author_name:"john doe"`
+
+
+        Search phrases can be optionally highlighted in the search results using the `highlight_params` object.
+
+        All keywords that are matched by the query will be wrapped with passed starting and ending tags.
+
+
+        The endpoint can return a maximum of 10,000 records. An offset plus limit that exceeds 10,000 will result in a bad request
+
+
+        **Rate limit: 50 per second.**'
+      operationId: ransomwareSearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RansomwareSearchRequest'
+        required: true
+      responses:
+        '200':
+          description: Returns a list of ransomware incidents
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RansomwareSearchResponse'
+              examples:
+                ransomwareIncidents:
+                  summary: Example of a ransomware incident search response
+                  value:
+                    data:
+                    - id: 6842bc300046021e79cbf22b
+                      content:
+                        title: Synopsys/synopsys.com targeted in ransomware attack by Arkana
+                        author_name: Arkana
+                        date_posted: '2025-06-06T12:04:54Z'
+                      ransom_data:
+                        victim_name": Synopsys
+                        victim_domain": synopsys.com
+                      metadata:
+                        tags:
+                        - RANSOMWARE_INCIDENT
+                        - TOP_50000_CF
+                        date_scraped: '2025-06-06T10:00:16Z'
+                        screenshot_identifier: 6842bc300046021e79cbf22b
+                      enrichment_data:
+                        name: Synopsys Inc
+                        domain: synopsys.com
+                        website: https://www.synopsys.com
+                        industry: Software Development
+                        type: Public Company
+                        size_range: 10,001+ employees
+                        location:
+                          country: United States
+                          country_iso2: US
+                          location: Sunnyvale, California 94085, US
+                          full_address: 675 Almanor Ave; Sunnyvale, California 94085, US
+                        socials:
+                        - platform: 1
+                          url: https://www.facebook.com/synopsys
+                        - platform: 2
+                          url: https://www.linkedin.com/company/synopsys
+                        - platform": 3
+                          url: https://www.twitter.com/synopsys
+                        - platform: 4
+                          url: https://www.crunchbase.com/organization/synopsys
+                        - platform: 5
+                          url: https://www.instagram.com/synopsyslife
+                        - platform: 6
+                          url: https://www.youtube.com/user/synopsys
+                    total_results: 1
+        '206':
+          description: Returns a list of ransomware incidents (Partial content if response would exceed 4MB)
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RansomwareSearchResponse'
+        '400':
+          description: Bad request (Indicates incorrect / missing values)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Entity (Indicates invalid Lucene query)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+  /scraped-content/marketplace:
+    post:
+      tags:
+      - Dark Web Intelligence
+      summary: Scraped marketplace content search
+      description: 'This endpoint allows users to search through scraped marketplace post content found on the variety of groups in dark web ecosystem using a Lucene query as the main search query.
+
+        It provides a powerful and flexible search capability by allowing users to construct complex queries to filter and retrieve specific marketplace content.
+
+
+        **Example Lucene Query:**
+
+        - To search for messages with the word "malware" in the content field, authored by "john doe":
+
+
+        `content:malware AND author_name:"john doe"`
+
+
+        Search phrases can be optionally highlighted in the search results using the `highlight_params` object.
+
+        All keywords that are matched by the query will be wrapped with passed starting and ending tags.
+
+
+        The endpoint can return a maximum of 10,000 records. An offset plus limit that exceeds 10,000 will result in a bad request
+
+
+        **Rate limit: 50 per second.**'
+      operationId: marketplaceSearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MarketplaceSearchRequest'
+        required: true
+      responses:
+        '200':
+          description: Returns a list of marketplace posts
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketplaceSearchResponse'
+              examples:
+                marketplacePosts:
+                  summary: Example of a marketplace post search response
+                  value:
+                    data:
+                    - id: 67ea417b4ffad2783e9acbed
+                      display_price: 14.00$
+                      type: 1
+                      content:
+                        title: Malware Logs | Stealer [Unknown] | source | 14.00$
+                        content: "Stealer: Unknown\nLog Identifier: _RO_188.27.152.93\nVictim OS: Windows 10 Pro (10.0.19045) x64\nDate: 2025-03-30T02:34:01\nCountry: RO\nLinks: \n\ntplinkrepeater.net | discord.com | signin.rockstargames.com | guns.lol | tzproject.com | store.steampowered.com | www.instagram.com | www.facebook.com | accounts.spotify.com | tria.ge | accounts.google.com | ring-1.io | www.paypal.com | totaljerkface.com | www.epicgames.com | authenticate.riotgames.com | www.spotify.com | steamcommunity.com | cheater.fun | panel.sharky.ro | doxbin.com | auth0.openai.com | botlucky.com"
+                        author_name: source
+                        author_url: http://exodusyzzpcnxxvpqoyyv3g4yvcy2zbfj4u7jxb56mlcfguqvehyjeqd.onion/vendor/source
+                        date_posted: '2025-03-30T02:34:01Z'
+                        url: http://exodusyzzpcnxxvpqoyyv3g4yvcy2zbfj4u7jxb56mlcfguqvehyjeqd.onion/bot/6ff9d472-0d0f-11f0-9fd7-002590371a8e
+                      metadata:
+                        tags:
+                        - MARKETPLACE
+                        - LOGS
+                        - TOP_200_CF
+                        - TOP_50000_CF
+                        - TOP_20000_CF
+                        - TOP_500_CF
+                        date_scraped: '2025-03-30T02:34:01Z'
+                        screenshot_identifier: exodusmarket.io/67ea417b4ffad2783e9acbed
+                      target_data:
+                        site_url: http://exodusyzzpcnxxvpqoyyv3g4yvcy2zbfj4u7jxb56mlcfguqvehyjeqd.onion
+                        site_domain_name: '[Exodus Market] exodusyzzpcnxxvpqoyyv3g4yvcy2zbfj4u7jxb56mlcfguqvehyjeqd.onion'
+                        site_subdomain_url: http://exodusyzzpcnxxvpqoyyv3g4yvcy2zbfj4u7jxb56mlcfguqvehyjeqd.onion/bots
+                    - id: 682c3405292eec1a44f7e38f
+                      display_price: 19.89$
+                      type: 2
+                      content:
+                        title: Credit Cards | [CREDIT] | [441770][05/2027] | seller55184 | 19.89$
+                        content: 'Type: VISA
+
+                          Bin: 441770
+
+                          Bank: KASIKORNBANK PUBLIC CO., LTD.
+
+                          Class: CREDIT
+
+                          Level: BUSINESS
+
+                          EXP: 05/2027
+
+                          Database: [19.05.2025] MIX ASIA from sniffer HQ
+
+                          Country: Thailand
+
+                          State: BA
+
+                          City: Bangkok
+
+                          Zip: 10600
+
+                          SSN: Not Provided
+
+                          DOB: Not Provided'
+                        author_name": seller55184
+                        author_url: https://bidenjxwb7khlh3djrmi6zkkmggiuoh6cnxll7my7uk25ohe27pcfryd.onion/vendor/seller55184
+                        date_posted: '2025-05-20T07:49:25Z'
+                        url: https://bidenjxwb7khlh3djrmi6zkkmggiuoh6cnxll7my7uk25ohe27pcfryd.onion
+                      metadata:
+                        tags:
+                        - MARKETPLACE
+                        - CARD
+                        date_scraped: '2025-05-20T07:49:25Z'
+                        screenshot_identifier: bidencash.asia/682c3405292eec1a44f7e38e
+                      target_data:
+                        site_url: https://bidenjxwb7khlh3djrmi6zkkmggiuoh6cnxll7my7uk25ohe27pcfryd.onion
+                        site_domain_name: '[BidenCash] bidenjxwb7khlh3djrmi6zkkmggiuoh6cnxll7my7uk25ohe27pcfryd.onion'
+                        site_subdomain_url: https://bidenjxwb7khlh3djrmi6zkkmggiuoh6cnxll7my7uk25ohe27pcfryd.onion/cards
+                    total_results: 2
+        '206':
+          description: Returns a list of marketplace posts (Partial content if response would exceed 4MB)
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MarketplaceSearchResponse'
+        '400':
+          description: Bad request (Indicates incorrect / missing values)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Unprocessable Entity (Indicates invalid Lucene query)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+  /scraped-content/tags:
+    post:
+      tags:
+      - Dark Web Intelligence
+      summary: Scraped content tags lookup
+      description: 'This endpoint provides a lookup for all tags currently used internally for classification of scraped content.
+
+        Based on the specified source, it returns the tags used within that particular collection.
+
+        These tags help in categorizing and filtering the scraped content effectively.
+
+
+        **Rate limit: 50 per second.**'
+      operationId: scrapedContentTags
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagsSearchRequest'
+      responses:
+        '200':
+          description: Returns scraped content tags
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+  /scraped-content/screenshot:
+    post:
+      tags:
+      - Dark Web Intelligence
+      summary: Scraped content screenshot lookup
+      description: 'This endpoint provides a lookup of scraped content screenshots based on the specified source & identifier.
+
+        The endpoint returns the screenshot of the scraped content in JPEG format.
+
+
+        **Rate limit: 50 per second.**'
+      operationId: scrapedContentScreenshot
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScreenshotRequest'
+      responses:
+        '200':
+          description: Returns image in JPEG format, returned as bytes.
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+          content:
+            image/jpeg:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+      - ApiKeyAuth: []
+components:
+  schemas:
+    ScrapedContent:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the content (Forum thread name, Telegram message caption or ransomware incident title)
+        content:
+          type: string
+          description: Scraped content (Forum thread content with stripped HTML tags, Telegram message text or external ransomware incident description)
+        content_hash:
+          type: string
+          description: SHA256 hash of the content (In forums & Telegram)
+        extracted_links:
+          type: array
+          description: List of extracted links from the content (In forums & Telegram)
+          items:
+            type: string
+        extracted_domains:
+          type: array
+          description: List of extracted domains from the content (In forums & Telegram)
+          items:
+            type: string
+        author_name:
+          type: string
+          description: Name of the author of the content (Attacker group name in ransomware incidents or forum user name)
+        author_url:
+          type: string
+          description: URL of the author's profile (In forums & ransomware incidents - attacker group blog URL or forum user profile URL)
+        external_author_id:
+          type: integer
+          description: External ID of the author (Only in Telegram)
+        date_posted:
+          type: string
+          description: Date when the content was posted
+        url:
+          type: string
+          description: URL of the content
+        onion_url:
+          type: string
+          description: Onion URL of the content (Only in forums)
+        url_hash:
+          type: string
+          description: Hash of the URL
+    RansomwareIncident:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Internal ID of the record
+        external_id:
+          type: integer
+          description: External ID of the incident
+        ai_description:
+          type: string
+          description: Description of the incident generated by AI
+        content:
+          $ref: '#/components/schemas/ScrapedContent'
+        ransom_data:
+          $ref: '#/components/schemas/RansomData'
+        metadata:
+          $ref: '#/components/schemas/ScrapedContentMetadata'
+        target_data:
+          $ref: '#/components/schemas/WebTargetData'
+        enrichment_data:
+          description: Company enrichment data of the incident victim
+          $ref: '#/components/schemas/EnrichmentData'
+    SocialMediaURL:
+      type: object
+      properties:
+        platform:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          - 9
+          - 10
+          - 11
+          description: 'List of social media types
+
+            Enum values:
+
+            - 0 -  SOCIAL_MEDIA_PLATFORM_UNSPECIFIED
+
+            - 1 -  SOCIAL_MEDIA_PLATFORM_FACEBOOK
+
+            - 2 -  SOCIAL_MEDIA_PLATFORM_LINKEDIN
+
+            - 3 -  SOCIAL_MEDIA_PLATFORM_TWITTER
+
+            - 4 -  SOCIAL_MEDIA_PLATFORM_CRUNCHBASE
+
+            - 5 -  SOCIAL_MEDIA_PLATFORM_INSTAGRAM
+
+            - 6 -  SOCIAL_MEDIA_PLATFORM_YOUTUBE
+
+            - 7 -  SOCIAL_MEDIA_PLATFORM_GITHUB
+
+            - 8 -  SOCIAL_MEDIA_PLATFORM_REDDIT
+
+            - 9 -  SOCIAL_MEDIA_PLATFORM_DISCORD
+
+            - 10 - SOCIAL_MEDIA_PLATFORM_PINTEREST
+
+            - 11 - SOCIAL_MEDIA_PLATFORM_TIKTOK
+
+            '
+        url:
+          type: string
+          description: URL of the social media profile
+    RansomwareSearchRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/SearchQuery'
+        highlight_params:
+          $ref: '#/components/schemas/HighlightParams'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    TelegramTargetData:
+      type: object
+      properties:
+        external_channel_id:
+          type: integer
+          description: External ID of the Telegram channel
+        channel_name:
+          type: string
+          description: Name of the Telegram channel
+        channel_identifier:
+          type: string
+          description: Identifier of the Telegram channel
+    TelegramMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Internal ID of the record
+        external_id:
+          type: integer
+          description: External ID of the message (in Telegram API)
+        content:
+          $ref: '#/components/schemas/ScrapedContent'
+        metadata:
+          $ref: '#/components/schemas/ScrapedContentMetadata'
+        target_data:
+          $ref: '#/components/schemas/TelegramTargetData'
+        file_data:
+          $ref: '#/components/schemas/TelegramFileData'
+    TelegramFileData:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: Name of the file attached to the message
+        file_size_bytes:
+          type: integer
+          description: Size of the file attached to the message
+    ForumSearchResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ForumThread'
+        total_results:
+          type: integer
+          description: Total number of records found
+    ForumSearchRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/SearchQuery'
+        highlight_params:
+          $ref: '#/components/schemas/HighlightParams'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    MarketplacePost:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Internal ID of the record
+        display_price:
+          type: string
+          description: Display price of the marketplace post (with currency)
+        type:
+          type: array
+          description: 'List of marketplace types
+
+            Enum values:
+
+            - 0 - MARKETPLACE_TYPE_UNSPECIFIED
+
+            - 1 - MARKETPLACE_TYPE_LOGS
+
+            - 2 - MARKETPLACE_TYPE_CREDIT_CARDS
+
+            - 3 - MARKETPLACE_TYPE_HOSTS
+
+            - 4 - MARKETPLACE_TYPE_SEND
+
+            - 5 - MARKETPLACE_TYPE_WEB_MAIL
+
+            - 6 - MARKETPLACE_TYPE_LEADS
+
+            - 7 - MARKETPLACE_TYPE_ACCOUNTS
+
+            - 8 - MARKETPLACE_TYPE_OTHER'
+          items:
+            type: integer
+            enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+        content:
+          $ref: '#/components/schemas/ScrapedContent'
+        metadata:
+          $ref: '#/components/schemas/ScrapedContentMetadata'
+        target_data:
+          $ref: '#/components/schemas/WebTargetData'
+    Error:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            body:
+              type: string
+              description: Error description
+    MarketplaceSearchResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketplacePost'
+        total_results:
+          type: integer
+          description: Total number of records found
+    TelegramSearchRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/SearchQuery'
+        highlight_params:
+          $ref: '#/components/schemas/HighlightParams'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    SearchQuery:
+      type: object
+      description: Object that is used for Lucene query & date filtering in the search request
+      properties:
+        query:
+          type: string
+          description: 'The search query string in Lucene syntax
+
+            Available fields in the query:
+
+            - "tags"
+
+            - "content"
+
+            - "title"
+
+            - "author_name"
+
+            - "channel_name" (Telegram only)
+
+            - "site_domain_name" (Forums only)
+
+            '
+        date_posted_range:
+          $ref: '#/components/schemas/DateRange'
+        date_scraped_range:
+          $ref: '#/components/schemas/DateRange'
+    DateRange:
+      type: object
+      properties:
+        date_from:
+          type: string
+          description: 'Start date of the range.
+
+            Supported date formats:
+
+            - "2006-01-02T15:04:05Z"
+
+            - "2006-01-02 15:04:05 -0700 MST"
+
+            - "2006-01-02 15:04:05"
+
+            '
+        date_to:
+          type: string
+          description: 'End date of the range.
+
+            Supported date formats:
+
+            - "2006-01-02T15:04:05Z"
+
+            - "2006-01-02 15:04:05 -0700 MST"
+
+            - "2006-01-02 15:04:05"
+
+            '
+        mode:
+          type: string
+          enum:
+          - DATE_RANGE_MODE_UNSPECIFIED
+          - DATE_RANGE_MODE_INCLUDE
+          - DATE_RANGE_MODE_EXCLUDE
+          default: DATE_RANGE_MODE_UNSPECIFIED
+          description: 'Filter mode for the date range.
+
+            - UNSPECIFIED/INCLUDE: results within [date_from, date_to] (default, current behavior).
+
+            - EXCLUDE: results outside the range (date < date_from OR date > date_to).
+
+            Open-ended ranges are supported independently per bound:
+
+            only date_from set — INCLUDE: date >= date_from, EXCLUDE: date < date_from.
+
+            Only date_to set — INCLUDE: date <= date_to, EXCLUDE: date > date_to.
+
+            '
+    ScreenshotRequest:
+      required:
+      - source_type
+      - identifier
+      type: object
+      properties:
+        source_type:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          description: 'List of source types
+
+            Enum values:
+
+            - 0 - SOURCE_TYPE_UNSPECIFIED
+
+            - 1 - SOURCE_TYPE_FORUM
+
+            - 2 - SOURCE_TYPE_TELEGRAM
+
+            - 3 - SOURCE_TYPE_RANSOMWARE
+
+            - 4 - SOURCE_TYPE_MARKETPLACE
+
+            '
+        identifier:
+          type: string
+          description: Identifier for the scraped content
+        properties:
+          description: Parameters for the image resizing (optional)
+          $ref: '#/components/schemas/ImageProperties'
+    Pagination:
+      type: object
+      properties:
+        limit:
+          type: integer
+          description: The number of items to return (Max 100)
+        offset:
+          type: integer
+          description: The number of items to skip
+    WebTargetData:
+      type: object
+      properties:
+        site_url:
+          type: string
+          description: URL of the web target from which the content was scraped
+        site_domain_name:
+          type: string
+          description: Domain name of the web target (Only in forums)
+        onion_domain_name:
+          type: string
+          description: Onion name of the web target (Only in forums)
+        site_subdomain_url:
+          type: string
+          description: Subdomain URL of the web target (Only in forums)
+        display_name:
+          type: string
+          description: Display name of the target from which the content was scraped
+    TagsSearchRequest:
+      required:
+      - source_types
+      type: object
+      properties:
+        source_types:
+          type: array
+          description: 'List of source types
+
+            Enum values:
+
+            - 0 - SOURCE_TYPE_UNSPECIFIED
+
+            - 1 - SOURCE_TYPE_FORUM
+
+            - 2 - SOURCE_TYPE_TELEGRAM
+
+            - 3 - SOURCE_TYPE_RANSOMWARE
+
+            - 4 - SOURCE_TYPE_MARKETPLACE
+
+            '
+          items:
+            type: integer
+            enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+    TelegramSearchResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TelegramMessage'
+        total_results:
+          type: integer
+          description: Total number of records found
+    EnrichmentData:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the company
+        domain:
+          type: string
+          description: Domain of the company
+        website:
+          type: string
+          description: Website of the company
+        industry:
+          type: string
+          description: Industry of the company (Raw string, unprocessed)
+        type:
+          type: string
+          description: Type of the company (Private, LLD, etc.) (Raw string, unprocessed)
+        size_range:
+          type: string
+          description: Size range of the company - "1-10 employees", "11-50 employees", etc.
+        revenue_range:
+          type: string
+          description: Revenue range of the company - "$1M-$10M", "$10M-$50M", etc. including currency sign
+        company_logo_base64:
+          type: string
+          description: Base64 encoded company logo. 50x50px
+        location:
+          $ref: '#/components/schemas/LocationData'
+          description: Enrichment location data
+        socials:
+          type: array
+          description: List of social media URLs associated with the company
+          items:
+            $ref: '#/components/schemas/SocialMediaURL'
+    ForumThread:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Internal ID of the record
+        content:
+          $ref: '#/components/schemas/ScrapedContent'
+        metadata:
+          $ref: '#/components/schemas/ScrapedContentMetadata'
+        target_data:
+          $ref: '#/components/schemas/WebTargetData'
+    ScrapedContentMetadata:
+      type: object
+      properties:
+        tags:
+          type: array
+          description: List of tags associated with the content
+          items:
+            type: string
+        date_scraped:
+          type: string
+          description: Date when the record was scraped
+        date_updated:
+          type: string
+          description: Date when the record was last updated
+        screenshot_identifier:
+          type: string
+          description: Identifier for scraped content screenshot retrieval
+    MarketplaceSearchRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/SearchQuery'
+        highlight_params:
+          $ref: '#/components/schemas/HighlightParams'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    RansomData:
+      type: object
+      properties:
+        claim_url:
+          type: string
+          description: Complete ransomware incident claim URL
+        victim_name:
+          type: string
+          description: Name of the ransomware victim organization
+        victim_domain:
+          type: string
+          description: Domain name of the ransomware victim organization website
+    TagsResponse:
+      type: object
+      properties:
+        tags:
+          type: array
+          description: List of scraped content tags based on type
+          items:
+            type: string
+    ImageProperties:
+      type: object
+      properties:
+        width:
+          type: integer
+          description: Width of the resized image (Max 3841)
+        height:
+          type: integer
+          description: Height of the resized image (Max 2161)
+        quality:
+          type: integer
+          description: Quality ratio of the resized image (Max 100)
+    RansomwareSearchResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RansomwareIncident'
+        total_results:
+          type: integer
+          description: Total number of records found
+    HighlightParams:
+      type: object
+      description: 'Optional object that is used for matched phrase highlights in the search results.
+
+        All keywords that are matched by the query will be wrapped with passed starting and ending tags.
+
+        Highlighting is applied on all of the fields the phrase is matched in.
+
+        '
+      properties:
+        pre_tags:
+          type: array
+          description: List of opening wrapper tags (applied in the order they are listed)
+          items:
+            type: string
+            enum:
+            - <span class='text-highlight'>
+        post_tags:
+          type: array
+          description: List of closing wrapper tags (applied in the reverse order)
+          items:
+            type: string
+            enum:
+            - </span>
+    LocationData:
+      type: object
+      properties:
+        country:
+          type: string
+          description: Country name of the company
+        country_iso2:
+          type: string
+          description: Country ISO2 code
+        location:
+          type: string
+          description: Country, city & state of the company
+        full_address:
+          type: string
+          description: Full address including street, city, state, country, and postal code
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Authorization string. Needs to be in the standard BasicAuth format - "Basic BASE64_CREDENTIALS", where BASE64_CREDENTIALS is the user username:password encoded in base64 format.
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY

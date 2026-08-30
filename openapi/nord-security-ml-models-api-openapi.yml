@@ -1,0 +1,233 @@
+openapi: 3.2.0
+info:
+  description: Cybersec API documentation
+  version: 1.0.0
+  title: Cybersec ML Models API
+servers:
+- url: https://cybersec.nordstellar.com
+security:
+- ApiKeyAuth: []
+tags:
+- name: ML Models
+paths:
+  /v2/cybersec/ml-models:
+    get:
+      operationId: mlModels
+      tags:
+      - ML Models
+      summary: Get ML Models
+      description: Retrieves a ML Models available
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MlModelInfo'
+              example:
+              - name: model-win32
+                project_id: '4321'
+                project_name: quickscan
+                url: https://cloufront-path/v3.com/
+                identifier: 3.0.0
+                threshold_low: 0.5
+                threshold_high: 0.9
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+  /v2/cybersec/ml-models/{name}/{modelVersionIdentifier}:
+    get:
+      operationId: mlModelGet
+      tags:
+      - ML Models
+      summary: Get ML Models info
+      description: Returns data of an specific ML Model version, include URL to get the file and the thresholds
+      parameters:
+      - name: name
+        in: path
+        schema:
+          type: string
+          example: quickscan-linux-x64
+        description: ML Model name
+        required: true
+      - name: modelVersionIdentifier
+        in: path
+        schema:
+          type: string
+          example: 0.0.7
+        description: ML Model version identifier
+        required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MlModelInfo'
+              example:
+                name: model-win32.dll
+                url: https://cloudfront-path/v1
+                project_id: '4321'
+                project_name: quickscan
+                identifier: 1.0.0
+                threshold_low: 0.5
+                threshold_high: 0.8
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+components:
+  schemas:
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+    MlModelInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ML Model name
+          example: model-win32
+        project_id:
+          type: string
+          description: Gitlab project ID where the model is stored
+          example: '1234'
+        project_name:
+          type: string
+          description: Gitlab project name where the model is stored
+          example: quickscan
+        url:
+          type: string
+          format: uri
+          description: Url where the model file is stored
+          example: https://path-to-s3
+        identifier:
+          type: string
+          description: ML Model version identifier
+          example: 2.0.0
+        threshold_low:
+          type: number
+          format: float
+          description: Lower limit for ML model threshold
+          example: 0.78
+        threshold_high:
+          type: number
+          format: float
+          description: Higher limit for ML model threshold
+          example: 0.98
+  responses:
+    AuthServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904178
+                  message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    ServiceForbidden:
+      description: Service is forbidden for the user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service is forbidden for the user:
+              value:
+                errors:
+                  code: 100166
+                  message: Service is forbidden for the user
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+  securitySchemes:
+    ApiKeyAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Set token with a prefix like this: `token:69405a802dba4f57804e5fff11061946a579d159d1a51760d19a50aec241adc9`'

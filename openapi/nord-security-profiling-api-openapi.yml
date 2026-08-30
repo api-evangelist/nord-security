@@ -1,0 +1,682 @@
+openapi: 3.2.0
+info:
+  title: NordStellar Enterprise Data Profiling API
+  description: '## Overview
+
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
+
+    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
+
+
+    **Key Features**:
+
+    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
+
+    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
+
+    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
+
+    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
+
+    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+  version: '3.1'
+servers:
+- url: /api/v3/data
+security:
+- ApiKeyAuth: []
+- BasicAuth: []
+tags:
+- name: Profiling
+  description: 'Endpoints for generating OSINT-based profiling reports on email addresses and phone numbers. Reports aggregate data from external intelligence sources, enrich it with internal breach data, and produce an LLM-powered risk analysis.
+
+
+    Reports are processed asynchronously through a multi-stage pipeline: `pending` (data collection) → `analyzing` (LLM processing) → `completed`. Use the GET endpoint to poll for completion.'
+paths:
+  /profiling/reports:
+    post:
+      tags:
+      - Profiling
+      summary: Generate a profiling report
+      description: 'Creates a new profiling report for the given email addresses and/or phone numbers.
+
+        The report is generated asynchronously — the response returns immediately with the report ID
+
+        and a `pending` state. Use the GET endpoint to poll for completion.
+
+
+        Identifiers are normalized (emails lowercased, whitespace trimmed) and deduplicated
+
+        before processing. Between 1 and 5 unique identifiers are accepted per report.
+
+
+        If a report for the same set of identifiers already exists in a non-failed state,
+
+        `409 Conflict` is returned. Failed reports are automatically reset and re-initiated.'
+      operationId: generateReport
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - external_user_id
+              properties:
+                emails:
+                  type: array
+                  description: Email addresses to profile
+                  maxItems: 5
+                  items:
+                    type: string
+                    format: email
+                  example:
+                  - user@example.com
+                phones:
+                  type: array
+                  description: Phone numbers in international format (E.164)
+                  maxItems: 5
+                  items:
+                    type: string
+                  example:
+                  - '+12025551234'
+                external_user_id:
+                  type: string
+                  description: External user identifier being profiled
+                  example: ext-user-123
+      responses:
+        '201':
+          description: Report created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Deterministic report identifier (SHA256 hash)
+                    example: a1b2c3d4e5f6...
+                  state:
+                    type: string
+                    description: Current report state
+                    enum:
+                    - pending
+                    - analyzing
+                    - completed
+                    - failed
+                    example: pending
+        '400':
+          description: Invalid request (missing identifiers, invalid format, count out of range)
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '409':
+          description: Report already exists for this identifier set
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+    get:
+      tags:
+      - Profiling
+      summary: List profiling reports
+      description: 'Returns profiling reports for the authenticated tenant scoped to the given external user.
+
+        Results are sorted by creation date (newest first).
+
+        Heavy fields (accounts, activities, breaches, analysis) are excluded from the response.'
+      operationId: listReports
+      parameters:
+      - name: external_user_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: External user identifier to scope the report list
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+        description: Page number (1-indexed)
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 50
+          default: 10
+        description: Number of reports per page
+      responses:
+        '200':
+          description: Returns report summaries
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reports:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Report identifier
+                        state:
+                          type: string
+                          enum:
+                          - pending
+                          - analyzing
+                          - completed
+                          - failed
+                        emails:
+                          type: array
+                          items:
+                            type: string
+                        phones:
+                          type: array
+                          items:
+                            type: string
+                        total_items:
+                          type: integer
+                        date_created:
+                          type: string
+                          format: date-time
+                        date_updated:
+                          type: string
+                          format: date-time
+                  page:
+                    type: integer
+                    description: Current page number
+                  limit:
+                    type: integer
+                    description: Number of items per page
+                  total:
+                    type: integer
+                    description: Total number of reports
+        '400':
+          description: Missing external_user_id parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /profiling/reports/{id}:
+    get:
+      tags:
+      - Profiling
+      summary: Get a profiling report
+      description: 'Retrieves a full profiling report by ID, scoped to the authenticated tenant and external user.
+
+        The response includes activities, accounts, breaches, and LLM analysis when available.
+
+
+        Poll this endpoint to check report completion — the `state` field transitions through:
+
+        `pending` → `analyzing` → `completed` (or `failed`).'
+      operationId: getReport
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Report identifier
+      - name: external_user_id
+        in: query
+        required: true
+        schema:
+          type: string
+        description: External user identifier
+      responses:
+        '200':
+          description: Returns the full report
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Report identifier
+                  state:
+                    type: string
+                    enum:
+                    - pending
+                    - analyzing
+                    - completed
+                    - failed
+                  date_created:
+                    type: string
+                    format: date-time
+                  date_updated:
+                    type: string
+                    format: date-time
+                  accounts:
+                    type: array
+                    description: Discovered platform accounts
+                    items:
+                      type: object
+                      properties:
+                        platform:
+                          type: string
+                        category:
+                          type: string
+                        registered:
+                          type: boolean
+                        profile:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                            id:
+                              type: string
+                            verified:
+                              type: boolean
+                            display_name:
+                              type: string
+                            username:
+                              type: string
+                            description:
+                              type: string
+                            picture:
+                              type: string
+                            gender:
+                              type: string
+                            language:
+                              type: string
+                            job_title:
+                              type: string
+                            location:
+                              type: string
+                            followers:
+                              type: integer
+                            following:
+                              type: integer
+                            premium:
+                              type: boolean
+                        contact:
+                          type: object
+                          properties:
+                            phones:
+                              type: array
+                              items:
+                                type: string
+                            emails:
+                              type: array
+                              items:
+                                type: string
+                        activity:
+                          type: object
+                          properties:
+                            date_created:
+                              type: string
+                            last_seen:
+                              type: string
+                            profile_updated:
+                              type: string
+                            verification:
+                              type: object
+                              properties:
+                                phone:
+                                  type: string
+                                email:
+                                  type: string
+                  activities:
+                    type: array
+                    description: Location-aware events extracted from OSINT data
+                    items:
+                      type: object
+                      properties:
+                        platform:
+                          type: string
+                        type:
+                          type: string
+                        label:
+                          type: string
+                        date_created:
+                          type: string
+                        location:
+                          type: object
+                          properties:
+                            points:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  type:
+                                    type: string
+                                  latitude:
+                                    type: number
+                                  longitude:
+                                    type: number
+                            polyline:
+                              type: string
+                            city:
+                              type: string
+                            region:
+                              type: string
+                            country:
+                              type: string
+                            country_code:
+                              type: string
+                            address:
+                              type: string
+                            postal_code:
+                              type: string
+                            timezone:
+                              type: string
+                            local_date:
+                              type: string
+                            device_name:
+                              type: string
+                  breaches:
+                    type: array
+                    description: Breach matches from internal asset databases
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - database
+                          - malware_log
+                          - credential_list
+                        identifier_type:
+                          type: string
+                          description: Identifier type (email or phone)
+                        name:
+                          type: string
+                          description: Breach source identifier (e.g. domain name)
+                        published_date:
+                          type: string
+                          format: date-time
+                          description: When the breach was first recorded
+                  analysis:
+                    type: object
+                    description: LLM-generated risk analysis (present when state is completed)
+                    properties:
+                      exposure_summary:
+                        type: string
+                      platforms:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            platform_id:
+                              type: string
+                            platform_category:
+                              type: string
+                            data_points_exposed:
+                              type: array
+                              items:
+                                type: string
+                            most_recent_activity:
+                              type: string
+                            risk_level:
+                              type: string
+                            reasoning:
+                              type: string
+                      correlation_risks:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            risk_name:
+                              type: string
+                            severity:
+                              type: string
+                            explanation:
+                              type: string
+                            contributing_data_points:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  platform_id:
+                                    type: string
+                                  type:
+                                    type: string
+                      overall_risk:
+                        type: object
+                        properties:
+                          score:
+                            type: integer
+                            minimum: 0
+                            maximum: 100
+                          justification:
+                            type: string
+                      recommendations:
+                        type: object
+                        properties:
+                          immediate:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                action:
+                                  type: string
+                                expected_impact:
+                                  type: string
+                                addresses:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      platform_id:
+                                        type: string
+                                      type:
+                                        type: string
+                          short_term:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                action:
+                                  type: string
+                                expected_impact:
+                                  type: string
+                                addresses:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      platform_id:
+                                        type: string
+                                      type:
+                                        type: string
+                          ongoing:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                action:
+                                  type: string
+                                expected_impact:
+                                  type: string
+                                addresses:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      platform_id:
+                                        type: string
+                                      type:
+                                        type: string
+                      metadata:
+                        type: object
+                        properties:
+                          platforms_analyzed:
+                            type: integer
+                          data_points_analyzed:
+                            type: integer
+                          earliest_observed:
+                            type: string
+                          latest_observed:
+                            type: string
+                      risk_scoring:
+                        type: object
+                        description: Deterministic, code-computed risk score independent of the LLM's qualitative assessment. Clients can subtract resolved signal weights from raw_score and re-clamp to [0, max_score] for adjusted scoring.
+                        properties:
+                          score:
+                            type: integer
+                            minimum: 0
+                            maximum: 100
+                            description: Clamped risk score
+                          raw_score:
+                            type: integer
+                            description: Uncapped sum of all signal weights
+                          max_score:
+                            type: integer
+                            description: Maximum possible score (always 100)
+                          level:
+                            type: string
+                            enum:
+                            - low
+                            - medium
+                            - high
+                          signals:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                category:
+                                  type: string
+                                  description: Signal category (identifying_data, location_data, breach_data, pseudonymous, sensitive_platform, correlation, non_identifying, profile_discovered)
+                                source:
+                                  type: string
+                                  description: Platform or source that produced this signal
+                                detail:
+                                  type: string
+                                  description: Human-readable description of the signal
+                                weight:
+                                  type: integer
+                                  description: Points contributed to the raw score
+                                level:
+                                  type: string
+                                  enum:
+                                  - low
+                                  - medium
+                                  - high
+        '400':
+          description: Missing required parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: Report not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /profiling/reports/{id}/regenerate:
+    post:
+      tags:
+      - Profiling
+      summary: Regenerate a profiling report
+      description: 'Resets a completed or failed report back to `pending` state and re-fetches all data.
+
+        Stale source records are re-fetched from OSINT, fresh cached records are reused.
+
+
+        Returns `412 Precondition Failed` if the report is still being processed (pending or analyzing state).'
+      operationId: regenerateReport
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Report identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - external_user_id
+              properties:
+                external_user_id:
+                  type: string
+                  description: External user identifier
+                  example: ext-user-123
+      responses:
+        '200':
+          description: Report regeneration initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Report identifier
+                  state:
+                    type: string
+                    description: Report state after regeneration
+                    example: pending
+        '400':
+          description: Missing required parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: Report not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '412':
+          description: Report is still processing (pending or analyzing)
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Authorization string. Needs to be in the standard BasicAuth format - "Basic BASE64_CREDENTIALS", where BASE64_CREDENTIALS is the user username:password encoded in base64 format.
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY

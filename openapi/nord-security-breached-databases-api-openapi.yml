@@ -1,0 +1,797 @@
+openapi: 3.2.0
+info:
+  title: NordStellar Enterprise Data Breached Databases API
+  description: '## Overview
+
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
+
+    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
+
+
+    **Key Features**:
+
+    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
+
+    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
+
+    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
+
+    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
+
+    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+  version: '3.1'
+servers:
+- url: /api/v3/data
+security:
+- ApiKeyAuth: []
+- BasicAuth: []
+tags:
+- name: Breached Databases
+  description: 'Endpoints for retrieving detailed metadata about breach origins, including databases.
+
+    These operations provide comprehensive context about database breach incidents, affected platforms, and exposure scope to support your security investigations.'
+paths:
+  /email/{email-sha256}/databases:
+    get:
+      tags:
+      - Breached Databases
+      summary: Email databases lookup
+      description: 'Used for looking up email addresses and their databases.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: singleEmailDatabases
+      parameters:
+      - $ref: '#/components/parameters/Email'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailDatabasesSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /email/databases:
+    post:
+      tags:
+      - Breached Databases
+      summary: Bulk email databases lookup
+      description: 'Used for looking up email addresses and their databases in bulk.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: emailDatabases
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Emails'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailsDatabasesSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /phone/{phone-sha256}/databases:
+    get:
+      tags:
+      - Breached Databases
+      summary: Phone databases lookup
+      description: 'Used for looking up phone numbers and their databases.
+
+        These phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: singlePhoneDatabases
+      parameters:
+      - $ref: '#/components/parameters/Phone'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneDatabasesSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /phone/databases:
+    post:
+      tags:
+      - Breached Databases
+      summary: Bulk phone databases lookup
+      description: 'Used for looking up phones numbers and their databases in bulk.
+
+        These phone numbers and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: phonesDatabases
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Phone'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhonesDatabasesSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /data-source/database/{id}:
+    get:
+      tags:
+      - Breached Databases
+      summary: Database Lookup
+      description: 'Used to look up breached databases, that are publicly accessible on the internet, and their metadata.
+
+        These databases may have been collected from both clearnet and deep/dark web.
+
+        The breach date of these databases is by no means exact, since, if no official statement by the breached company is made, it is taken from the data publication source, be it a hacker forum, a ransomware group website or some place else.
+
+        Database description can not exceed 1000 characters.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: database
+      parameters:
+      - $ref: '#/components/parameters/HexId'
+      - $ref: '#/paths/~1data-source~1database/post/parameters/0'
+      - $ref: '#/paths/~1data-source~1database/post/parameters/1'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /data-source/database/domain/{domain}:
+    get:
+      tags:
+      - Breached Databases
+      summary: Database Lookup by Domain
+      description: "Used to look up breached databases, that are publicly accessible on the internet, and their metadata.\nThese databases may have been collected from both clearnet and deep/dark web.\nThe breach date of these databases is by no means exact, since, if no official statement by the breached company is made, it is taken from the data publication source, be it a hacker forum, a ransomware group website or some place else.\nDatabase description can not exceed 1000 characters. \n\n**Rate limit: 200 per second.**"
+      operationId: databaseByDomain
+      parameters:
+      - $ref: '#/components/parameters/Domain'
+      - $ref: '#/paths/~1data-source~1database/post/parameters/0'
+      - $ref: '#/paths/~1data-source~1database/post/parameters/1'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /data-source/database:
+    post:
+      tags:
+      - Breached Databases
+      summary: Bulk databases lookup
+      description: 'Used to look up breached databases, that are publicly accessible on the internet, and their metadata in bulk.
+
+        These databases may have been collected from both clearnet and deep/dark web.
+
+        The breach date of these databases is by no means exact, since, if no official statement by the breached company is made, it is taken from the data publication source, be it a hacker forum, a ransomware group website or some place else.
+
+        Database description can not exceed 1000 characters.
+
+
+        **One of the following fields in request body is required: ids, date_from**
+
+
+        The databases can be lookuped **either** by **id** or by **published_date**. If **ids** are provided, the lookup is executed using them. If you wish to lookup databases by **published_date**, fill in **published_date_from**, **published_date_to** and leave **ids** empty or absent.
+
+        **Providing both ids and published_date_from or published_date_to will result in 400 BAD REQUEST response.**
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: databases
+      parameters:
+      - name: inclusive-projection
+        in: query
+        description: 'Return **only** the listed fields of the database record, omitting everything else.
+
+
+          Values are a comma-separated list (`?inclusive-projection=name,breach_date`) or repeated parameters (`?inclusive-projection=name&inclusive-projection=breach_date`).
+
+
+          **Available fields:** `id`, `name`, `identifier`, `type`, `domain`, `breach_date`, `description`, `logo_url`, `data_keys`, `unique_email_count`, `unique_phone_count`, `published` (controls the `published_date` response field).
+
+
+          Only the listed fields are returned — there are no implicit includes beyond the always-present `id`.
+
+
+          **`id` is special:** it is always present and may be named explicitly, but it can never be excluded.
+
+
+          Mutually exclusive with **exclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied.'
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - name
+        - breach_date
+      - name: exclusive-projection
+        in: query
+        description: 'Return the full database record **except** the listed fields.
+
+
+          Values are a comma-separated list (`?exclusive-projection=data_keys,description`) or repeated parameters (`?exclusive-projection=data_keys&exclusive-projection=description`).
+
+
+          **Available fields:** `name`, `identifier`, `type`, `domain`, `breach_date`, `description`, `logo_url`, `data_keys`, `unique_email_count`, `unique_phone_count`, `published` (controls the `published_date` response field).
+
+
+          **`id` cannot be excluded** — supplying `id` returns `400 Bad Request`.
+
+
+          Mutually exclusive with **inclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied.'
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - data_keys
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Databases'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabasesSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '413':
+          description: Too many emails on single request
+          content: {}
+      security:
+      - ApiKeyAuth: []
+components:
+  headers:
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-RateLimit-Reset:
+      schema:
+        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
+  schemas:
+    EmailDatabasesSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+    DatabaseDataItem:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Identifier in the following format {domain}_{top level domain}
+          example: example_com
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 66c4d3912b183418f7743576
+        published_date:
+          type: string
+          description: Date when the database data was published onto the asset
+          example: '2025-01-20T19:04:39Z'
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                description: Key of the data point, complete list can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
+                example: password
+              value:
+                type: array
+                items:
+                  type: string
+                description: Value of the data point
+                example:
+                - password1
+                - password2
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    EmailsDatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhonesDatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    DatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    Phone:
+      required:
+      - data
+      type: object
+      properties:
+        phones_sha256:
+          type: array
+          description: A list of SHA256 hashed phone numbers to lookup
+          items:
+            type: string
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        limit:
+          description: Default is the maximum limit of 100 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhoneDatabasesSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
+          type: string
+          example: '13855550193'
+          description: International format phone number
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+    EmailSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+        credential_lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialDataItem'
+        risk_assessment:
+          type: object
+          properties:
+            level:
+              type: string
+              description: 'Risk level, one of the following: info, low, medium, high, critical'
+              example: high
+            recommendations_enabled:
+              type: string
+              description: If true, user has enabled recommendations for this request. If false, recommendations are not provided. This field is taken from user provided query parameter of the same name.
+              example: 'true'
+            recommendations:
+              type: array
+              items:
+                type: object
+                properties:
+                  leaked_data_category:
+                    type: string
+                    description: Pretty name of general data category that triggered this recommendation
+                    example: Password
+                  recommendation:
+                    type: string
+                    description: Recommendation text
+                    example: Avoid using your publicly known information in passwords. Threat actors routinely use other known information, such as email addresses, phone numbers, pet names, dates of birth, first/last names and other data in stuffing attacks to uncover passwords that were otherwise never leaked online.
+    DatabaseSample:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Identifier in the following format {domain}_{top level domain}
+          example: example_com
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 6698de5af71724f56f4076df
+        breach_date:
+          type: string
+          example: '2024-01-16T00:00:00Z'
+        data_keys:
+          type: array
+          items:
+            type: string
+          description: List of data keys that are exposed in the database, all possible values can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
+          example:
+          - alternate_email
+          - bio
+          - email
+          - homepage
+          - name
+          - profile_picture
+          - username
+        description:
+          type: string
+          example: On July 18, 2024, a database related to the example.com website was found circulating the web. The potential data leak reportedly occurred on January 16, 2024. Over 15 million email addresses were exposed, together with social media, credential and personal data. Leaked records include username, name, home page, bio, Parent email address and Profile picture's URL. The validity of the data exposed couldn't be verified. Yet we're still informing you about a potential data leak – but keep in mind there's a chance of it being a false positive.
+        logo_url:
+          type: string
+          example: null
+        name:
+          type: string
+          example: example.com
+        published_date:
+          type: string
+          example: '2024-07-18T09:20:26Z'
+        unique_email_count:
+          type: integer
+          example: 15111576
+        unique_phone_count:
+          type: integer
+          example: 123516
+        type:
+          type: string
+          description: Type of the database - identified (has a domain or name), unidentified or collection
+          example: identified
+        domain:
+          type: string
+          example: example.com
+    Emails:
+      required:
+      - data
+      type: object
+      properties:
+        emails_sha256:
+          type: array
+          description: A list of SHA256 hashed lower-case email addresses to lookup
+          items:
+            type: string
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        limit:
+          description: Default is the maximum limit of 100 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    Databases:
+      type: object
+      properties:
+        ids:
+          type: array
+          description: 'A list of database IDs to lookup.
+
+            ID should consist of 24 hexadecimal digits.'
+          items:
+            type: string
+          example:
+          - 5f4e1f2e4b1d4d4e4b1d4d4e
+          - 5f4e1f2e4b1d4d4e4b1d4d4f
+        published_date_from:
+          type: string
+          description: A date from filter. Has to be in ISO 8601 format YYYY-MM-DD
+          example: '2021-01-01'
+        published_date_to:
+          type: string
+          description: A date to filter. Has to be in ISO 8601 format YYYY-MM-DD. Default is todays date
+          example: '2021-01-02'
+        limit:
+          description: Default is the maximum limit of 1000 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+  parameters:
+    Email:
+      name: email-sha256
+      in: path
+      required: true
+      description: Hashed lower-cased email address using SHA256 algorithm
+      schema:
+        type: string
+    Domain:
+      name: domain
+      in: path
+      required: true
+      schema:
+        type: string
+    HexId:
+      name: id
+      in: path
+      required: true
+      description: Record ID to lookup. ID should consist of 24 hexadecimal digits.
+      schema:
+        type: string
+    Phone:
+      name: phone-sha256
+      in: path
+      required: true
+      description: Hashed phone number using SHA256 algorithm
+      schema:
+        type: string
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Authorization string. Needs to be in the standard BasicAuth format - "Basic BASE64_CREDENTIALS", where BASE64_CREDENTIALS is the user username:password encoded in base64 format.
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY

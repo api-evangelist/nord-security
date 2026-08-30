@@ -1,0 +1,812 @@
+openapi: 3.2.0
+info:
+  description: Cybersec API documentation
+  version: 1.0.0
+  title: Cybersec Files API
+servers:
+- url: https://cybersec.nordstellar.com
+security:
+- ApiKeyAuth: []
+tags:
+- name: Files
+  description: ''
+paths:
+  /v2/cybersec/files/extensions:
+    get:
+      operationId: fileExtensions
+      tags:
+      - Files
+      summary: Get file extensions
+      description: Returns a list for portable and non portable executable file extensions.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileExtensionsResponse'
+              example:
+                pe_extensions:
+                - acm
+                - ax
+                - cpl
+                - dll
+                - drv
+                - efi
+                - exe
+                - mui
+                - ocx
+                - scr
+                - sys
+                - tsp
+                - elf
+                non_pe_extensions:
+                - apk
+                - swf
+                - dex
+                - do*
+                - ?ht*
+                - asp
+                - ht*
+                - php
+                - shtm*
+                - jar
+                - class
+                - lnk
+                - bin
+                - pdf
+                - ppt*
+                - pot*
+                - pps*
+                - rtf
+                - xl*
+                - bat
+                - cmd
+                - csh
+                - css
+                - eml
+                - inf
+                - ini
+                - ins
+                - isp
+                - js*
+                - osd
+                - pl*
+                - ps1
+                - psh
+                - scf
+                - script
+                - sh
+                - vb*
+                - wsc
+                - wsf
+                - wsh
+                - xml
+                - vb?
+                - mpp
+                - mpt
+                - ms?
+                - pkg
+                - dmg
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+  /v2/cybersec/files/check:
+    post:
+      operationId: fileCheckV2
+      tags:
+      - Files
+      summary: Perform a file check
+      description: This endpoint performs a malware database check on a sha256 hash-sum of the file.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileCheckRequestV2'
+            example:
+              files:
+              - sha256: 7aa06e635fabfdf046ec5baa11e9cd91c7b3a6d0d2d3d2aa64aecc494be1e88e
+                can_upload: true
+                size: 1024
+                name: file.exe
+                url: https://foo.bar/file.exe
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileCheckResponseV2'
+              example:
+                files:
+                - sha256: 7aa06e635fabfdf046ec5baa11e9cd91c7b3a6d0d2d3d2aa64aecc494be1e88e
+                  categories:
+                  - id: 2
+                    description: LINUX/Hajime.nsnlw
+                  ttl: 1797
+                  status: 0
+                  upload_url: ''
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Files parameter is missing:
+                  value:
+                    errors:
+                      code: 905156
+                      message: '''files'' parameter is missing'
+                File checksum parameter is missing:
+                  value:
+                    errors:
+                      code: 905157
+                      message: file entries must have a checksum parameter
+                Invalid file checksum:
+                  value:
+                    errors:
+                      code: 905158
+                      message: Invalid checksum length
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+  /v2/cybersec/files/upload/{sha256}:
+    post:
+      operationId: fileUploadV2
+      tags:
+      - Files
+      summary: Upload a file for malware check
+      description: Use this endpoint for file upload for malware inspection. File is only accepted if it was previously requested by hash check.
+      parameters:
+      - name: sha256
+        in: path
+        schema:
+          $ref: '#/components/schemas/Sha256Checksum'
+        description: sha256 checksum of the file
+        required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: File size limit is 4MB
+      responses:
+        '202':
+          description: Successful response
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                File checksum mismatch:
+                  value:
+                    errors:
+                      code: 905159
+                      message: File checksum mismatch
+                Unexpected file:
+                  value:
+                    errors:
+                      code: 905160
+                      message: Unexpected file
+                Invalid file checksum:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1check/post/responses/400/content/application~1json/examples/Invalid%20file%20checksum'
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '413':
+          description: File is too large
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+  /v2/cybersec/files/ml-upload/{sha256}:
+    post:
+      operationId: mlFileUploadV2
+      tags:
+      - Files
+      summary: Upload malware file for ML models training
+      description: Use this endpoint to upload malware file for ML models training. File is only accepted if it was previously requested by hash check and file has category malware.
+      parameters:
+      - name: sha256
+        in: path
+        schema:
+          $ref: '#/components/schemas/Sha256Checksum'
+        description: sha256 checksum of the file
+        required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: File size limit is 4MB
+      responses:
+        '202':
+          description: Successful response
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                File checksum mismatch:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1upload~1%7Bsha256%7D/post/responses/400/content/application~1json/examples/File%20checksum%20mismatch'
+                Unexpected file:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1upload~1%7Bsha256%7D/post/responses/400/content/application~1json/examples/Unexpected%20file'
+                Invalid file checksum:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1check/post/responses/400/content/application~1json/examples/Invalid%20file%20checksum'
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '413':
+          description: File is too large
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+  /v3/cybersec/files/mime-types:
+    get:
+      operationId: fileMimeTypes
+      tags:
+      - Files
+      summary: Get file mime-types
+      description: Returns a list of scan and deep-scan file MIME types.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileMimeTypesResponse'
+              example:
+                deep_scan_types:
+                - application/vnd.microsoft.portable-executable
+                - application/x-ms-ne-executable
+                - application/efi
+                - application/x-pie-executable
+                - application/x-executable
+                scan_types:
+                - application/vnd.android.package-archive
+                - application/x-shockwave-flash
+                - application/msword
+                - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                - text/html
+                - text/x-php
+                - application/java-archive
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+  /v3/cybersec/files/check:
+    post:
+      operationId: fileCheckV3
+      tags:
+      - Files
+      summary: Perform a file check
+      description: This endpoint performs a malware database check on a sha256 hash-sum of the file.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileCheckRequestV3'
+            example:
+              files:
+              - sha256: 7aa06e635fabfdf046ec5baa11e9cd91c7b3a6d0d2d3d2aa64aecc494be1e88e
+                can_upload: true
+                size: 1024
+                name: file.exe
+                url: https://foo.bar/file.exe
+                mime_type: application/vnd.microsoft.portable-executable
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileCheckResponseV3'
+              example:
+                files:
+                - sha256: 7aa06e635fabfdf046ec5baa11e9cd91c7b3a6d0d2d3d2aa64aecc494be1e88e
+                  categories:
+                  - id: 2
+                    description: LINUX/Hajime.nsnlw
+                  ttl: 1797
+                  status: 0
+                  upload_url: ''
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Files parameter is missing:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1check/post/responses/400/content/application~1json/examples/Files%20parameter%20is%20missing'
+                File checksum parameter is missing:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1check/post/responses/400/content/application~1json/examples/File%20checksum%20parameter%20is%20missing'
+                Invalid file checksum:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1check/post/responses/400/content/application~1json/examples/Invalid%20file%20checksum'
+                Unexpected File Mime-Type:
+                  value:
+                    errors:
+                      code: 904179
+                      message: Unexpected file mime-type
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+  /v3/cybersec/files/upload/{sha256}:
+    post:
+      operationId: fileUploadV3
+      tags:
+      - Files
+      summary: Upload a file for malware check
+      description: Use this endpoint for file upload for malware inspection. File is only accepted if it was previously requested by hash check.
+      parameters:
+      - name: sha256
+        in: path
+        schema:
+          $ref: '#/components/schemas/Sha256Checksum'
+        description: sha256 checksum of the file
+        required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: File size limit is 4MB
+      responses:
+        '202':
+          description: Successful response
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                File checksum mismatch:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1upload~1%7Bsha256%7D/post/responses/400/content/application~1json/examples/File%20checksum%20mismatch'
+                Unexpected file:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1upload~1%7Bsha256%7D/post/responses/400/content/application~1json/examples/Unexpected%20file'
+                Invalid file checksum:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1check/post/responses/400/content/application~1json/examples/Invalid%20file%20checksum'
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+                Unexpected File Mime-Type:
+                  $ref: '#/paths/~1v3~1cybersec~1files~1check/post/responses/400/content/application~1json/examples/Unexpected%20File%20Mime-Type'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '413':
+          description: File is too large
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+  /v3/cybersec/files/ml-upload/{sha256}:
+    post:
+      operationId: mlFileUploadV3
+      tags:
+      - Files
+      summary: Upload malware file for ML models training
+      description: Use this endpoint to upload malware file for ML models training. File is only accepted if it was previously requested by hash check and file has category malware.
+      parameters:
+      - name: sha256
+        in: path
+        schema:
+          $ref: '#/components/schemas/Sha256Checksum'
+        description: sha256 checksum of the file
+        required: true
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: File size limit is 4MB
+      responses:
+        '202':
+          description: Successful response
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                File checksum mismatch:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1upload~1%7Bsha256%7D/post/responses/400/content/application~1json/examples/File%20checksum%20mismatch'
+                Unexpected file:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1upload~1%7Bsha256%7D/post/responses/400/content/application~1json/examples/Unexpected%20file'
+                Invalid file checksum:
+                  $ref: '#/paths/~1v2~1cybersec~1files~1check/post/responses/400/content/application~1json/examples/Invalid%20file%20checksum'
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+                Unexpected File Mime-Type:
+                  $ref: '#/paths/~1v3~1cybersec~1files~1check/post/responses/400/content/application~1json/examples/Unexpected%20File%20Mime-Type'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '413':
+          description: File is too large
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+components:
+  schemas:
+    FileCheckStatus:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      description: "Codes:\n * `0` - OK, Check performed successfully\n * `1` - An unknown error has occurred, file check failed\n * `2` - Check is pending in backend, repeat a request for this file after TTL number of seconds\n * `3` - File is not found, upload is required for further inspection\n"
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    FileCheckResponseV2:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              sha256:
+                $ref: '#/components/schemas/Sha256Checksum'
+              categories:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/FileCategory'
+                    description:
+                      type: string
+                      description: Name of the malware
+                      example: LINUX/Hajime.nsnlw
+              ttl:
+                type: number
+              status:
+                $ref: '#/components/schemas/FileCheckStatus'
+              upload_url:
+                type: string
+                description: Destination URL where file should be uploaded
+    FileCheckRequestV3:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: object
+            required:
+            - sha256
+            properties:
+              sha256:
+                $ref: '#/components/schemas/Sha256Checksum'
+              can_upload:
+                type: boolean
+              size:
+                type: number
+                example: 256
+              name:
+                type: string
+                example: file.exe
+              url:
+                type: string
+                example: https://foo.bar/file.exe
+              mime_type:
+                type: string
+                example: application/vnd.microsoft.portable-executable
+    FileCheckResponseV3:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              sha256:
+                $ref: '#/components/schemas/Sha256Checksum'
+              categories:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      $ref: '#/components/schemas/FileCategory'
+                    description:
+                      type: string
+                      description: Name of the malware
+                      example: LINUX/Hajime.nsnlw
+              ttl:
+                type: number
+              status:
+                $ref: '#/components/schemas/FileCheckStatus'
+              upload_url:
+                type: string
+                description: Destination URL where file should be uploaded
+    FileMimeTypesResponse:
+      type: object
+      properties:
+        deep_scan_types:
+          type: array
+          items:
+            type: string
+          description: Files with these MIME types should be checked with deep scan, similar to PE extensions
+        scan_types:
+          type: array
+          items:
+            type: string
+          description: Files with these MIME types should be checked with regular scan, similar to non-PE extensions
+    FileExtensionsResponse:
+      type: object
+      properties:
+        pe_extensions:
+          type: array
+          items:
+            type: string
+          description: Files ending with these extensions are portable executables and can be uploaded if asked
+        non_pe_extensions:
+          type: array
+          items:
+            type: string
+          description: Files ending with these extensions are non portable executables
+    Sha256Checksum:
+      type: string
+      example: dc460da4ad72c482231e28e688e01f2778a88ce31a08826899d54ef7183998b5
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+    FileCategory:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      description: "Codes:\n * `0` - File was not found in malware database\n * `1` - File is clean\n * `2` - File is infected with malware\n"
+    FileCheckRequestV2:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: object
+            required:
+            - sha256
+            properties:
+              sha256:
+                $ref: '#/components/schemas/Sha256Checksum'
+              can_upload:
+                type: boolean
+              size:
+                type: number
+                example: 256
+              name:
+                type: string
+                example: file.exe
+              url:
+                type: string
+                example: https://foo.bar/file.exe
+  responses:
+    UnprocessableEntity:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Content too large:
+              value:
+                errors:
+                  code: 904175
+                  message: Exceeded the limit of 20 records to check in a batch
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    AuthServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904178
+                  message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    ServiceForbidden:
+      description: Service is forbidden for the user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service is forbidden for the user:
+              value:
+                errors:
+                  code: 100166
+                  message: Service is forbidden for the user
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    BadGateway:
+      description: Bad Gateway
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904180
+                  message: Service encountered a temporary error and could not complete your request
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+  securitySchemes:
+    ApiKeyAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Set token with a prefix like this: `token:69405a802dba4f57804e5fff11061946a579d159d1a51760d19a50aec241adc9`'

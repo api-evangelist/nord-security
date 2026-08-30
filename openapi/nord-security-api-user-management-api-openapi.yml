@@ -1,0 +1,365 @@
+openapi: 3.2.0
+info:
+  title: NordStellar Enterprise Data API User Management API
+  description: '## Overview
+
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
+
+    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
+
+
+    **Key Features**:
+
+    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
+
+    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
+
+    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
+
+    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
+
+    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+  version: '3.1'
+servers:
+- url: /api/v3/data
+security:
+- ApiKeyAuth: []
+- BasicAuth: []
+tags:
+- name: API User Management
+  description: 'Endpoints for administering API keys, and web hook settings.
+
+
+    These operations enable administrators to list and manage API keys, update webhook configuration.'
+paths:
+  /user:
+    get:
+      tags:
+      - API User Management
+      summary: Get user information
+      description: 'Used for getting the profile information associated with the user''s credentials used to make the API call.
+
+
+        **Rate limit: 10 per minute.**'
+      operationId: getUserDetails
+      responses:
+        '200':
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetails'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: object
+                    properties:
+                      body:
+                        type: string
+                        description: Error description
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - BasicAuth: []
+  /user/subscription-endpoint:
+    post:
+      tags:
+      - API User Management
+      summary: Update user endpoint information
+      description: 'Used for updating the subscription webhook endpoint information tied to current user.
+
+        Username and password are optional, these values should only be set if the subscription service uses BasicAuth to connect to the provided endpoint
+
+
+        **Rate limit: 10 per minute.**'
+      operationId: updateUserEndpointDetails
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionEndpoint'
+      responses:
+        '200':
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionEndpointSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - BasicAuth: []
+  /auth/token:
+    post:
+      tags:
+      - API User Management
+      summary: Create API access token
+      description: 'Used for creating the API access token.
+
+
+        API access token can then be used for authentication to other non-administrative endpoints.
+
+
+        The **id** parameter is optional in the request body. Any unique name of alphanumeric characters
+
+        to identify the holder or purpose of this token can be used. If left blank, the id will be assigned randomly.
+
+
+        **Rate limit: 10 per minute.**'
+      operationId: createAccessToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAccessToken'
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - BasicAuth: []
+  /auth/token/{id}:
+    delete:
+      tags:
+      - API User Management
+      summary: Delete API access token
+      description: 'Used for deleting the API access token.
+
+
+        This operation is non-reversible and the token will not be active anymore with no way to reactivate it.
+
+
+        **Rate limit: 10 per minute.**'
+      operationId: deleteAccessToken
+      parameters:
+      - $ref: '#/components/parameters/TokenId'
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - BasicAuth: []
+    get:
+      tags:
+      - API User Management
+      summary: Get API access token
+      description: 'Used for getting the API access token.
+
+
+        API access token can then be used for authentication to other non-auth endpoints.
+
+
+        Token IDs can be looked up via /user endpoint or created via /auth/token enpoint.
+
+
+        **Rate limit: 10 per minute.**'
+      operationId: getAccessToken
+      parameters:
+      - $ref: '#/components/parameters/TokenId'
+      responses:
+        '200':
+          description: Success
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per minute. Defaults 10 per minute
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessToken'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - BasicAuth: []
+components:
+  schemas:
+    UserDetails:
+      type: object
+      properties:
+        username:
+          type: string
+          example: username
+        api_tokens:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+          example:
+          - id: token1
+          - id: token2
+        endpoint:
+          $ref: '#/components/schemas/SubscriptionEndpointSample'
+    GetAccessToken:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Client token ID
+          example: my-token
+    AccessToken:
+      type: object
+      properties:
+        id:
+          type: string
+          example: my-token
+        token:
+          type: string
+          example: a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a
+    SubscriptionEndpointSample:
+      type: object
+      properties:
+        url:
+          type: string
+          example: https://api.example.com/v1/subscriptions/webhook
+        username:
+          type: string
+          example: username
+        password:
+          type: string
+          example: password123
+    SubscriptionEndpoint:
+      required:
+      - endpoint-url
+      type: object
+      properties:
+        url:
+          type: string
+          description: Subscription webhook endpoint URL
+          example: https://example.com/webhook
+        username:
+          type: string
+          description: Subscription webhook endpoint BasicAuth username
+          example: username
+        password:
+          type: string
+          description: Subscription webhook endpoint BasicAuth password (hidden)
+          example: password
+  parameters:
+    TokenId:
+      name: id
+      in: path
+      required: true
+      description: A token id to lookup.
+      schema:
+        type: string
+  headers:
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-RateLimit-Reset:
+      schema:
+        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Authorization string. Needs to be in the standard BasicAuth format - "Basic BASE64_CREDENTIALS", where BASE64_CREDENTIALS is the user username:password encoded in base64 format.
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY

@@ -1,0 +1,493 @@
+openapi: 3.2.0
+info:
+  description: Cybersec API documentation
+  version: 1.0.0
+  title: Cybersec Lists API
+servers:
+- url: https://cybersec.nordstellar.com
+security:
+- ApiKeyAuth: []
+tags:
+- name: Lists
+  description: ''
+paths:
+  /v2/cybersec/lists:
+    get:
+      operationId: lists
+      tags:
+      - Lists
+      summary: Get lists
+      description: Retrieves a list of available cybersec lists
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CybersecList'
+              example:
+              - identifier: F8e5mS89RX1wDO61
+                category: tracking
+                uri: /v1/cybersec/lists/tracking/F8e5mS89RX1wDO61
+                format: abp
+                action: block
+                latest_version: '20210823105700'
+                latest_version_checksum: ea08f49338174bd7f4817ef986e21e550363db3e
+              - identifier: kPayrrMJP0d4nEPl
+                category: adblock
+                uri: /v1/cybersec/lists/adblock/kPayrrMJP0d4nEPl
+                format: abp
+                action: block
+                latest_version: '20210823105700'
+                latest_version_checksum: 998b3c2a3ca07f66a3a0076a45363bacd42b6d77
+                language: en
+              - identifier: 3OcJr9MGhdAPyGjI
+                category: adblock
+                uri: /v1/cybersec/lists/adblock/3OcJr9MGhdAPyGjI
+                format: abp
+                action: allow
+                latest_version: '20210519100050'
+                latest_version_checksum: d9a16f8ca96155c176e0623cf3a0589609869b2e
+              - identifier: 3q3aj2YricicsPQv
+                category: broken-apps
+                uri: /v1/cybersec/lists/broken-apps/3q3aj2YricicsPQv
+                format: domain
+                action: no-mitm
+                latest_version: '20210319092509'
+                latest_version_checksum: bb500e1e43ca13ea73180b12edc69ac757b6015d
+              - identifier: cTq1YqEcsNpR1ruh
+                category: adblock
+                uri: /v1/cybersec/lists/adblock/cTq1YqEcsNpR1ruh
+                format: abp
+                action: block
+                latest_version: '20210823115300'
+                latest_version_checksum: 7216fc5e688670fe7a09a4736ca29bfa789693dd
+                country: China
+                language: zh
+              - identifier: 5NLWMpXKSQbgz5ZH
+                category: adblock
+                uri: /v1/cybersec/lists/adblock/5NLWMpXKSQbgz5ZH
+                format: abp
+                action: block
+                latest_version: '20210823115300'
+                latest_version_checksum: a51f1eb1d27da26992b55778bec029e2e7221b01
+                country: Netherlands
+                language: nl
+              - identifier: vJA2MC9GF6OpuhZd
+                category: adblock
+                uri: /v1/cybersec/lists/adblock/vJA2MC9GF6OpuhZd
+                format: abp
+                action: block
+                latest_version: '20210823120100'
+                latest_version_checksum: 32f73c6282974b858a8a8e0c818c35ca2e3a95a3
+                country: Germany
+                language: de
+              - identifier: zxTKIWsO1Xrwbguc
+                category: adblock
+                uri: /v1/cybersec/lists/adblock/zxTKIWsO1Xrwbguc
+                format: abp
+                action: block
+                latest_version: 30July2021v100
+                latest_version_checksum: d873c96b25cca99438b07f80653caca49a0f0c62
+                country: Lithuania
+                language: lt
+              - identifier: czq4C2v3J0fkUoVn
+                category: adblock
+                uri: /v1/cybersec/lists/adblock/czq4C2v3J0fkUoVn
+                format: abp
+                action: block
+                latest_version: '20210823120100'
+                latest_version_checksum: b6b4493a9791070a3c9a8a689931b1be76422020
+                country: Portugal
+                language: pt
+              - identifier: gq1ytjrZdciTckcb
+                category: adblock
+                uri: /v1/cybersec/lists/adblock/gq1ytjrZdciTckcb
+                format: abp
+                action: block
+                latest_version: '20210823120100'
+                latest_version_checksum: b67bedd6763d560924f2f9d77da0523c2d507bf0
+                country: Spain
+                language: es
+              - identifier: 59fYViHeFMlNbgXR
+                category: adblock
+                uri: /v1/cybersec/lists/adblock/59fYViHeFMlNbgXR
+                format: abp
+                action: block
+                latest_version: '20210823115300'
+                latest_version_checksum: 849413bebd720b3cd856fab600c78d15dd8a1743
+                country: France
+                language: fr
+              - identifier: Qz5cMyJzteMtAZwz
+                category: adblock
+                uri: /v1/cybersec/lists/adblock/Qz5cMyJzteMtAZwz
+                format: abp
+                action: block
+                latest_version: '20210823120000'
+                latest_version_checksum: 9b77ced596017333e50f793ff67856c8657128ad
+                country: Russia
+                language: ru
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization header not provided:
+                  value:
+                    errors:
+                      code: 100105
+                      message: Authorization header not provided
+                Invalid authorization header:
+                  value:
+                    errors:
+                      code: 100106
+                      message: Invalid authorization header
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+  /v2/cybersec/lists/{listCategory}/{listIdentifier}:
+    get:
+      operationId: listGet
+      tags:
+      - Lists
+      summary: Get list content
+      description: This endpoint can return different content versions based on the optional version query parameter. Without this query parameter, it will return the latest content version. Even though it is not mandatory, you should always specify the version parameter if possible.
+      parameters:
+      - $ref: '#/components/parameters/ListCategory'
+      - $ref: '#/components/parameters/ListIdentifier'
+      - $ref: '#/components/parameters/ListVersion'
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            X-List-Version:
+              schema:
+                $ref: '#/components/schemas/ListVersion'
+              description: Version of the returned list
+            X-List-Checksum:
+              schema:
+                $ref: '#/components/schemas/Sha1Checksum'
+              description: Sha1 sum of the complete list
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '&ad.vid=$~xmlhttprequest
+
+                  &ad_block=
+
+                  &ad_classid=
+
+                  &ad_code=
+
+                  &ad_height=
+
+                  &ad_ids=
+
+                  &ad_keyword=
+
+                  &ad_network_
+
+                  &ad_slot=
+
+                  &ad_sub=
+
+                  &ad_time=
+
+                  &ad_type=
+
+                  &ad_type_
+
+                  &ad_url=
+
+                  '
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Invalid category parameter:
+                  value:
+                    errors:
+                      code: 902151
+                      message: Invalid category parameter
+                Invalid identifier parameter:
+                  value:
+                    errors:
+                      code: 902153
+                      message: Invalid identifier parameter
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists~1%7BlistCategory%7D~1%7BlistIdentifier%7D~1diffs/get/responses/404/content/application~1json/examples/List%20not%20found'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+  /v2/cybersec/lists/{listCategory}/{listIdentifier}/diffs:
+    get:
+      operationId: listGetDiff
+      tags:
+      - Lists
+      summary: Get list diff
+      description: This endpoint returns category list file differences between two specified versions. Returned diff is formatted in unified patch format (https://www.gnu.org/software/diffutils/manual/html_node/Example-Unified.html#Example-Unified).
+      parameters:
+      - $ref: '#/components/parameters/ListCategory'
+      - $ref: '#/components/parameters/ListIdentifier'
+      - name: version_from
+        in: query
+        schema:
+          $ref: '#/components/schemas/ListVersion'
+        description: Version of the list to calculate diff from
+        required: true
+      - name: version_to
+        in: query
+        schema:
+          $ref: '#/components/schemas/ListVersion'
+        description: Version of the list to calculate diff from
+        required: false
+      responses:
+        '200':
+          description: Successful response
+          headers:
+            X-List-Version:
+              schema:
+                $ref: '#/components/schemas/ListVersion'
+              description: Version of the returned list
+            X-List-Checksum:
+              schema:
+                $ref: '#/components/schemas/Sha1Checksum'
+              description: Sha1 sum of the complete list
+            X-Diff-Checksum:
+              schema:
+                $ref: '#/components/schemas/Sha1Checksum'
+              description: Sha1 sum of returned diff contents
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "--- 20201105123100\t2021-02-12 12:16:40.713104979 +0000\n+++ 20201210235100\t2021-02-12 12:16:48.817074016 +0000\n@@ -33,7 +33,6 @@\n&adsafe=\n&adserv=\n&adserver=\n-&adsize=\n&adslot=\n&adslots=\n&adsourceid=\n@@ -47,7 +46,6 @@\n&adv_keywords=\n&advert_\n-&advid=$~image\n&adzone=\n&banner_id=\n&bannerid=\n"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Invalid category parameter:
+                  $ref: '#/paths/~1v2~1cybersec~1lists~1%7BlistCategory%7D~1%7BlistIdentifier%7D/get/responses/400/content/application~1json/examples/Invalid%20category%20parameter'
+                Invalid identifier parameter:
+                  $ref: '#/paths/~1v2~1cybersec~1lists~1%7BlistCategory%7D~1%7BlistIdentifier%7D/get/responses/400/content/application~1json/examples/Invalid%20identifier%20parameter'
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                List not found:
+                  value:
+                    errors:
+                      code: 902154
+                      message: List not found
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+components:
+  schemas:
+    ListAction:
+      type: string
+      enum:
+      - block
+      - allow
+      - no-mitm
+      - redirect
+      description: Action to take when ant item is matched in this list
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    Sha1Checksum:
+      type: string
+      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
+    CybersecList:
+      type: object
+      properties:
+        action:
+          $ref: '#/components/schemas/ListAction'
+        category:
+          $ref: '#/components/schemas/ListCategory'
+        format:
+          $ref: '#/components/schemas/ListFormat'
+        identifier:
+          $ref: '#/components/schemas/ListIdentifier'
+        latest_version:
+          $ref: '#/components/schemas/ListVersion'
+        latest_version_checksum:
+          $ref: '#/components/schemas/Sha1Checksum'
+        uri:
+          description: List content download URL
+          type: string
+          example: /v1/cybersec/lists/adblock/kPayrrMJP0d4nEPl
+        language:
+          type: string
+          example: en
+    ListFormat:
+      type: string
+      enum:
+      - abp
+      - zone
+      - domain
+      - queryparam
+      description: List content format
+    ListCategory:
+      type: string
+      enum:
+      - adblock
+      - tracking
+      - malwaresec
+      - broken-apps
+      - urlstripping
+      - cookies
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+    ListVersion:
+      type: string
+      example: 20200501120000
+    ListIdentifier:
+      type: string
+      example: kPayrrMJP0d4nEPl
+  parameters:
+    ListVersion:
+      name: version
+      in: query
+      schema:
+        $ref: '#/components/schemas/ListVersion'
+      description: List version
+      required: false
+    ListCategory:
+      name: listCategory
+      in: path
+      schema:
+        $ref: '#/components/schemas/ListCategory'
+      description: List category
+      required: true
+    ListIdentifier:
+      name: listIdentifier
+      in: path
+      schema:
+        $ref: '#/components/schemas/ListIdentifier'
+      description: List identfier
+      required: true
+  responses:
+    AuthServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904178
+                  message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    ServiceForbidden:
+      description: Service is forbidden for the user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service is forbidden for the user:
+              value:
+                errors:
+                  code: 100166
+                  message: Service is forbidden for the user
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+  securitySchemes:
+    ApiKeyAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Set token with a prefix like this: `token:69405a802dba4f57804e5fff11061946a579d159d1a51760d19a50aec241adc9`'

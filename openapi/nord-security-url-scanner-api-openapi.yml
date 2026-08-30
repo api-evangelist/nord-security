@@ -1,0 +1,356 @@
+openapi: 3.2.0
+info:
+  description: Cybersec API documentation
+  version: 1.0.0
+  title: Cybersec URL scanner API
+servers:
+- url: https://cybersec.nordstellar.com
+security:
+- ApiKeyAuth: []
+tags:
+- name: URL scanner
+  description: ''
+paths:
+  /v2/cybersec/urlscanner/config:
+    get:
+      operationId: urlScannerConfig
+      tags:
+      - URL scanner
+      summary: Get config
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UrlscannerConfigResponse'
+              example:
+                process_allow_list:
+                - chrome
+                - firefox
+                - opera
+                - safari
+                - msedge
+                - com.apple.webkit.networking
+                - brave
+                - iexplore
+                av_scan_types:
+                - text/html
+                - text/javascript
+                - text/ecmascript
+                - text/jscript
+                - text/livescript
+                - text/x-ecmascript
+                - text/x-javascript
+                - application/
+                lists:
+                - identifier: F8e5mS89RX1wDO61
+                  category: tracking
+                  uri: /v1/cybersec/lists/tracking/F8e5mS89RX1wDO61
+                  format: abp
+                  action: block
+                  latest_version: '20210823105700'
+                  latest_version_checksum: ea08f49338174bd7f4817ef986e21e550363db3e
+                - identifier: kPayrrMJP0d4nEPl
+                  category: adblock
+                  uri: /v1/cybersec/lists/adblock/kPayrrMJP0d4nEPl
+                  format: abp
+                  action: block
+                  latest_version: '20210823105700'
+                  latest_version_checksum: 998b3c2a3ca07f66a3a0076a45363bacd42b6d77
+                  language: en
+                - identifier: 3OcJr9MGhdAPyGjI
+                  category: adblock
+                  uri: /v1/cybersec/lists/adblock/3OcJr9MGhdAPyGjI
+                  format: abp
+                  action: allow
+                  latest_version: '20210519100050'
+                  latest_version_checksum: d9a16f8ca96155c176e0623cf3a0589609869b2e
+                - identifier: 3q3aj2YricicsPQv
+                  category: broken-apps
+                  uri: /v1/cybersec/lists/broken-apps/3q3aj2YricicsPQv
+                  format: domain
+                  action: no-mitm
+                  latest_version: '20210319092509'
+                  latest_version_checksum: bb500e1e43ca13ea73180b12edc69ac757b6015d
+                - identifier: cTq1YqEcsNpR1ruh
+                  category: adblock
+                  uri: /v1/cybersec/lists/adblock/cTq1YqEcsNpR1ruh
+                  format: abp
+                  action: block
+                  latest_version: '20210823115300'
+                  latest_version_checksum: 7216fc5e688670fe7a09a4736ca29bfa789693dd
+                  country: China
+                  language: zh
+                - identifier: 5NLWMpXKSQbgz5ZH
+                  category: adblock
+                  uri: /v1/cybersec/lists/adblock/5NLWMpXKSQbgz5ZH
+                  format: abp
+                  action: block
+                  latest_version: '20210823115300'
+                  latest_version_checksum: a51f1eb1d27da26992b55778bec029e2e7221b01
+                  country: Netherlands
+                  language: nl
+                - identifier: vJA2MC9GF6OpuhZd
+                  category: adblock
+                  uri: /v1/cybersec/lists/adblock/vJA2MC9GF6OpuhZd
+                  format: abp
+                  action: block
+                  latest_version: '20210823120100'
+                  latest_version_checksum: 32f73c6282974b858a8a8e0c818c35ca2e3a95a3
+                  country: Germany
+                  language: de
+                - identifier: zxTKIWsO1Xrwbguc
+                  category: adblock
+                  uri: /v1/cybersec/lists/adblock/zxTKIWsO1Xrwbguc
+                  format: abp
+                  action: block
+                  latest_version: 30July2021v100
+                  latest_version_checksum: d873c96b25cca99438b07f80653caca49a0f0c62
+                  country: Lithuania
+                  language: lt
+                - identifier: czq4C2v3J0fkUoVn
+                  category: adblock
+                  uri: /v1/cybersec/lists/adblock/czq4C2v3J0fkUoVn
+                  format: abp
+                  action: block
+                  latest_version: '20210823120100'
+                  latest_version_checksum: b6b4493a9791070a3c9a8a689931b1be76422020
+                  country: Portugal
+                  language: pt
+                - identifier: gq1ytjrZdciTckcb
+                  category: adblock
+                  uri: /v1/cybersec/lists/adblock/gq1ytjrZdciTckcb
+                  format: abp
+                  action: block
+                  latest_version: '20210823120100'
+                  latest_version_checksum: b67bedd6763d560924f2f9d77da0523c2d507bf0
+                  country: Spain
+                  language: es
+                - identifier: 59fYViHeFMlNbgXR
+                  category: adblock
+                  uri: /v1/cybersec/lists/adblock/59fYViHeFMlNbgXR
+                  format: abp
+                  action: block
+                  latest_version: '20210823115300'
+                  latest_version_checksum: 849413bebd720b3cd856fab600c78d15dd8a1743
+                  country: France
+                  language: fr
+                - identifier: Qz5cMyJzteMtAZwz
+                  category: adblock
+                  uri: /v1/cybersec/lists/adblock/Qz5cMyJzteMtAZwz
+                  format: abp
+                  action: block
+                  latest_version: '20210823120000'
+                  latest_version_checksum: 9b77ced596017333e50f793ff67856c8657128ad
+                  country: Russia
+                  language: ru
+                client_url_cloud_timeout:
+                  value: 5
+                  unit: s
+                allowed_domains_update_period:
+                  value: 4
+                  unit: h
+                cookie_leak_check_period:
+                  value: 1
+                  unit: m
+                cookie_leak_core_resp_ttl:
+                  value: 24
+                  unit: h
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Authorization header not provided:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Authorization%20header%20not%20provided'
+                Invalid authorization header:
+                  $ref: '#/paths/~1v2~1cybersec~1lists/get/responses/400/content/application~1json/examples/Invalid%20authorization%20header'
+          headers:
+            X-Correlation-ID:
+              $ref: '#/components/schemas/X-Correlation-ID'
+        '401':
+          $ref: '#/components/responses/InvalidCredentials'
+        '403':
+          $ref: '#/components/responses/ServiceForbidden'
+        '503':
+          $ref: '#/components/responses/AuthServiceUnavailable'
+components:
+  schemas:
+    ListAction:
+      type: string
+      enum:
+      - block
+      - allow
+      - no-mitm
+      - redirect
+      description: Action to take when ant item is matched in this list
+    UrlscannerConfigResponse:
+      type: object
+      properties:
+        lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/CybersecList'
+        process_allow_list:
+          type: array
+          items:
+            type: string
+        av_scan_types:
+          type: array
+          items:
+            type: string
+        client_url_cloud_timeout:
+          type: object
+          properties:
+            value:
+              type: integer
+              minimum: 0
+            unit:
+              type: string
+        allowed_domains_update_period:
+          type: object
+          properties:
+            value:
+              type: integer
+              minimum: 0
+            unit:
+              type: string
+        cookie_leak_check_period:
+          type: object
+          properties:
+            value:
+              type: integer
+              minimum: 0
+            unit:
+              type: string
+        cookie_leak_core_resp_ttl:
+          type: object
+          properties:
+            value:
+              type: integer
+              minimum: 0
+            unit:
+              type: string
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    Sha1Checksum:
+      type: string
+      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
+    CybersecList:
+      type: object
+      properties:
+        action:
+          $ref: '#/components/schemas/ListAction'
+        category:
+          $ref: '#/components/schemas/ListCategory'
+        format:
+          $ref: '#/components/schemas/ListFormat'
+        identifier:
+          $ref: '#/components/schemas/ListIdentifier'
+        latest_version:
+          $ref: '#/components/schemas/ListVersion'
+        latest_version_checksum:
+          $ref: '#/components/schemas/Sha1Checksum'
+        uri:
+          description: List content download URL
+          type: string
+          example: /v1/cybersec/lists/adblock/kPayrrMJP0d4nEPl
+        language:
+          type: string
+          example: en
+    ListFormat:
+      type: string
+      enum:
+      - abp
+      - zone
+      - domain
+      - queryparam
+      description: List content format
+    ListCategory:
+      type: string
+      enum:
+      - adblock
+      - tracking
+      - malwaresec
+      - broken-apps
+      - urlstripping
+      - cookies
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+    ListVersion:
+      type: string
+      example: 20200501120000
+    ListIdentifier:
+      type: string
+      example: kPayrrMJP0d4nEPl
+  responses:
+    AuthServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904178
+                  message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    ServiceForbidden:
+      description: Service is forbidden for the user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service is forbidden for the user:
+              value:
+                errors:
+                  code: 100166
+                  message: Service is forbidden for the user
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+  securitySchemes:
+    ApiKeyAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Set token with a prefix like this: `token:69405a802dba4f57804e5fff11061946a579d159d1a51760d19a50aec241adc9`'

@@ -1,0 +1,2429 @@
+openapi: 3.2.0
+info:
+  title: NordStellar Enterprise Data Email Intelligence API
+  description: '## Overview
+
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
+
+    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
+
+
+    **Key Features**:
+
+    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
+
+    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
+
+    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
+
+    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
+
+    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+  version: '3.1'
+servers:
+- url: /api/v3/data
+security:
+- ApiKeyAuth: []
+- BasicAuth: []
+tags:
+- name: Email Intelligence
+  description: 'Endpoints for comprehensive email address monitoring in data breaches, including detailed breach information, password exposure, and statistical analysis.
+
+    These operations enable robust email security protection, account takeover prevention, and exposure assessment at both individual and domain-wide levels.'
+paths:
+  /email/domain/{domain}:
+    get:
+      tags:
+      - Email Intelligence
+      summary: Domain search
+      description: "Used for looking up all email addresses and their data for a specific domain.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n*Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.\nIf a document contains more malware logs than could be retrieved, **206** response code alongside the *errors* string will be returned\nand the rest of its malware data truncated. Truncated data contains malware IDs that can be used\nto retrieve data using **data-source** endpoints*\n\nDefault is the maximum limit of **100** records \n(If the response returns exactly 100 records, it indicates the potential presence of more records. Initiate a subsequent request to retrieve any additional results)\n\n**Rate limit: 20 per second.**"
+      operationId: domain
+      parameters:
+      - $ref: '#/components/parameters/Domain'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - name: last-id
+        in: query
+        description: A faster pagination alternative to offset. Set this instead of offset to get response for further pages quicker.
+        required: false
+        schema:
+          type: string
+      - $ref: '#/paths/~1email/post/parameters/0'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailsSample'
+        '206':
+          description: Returns partial found data, with **errors** field on truncated records
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1email/post/responses/206/content/application~1json/schema'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /email/domain/{domain}/lite:
+    get:
+      tags:
+      - Email Intelligence
+      summary: Lite Domain search
+      description: "Used for looking up all email addresses and their data for a specific domain.\n\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n*Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.\nIf a document contains more malware logs than could be retrieved, **206** response code alongside the *errors* string will be returned\nand the rest of its malware data truncated. Truncated data contains malware IDs that can be used\nto retrieve data using **data-source** endpoints*\n\nDefault is the maximum limit of **100** records \n(If the response returns exactly 100 records, it indicates the potential presence of more records. Initiate a subsequent request to retrieve any additional results)\n\n**Lite version of /email/domain endpoint, which only includes credentials from malware logs.**\n\n**Rate limit: 100 per second.**"
+      operationId: domainLite
+      parameters:
+      - $ref: '#/components/parameters/Domain'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/paths/~1email~1domain~1%7Bdomain%7D/get/parameters/3'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailsLiteSample'
+        '206':
+          description: Returns partial found data, with **errors** field on truncated records
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EmailLiteSample'
+                  limit:
+                    type: integer
+                    example: 10
+                  offset:
+                    type: integer
+                    example: 0
+                  errors:
+                    type: object
+                    properties:
+                      body:
+                        type: string
+                    description: Contains errors signifying partial data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /email/{email-sha256}:
+    get:
+      tags:
+      - Email Intelligence
+      summary: Email Lookup
+      description: 'Used for looking up email addresses and their data.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The returned sections can be narrowed using the **inclusive-projection** and **exclusive-projection** query parameters
+
+        (see the parameter descriptions for the available sections, e.g. `databases`, `combo_lists`, `malware_logs`).
+
+
+        **Rate limit: 200 per second.**'
+      operationId: singleEmail
+      parameters:
+      - $ref: '#/components/parameters/Email'
+      - $ref: '#/paths/~1email/post/parameters/0'
+      - $ref: '#/paths/~1email/post/parameters/1'
+      - $ref: '#/paths/~1email/post/parameters/2'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailSample'
+        '206':
+          description: Returns partial found data, with **errors** field on truncated records
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+                  email:
+                    type: string
+                    example: example@example.com
+                  databases:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DatabaseDataItem'
+                  malware_logs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MalwareDataItem'
+                  credential_lists:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CredentialDataItem'
+                  errors:
+                    type: object
+                    properties:
+                      body:
+                        type: string
+                    description: Contains errors signifying partial data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /email/{email-sha256}/lite:
+    get:
+      tags:
+      - Email Intelligence
+      summary: Lite Email Lookup
+      description: 'Used for looking up email addresses and their data.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        **Lite version of /email endpoint, which only includes credentials from malware logs.**
+
+
+        **Rate limit: 200 per second.**'
+      operationId: singleEmailLite
+      parameters:
+      - $ref: '#/components/parameters/Email'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailLiteSample'
+        '206':
+          description: Returns partial found data, with **errors** field on truncated records
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+                  email:
+                    type: string
+                    example: example@example.com
+                  databases:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DatabaseDataItem'
+                  malware_logs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MalwareDataItemLite'
+                  credential_lists:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CredentialDataItem'
+                  errors:
+                    type: object
+                    properties:
+                      body:
+                        type: string
+                    description: Contains errors signifying partial data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /email/{email-sha256}/databases:
+    get:
+      tags:
+      - Email Intelligence
+      summary: Email databases lookup
+      description: 'Used for looking up email addresses and their databases.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: singleEmailDatabases
+      parameters:
+      - $ref: '#/components/parameters/Email'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailDatabasesSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /email/{email-sha256}/malware-logs:
+    get:
+      tags:
+      - Email Intelligence
+      summary: Email malware logs lookup
+      description: 'Used for looking up email addresses and their malware logs.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: singleEmailMalwareLogs
+      parameters:
+      - $ref: '#/components/parameters/Email'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailMalwareLogsSample'
+        '206':
+          description: Returns partial found data, with **errors** field on truncated records
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+                  email:
+                    type: string
+                    example: example@example.com
+                  malware_logs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MalwareDataItem'
+                  errors:
+                    type: object
+                    properties:
+                      body:
+                        type: string
+                    description: Contains errors signifying partial data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /email/{email-sha256}/credential-lists:
+    get:
+      tags:
+      - Email Intelligence
+      summary: Email credential lists lookup
+      description: 'Used for looking up email addresses and their credential lists.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: singleEmailCredentialLists
+      parameters:
+      - $ref: '#/components/parameters/Email'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailCredentialListsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /email/{email-sha256}/password:
+    get:
+      tags:
+      - Email Intelligence
+      summary: Single email ATO prevention
+      description: 'Used for looking up an email address and its fuzzed passwords. Fuzzed passwords are passwords transformed according to pre-defined rules. The rule set, and thus the number of fuzzed passwords returned depends on the fuzzing_intensity parameter, which ranges from **0** to **10**, **0** being no fuzzing, only original password returned, and **10** being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+
+        **Rate limit: 10 per second.**'
+      operationId: singleEmailPassword
+      parameters:
+      - $ref: '#/components/parameters/Email'
+      - $ref: '#/components/parameters/FuzzingIntensity'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailAtoPreventionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /email:
+    post:
+      tags:
+      - Email Intelligence
+      summary: Bulk Email Lookup
+      description: 'Used for looking up email addresses and their data in bulk.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        The returned sections can be narrowed using the **inclusive-projection** and **exclusive-projection** query parameters
+
+        (see the parameter descriptions for the available sections, e.g. `databases`, `combo_lists`, `malware_logs`).
+
+
+        *Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.
+
+        If a document contains more malware logs than could be retrieved, **206** response code alongside the *errors* string will be returned
+
+        and the rest of its malware data truncated. Truncated data contains malware IDs that can be used
+
+        to retrieve data using **data-source** endpoints*
+
+
+        **Rate limit: 10 per second.**'
+      operationId: email
+      parameters:
+      - name: recommendations_enabled
+        in: query
+        description: If you need data breach resolution recommendations, set this to true.
+        schema:
+          type: boolean
+      - name: inclusive-projection
+        in: query
+        description: 'Return **only** the listed fields, omitting everything else. Useful for trimming large responses (e.g. fetching just malware logs) and reducing payload size.
+
+
+          Values are a comma-separated list (`?inclusive-projection=databases,malware_logs`) or repeated parameters (`?inclusive-projection=databases&inclusive-projection=malware_logs`).
+
+
+          The record''s envelope fields (its `id`, the `email`/`phone` value, and `meta`) are always returned regardless of the projection.
+
+
+          **Top-level sections:**
+
+          - `databases` — breached database records (the `databases` response field).
+
+          - `combo_lists` — credential list records (returned in the `credential_lists` response field; email endpoints only).
+
+          - `malware_logs` — malware infection logs.
+
+
+          `databases` and `malware_logs` also support selecting individual sub-fields with dot notation, e.g. `databases.identifier`, `malware_logs.credentials`, `malware_logs.cookies`. Only the listed sub-fields are returned — there are no implicit includes beyond the always-present `id`.
+
+
+          **`id` is special:** each record''s `id` is always present and may be named explicitly (e.g. `malware_logs.id`), but it can never be excluded — the only way to omit it is to exclude the whole enclosing object.
+
+
+          Mutually exclusive with **exclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied.'
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - malware_logs
+        - databases
+      - name: exclusive-projection
+        in: query
+        description: 'Return the full email document **except** the listed fields. Useful for dropping heavy parts of the response (e.g. excluding malware logs) while keeping everything else.
+
+
+          Values are a comma-separated list (`?exclusive-projection=malware_logs,combo_lists`) or repeated parameters (`?exclusive-projection=malware_logs&exclusive-projection=combo_lists`).
+
+
+          **Top-level sections:**
+
+          - `databases` — breached database records (the `databases` response field).
+
+          - `combo_lists` — credential list records (returned in the `credential_lists` response field; email endpoints only).
+
+          - `malware_logs` — malware infection logs.
+
+
+          `databases` and `malware_logs` also support excluding individual sub-fields with dot notation, e.g. `malware_logs.cookies`, `malware_logs.installed_software`, `databases.data`. The rest of each record is still returned.
+
+
+          **`id` cannot be excluded.** Any exclusion path that targets an `id` (e.g. `id` or `malware_logs.id`) returns `400 Bad Request` — to omit an object''s id, exclude the whole object instead.
+
+
+          Mutually exclusive with **inclusive-projection** — supplying both returns `400 Bad Request`. Unknown field names also return `400 Bad Request`. A maximum of 100 fields may be supplied.'
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - malware_logs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Emails'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              schema:
+                type: string
+                format: date-time
+              description: Date and time when quota limit resets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailsSample'
+        '206':
+          description: Returns partial found data, with **errors** field on truncated records
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EmailSample'
+                  limit:
+                    type: integer
+                    example: 10
+                  offset:
+                    type: integer
+                    example: 0
+                  errors:
+                    type: object
+                    properties:
+                      body:
+                        type: string
+                    description: Contains errors signifying partial data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /email/lite:
+    post:
+      tags:
+      - Email Intelligence
+      summary: Lite Bulk Email Lookup
+      description: 'Used for looking up email addresses and their data in bulk.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        *Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.
+
+        If a document contains more malware logs than could be retrieved, **206** response code alongside the *errors* string will be returned
+
+        and the rest of its malware data truncated. Truncated data contains malware IDs that can be used
+
+        to retrieve data using **data-source** endpoints*
+
+
+        **Lite version of /email endpoint, which only includes credentials from malware logs.**
+
+
+        **Rate limit: 100 per second.**'
+      operationId: emailLite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - data
+              type: object
+              properties:
+                emails_sha256:
+                  type: array
+                  description: A list of SHA256 hashed lower-case email addresses to lookup
+                  items:
+                    type: string
+                  example:
+                  - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+                limit:
+                  description: Default is the maximum limit of 100 records
+                  type: integer
+                  example: 10
+                offset:
+                  type: integer
+                  example: 0
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailsLiteSample'
+        '206':
+          description: Returns partial found data, with **errors** field on truncated records
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1email/post/responses/206/content/application~1json/schema'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /email/databases:
+    post:
+      tags:
+      - Email Intelligence
+      summary: Bulk email databases lookup
+      description: 'Used for looking up email addresses and their databases in bulk.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: emailDatabases
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Emails'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailsDatabasesSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /email/malware-logs:
+    post:
+      tags:
+      - Email Intelligence
+      summary: Bulk email malware logs lookup
+      description: 'Used for looking up email addresses and their malware logs in bulk.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        *Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.
+
+        If a document contains more malware logs than could be retrieved, **206** response code alongside the *errors* string will be returned
+
+        and the rest of its malware data truncated. Truncated data contains malware IDs that can be used
+
+        to retrieve data using **data-source** endpoints*
+
+
+        **Rate limit: 10 per second.**'
+      operationId: emailMalwareLogs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Emails'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailsMalwareLogsSample'
+        '206':
+          description: Returns partial found data, with **errors** field on truncated records
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EmailMalwareLogsSample'
+                  limit:
+                    type: integer
+                    example: 10
+                  offset:
+                    type: integer
+                    example: 0
+                  errors:
+                    type: object
+                    properties:
+                      body:
+                        type: string
+                    description: Contains errors signifying partial data
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /email/credential-lists:
+    post:
+      tags:
+      - Email Intelligence
+      summary: Bulk email credential lists lookup
+      description: 'Used for looking up email addresses and their credential lists in bulk.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: emailCredentialLists
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Emails'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailsCredentialListsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /email/password:
+    post:
+      tags:
+      - Email Intelligence
+      summary: Bulk email ATO prevention
+      description: 'Used for looking up email addresses and their fuzzed passwords in bulk. Fuzzed passwords are passwords transformed according to pre-defined rules. The rule set, and thus the number of fuzzed passwords returned depends on the **fuzzing_intensity** parameter, which ranges from **0** to **10**, **0** being no fuzzing, only original password returned, and **10** being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+        **Rate limit: 100 per second.**'
+      operationId: emailAtoPrevention
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailsAto'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailsAtoPreventionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+      x-codegen-request-body-name: payload
+  /email/password/filtered:
+    post:
+      tags:
+      - Email Intelligence
+      summary: Single email ATO prevention with filtering
+      description: 'Used for looking up an email address and its fuzzed passwords. Fuzzed passwords are passwords transformed according to pre-defined rules. The rule set, and thus the number of fuzzed passwords returned depends on the fuzzing_intensity parameter, which ranges from **0** to **10**, **0** being no fuzzing, only original password returned, and **10** being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+
+        This endpoint provides the ability to only return fuzzed passwords from specific sources from IDs provided in the body.
+
+        **Rate limit: 50 per second.**'
+      operationId: singleEmailFilteredAtoPrevention
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailAtoFiltered'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailAtoPreventionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+      x-codegen-request-body-name: payload
+  /email/password/filtered/bulk:
+    post:
+      tags:
+      - Email Intelligence
+      summary: Bulk email ATO prevention
+      description: 'Used for looking up email addresses and their fuzzed passwords in bulk. Fuzzed passwords are passwords transformed according to pre-defined rules. The rule set, and thus the number of fuzzed passwords returned depends on the **fuzzing_intensity** parameter, which ranges from **0** to **10**, **0** being no fuzzing, only original password returned, and **10** being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+
+        This endpoint provides the ability to only return fuzzed passwords from specific sources from IDs provided in the body.
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+        **Rate limit: 10 per second.**'
+      operationId: emailFilteredAtoPrevention
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailsAtoFiltered'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailsAtoPreventionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+      x-codegen-request-body-name: payload
+  /email/statistics/{email-sha256}:
+    get:
+      tags:
+      - Email Intelligence
+      summary: Email statistics
+      description: 'This API endpoint is designed for retrieving statistics associated with a specific email address.
+
+        The information regarding this email, including their associated data, is sourced and aggregated from
+
+        a multitude of databases that are publicly accessible on the internet.
+
+
+        Each email can be affected by **three** incident types - data breaches, malware infections, and stolen credential lists.
+
+
+        **Rate limit: 100 per second.**'
+      operationId: emailStatistics
+      parameters:
+      - $ref: '#/components/parameters/Email'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailStatistics'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /email/domain/statistics/{domain}:
+    get:
+      tags:
+      - Email Intelligence
+      summary: Email domain statistics
+      description: 'This API endpoint is designed for retrieving statistics associated with all email addresses under a specific domain.
+
+        The information regarding these email addresses, including their associated data, is sourced and aggregated from
+
+        a multitude of databases that are publicly accessible on the internet.
+
+
+        Each email can be affected by **three** incident types - data breaches, malware infections, and stolen credential lists.
+
+
+        **Rate limit: 10 per second.**'
+      operationId: emailDomainStatistics
+      parameters:
+      - $ref: '#/components/parameters/Domain'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailStatistics'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /email/domain/blacklist:
+    get:
+      tags:
+      - Email Intelligence
+      summary: Email domain blacklist
+      description: "This API endpoint is designed to retrieve a list of public email \ndomains that are blacklisted and cannot be used for domain lookup or subscription operations.\n\n**Rate limit: 20 per second.**"
+      operationId: emailDomainBlacklist
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                    example:
+                    - example.com
+                    - gmail.com
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+components:
+  schemas:
+    EmailAtoFiltered:
+      required:
+      - email_sha256
+      type: object
+      properties:
+        email_sha256:
+          type: string
+          description: A SHA256 hashed email address to generate fuzzed passwords for
+          example: 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        database_ids:
+          type: array
+          description: A list of datbase IDs to generate fuzzed passwords
+          items:
+            type: string
+          example:
+          - 5f4e1f2e4b1d4d4e4b1d4d4e
+          - 5f4e1f2e4b1d4d4e4b1d4d4f
+        malware_ids:
+          type: array
+          description: A list of malware IDs to generate fuzzed passwords
+          items:
+            type: string
+          example:
+          - 5f4e1f2e4b1d4d4e4b1d4d4e
+          - 5f4e1f2e4b1d4d4e4b1d4d4f
+        credential_list_ids:
+          type: array
+          description: A list of credential list IDs to generate fuzzed passwords
+          items:
+            type: string
+          example:
+          - 5f4e1f2e4b1d4d4e4b1d4d4e
+          - 5f4e1f2e4b1d4d4e4b1d4d4f
+        fuzzing_intensity:
+          type: integer
+          description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+          default: 1
+    EmailDatabasesSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+    EmailsAto:
+      required:
+      - emails_sha256
+      type: object
+      properties:
+        emails_sha256:
+          type: array
+          description: A list of SHA256 hashed email addresses to generate fuzzed passwords
+          items:
+            type: string
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        fuzzing_intensity:
+          type: integer
+          description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+          default: 1
+          example: 0
+        limit:
+          description: Default is the maximum limit of 5 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailsLiteSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailLiteSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailsCredentialListsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailCredentialListsSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    DatabaseDataItem:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Identifier in the following format {domain}_{top level domain}
+          example: example_com
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 66c4d3912b183418f7743576
+        published_date:
+          type: string
+          description: Date when the database data was published onto the asset
+          example: '2025-01-20T19:04:39Z'
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                description: Key of the data point, complete list can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
+                example: password
+              value:
+                type: array
+                items:
+                  type: string
+                description: Value of the data point
+                example:
+                - password1
+                - password2
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    EmailAtoPreventionSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: email@example.com
+        password:
+          type: array
+          items:
+            type: string
+          example:
+          - password1
+          - password2
+    EmailsDatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    MalwareLogSystemInfoSampleItem:
+      type: object
+      properties:
+        ip:
+          type: string
+          example: 192.168.1.1
+        username:
+          type: string
+          example: diego.lebon
+        country:
+          type: string
+          example: US
+        zip:
+          type: string
+          example: '10001'
+        location:
+          type: string
+          example: New York, USA
+        hardware_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-8f68-806e6f6e6963
+        language:
+          type: string
+          example: es-ES
+        timezone:
+          type: string
+          example: UTC1
+        os:
+          type: string
+          example: Windows 10 Pro [x64]
+        system_name:
+          type: string
+          example: DESKTOP-42R6V1I
+        guid:
+          type: string
+          example: 91788e64-8fdf-11eb-8f68-806e6f6e6963
+        machine_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-ab615454c7ef
+        date:
+          type: string
+          example: '2021-05-26T08:19:13Z'
+        execution_path:
+          type: string
+          example: C:\Program Files\Example\example.exe
+        antivirus_software:
+          type: array
+          items:
+            type: string
+            example: Norton Antivirus
+        work_dir:
+          type: string
+          example: C:\Users\appdata
+        oem_id:
+          type: string
+          example: 00000000-0000-0000-0000-0000
+        screen_size:
+          type: string
+          example: 1920x1080
+        uac:
+          type: string
+          example: AllowAll
+        process_elevation:
+          type: boolean
+          example: true
+        keyboard_layouts:
+          type: array
+          items:
+            type: string
+            example: English (United States)
+        hardwares:
+          type: array
+          items:
+            type: string
+            example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
+    MalwareDataItem:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Malware identifier composed by malicious code
+          example: US[97F6DE35E58C06E6ED60B78FC35739E4] [2023-07-21T01_15_33.9687566]
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 678e9e47098d6b3b44f75ec8
+        type:
+          type: string
+          description: Name or brand of the infostealer (may be empty or unknown)
+          example: risepro
+        published_date:
+          type: string
+          description: Date that malware log has been published
+          example: '2025-01-20T19:04:39Z'
+        data:
+          type: object
+          properties:
+            credentials:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: https://login.example.com/path/to/login
+                  cleaned_url:
+                    type: string
+                    example: login.example.com
+                  username:
+                    type: string
+                    example: username
+                  email:
+                    type: string
+                    example: example@example.com
+                  password:
+                    type: string
+                    example: password1
+                  application:
+                    type: string
+                    example: Google Chrome
+            cookies:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: SEARCH_SAMESITE
+                  value:
+                    type: string
+                    example: CgQItZIB
+                  path:
+                    type: string
+                    example: /
+                  domain:
+                    type: string
+                    example: google.com
+                  expires:
+                    type: string
+                    example: '2021-10-21T12:22:38Z'
+            autofills:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: '0000000000000000011'
+                  value:
+                    type: string
+                    example: example@example.com
+                  browser:
+                    type: string
+                    example: Google Chrome
+            grabbed_files:
+              type: array
+              items:
+                type: string
+                example: /work/important.docx
+            credit_cards:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: John Doe
+                  card_number:
+                    type: string
+                    example: '4111111111111111'
+                  cvv:
+                    type: string
+                    example: '123'
+                  expiration_date:
+                    type: string
+                    example: 12/25
+            system_info:
+              $ref: '#/components/schemas/MalwareLogSystemInfoSampleItem'
+            metadata:
+              type: object
+              properties:
+                incident_date:
+                  type: string
+                  example: '2021-05-26T08:19:13Z'
+                emails:
+                  type: array
+                  items:
+                    type: string
+                    example: example@example.com
+                phones:
+                  type: array
+                  items:
+                    type: string
+                    example: '15551234567'
+                ips:
+                  type: array
+                  items:
+                    type: string
+                    example: 203.0.113.42
+                hardware_id:
+                  type: string
+                  example: 89f3221e-2138-48c9-bbe2-8f68-806e6f6e6963
+                machine_id:
+                  type: string
+                  example: 89f3221e-2138-48c9-bbe2-ab615454c7ef
+                country:
+                  type: string
+                  example: US
+            secret:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    example: aws-access-token
+                  values:
+                    type: array
+                    items:
+                      type: string
+                      example: AKIAIOSFODNN7EXAMPLE
+            ftp:
+              type: array
+              items:
+                type: object
+                properties:
+                  host:
+                    type: string
+                    example: ftp.example.com
+                  port:
+                    type: integer
+                    example: 21
+                  username:
+                    type: string
+                    example: username
+                  password:
+                    type: string
+                    example: password1
+                  applications:
+                    type: array
+                    items:
+                      type: string
+                      example: FileZilla
+                  cert:
+                    type: object
+                    properties:
+                      data:
+                        type: string
+                        example: abcd123123123123123123123
+                      activation_time:
+                        type: integer
+                        example: 1652227200
+                      expiration_time:
+                        type: integer
+                        example: 1660089599
+                      host:
+                        type: string
+                        example: ftp.example.com
+                      port:
+                        type: integer
+                        example: 21
+                      trust_sans:
+                        type: integer
+                        example: 1
+            installed_software:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: FileZilla Server
+                  version:
+                    type: string
+                    example: 0.9.60
+            process_list:
+              type: array
+              items:
+                type: object
+                properties:
+                  pid:
+                    type: integer
+                    example: 11708
+                  name:
+                    type: string
+                    example: uTorrent.exe
+                  session_name:
+                    type: string
+                    example: Console
+                  cmd:
+                    type: string
+                    example: C:\Users\steam\AppData\Roaming\utorrent\uTorrent.exe  /MINIMIZED
+            rdp:
+              type: array
+              items:
+                type: object
+                properties:
+                  server:
+                    type: string
+                    example: Yandex.Browser
+                  username:
+                    type: string
+                    example: username
+                  password:
+                    type: string
+                    example: password1
+            rac:
+              type: array
+              items:
+                type: object
+                properties:
+                  private_key:
+                    type: string
+                    example: '-----BEGIN PRIVATE KEY----..***..-----END PRIVATE'
+                  certificate:
+                    type: string
+                    example: '-----BEGIN CERTIFICATE----..***..-----END CERTIFICATE'
+            ssh:
+              type: object
+              properties:
+                known_hosts:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      host:
+                        type: string
+                        example: github.com
+                      key_type:
+                        type: string
+                        example: ssh-ed25519
+                      key_value:
+                        type: string
+                        example: AAAAC1NzaC2lZDI2NTE5AAAAIOMqqnkVzrm0SdG1UOoqKLsabgH5C9okWi1dh1l1GKJl
+                keys:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: id_ed25519.pub
+                      type:
+                        type: string
+                        example: public
+                      value:
+                        type: string
+                        example: AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
+            vpn:
+              type: array
+              items:
+                type: object
+                properties:
+                  vpn_name:
+                    type: string
+                    example: NordVPN
+                  credentials:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        username:
+                          type: string
+                          example: username
+                        password:
+                          type: string
+                          example: password1
+                  user_config:
+                    type: array
+                    items:
+                      type: string
+                      example: 'IsThreatProtectionTurnOffByConnection: False'
+                  openvpn:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: filename.ovpn
+                        options:
+                          type: array
+                          items:
+                            type: string
+                            example: cipher AES-256-CBC
+                        openvpn_certificates:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: tls-crypt-v2
+                              data:
+                                type: string
+                                example: '-----BEGIN CERTIFICATE----..***..-----END CERTIFICATE'
+            email_clients:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Mozilla Thunderbird
+                  credentials:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        server:
+                          type: string
+                          example: imap.example.com
+                        username:
+                          type: string
+                          example: username
+                        password:
+                          type: string
+                          example: password1
+            downloads:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: https://example.com/download
+                  file_path:
+                    type: string
+                    example: /work/important.docx
+                  browser:
+                    type: string
+                    example: Google Chrome
+            identification_level:
+              type: string
+              description: Indicates how well the system information was identified during parsing. Empty string when value was not set
+              enum:
+              - ''
+              - identified
+              - partially_identified
+              - unidentified
+              example: identified
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    CredentialDataItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 66c4d3912b183418f7743576
+        passwords:
+          type: array
+          items:
+            type: string
+          example:
+          - password1
+          - password2
+        published_date:
+          type: string
+          description: Date when the credential list data was published onto the asset
+          example: '2025-01-20T19:04:39Z'
+        combos:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                example: example.com
+              password:
+                type: string
+                example: password1
+              url:
+                type: string
+                example: https://example.com/login
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    EmailsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailsMalwareLogsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailMalwareLogsSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailStatistics:
+      type: object
+      properties:
+        unique_email_count:
+          type: integer
+          description: Number of unique email addresses that were affected by any incident (This number is always **1** for single email statistics)
+          example: 1
+        unique_password_count:
+          type: integer
+          description: Number of unique passwords
+          example: 3
+        password_count:
+          type: integer
+          description: Total number of passwords
+          example: 5
+        breached_email_count:
+          type: integer
+          description: Total number of email appearances in data breaches
+          example: 4
+        malware_affected_email_count:
+          type: integer
+          description: Total number of email appearances in malware infections
+          example: 1
+        stolen_email_count:
+          type: integer
+          description: Total number of email appearances in stolen credential lists
+          example: 2
+        database_count:
+          type: integer
+          description: Number of unique data breaches that this email appears in
+          example: 3
+        malware_infection_count:
+          type: integer
+          description: Number of unique malware infections that this email appears in
+          example: 1
+        credential_list_count:
+          type: integer
+          description: Number of unique stolen credential lists that this email appears in
+          example: 2
+    EmailLiteSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItemLite'
+        credential_lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialDataItem'
+    EmailsAtoPreventionSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAtoPreventionSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+        credential_lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialDataItem'
+        risk_assessment:
+          type: object
+          properties:
+            level:
+              type: string
+              description: 'Risk level, one of the following: info, low, medium, high, critical'
+              example: high
+            recommendations_enabled:
+              type: string
+              description: If true, user has enabled recommendations for this request. If false, recommendations are not provided. This field is taken from user provided query parameter of the same name.
+              example: 'true'
+            recommendations:
+              type: array
+              items:
+                type: object
+                properties:
+                  leaked_data_category:
+                    type: string
+                    description: Pretty name of general data category that triggered this recommendation
+                    example: Password
+                  recommendation:
+                    type: string
+                    description: Recommendation text
+                    example: Avoid using your publicly known information in passwords. Threat actors routinely use other known information, such as email addresses, phone numbers, pet names, dates of birth, first/last names and other data in stuffing attacks to uncover passwords that were otherwise never leaked online.
+    EmailMalwareLogsSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+    EmailCredentialListsSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        credential_lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialDataItem'
+    MalwareDataItemLite:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Malware identifier composed by malicious code
+          example: US[97F6DE35E58C06E6ED60B78FC35739E4] [2023-07-21T01_15_33.9687566]
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 678e9e47098d6b3b44f75ec8
+        type:
+          type: string
+          description: Name or brand of the infostealer (may be empty or unknown)
+          example: risepro
+        published_date:
+          type: string
+          description: Date that malware log has been published
+          example: '2025-01-20T19:04:39Z'
+        data:
+          type: object
+          properties:
+            credentials:
+              type: array
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    example: https://login.example.com/path/to/login
+                  cleaned_url:
+                    type: string
+                    example: login.example.com
+                  username:
+                    type: string
+                    example: username
+                  email:
+                    type: string
+                    example: example@example.com
+                  password:
+                    type: string
+                    example: password1
+                  application:
+                    type: string
+                    example: Google Chrome
+    EmailsAtoFiltered:
+      required:
+      - emails_sha256
+      type: object
+      properties:
+        data:
+          type: array
+          description: A list of SHA256 hashed email addresses together with source IDs to generate fuzzed passwords
+          items:
+            type: object
+            properties:
+              email_sha256:
+                type: string
+                description: A SHA256 hashed email address to generate fuzzed passwords for
+                example: e9e7d0a8f5792167a054b4b1788fbe0bf0eb3d8ba8a6eee8ef42d3d7acb67f18
+              database_ids:
+                type: array
+                description: A list of datbase IDs to generate fuzzed passwords
+                items:
+                  type: string
+                example:
+                - 5f4e1f2e4b1d4d4e4b1d4d4e
+                - 5f4e1f2e4b1d4d4e4b1d4d4f
+              malware_ids:
+                type: array
+                description: A list of malware IDs to generate fuzzed passwords
+                items:
+                  type: string
+                example:
+                - 5f4e1f2e4b1d4d4e4b1d4d4e
+                - 5f4e1f2e4b1d4d4e4b1d4d4f
+              credential_list_ids:
+                type: array
+                description: A list of credential list IDs to generate fuzzed passwords
+                items:
+                  type: string
+                example:
+                - 5f4e1f2e4b1d4d4e4b1d4d4e
+                - 5f4e1f2e4b1d4d4e4b1d4d4f
+        fuzzing_intensity:
+          type: integer
+          description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+          default: 1
+          example: 1
+        limit:
+          description: Default is the maximum limit of 5 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    Emails:
+      required:
+      - data
+      type: object
+      properties:
+        emails_sha256:
+          type: array
+          description: A list of SHA256 hashed lower-case email addresses to lookup
+          items:
+            type: string
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        limit:
+          description: Default is the maximum limit of 100 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+  headers:
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+    X-RateLimit-Reset:
+      schema:
+        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
+  parameters:
+    Offset:
+      name: offset
+      in: query
+      description: Offset the results by an integer
+      schema:
+        type: integer
+    FuzzingIntensity:
+      name: fuzzing-intensity
+      in: query
+      description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+      schema:
+        type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Limit the count of records in results
+      required: false
+      schema:
+        type: integer
+    Email:
+      name: email-sha256
+      in: path
+      required: true
+      description: Hashed lower-cased email address using SHA256 algorithm
+      schema:
+        type: string
+    Domain:
+      name: domain
+      in: path
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Authorization string. Needs to be in the standard BasicAuth format - "Basic BASE64_CREDENTIALS", where BASE64_CREDENTIALS is the user username:password encoded in base64 format.
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY

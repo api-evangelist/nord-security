@@ -1,0 +1,769 @@
+openapi: 3.2.0
+info:
+  title: NordStellar Enterprise Data Credit Card Intelligence API
+  description: '## Overview
+
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
+
+    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
+
+
+    **Key Features**:
+
+    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
+
+    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
+
+    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
+
+    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
+
+    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+  version: '3.1'
+servers:
+- url: /api/v3/data
+security:
+- ApiKeyAuth: []
+- BasicAuth: []
+tags:
+- name: Credit Card Intelligence
+  description: 'Endpoints for comprehensive credit card data monitoring in data breaches, including zero-knowledge search capabilities.
+
+    These operations enable robust credit card security protection and exposure assessment.'
+paths:
+  /zero-knowledge/cc/{hash-type}/{hash}:
+    get:
+      tags:
+      - Credit Card Intelligence
+      summary: Credit card search
+      description: 'Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.
+
+
+        The request must include the credit card number product (**SHA-1** or **Argon2id** hash),
+
+        generated using specific secure algorithm.
+
+
+        Hashed credit card number is returned in a response that start with the filter characters provided in the request,
+
+        together with the list of data categories, that are found in data related to these credit cards.
+
+        Returned data is grouped by **origin** & it''s hex **ID**, where origin is one of the data breach categories (e.g. **databases**, **malware_logs**)
+
+        **Rate limit: 200 per second.**'
+      operationId: creditCardSearch
+      parameters:
+      - $ref: '#/components/parameters/HashType'
+      - $ref: '#/components/parameters/Hash'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZeroKnowledgeSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /zero-knowledge/cc/{hash-type}/{hash-range}:
+    get:
+      tags:
+      - Credit Card Intelligence
+      summary: Credit cards search
+      description: 'Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.
+
+
+        The request must include first 5 characters of the credit card number product (**SHA-1** or **Argon2id** hash),
+
+        generated using specific secure algorithm.
+
+
+        Hashed credit card numbers are returned in a response that start with the filter characters provided in the request,
+
+        together with the list of data categories, that are found in data related to these credit cards.
+
+        Returned data is grouped by **origin** & it''s hex **ID**, where origin is one of the data breach categories (e.g. **databases**, **malware_logs**)
+
+        **Rate limit: 200 per second.**'
+      operationId: creditCardsSearch
+      parameters:
+      - $ref: '#/components/parameters/HashType'
+      - $ref: '#/components/parameters/HashRange'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZeroKnowledgeMultiSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /zero-knowledge/cc:
+    post:
+      tags:
+      - Credit Card Intelligence
+      summary: Bulk credit cards search
+      description: 'Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.
+
+
+        The request must include a list of first 5 characters of credit card number products (**SHA-1** or **Argon2id** hash),
+
+        generated using specific secure algorithm.
+
+
+        Hashed credit card numbers are returned in a response that start with the filter characters provided in the request,
+
+        together with the list of data categories, that are found in data related to these credit cards.
+
+        Returned data is grouped by **origin** & it''s hex **ID**, where origin is one of the data breach categories (e.g. **databases**, **malware_logs**)
+
+        **Rate limit: 200 per second.**'
+      operationId: creditCardsBulkSearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HashRangesSample'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZeroKnowledgeMultiSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /zero-knowledge/cc/lite:
+    post:
+      tags:
+      - Credit Card Intelligence
+      summary: Bulk lite credit cards search
+      description: 'Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.
+
+
+        The request must include a list of first 5 characters of credit card number products (**SHA-1** or **Argon2id** hash),
+
+        generated using specific secure algorithm.
+
+
+        Hashed credit card numbers are returned in a response that start with the filter characters provided in the request,
+
+        together with the list of data categories, that are found in data related to these credit cards.
+
+        Returned data is grouped by **origin** and its hex **ID**, where origin is one of the data breach categories (e.g. **databases**, **malware_logs**).
+
+        For **malware_logs** origin, each record includes **malware_details** (identifier, type, published/updated dates, **system_info**) when available from the malware-log service.
+
+
+        **Rate limit: 200 per second.**'
+      operationId: creditCardsBulkSearchLite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HashRangesSample'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZeroKnowledgeMultiLiteSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /zero-knowledge/cc/partial/sha256/{hash}:
+    get:
+      tags:
+      - Credit Card Intelligence
+      summary: Partial credit cards count lookup
+      description: "Zero knowledge endpoints are endpoints for sensitive data specifically designed to avoid the transfer of such data.\nEndpoint is used to lookup the count of compromised credit cards that match the partial hash.\n\nThe request should include a SHA256 hash generated from the first 6 and last 4 digits of the credit card number. \nFor instance, given the credit card number **1234 5678 9012 3456**, the hash should be derived from the exact string **1234563456** (without spaces).\n\nThe response provides the count of matched compromised credit card entries.\n**Rate limit: 200 per second.**"
+      operationId: partialCreditCardSearch
+      parameters:
+      - $ref: '#/components/parameters/Hash'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZeroKnowledgePartialCreditCardsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /zero-knowledge/salt/{sha256-prefix}:
+    get:
+      tags:
+      - Credit Card Intelligence
+      summary: Generates a salt based on the provided input data
+      description: 'A specific salt is required to successfully use zero knowledge credit card and national identification number lookups.
+
+
+        To get a salt, hash lookup value (CC or NIN) as SHA256, then use this endpoint and provide first 5 symbols of a lookup value hash.
+
+        **Rate limit: 200 per second.**'
+      operationId: salt
+      parameters:
+      - $ref: '#/components/parameters/HashPrefix'
+      responses:
+        '200':
+          description: Returns a generated salt
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /zero-knowledge/salt:
+    post:
+      tags:
+      - Credit Card Intelligence
+      summary: Generates many salts based on the provided input data
+      description: 'A specific salt is required to successfully use zero knowledge credit card and national identification number lookups.
+
+
+        To get a salt, hash lookup value (CC or NIN) as SHA256, then use this endpoint and provide first 5 symbols of a lookup value hash.
+
+        **Rate limit: 200 per second.**'
+      operationId: salts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZeroKnowledgeSaltsEndpoint'
+      responses:
+        '200':
+          description: Returns a generated salt
+          headers:
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZeroKnowledgeSaltsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+components:
+  headers:
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+  schemas:
+    ZeroKnowledgeMultiLiteSample:
+      type: object
+      description: Paginated bulk credit card zero-knowledge response (lite variant with malware log details).
+      properties:
+        data:
+          type: array
+          description: One entry per requested hash range (structure matches lite CC-by-hash grouping).
+          items:
+            $ref: '#/components/schemas/ZeroKnowledgeLiteSample'
+        limit:
+          type: integer
+          description: Pagination limit applied to this response (validated against the maximum bulk size).
+          example: 10
+        offset:
+          type: integer
+          description: Pagination offset applied to this response.
+          example: 0
+    ZeroKnowledgePartialCreditCardsSample:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: Count of compromised credit cards that match partial hash
+          example: 10
+    MalwareLogSystemInfoSampleItem:
+      type: object
+      properties:
+        ip:
+          type: string
+          example: 192.168.1.1
+        username:
+          type: string
+          example: diego.lebon
+        country:
+          type: string
+          example: US
+        zip:
+          type: string
+          example: '10001'
+        location:
+          type: string
+          example: New York, USA
+        hardware_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-8f68-806e6f6e6963
+        language:
+          type: string
+          example: es-ES
+        timezone:
+          type: string
+          example: UTC1
+        os:
+          type: string
+          example: Windows 10 Pro [x64]
+        system_name:
+          type: string
+          example: DESKTOP-42R6V1I
+        guid:
+          type: string
+          example: 91788e64-8fdf-11eb-8f68-806e6f6e6963
+        machine_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-ab615454c7ef
+        date:
+          type: string
+          example: '2021-05-26T08:19:13Z'
+        execution_path:
+          type: string
+          example: C:\Program Files\Example\example.exe
+        antivirus_software:
+          type: array
+          items:
+            type: string
+            example: Norton Antivirus
+        work_dir:
+          type: string
+          example: C:\Users\appdata
+        oem_id:
+          type: string
+          example: 00000000-0000-0000-0000-0000
+        screen_size:
+          type: string
+          example: 1920x1080
+        uac:
+          type: string
+          example: AllowAll
+        process_elevation:
+          type: boolean
+          example: true
+        keyboard_layouts:
+          type: array
+          items:
+            type: string
+            example: English (United States)
+        hardwares:
+          type: array
+          items:
+            type: string
+            example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
+    ZeroKnowledgeLiteSample:
+      type: object
+      properties:
+        hash:
+          type: string
+          description: First characters of the hashed credit card value used for this bucket.
+          example: a1b2c
+        data:
+          type: array
+          description: Contains data grouped by **origin**.
+          items:
+            type: object
+            properties:
+              origin:
+                type: string
+                example: databases
+                description: Data origin (**databases** or **malware_logs**).
+              data:
+                type: array
+                description: Records for this origin with compromised data keys and optional malware metadata.
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Origin record id (hex).
+                      example: 66c4d3912b183418f7743576
+                    compromised_data:
+                      type: array
+                      description: Compromised data keys associated with this record.
+                      items:
+                        type: string
+                      example:
+                      - password
+                      - nin
+                      - surname
+                    malware_details:
+                      $ref: '#/components/schemas/MalwareLogDetailsLite'
+    ZeroKnowledgeSaltsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
+    MalwareLogDetailsLite:
+      type: object
+      description: Malware log metadata attached when **origin** is **malware_logs** and details were loaded from the malware-log service. For other origins this object is present but typically has empty or default-shaped fields.
+      properties:
+        id:
+          type: string
+          description: Malware log document id.
+          example: 66c4d3912b183418f7743576
+        identifier:
+          type: string
+          description: Malware log identifier (e.g. infection or log label).
+          example: log-2024-01-redline
+        type:
+          type: string
+          description: Malware or stealer family/type when known.
+          example: redline
+        published_date:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the malware log was published.
+          example: '2024-01-15T10:30:00Z'
+        updated_date:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the malware log record was last updated.
+          example: '2024-01-16T08:00:00Z'
+        system_info:
+          $ref: '#/components/schemas/MalwareLogSystemInfoSampleItem'
+    ZeroKnowledgeSaltSample:
+      type: object
+      properties:
+        sha256_prefix:
+          type: string
+          example: 915af
+          description: Corresponding input for generated salt
+        salt:
+          type: string
+          description: Zero knowledge lookup salt, calculated using request input
+          example: 0e4f4b0e81bad42097299d18869f8d7f
+    ZeroKnowledgeMultiSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZeroKnowledgeSample'
+    HashRangesSample:
+      required:
+      - hash_ranges
+      - hash_type
+      type: object
+      properties:
+        hash_ranges:
+          type: array
+          description: A list of hash ranges (5 hexadecimal characters) to lookup zero knowledge data
+          items:
+            type: string
+          example:
+          - '00000'
+          - fffff
+        hash_type:
+          type: string
+          description: "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints."
+          example: argon2id
+        limit:
+          description: Default is the maximum limit of 500 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    ZeroKnowledgeSample:
+      type: object
+      properties:
+        hash:
+          type: string
+        data:
+          type: array
+          description: Contains data grouped by **origin**.
+          items:
+            type: object
+            properties:
+              origin:
+                type: string
+                example: databases
+                description: Contains data origin (either **databases** or **malware_logs**)
+              data:
+                type: array
+                description: Contains origin items with leaked data keys.
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Origin record id.
+                      example: 66c4d3912b183418f7743576
+                    compromised_data:
+                      type: array
+                      description: Compromised data keys
+                      items:
+                        type: string
+                      example:
+                      - password
+                      - nin
+                      - surname
+    ZeroKnowledgeSaltsEndpoint:
+      required:
+      - sha256_prefixes
+      type: object
+      properties:
+        sha256_prefixes:
+          type: array
+          description: A list of first 5 symbols of SHA256 hashes of the lookup values
+          items:
+            type: string
+          example:
+          - '00000'
+          - fffff
+  parameters:
+    HashRange:
+      name: hash-range
+      in: path
+      required: true
+      schema:
+        type: string
+    HashPrefix:
+      name: sha256-prefix
+      in: path
+      required: true
+      description: First 5 symbols of SHA256 hash of the lookup value
+      schema:
+        type: string
+    Hash:
+      name: hash
+      in: path
+      required: true
+      schema:
+        type: string
+    HashType:
+      name: hash-type
+      in: path
+      required: true
+      description: "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints.  "
+      schema:
+        type: string
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Authorization string. Needs to be in the standard BasicAuth format - "Basic BASE64_CREDENTIALS", where BASE64_CREDENTIALS is the user username:password encoded in base64 format.
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY

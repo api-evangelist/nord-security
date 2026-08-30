@@ -1,0 +1,949 @@
+openapi: 3.2.0
+info:
+  title: NordStellar Enterprise Data Subscription Management API
+  description: '## Overview
+
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
+
+    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
+
+
+    **Key Features**:
+
+    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
+
+    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
+
+    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
+
+    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
+
+    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+  version: '3.1'
+servers:
+- url: /api/v3/data
+security:
+- ApiKeyAuth: []
+- BasicAuth: []
+tags:
+- name: Subscription Management
+  description: "Endpoints for managing user subscriptions to data breach monitoring services. These operations enable administrators to create, update, and delete subscriptions for email addresses, phone numbers, domains, and sensitive data types.\n\nWhen a subscription is created, Serity automatically sends requests to the user’s webhook whenever new or updated data matches the subscription criteria. The webhook destination must be specified through the APIs user-management endpoints.\n\n### Webhook Requirements\nTo ensure reliable delivery under high load, user webhooks **must support very high request throughput** — at least `100 requests per second`. Serity operates at scale and will **not throttle outbound traffic** based on slow client responses. Frequent `429 Too Many Requests` responses are retried, but they can **clog internal delivery queues**, thus, it is strongly recommended that webhook endpoints are backed by a **message queue** or similar buffering system that can **acknowledge requests immediately** and **process them asynchronously** at the desired pace. This ensures resilience and prevents backpressure issues during high traffic periods.\n\n### Delivery Semantics and Retry Policy\n- `2XX responses (200–299)` are treated as successful acknowledgements and are not retried.  \n- `404 responses` trigger internal alerts and are **not retried**, as they typically indicate an invalid or deprecated endpoint.\n- `429 (Too Many Requests)` responses are retried with backoff, but can cause delivery delays if they persist.\n- `All other 4XX and 5XX responses` are **retried** with exponential backoff.  \n- After prolonged retry failure, events are moved to a **DLQ**. In such cases, the platform team will contact the user.  \n### Webhook Payload\n```\n{\n  \"subscription_id\": \"string\",\n  \"document_type\": \"email-sha256 | phone-sha256 | cc-argon2id | nin-argon2id | cc-sha1 | nin-sha1\",\n  \"document_identifier\": \"string\",\n  \"operation_type\": \"update | insert\",\n  \"databases\": [],\n  \"credential_lists\": [],\n  \"malware_logs\": [],\n}\n```\nBy default, users receive only documents with the *insert* operation type.  If the corresponding subscription has the dispatch_on_update option enabled, the webhook also sends update events."
+paths:
+  /subscription:
+    get:
+      tags:
+      - Subscription Management
+      summary: Get user subscriptions
+      description: 'Used for looking up current users subscriptions.
+
+        Default limit is the maximum limit of 1000 records'
+      operationId: getSubscriptions
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            Next-Page:
+              schema:
+                type: string
+              description: Response is limited to 50 items per request by default. If this is not empty, there are more items to retrieve.
+            X-RateLimit-Limit:
+              schema:
+                type: integer
+              description: Request limit per second. Defaults 200 per second
+            X-RateLimit-Remaining:
+              schema:
+                type: integer
+              description: The number of requests left for the time window.
+            X-RateLimit-Reset:
+              schema:
+                type: string
+                format: date-time
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /subscription/email-sha256:
+    post:
+      tags:
+      - Subscription Management
+      summary: Create email subscription
+      description: 'Used for creating an email address subscription for current user.
+
+        When a new data breach is added, that affects this email address,
+
+        this subscription will generate and send out events to the user according to their custom event handling mechanism.'
+      operationId: createEmailSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetSubscription'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /subscription/phone-sha256:
+    post:
+      tags:
+      - Subscription Management
+      summary: Create phone subscription
+      description: 'Used for creating a phone number subscription for current user.
+
+        When a new data breach is added, that affects this phone number,
+
+        this subscription will generate and send out events to the user according to their custom event handling mechanism.'
+      operationId: createPhoneSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetSubscription'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /subscription/domain:
+    post:
+      tags:
+      - Subscription Management
+      summary: Create domain subscription
+      description: 'Used for creating a domain subscription for the current user.
+
+        When a new data breach is added, that affects any of email addresses with this domain,
+
+        this subscription will generate and send out events to the user according to their custom event handling mechanism.'
+      operationId: createDomainSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainSubscription'
+        required: true
+      responses:
+        '200':
+          description: Returns created data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /subscription/{cc-hash-type}:
+    post:
+      tags:
+      - Subscription Management
+      summary: Create zero knowledge credit card subscription
+      description: 'Used for creating a zero knowledge credit card subscription for current user.
+
+        When a new data breach is added, that affects this credit card,
+
+        this subscription will generate and send out events to the user according to their custom event handling mechanism.'
+      operationId: createZkCcSubscription
+      parameters:
+      - name: cc-hash-type
+        in: path
+        required: true
+        description: '**cc-argon2id** or **cc-sha1**.'
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZKSubscription'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /subscription/{nin-hash-type}:
+    post:
+      tags:
+      - Subscription Management
+      summary: Create zero knowledge national identification number subscription
+      description: 'Used for creating a zero knowledge national identification number subscription for current user.
+
+        When a new data breach is added, that affects this national identification number,
+
+        this subscription will generate and send out events to the user according to their custom event handling mechanism.'
+      operationId: createZkNinSubscription
+      parameters:
+      - name: nin-hash-type
+        in: path
+        required: true
+        description: '**nin-argon2id** or **nin-sha1**.'
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZKSubscription'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /subscription/email-sha256/bulk:
+    post:
+      tags:
+      - Subscription Management
+      summary: Create email subscriptions
+      description: 'Used for creating multiple email address subscriptions for current user.
+
+        When a new data breach is added, that affects these email addresses,
+
+        this subscription will generate and send out events to the user according to their custom event handling mechanism.'
+      operationId: createEmailSubscriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetSubscriptions'
+        required: true
+      responses:
+        '200':
+          description: Returns created data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedSubscriptionsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /subscription/phone-sha256/bulk:
+    post:
+      tags:
+      - Subscription Management
+      summary: Create phone subscriptions
+      description: 'Used for creating multiple phone number subscriptions for current user.
+
+        When a new data breach is added, that affects these phone numbers,
+
+        this subscription will generate and send out events to the user according to their custom event handling mechanism.'
+      operationId: createPhoneSubscriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetSubscriptions'
+        required: true
+      responses:
+        '200':
+          description: Returns created data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedSubscriptionsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /subscription/domain/bulk:
+    post:
+      tags:
+      - Subscription Management
+      summary: Create domain subscriptions
+      description: 'Used for creating multipe domain subscriptions for the current user.
+
+        When a new data breach is added, that affects any of email addresses with these domains,
+
+        this subscription will generate and send out events to the user according to their custom event handling mechanism.'
+      operationId: createDomainSubscriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DomainSubscriptions'
+        required: true
+      responses:
+        '200':
+          description: Returns created data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedSubscriptionsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /subscription/{cc-hash-type}/bulk:
+    post:
+      tags:
+      - Subscription Management
+      summary: Create zero knowledge credit card subscriptions
+      description: 'Used for creating multiple zero knowledge credit card subscriptions for current user.
+
+        When a new data breach is added, that affects these credit cards,
+
+        this subscription will generate and send out events to the user according to their custom event handling mechanism.'
+      operationId: createZkCcSubscriptions
+      parameters:
+      - $ref: '#/paths/~1subscription~1%7Bcc-hash-type%7D/post/parameters/0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZKSubscriptions'
+        required: true
+      responses:
+        '200':
+          description: Returns created data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedSubscriptionsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /subscription/{nin-hash-type}/bulk:
+    post:
+      tags:
+      - Subscription Management
+      summary: Create zero knowledge national identification number subscriptions
+      description: 'Used for creating multiple zero knowledge national identification number subscriptions for current user.
+
+        When a new data breach that affects these national identification numbers is added,
+
+        this subscription will generate and send out events to the user according to their custom event handling mechanism.'
+      operationId: createZkNinSubscriptions
+      parameters:
+      - $ref: '#/paths/~1subscription~1%7Bnin-hash-type%7D/post/parameters/0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ZKSubscriptions'
+        required: true
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedSubscriptionsSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+      security:
+      - ApiKeyAuth: []
+  /subscription/bulk:
+    delete:
+      tags:
+      - Subscription Management
+      summary: Delete subscriptions
+      description: 'Used for deleting multiple subscriptions for the current user.
+
+        Accepts between 1 and 1000 subscription IDs.
+
+
+        **This operation is non-reversible.**'
+      operationId: deleteSubscriptionsBulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+              - ids
+              type: object
+              properties:
+                ids:
+                  type: array
+                  description: List of subscription IDs to delete. Minimum 1, maximum 1000.
+                  minItems: 1
+                  maxItems: 1000
+                  items:
+                    type: string
+                    example: 507f1f77bcf86cd799439011
+        required: true
+      responses:
+        '200':
+          description: Returns deleted subscriptions data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+  /subscription/{id}:
+    get:
+      tags:
+      - Subscription Management
+      summary: Get subscription
+      description: 'Used for looking up a subscription for current user.
+
+        This endpoint allows to lookup the subscription by the ID.'
+      operationId: getSubscriptionByIdentifier
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+            X-Quota-Limit:
+              $ref: '#/components/headers/X-Quota-Limit'
+            X-Quota-Remaining:
+              $ref: '#/components/headers/X-Quota-Remaining'
+            X-Quota-Reset:
+              $ref: '#/paths/~1email/post/responses/200/headers/X-Quota-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+    delete:
+      tags:
+      - Subscription Management
+      summary: Delete subscription
+      description: 'Used for deleting a current users subscription.
+
+
+        **This operation is non-reversible.**'
+      operationId: deleteSubscriptions
+      parameters:
+      - $ref: '#/components/parameters/SubscriptionId'
+      responses:
+        '200':
+          description: Returns found data
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionSample'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1user/get/responses/400/content/application~1json/schema'
+        '404':
+          description: No data found
+          content: {}
+      security:
+      - ApiKeyAuth: []
+components:
+  headers:
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+    X-RateLimit-Reset:
+      schema:
+        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
+  parameters:
+    Offset:
+      name: offset
+      in: query
+      description: Offset the results by an integer
+      schema:
+        type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Limit the count of records in results
+      required: false
+      schema:
+        type: integer
+    SubscriptionId:
+      name: id
+      in: path
+      required: true
+      description: Subscription ID which was provided upon subscription creation
+      schema:
+        type: string
+  schemas:
+    CreatedSubscriptionsSample:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionSample'
+    ZKSubscription:
+      required:
+      - subscription_identifier
+      type: object
+      properties:
+        subscription_identifier:
+          type: string
+          description: '**Argon2ID** or **SHA1** hashed credit card or national ID number.'
+          example: 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: false
+    AssetSubscriptions:
+      required:
+      - subscription_identifier
+      type: object
+      properties:
+        subscription_identifiers:
+          type: array
+          description: Up to 200 **SHA-256** hashed email addresses or phone numbers (only digits)
+          items:
+            type: string
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: false
+    SubscriptionsSample:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    ZKSubscriptions:
+      required:
+      - subscription_identifier
+      type: object
+      properties:
+        subscription_identifiers:
+          type: array
+          description: Up to 200 **Argon2ID** or **SHA1** hashed credit cards or national ID numbers.
+          items:
+            type: string
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: false
+    SubscriptionSample:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Subscription ID
+          example: 507f1f77bcf86cd799439011
+        subscription_type:
+          type: string
+          description: Subscription type - **domain**, **email-sha256**, **phone-sha256**, **cc-argon2id**, **nin-argon2id**, **cc-sha1** or **nin-sha1**
+          example: email-sha256
+        subscription_identifier:
+          type: string
+          description: Subscription identifier - domain, SHA-256 hashed email address, SHA-256 hashed phone number (only digits), Argon2ID or SHA-1 hashed credit card number or Argon2ID or SHA-1 hashed national identification number
+        date_created:
+          type: string
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: true
+    DomainSubscriptions:
+      required:
+      - subscription_identifier
+      type: object
+      properties:
+        subscription_identifiers:
+          type: array
+          description: Up to 200 raw email address domains, e.g. ["example.com", "example.org"]
+          items:
+            type: string
+          example:
+          - example.com
+          - example.org
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: false
+    DomainSubscription:
+      required:
+      - subscription_identifier
+      type: object
+      properties:
+        subscription_identifier:
+          type: string
+          description: Raw email address domain, e.g. "example.com"
+          example: example.com
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: false
+    AssetSubscription:
+      required:
+      - subscription_identifier
+      type: object
+      properties:
+        subscription_identifier:
+          type: string
+          description: '**SHA-256** hashed email address or phone number (only digits)'
+          example: 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: false
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Authorization string. Needs to be in the standard BasicAuth format - "Basic BASE64_CREDENTIALS", where BASE64_CREDENTIALS is the user username:password encoded in base64 format.
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
