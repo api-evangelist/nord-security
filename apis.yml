@@ -63,7 +63,7 @@ apis:
   - MCP
   - agent-native
   - Threat Intelligence
-  - GraphQL
+  - graphql
   tags_raw:
   - mcp
   - agent-native
@@ -92,10 +92,10 @@ apis:
   humanURL: https://help.nordlayer.com/docs/api-key-management-for-smp
   baseURL: https://api.nordlayer.com/
   tags:
-  - MSP
-  - Partner API
+  - msp
+  - partner-api
   - Provisioning
-  - Network Security
+  - network-security
   tags_raw:
   - msp
   - partner-api
@@ -154,9 +154,9 @@ apis:
     https://support.nordpass.com/hc/en-us/articles/23164869782801-Provider-API-for-Usage-Reporting
   baseURL: https://api.nordpass.com/
   tags:
-  - MSP
+  - msp
   - usage-reporting
-  - Password Management
+  - password-management
   - SCIM
   tags_raw:
   - msp
@@ -186,9 +186,9 @@ apis:
   humanURL: https://github.com/NordSecurity/nordvpn-linux
   baseURL: https://api.nordvpn.com/v1
   tags:
-  - VPN
+  - vpn
   - server-directory
-  - Undocumented
+  - undocumented
   tags_raw:
   - vpn
   - server-directory
@@ -254,6 +254,8 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
   baseURL: https://enterprise-data-api.nordstellar.com
   tags:
+  - Application
+  tags_raw:
   - Applications
   properties:
   - type: OpenAPI
@@ -712,6 +714,8 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
   baseURL: https://enterprise-data-api.nordstellar.com
   tags:
+  - Event
+  tags_raw:
   - Events
   properties:
   - type: OpenAPI
@@ -748,6 +752,8 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
   baseURL: https://enterprise-data-api.nordstellar.com
   tags:
+  - File
+  tags_raw:
   - Files
   properties:
   - type: OpenAPI
@@ -784,6 +790,8 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
   baseURL: https://enterprise-data-api.nordstellar.com
   tags:
+  - List
+  tags_raw:
   - Lists
   properties:
   - type: OpenAPI
@@ -1094,6 +1102,8 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
   baseURL: https://enterprise-data-api.nordstellar.com
   tags:
+  - Project
+  tags_raw:
   - Projects
   properties:
   - type: OpenAPI
@@ -1260,6 +1270,8 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
   baseURL: https://enterprise-data-api.nordstellar.com
   tags:
+  - URL Scanner
+  tags_raw:
   - URL scanner
   properties:
   - type: OpenAPI
@@ -1296,6 +1308,8 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
   baseURL: https://enterprise-data-api.nordstellar.com
   tags:
+  - URLs
+  tags_raw:
   - Urls
   properties:
   - type: OpenAPI
@@ -1335,6 +1349,8 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
   baseURL: https://enterprise-data-api.nordstellar.com
   tags:
+  - Utility endpoints
+  tags_raw:
   - Utility Endpoints
   properties:
   - type: OpenAPI
