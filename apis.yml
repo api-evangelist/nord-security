@@ -63,7 +63,7 @@ apis:
   - MCP
   - agent-native
   - Threat Intelligence
-  - graphql
+  - GraphQL
   tags_raw:
   - mcp
   - agent-native
@@ -92,10 +92,10 @@ apis:
   humanURL: https://help.nordlayer.com/docs/api-key-management-for-smp
   baseURL: https://api.nordlayer.com/
   tags:
-  - msp
-  - partner-api
+  - MSP
+  - Partner API
   - Provisioning
-  - network-security
+  - Network Security
   tags_raw:
   - msp
   - partner-api
@@ -154,9 +154,9 @@ apis:
     https://support.nordpass.com/hc/en-us/articles/23164869782801-Provider-API-for-Usage-Reporting
   baseURL: https://api.nordpass.com/
   tags:
-  - msp
+  - MSP
   - usage-reporting
-  - password-management
+  - Password Management
   - SCIM
   tags_raw:
   - msp
@@ -186,9 +186,9 @@ apis:
   humanURL: https://github.com/NordSecurity/nordvpn-linux
   baseURL: https://api.nordvpn.com/v1
   tags:
-  - vpn
+  - VPN
   - server-directory
-  - undocumented
+  - Undocumented
   tags_raw:
   - vpn
   - server-directory
@@ -1349,7 +1349,7 @@ apis:
   humanURL: https://docs.nordstellar.com/enterprise-apis/product-integrations
   baseURL: https://enterprise-data-api.nordstellar.com
   tags:
-  - Utility endpoints
+  - Utility Endpoints
   tags_raw:
   - Utility Endpoints
   properties:
