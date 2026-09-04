@@ -24,6 +24,20 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: unknown
+  onboarding: unknown
+  trial: false
+  try_now: false
+  public: false
+  label: Unknown
+  confidence: low
+  source:
+  - authentication
+  - rate-limits
+  - security
+  generated: '2026-09-03'
+  method: derived
 image: https://res.cloudinary.com/nordsec/image/upload/q_auto,f_auto/v1/nord-security-web/global/meta/social-logo.png
 url: https://raw.githubusercontent.com/api-evangelist/nord-security/refs/heads/main/apis.yml
 x-type: company
@@ -1382,6 +1396,9 @@ apis:
   - type: Examples
     url: https://docs.nordstellar.com/platform/integrations-api/code-examples
 common:
+- type: CapabilityMap
+  url: capabilities/nord-security-capability-edges.yml
+  name: Nord Security Business Capability Map
 - type: Overlay
   url: overlays/nord-security-nordstellar-enterprise-data-api-overlay.yaml
 - type: Overlay
