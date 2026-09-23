@@ -73,84 +73,7 @@ paths:
         '503':
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
-  schemas:
-    CookiesCheckResponse:
-      type: object
-      properties:
-        cookies:
-          type: array
-          items:
-            type: object
-            properties:
-              hash:
-                type: string
-                example: 7fdd4cb8d64ca4f37e697cf77d580feaf3823d62860b3fd3429108332feea153
-                description: This hash is composed by a hashed combination of domain + cookie-hash
-              domain:
-                type: string
-                example: the-leaked-domain-here.com
-    X-RateLimit-Retry-After:
-      type: string
-      format: rfc3999
-      example: '2024-03-25T15:19:06.000Z'
-      description: Time when requests to the resource aren't limited.
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
-    CookiesCheckRequest:
-      type: object
-      properties:
-        short_cookie_sha256:
-          type: array
-          items:
-            type: string
-            example: '12345678'
-          description: List of cookie hashes (8 char) to be checked
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
   responses:
-    UnprocessableEntity:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Content too large:
-              value:
-                errors:
-                  code: 904175
-                  message: Exceeded the limit of 20 records to check in a batch
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    ResourcesExhausted:
-      description: Service resources exhausted
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Too many requests:
-              value:
-                errors:
-                  code: 904174
-                  message: Too many requests, try again later
-      headers:
-        X-RateLimit-Retry-After:
-          $ref: '#/components/schemas/X-RateLimit-Retry-After'
     AuthServiceUnavailable:
       description: Service unavailable
       content:
@@ -166,18 +89,18 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    InvalidCredentials:
-      description: Invalid credentials
+    UnprocessableEntity:
+      description: Unprocessable Entity
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Invalid credentials:
+            Content too large:
               value:
                 errors:
-                  code: 100104
-                  message: Invalid credentials
+                  code: 904175
+                  message: Exceeded the limit of 20 records to check in a batch
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -196,6 +119,83 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    ResourcesExhausted:
+      description: Service resources exhausted
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Too many requests:
+              value:
+                errors:
+                  code: 904174
+                  message: Too many requests, try again later
+      headers:
+        X-RateLimit-Retry-After:
+          $ref: '#/components/schemas/X-RateLimit-Retry-After'
+  schemas:
+    X-RateLimit-Retry-After:
+      type: string
+      format: rfc3999
+      example: '2024-03-25T15:19:06.000Z'
+      description: Time when requests to the resource aren't limited.
+    CookiesCheckRequest:
+      type: object
+      properties:
+        short_cookie_sha256:
+          type: array
+          items:
+            type: string
+            example: '12345678'
+          description: List of cookie hashes (8 char) to be checked
+    CookiesCheckResponse:
+      type: object
+      properties:
+        cookies:
+          type: array
+          items:
+            type: object
+            properties:
+              hash:
+                type: string
+                example: 7fdd4cb8d64ca4f37e697cf77d580feaf3823d62860b3fd3429108332feea153
+                description: This hash is composed by a hashed combination of domain + cookie-hash
+              domain:
+                type: string
+                example: the-leaked-domain-here.com
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
   securitySchemes:
     ApiKeyAuth:
       type: http

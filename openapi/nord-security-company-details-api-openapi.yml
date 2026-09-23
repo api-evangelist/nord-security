@@ -2,7 +2,10 @@ openapi: 3.2.0
 info:
   title: Company Risk Scoring Company Details API
   version: 0.1.0
-  description: "**Company Risk Scoring API v0.1.0**\n\nThis API provides a comprehensive service for evaluating the cybersecurity risk associated with external companies, primarily identified by their domain name. It's designed for B2B use cases like vendor risk management, cyber insurance underwriting, or competitive analysis.\n\n**Key Features:**\n\n* **Company Onboarding:** Add companies to the system for monitoring, either automatically by domain or manually with additional details.\n* **Security Scanning:** Initiate asynchronous scans against a company's domain to gather security data. Track scan job progress.\n* **Detailed Risk Categories:** Retrieve granular security assessment results for specific areas:\n    * Software Patching & Vulnerabilities\n    * Web Application Security\n    * Email Security (SPF, DMARC)\n    * System Reputation (IP blacklisting, abuse reports)\n    * SSL/TLS Configuration Strength\n    * System Hosting Environment (Cloud/CDN usage, ISP diversity)\n    * Data Breach History (Exposed credentials, breach dates)\n* **Overall Security Score:** Get a consolidated security score derived from individual category assessments.\n* **Company Firmographics:** Access essential company details like name, website, revenue, employee count, location, industry, and more.\n* **Flexible Data Retrieval:** Fetch results for individual risk categories or retrieve a combined report with all data points for a specific domain and scan job.\n* **Search & Listing:** List onboarded companies with pagination and search capabilities.\n\n**Authentication:**\n\nAccess requires either an API Key provided in the `X-API-Key` header or standard HTTP Basic Authentication."
+  description: '**Company Risk Scoring API v0.1.0**
+
+
+    This API provides a comprehensive service for evaluating the cybersecurity risk associated with external companies, primarily identified by their domain name.'
 tags:
 - name: Company Details
 paths:
@@ -147,6 +150,100 @@ paths:
       - HTTPBasic: []
 components:
   schemas:
+    LocationData:
+      properties:
+        city:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: City
+          description: City where the company is located
+        state:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: State
+          description: State or region where the company is located
+        street:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Street
+          description: Street address of the company
+        zipcode:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Zipcode
+          description: Postal code of the company's location
+        country_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country Code
+          description: Two-letter country code
+        country_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country Name
+          description: Full name of the country
+        full_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Full Address
+          description: Complete address of the company
+      type: object
+      title: LocationData
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ContactData:
+      properties:
+        facebook:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Facebook
+          description: Company's Facebook page URL
+        linkedin:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Linkedin
+          description: Company's LinkedIn page URL
+      type: object
+      title: ContactData
+    CompanyDetailsListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CompanyDetails'
+          type: array
+          title: Data
+        total:
+          type: integer
+          title: Total
+        limit:
+          type: integer
+          title: Limit
+        offset:
+          type: integer
+          title: Offset
+      type: object
+      required:
+      - data
+      - total
+      - limit
+      - offset
+      title: CompanyDetailsListResponse
     CompanyOnboardingResponse:
       properties:
         domain:
@@ -160,40 +257,6 @@ components:
       required:
       - domain
       title: CompanyOnboardingResponse
-    CompanyOnboardingManualRequest:
-      properties:
-        domain:
-          type: string
-          title: Domain
-        employee_count:
-          type: integer
-          title: Employee Count
-      type: object
-      required:
-      - domain
-      - employee_count
-      title: CompanyOnboardingManualRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     CEOData:
       properties:
         first_name:
@@ -216,6 +279,27 @@ components:
           description: Title of the CEO
       type: object
       title: CEOData
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     CompanyDetails:
       properties:
         name:
@@ -389,100 +473,19 @@ components:
         shorthand_name: examplecorp
         website: https://www.examplecorp.com
         year_founded: '2010'
-    CompanyDetailsListResponse:
+    CompanyOnboardingManualRequest:
       properties:
-        data:
-          items:
-            $ref: '#/components/schemas/CompanyDetails'
-          type: array
-          title: Data
-        total:
+        domain:
+          type: string
+          title: Domain
+        employee_count:
           type: integer
-          title: Total
-        limit:
-          type: integer
-          title: Limit
-        offset:
-          type: integer
-          title: Offset
+          title: Employee Count
       type: object
       required:
-      - data
-      - total
-      - limit
-      - offset
-      title: CompanyDetailsListResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    LocationData:
-      properties:
-        city:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: City
-          description: City where the company is located
-        state:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: State
-          description: State or region where the company is located
-        street:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Street
-          description: Street address of the company
-        zipcode:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Zipcode
-          description: Postal code of the company's location
-        country_code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Country Code
-          description: Two-letter country code
-        country_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Country Name
-          description: Full name of the country
-        full_address:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Full Address
-          description: Complete address of the company
-      type: object
-      title: LocationData
-    ContactData:
-      properties:
-        facebook:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Facebook
-          description: Company's Facebook page URL
-        linkedin:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Linkedin
-          description: Company's LinkedIn page URL
-      type: object
-      title: ContactData
+      - domain
+      - employee_count
+      title: CompanyOnboardingManualRequest
   securitySchemes:
     APIKeyHeader:
       type: apiKey

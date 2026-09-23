@@ -3,22 +3,7 @@ info:
   title: NordStellar Enterprise Data Breached Databases API
   description: '## Overview
 
-    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
-
-    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
-
-
-    **Key Features**:
-
-    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
-
-    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
-
-    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
-
-    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
-
-    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.'
   version: '3.1'
 servers:
 - url: /api/v3/data
@@ -305,7 +290,16 @@ paths:
       tags:
       - Breached Databases
       summary: Database Lookup by Domain
-      description: "Used to look up breached databases, that are publicly accessible on the internet, and their metadata.\nThese databases may have been collected from both clearnet and deep/dark web.\nThe breach date of these databases is by no means exact, since, if no official statement by the breached company is made, it is taken from the data publication source, be it a hacker forum, a ransomware group website or some place else.\nDatabase description can not exceed 1000 characters. \n\n**Rate limit: 200 per second.**"
+      description: 'Used to look up breached databases, that are publicly accessible on the internet, and their metadata.
+
+        These databases may have been collected from both clearnet and deep/dark web.
+
+        The breach date of these databases is by no means exact, since, if no official statement by the breached company is made, it is taken from the data publication source, be it a hacker forum, a ransomware group website or some place else.
+
+        Database description can not exceed 1000 characters.
+
+
+        **Rate limit: 200 per second.**'
       operationId: databaseByDomain
       parameters:
       - $ref: '#/components/parameters/Domain'
@@ -472,38 +466,45 @@ paths:
       security:
       - ApiKeyAuth: []
 components:
-  headers:
-    X-Quota-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the period
-    X-Quota-Limit:
-      schema:
-        type: integer
-      description: Quota limit per minute
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Request limit per minute
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
-    X-RateLimit-Reset:
+  parameters:
+    HexId:
+      name: id
+      in: path
+      required: true
+      description: Record ID to lookup. ID should consist of 24 hexadecimal digits.
       schema:
         type: string
-        format: date-time
-      description: Date and time when rate limit counter resets
+    Domain:
+      name: domain
+      in: path
+      required: true
+      schema:
+        type: string
+    Email:
+      name: email-sha256
+      in: path
+      required: true
+      description: Hashed lower-cased email address using SHA256 algorithm
+      schema:
+        type: string
+    Phone:
+      name: phone-sha256
+      in: path
+      required: true
+      description: Hashed phone number using SHA256 algorithm
+      schema:
+        type: string
   schemas:
-    EmailDatabasesSample:
+    PhoneDatabasesSample:
       type: object
       properties:
         id:
           type: string
-          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
-        email:
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
           type: string
-          example: example@example.com
+          example: '13855550193'
+          description: International format phone number
         databases:
           type: array
           items:
@@ -542,45 +543,6 @@ components:
                 - password2
         risk_assessment:
           $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    EmailsDatabasesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailDatabasesSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    PhonesDatabasesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneDatabasesSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    DatabasesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
     Phone:
       required:
       - data
@@ -600,20 +562,47 @@ components:
         offset:
           type: integer
           example: 0
-    PhoneDatabasesSample:
+    Databases:
       type: object
       properties:
-        id:
+        ids:
+          type: array
+          description: 'A list of database IDs to lookup.
+
+            ID should consist of 24 hexadecimal digits.'
+          items:
+            type: string
+          example:
+          - 5f4e1f2e4b1d4d4e4b1d4d4e
+          - 5f4e1f2e4b1d4d4e4b1d4d4f
+        published_date_from:
           type: string
-          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
-        phone:
+          description: A date from filter. Has to be in ISO 8601 format YYYY-MM-DD
+          example: '2021-01-01'
+        published_date_to:
           type: string
-          example: '13855550193'
-          description: International format phone number
-        databases:
+          description: A date to filter. Has to be in ISO 8601 format YYYY-MM-DD. Default is todays date
+          example: '2021-01-02'
+        limit:
+          description: Default is the maximum limit of 1000 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    DatabasesSample:
+      type: object
+      properties:
+        data:
           type: array
           items:
-            $ref: '#/components/schemas/DatabaseDataItem'
+            $ref: '#/components/schemas/DatabaseSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
     EmailSample:
       type: object
       properties:
@@ -711,6 +700,45 @@ components:
         domain:
           type: string
           example: example.com
+    PhonesDatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailsDatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailDatabasesSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
     Emails:
       required:
       - data
@@ -730,62 +758,28 @@ components:
         offset:
           type: integer
           example: 0
-    Databases:
-      type: object
-      properties:
-        ids:
-          type: array
-          description: 'A list of database IDs to lookup.
-
-            ID should consist of 24 hexadecimal digits.'
-          items:
-            type: string
-          example:
-          - 5f4e1f2e4b1d4d4e4b1d4d4e
-          - 5f4e1f2e4b1d4d4e4b1d4d4f
-        published_date_from:
-          type: string
-          description: A date from filter. Has to be in ISO 8601 format YYYY-MM-DD
-          example: '2021-01-01'
-        published_date_to:
-          type: string
-          description: A date to filter. Has to be in ISO 8601 format YYYY-MM-DD. Default is todays date
-          example: '2021-01-02'
-        limit:
-          description: Default is the maximum limit of 1000 records
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-  parameters:
-    Email:
-      name: email-sha256
-      in: path
-      required: true
-      description: Hashed lower-cased email address using SHA256 algorithm
+  headers:
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+    X-RateLimit-Reset:
       schema:
         type: string
-    Domain:
-      name: domain
-      in: path
-      required: true
-      schema:
-        type: string
-    HexId:
-      name: id
-      in: path
-      required: true
-      description: Record ID to lookup. ID should consist of 24 hexadecimal digits.
-      schema:
-        type: string
-    Phone:
-      name: phone-sha256
-      in: path
-      required: true
-      description: Hashed phone number using SHA256 algorithm
-      schema:
-        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
   securitySchemes:
     BasicAuth:
       type: http

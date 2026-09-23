@@ -3,22 +3,7 @@ info:
   title: NordStellar Enterprise Data Subscription Management API
   description: '## Overview
 
-    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
-
-    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
-
-
-    **Key Features**:
-
-    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
-
-    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
-
-    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
-
-    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
-
-    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.'
   version: '3.1'
 servers:
 - url: /api/v3/data
@@ -27,7 +12,7 @@ security:
 - BasicAuth: []
 tags:
 - name: Subscription Management
-  description: "Endpoints for managing user subscriptions to data breach monitoring services. These operations enable administrators to create, update, and delete subscriptions for email addresses, phone numbers, domains, and sensitive data types.\n\nWhen a subscription is created, Serity automatically sends requests to the user’s webhook whenever new or updated data matches the subscription criteria. The webhook destination must be specified through the APIs user-management endpoints.\n\n### Webhook Requirements\nTo ensure reliable delivery under high load, user webhooks **must support very high request throughput** — at least `100 requests per second`. Serity operates at scale and will **not throttle outbound traffic** based on slow client responses. Frequent `429 Too Many Requests` responses are retried, but they can **clog internal delivery queues**, thus, it is strongly recommended that webhook endpoints are backed by a **message queue** or similar buffering system that can **acknowledge requests immediately** and **process them asynchronously** at the desired pace. This ensures resilience and prevents backpressure issues during high traffic periods.\n\n### Delivery Semantics and Retry Policy\n- `2XX responses (200–299)` are treated as successful acknowledgements and are not retried.  \n- `404 responses` trigger internal alerts and are **not retried**, as they typically indicate an invalid or deprecated endpoint.\n- `429 (Too Many Requests)` responses are retried with backoff, but can cause delivery delays if they persist.\n- `All other 4XX and 5XX responses` are **retried** with exponential backoff.  \n- After prolonged retry failure, events are moved to a **DLQ**. In such cases, the platform team will contact the user.  \n### Webhook Payload\n```\n{\n  \"subscription_id\": \"string\",\n  \"document_type\": \"email-sha256 | phone-sha256 | cc-argon2id | nin-argon2id | cc-sha1 | nin-sha1\",\n  \"document_identifier\": \"string\",\n  \"operation_type\": \"update | insert\",\n  \"databases\": [],\n  \"credential_lists\": [],\n  \"malware_logs\": [],\n}\n```\nBy default, users receive only documents with the *insert* operation type.  If the corresponding subscription has the dispatch_on_update option enabled, the webhook also sends update events."
+  description: Endpoints for managing user subscriptions to data breach monitoring services.
 paths:
   /subscription:
     get:
@@ -766,70 +751,7 @@ paths:
       security:
       - ApiKeyAuth: []
 components:
-  headers:
-    X-Quota-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the period
-    X-Quota-Limit:
-      schema:
-        type: integer
-      description: Quota limit per minute
-    X-RateLimit-Reset:
-      schema:
-        type: string
-        format: date-time
-      description: Date and time when rate limit counter resets
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Request limit per minute
-  parameters:
-    Offset:
-      name: offset
-      in: query
-      description: Offset the results by an integer
-      schema:
-        type: integer
-    Limit:
-      name: limit
-      in: query
-      description: Limit the count of records in results
-      required: false
-      schema:
-        type: integer
-    SubscriptionId:
-      name: id
-      in: path
-      required: true
-      description: Subscription ID which was provided upon subscription creation
-      schema:
-        type: string
   schemas:
-    CreatedSubscriptionsSample:
-      type: object
-      properties:
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionSample'
-    ZKSubscription:
-      required:
-      - subscription_identifier
-      type: object
-      properties:
-        subscription_identifier:
-          type: string
-          description: '**Argon2ID** or **SHA1** hashed credit card or national ID number.'
-          example: 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
-        dispatch_on_update:
-          type: boolean
-          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
-          example: false
     AssetSubscriptions:
       required:
       - subscription_identifier
@@ -838,35 +760,6 @@ components:
         subscription_identifiers:
           type: array
           description: Up to 200 **SHA-256** hashed email addresses or phone numbers (only digits)
-          items:
-            type: string
-          example:
-          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
-        dispatch_on_update:
-          type: boolean
-          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
-          example: false
-    SubscriptionsSample:
-      type: object
-      properties:
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    ZKSubscriptions:
-      required:
-      - subscription_identifier
-      type: object
-      properties:
-        subscription_identifiers:
-          type: array
-          description: Up to 200 **Argon2ID** or **SHA1** hashed credit cards or national ID numbers.
           items:
             type: string
           example:
@@ -912,19 +805,6 @@ components:
           type: boolean
           description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
           example: false
-    DomainSubscription:
-      required:
-      - subscription_identifier
-      type: object
-      properties:
-        subscription_identifier:
-          type: string
-          description: Raw email address domain, e.g. "example.com"
-          example: example.com
-        dispatch_on_update:
-          type: boolean
-          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
-          example: false
     AssetSubscription:
       required:
       - subscription_identifier
@@ -938,6 +818,111 @@ components:
           type: boolean
           description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
           example: false
+    SubscriptionsSample:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    ZKSubscriptions:
+      required:
+      - subscription_identifier
+      type: object
+      properties:
+        subscription_identifiers:
+          type: array
+          description: Up to 200 **Argon2ID** or **SHA1** hashed credit cards or national ID numbers.
+          items:
+            type: string
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: false
+    ZKSubscription:
+      required:
+      - subscription_identifier
+      type: object
+      properties:
+        subscription_identifier:
+          type: string
+          description: '**Argon2ID** or **SHA1** hashed credit card or national ID number.'
+          example: 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: false
+    CreatedSubscriptionsSample:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionSample'
+    DomainSubscription:
+      required:
+      - subscription_identifier
+      type: object
+      properties:
+        subscription_identifier:
+          type: string
+          description: Raw email address domain, e.g. "example.com"
+          example: example.com
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: false
+  parameters:
+    Offset:
+      name: offset
+      in: query
+      description: Offset the results by an integer
+      schema:
+        type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Limit the count of records in results
+      required: false
+      schema:
+        type: integer
+    SubscriptionId:
+      name: id
+      in: path
+      required: true
+      description: Subscription ID which was provided upon subscription creation
+      schema:
+        type: string
+  headers:
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+    X-RateLimit-Reset:
+      schema:
+        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
   securitySchemes:
     BasicAuth:
       type: http

@@ -18,9 +18,7 @@ paths:
       tags:
       - AUC
       summary: Get AUC lists
-      description: 'This endpoint is deprecated in favour of /v2/cybersec/urls/allowed-domains
-
-        '
+      description: This endpoint is deprecated in favour of /v2/cybersec/urls/allowed-domains
   /v2/cybersec/auc/lists/hashed:
     get:
       operationId: aucListsHashed
@@ -28,9 +26,7 @@ paths:
       tags:
       - AUC
       summary: Get AUC hashed lists
-      description: 'This endpoint is deprecated in favour of /v2/cybersec/urls/allowed-domains
-
-        '
+      description: This endpoint is deprecated in favour of /v2/cybersec/urls/allowed-domains
 components:
   securitySchemes:
     ApiKeyAuth:

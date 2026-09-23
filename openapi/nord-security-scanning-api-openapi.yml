@@ -2,7 +2,10 @@ openapi: 3.2.0
 info:
   title: Company Risk Scoring Scanning API
   version: 0.1.0
-  description: "**Company Risk Scoring API v0.1.0**\n\nThis API provides a comprehensive service for evaluating the cybersecurity risk associated with external companies, primarily identified by their domain name. It's designed for B2B use cases like vendor risk management, cyber insurance underwriting, or competitive analysis.\n\n**Key Features:**\n\n* **Company Onboarding:** Add companies to the system for monitoring, either automatically by domain or manually with additional details.\n* **Security Scanning:** Initiate asynchronous scans against a company's domain to gather security data. Track scan job progress.\n* **Detailed Risk Categories:** Retrieve granular security assessment results for specific areas:\n    * Software Patching & Vulnerabilities\n    * Web Application Security\n    * Email Security (SPF, DMARC)\n    * System Reputation (IP blacklisting, abuse reports)\n    * SSL/TLS Configuration Strength\n    * System Hosting Environment (Cloud/CDN usage, ISP diversity)\n    * Data Breach History (Exposed credentials, breach dates)\n* **Overall Security Score:** Get a consolidated security score derived from individual category assessments.\n* **Company Firmographics:** Access essential company details like name, website, revenue, employee count, location, industry, and more.\n* **Flexible Data Retrieval:** Fetch results for individual risk categories or retrieve a combined report with all data points for a specific domain and scan job.\n* **Search & Listing:** List onboarded companies with pagination and search capabilities.\n\n**Authentication:**\n\nAccess requires either an API Key provided in the `X-API-Key` header or standard HTTP Basic Authentication."
+  description: '**Company Risk Scoring API v0.1.0**
+
+
+    This API provides a comprehensive service for evaluating the cybersecurity risk associated with external companies, primarily identified by their domain name.'
 tags:
 - name: Scanning
 paths:
@@ -66,6 +69,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ScanJobResult:
       properties:
         id:
@@ -93,6 +105,15 @@ components:
       - date_updated
       - finished
       title: ScanJobResult
+    SubmitScanResponse:
+      properties:
+        scan_job_id:
+          type: string
+          title: Scan Job Id
+      type: object
+      required:
+      - scan_job_id
+      title: SubmitScanResponse
     ValidationError:
       properties:
         loc:
@@ -114,24 +135,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SubmitScanResponse:
-      properties:
-        scan_job_id:
-          type: string
-          title: Scan Job Id
-      type: object
-      required:
-      - scan_job_id
-      title: SubmitScanResponse
     ScanJobsResponse:
       properties:
         domain:

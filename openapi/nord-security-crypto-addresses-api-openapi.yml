@@ -92,36 +92,6 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   responses:
-    UnprocessableEntity:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Content too large:
-              value:
-                errors:
-                  code: 904175
-                  message: Exceeded the limit of 20 records to check in a batch
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    ResourcesExhausted:
-      description: Service resources exhausted
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Too many requests:
-              value:
-                errors:
-                  code: 904174
-                  message: Too many requests, try again later
-      headers:
-        X-RateLimit-Retry-After:
-          $ref: '#/components/schemas/X-RateLimit-Retry-After'
     AuthServiceUnavailable:
       description: Service unavailable
       content:
@@ -137,18 +107,18 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    InvalidCredentials:
-      description: Invalid credentials
+    UnprocessableEntity:
+      description: Unprocessable Entity
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Invalid credentials:
+            Content too large:
               value:
                 errors:
-                  code: 100104
-                  message: Invalid credentials
+                  code: 904175
+                  message: Exceeded the limit of 20 records to check in a batch
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -167,7 +137,42 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    ResourcesExhausted:
+      description: Service resources exhausted
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Too many requests:
+              value:
+                errors:
+                  code: 904174
+                  message: Too many requests, try again later
+      headers:
+        X-RateLimit-Retry-After:
+          $ref: '#/components/schemas/X-RateLimit-Retry-After'
   schemas:
+    X-RateLimit-Retry-After:
+      type: string
+      format: rfc3999
+      example: '2024-03-25T15:19:06.000Z'
+      description: Time when requests to the resource aren't limited.
     CryptoAddressesCheckRequest:
       type: object
       properties:
@@ -180,11 +185,6 @@ components:
             type: string
             example: 0x43fbzxc24jg234f34
           description: List of crypto addresses to be checked
-    X-RateLimit-Retry-After:
-      type: string
-      format: rfc3999
-      example: '2024-03-25T15:19:06.000Z'
-      description: Time when requests to the resource aren't limited.
     X-Correlation-ID:
       type: string
       format: uuid

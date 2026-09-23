@@ -81,21 +81,6 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   responses:
-    UnprocessableEntity:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Content too large:
-              value:
-                errors:
-                  code: 904175
-                  message: Exceeded the limit of 20 records to check in a batch
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
     AuthServiceUnavailable:
       description: Service unavailable
       content:
@@ -111,18 +96,18 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    InvalidCredentials:
-      description: Invalid credentials
+    UnprocessableEntity:
+      description: Unprocessable Entity
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Invalid credentials:
+            Content too large:
               value:
                 errors:
-                  code: 100104
-                  message: Invalid credentials
+                  code: 904175
+                  message: Exceeded the limit of 20 records to check in a batch
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -141,7 +126,39 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
   schemas:
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
     ApplicationsCheckResponse:
       type: array
       items:
@@ -163,11 +180,6 @@ components:
             type: number
             format: float
             example: 9.5
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
     ApplicationsCheckRequest:
       type: object
       properties:
@@ -190,18 +202,6 @@ components:
               version:
                 type: string
                 example: 1.0.0
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
   securitySchemes:
     ApiKeyAuth:
       type: http

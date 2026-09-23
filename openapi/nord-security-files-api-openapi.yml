@@ -562,20 +562,7 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   schemas:
-    FileCheckStatus:
-      type: number
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      description: "Codes:\n * `0` - OK, Check performed successfully\n * `1` - An unknown error has occurred, file check failed\n * `2` - Check is pending in backend, repeat a request for this file after TTL number of seconds\n * `3` - File is not found, upload is required for further inspection\n"
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
-    FileCheckResponseV2:
+    FileCheckResponseV3:
       type: object
       properties:
         files:
@@ -603,6 +590,36 @@ components:
               upload_url:
                 type: string
                 description: Destination URL where file should be uploaded
+    FileCheckRequestV2:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: object
+            required:
+            - sha256
+            properties:
+              sha256:
+                $ref: '#/components/schemas/Sha256Checksum'
+              can_upload:
+                type: boolean
+              size:
+                type: number
+                example: 256
+              name:
+                type: string
+                example: file.exe
+              url:
+                type: string
+                example: https://foo.bar/file.exe
+    FileCategory:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      description: "Codes:\n * `0` - File was not found in malware database\n * `1` - File is clean\n * `2` - File is infected with malware\n"
     FileCheckRequestV3:
       type: object
       properties:
@@ -629,7 +646,48 @@ components:
               mime_type:
                 type: string
                 example: application/vnd.microsoft.portable-executable
-    FileCheckResponseV3:
+    FileCheckStatus:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      description: "Codes:\n * `0` - OK, Check performed successfully\n * `1` - An unknown error has occurred, file check failed\n * `2` - Check is pending in backend, repeat a request for this file after TTL number of seconds\n * `3` - File is not found, upload is required for further inspection\n"
+    FileExtensionsResponse:
+      type: object
+      properties:
+        pe_extensions:
+          type: array
+          items:
+            type: string
+          description: Files ending with these extensions are portable executables and can be uploaded if asked
+        non_pe_extensions:
+          type: array
+          items:
+            type: string
+          description: Files ending with these extensions are non portable executables
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+    Sha256Checksum:
+      type: string
+      example: dc460da4ad72c482231e28e688e01f2778a88ce31a08826899d54ef7183998b5
+    FileCheckResponseV2:
       type: object
       properties:
         files:
@@ -670,80 +728,7 @@ components:
           items:
             type: string
           description: Files with these MIME types should be checked with regular scan, similar to non-PE extensions
-    FileExtensionsResponse:
-      type: object
-      properties:
-        pe_extensions:
-          type: array
-          items:
-            type: string
-          description: Files ending with these extensions are portable executables and can be uploaded if asked
-        non_pe_extensions:
-          type: array
-          items:
-            type: string
-          description: Files ending with these extensions are non portable executables
-    Sha256Checksum:
-      type: string
-      example: dc460da4ad72c482231e28e688e01f2778a88ce31a08826899d54ef7183998b5
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
-    FileCategory:
-      type: number
-      enum:
-      - 0
-      - 1
-      - 2
-      description: "Codes:\n * `0` - File was not found in malware database\n * `1` - File is clean\n * `2` - File is infected with malware\n"
-    FileCheckRequestV2:
-      type: object
-      properties:
-        files:
-          type: array
-          items:
-            type: object
-            required:
-            - sha256
-            properties:
-              sha256:
-                $ref: '#/components/schemas/Sha256Checksum'
-              can_upload:
-                type: boolean
-              size:
-                type: number
-                example: 256
-              name:
-                type: string
-                example: file.exe
-              url:
-                type: string
-                example: https://foo.bar/file.exe
   responses:
-    UnprocessableEntity:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Content too large:
-              value:
-                errors:
-                  code: 904175
-                  message: Exceeded the limit of 20 records to check in a batch
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
     AuthServiceUnavailable:
       description: Service unavailable
       content:
@@ -759,18 +744,33 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    InvalidCredentials:
-      description: Invalid credentials
+    UnprocessableEntity:
+      description: Unprocessable Entity
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Invalid credentials:
+            Content too large:
               value:
                 errors:
-                  code: 100104
-                  message: Invalid credentials
+                  code: 904175
+                  message: Exceeded the limit of 20 records to check in a batch
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    BadGateway:
+      description: Bad Gateway
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904180
+                  message: Service encountered a temporary error and could not complete your request
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -789,18 +789,18 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    BadGateway:
-      description: Bad Gateway
+    InvalidCredentials:
+      description: Invalid credentials
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Service unavailable:
+            Invalid credentials:
               value:
                 errors:
-                  code: 904180
-                  message: Service encountered a temporary error and could not complete your request
+                  code: 100104
+                  message: Invalid credentials
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'

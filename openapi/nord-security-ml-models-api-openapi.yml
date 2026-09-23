@@ -128,23 +128,6 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   schemas:
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
     MlModelInfo:
       type: object
       properties:
@@ -179,6 +162,23 @@ components:
           format: float
           description: Higher limit for ML model threshold
           example: 0.98
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
   responses:
     AuthServiceUnavailable:
       description: Service unavailable
@@ -195,21 +195,6 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    InvalidCredentials:
-      description: Invalid credentials
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Invalid credentials:
-              value:
-                errors:
-                  code: 100104
-                  message: Invalid credentials
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
     ServiceForbidden:
       description: Service is forbidden for the user
       content:
@@ -222,6 +207,21 @@ components:
                 errors:
                   code: 100166
                   message: Service is forbidden for the user
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'

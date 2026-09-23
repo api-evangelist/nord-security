@@ -3,22 +3,7 @@ info:
   title: NordStellar Enterprise Data Email Intelligence API
   description: '## Overview
 
-    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
-
-    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
-
-
-    **Key Features**:
-
-    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
-
-    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
-
-    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
-
-    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
-
-    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.'
   version: '3.1'
 servers:
 - url: /api/v3/data
@@ -36,7 +21,29 @@ paths:
       tags:
       - Email Intelligence
       summary: Domain search
-      description: "Used for looking up all email addresses and their data for a specific domain.\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n*Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.\nIf a document contains more malware logs than could be retrieved, **206** response code alongside the *errors* string will be returned\nand the rest of its malware data truncated. Truncated data contains malware IDs that can be used\nto retrieve data using **data-source** endpoints*\n\nDefault is the maximum limit of **100** records \n(If the response returns exactly 100 records, it indicates the potential presence of more records. Initiate a subsequent request to retrieve any additional results)\n\n**Rate limit: 20 per second.**"
+      description: 'Used for looking up all email addresses and their data for a specific domain.
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        *Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.
+
+        If a document contains more malware logs than could be retrieved, **206** response code alongside the *errors* string will be returned
+
+        and the rest of its malware data truncated. Truncated data contains malware IDs that can be used
+
+        to retrieve data using **data-source** endpoints*
+
+
+        Default is the maximum limit of **100** records
+
+        (If the response returns exactly 100 records, it indicates the potential presence of more records. Initiate a subsequent request to retrieve any additional results)
+
+
+        **Rate limit: 20 per second.**'
       operationId: domain
       parameters:
       - $ref: '#/components/parameters/Domain'
@@ -107,7 +114,33 @@ paths:
       tags:
       - Email Intelligence
       summary: Lite Domain search
-      description: "Used for looking up all email addresses and their data for a specific domain.\n\nThese email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.\n\nThe data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.\n\n*Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.\nIf a document contains more malware logs than could be retrieved, **206** response code alongside the *errors* string will be returned\nand the rest of its malware data truncated. Truncated data contains malware IDs that can be used\nto retrieve data using **data-source** endpoints*\n\nDefault is the maximum limit of **100** records \n(If the response returns exactly 100 records, it indicates the potential presence of more records. Initiate a subsequent request to retrieve any additional results)\n\n**Lite version of /email/domain endpoint, which only includes credentials from malware logs.**\n\n**Rate limit: 100 per second.**"
+      description: 'Used for looking up all email addresses and their data for a specific domain.
+
+
+        These email addresses and their data have been collected and aggregated from various databases openly accessible on the internet.
+
+
+        The data is returned using pagination by default, pagination behaviour can be modified using **limit** and **offset** parameters.
+
+
+        *Malware documents can be extremely large, so requested documents are capped to return **20** malware logs.
+
+        If a document contains more malware logs than could be retrieved, **206** response code alongside the *errors* string will be returned
+
+        and the rest of its malware data truncated. Truncated data contains malware IDs that can be used
+
+        to retrieve data using **data-source** endpoints*
+
+
+        Default is the maximum limit of **100** records
+
+        (If the response returns exactly 100 records, it indicates the potential presence of more records. Initiate a subsequent request to retrieve any additional results)
+
+
+        **Lite version of /email/domain endpoint, which only includes credentials from malware logs.**
+
+
+        **Rate limit: 100 per second.**'
       operationId: domainLite
       parameters:
       - $ref: '#/components/parameters/Domain'
@@ -1389,7 +1422,12 @@ paths:
       tags:
       - Email Intelligence
       summary: Email domain blacklist
-      description: "This API endpoint is designed to retrieve a list of public email \ndomains that are blacklisted and cannot be used for domain lookup or subscription operations.\n\n**Rate limit: 20 per second.**"
+      description: 'This API endpoint is designed to retrieve a list of public email
+
+        domains that are blacklisted and cannot be used for domain lookup or subscription operations.
+
+
+        **Rate limit: 20 per second.**'
       operationId: emailDomainBlacklist
       parameters:
       - $ref: '#/components/parameters/Limit'
@@ -1438,44 +1476,20 @@ paths:
       - ApiKeyAuth: []
 components:
   schemas:
-    EmailAtoFiltered:
-      required:
-      - email_sha256
+    EmailsSample:
       type: object
       properties:
-        email_sha256:
-          type: string
-          description: A SHA256 hashed email address to generate fuzzed passwords for
-          example: 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
-        database_ids:
+        data:
           type: array
-          description: A list of datbase IDs to generate fuzzed passwords
           items:
-            type: string
-          example:
-          - 5f4e1f2e4b1d4d4e4b1d4d4e
-          - 5f4e1f2e4b1d4d4e4b1d4d4f
-        malware_ids:
-          type: array
-          description: A list of malware IDs to generate fuzzed passwords
-          items:
-            type: string
-          example:
-          - 5f4e1f2e4b1d4d4e4b1d4d4e
-          - 5f4e1f2e4b1d4d4e4b1d4d4f
-        credential_list_ids:
-          type: array
-          description: A list of credential list IDs to generate fuzzed passwords
-          items:
-            type: string
-          example:
-          - 5f4e1f2e4b1d4d4e4b1d4d4e
-          - 5f4e1f2e4b1d4d4e4b1d4d4f
-        fuzzing_intensity:
+            $ref: '#/components/schemas/EmailSample'
+        limit:
           type: integer
-          description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
-          default: 1
-    EmailDatabasesSample:
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailCredentialListsSample:
       type: object
       properties:
         id:
@@ -1484,60 +1498,10 @@ components:
         email:
           type: string
           example: example@example.com
-        databases:
+        credential_lists:
           type: array
           items:
-            $ref: '#/components/schemas/DatabaseDataItem'
-    EmailsAto:
-      required:
-      - emails_sha256
-      type: object
-      properties:
-        emails_sha256:
-          type: array
-          description: A list of SHA256 hashed email addresses to generate fuzzed passwords
-          items:
-            type: string
-          example:
-          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
-        fuzzing_intensity:
-          type: integer
-          description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
-          default: 1
-          example: 0
-        limit:
-          description: Default is the maximum limit of 5 records
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    EmailsLiteSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailLiteSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    EmailsCredentialListsSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailCredentialListsSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
+            $ref: '#/components/schemas/CredentialDataItem'
     DatabaseDataItem:
       type: object
       properties:
@@ -1572,110 +1536,30 @@ components:
                 - password2
         risk_assessment:
           $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    EmailAtoPreventionSample:
+    EmailsAto:
+      required:
+      - emails_sha256
       type: object
       properties:
-        id:
-          type: string
-          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
-        email:
-          type: string
-          example: email@example.com
-        password:
+        emails_sha256:
           type: array
+          description: A list of SHA256 hashed email addresses to generate fuzzed passwords
           items:
             type: string
           example:
-          - password1
-          - password2
-    EmailsDatabasesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailDatabasesSample'
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        fuzzing_intensity:
+          type: integer
+          description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+          default: 1
+          example: 0
         limit:
+          description: Default is the maximum limit of 5 records
           type: integer
           example: 10
         offset:
           type: integer
           example: 0
-    MalwareLogSystemInfoSampleItem:
-      type: object
-      properties:
-        ip:
-          type: string
-          example: 192.168.1.1
-        username:
-          type: string
-          example: diego.lebon
-        country:
-          type: string
-          example: US
-        zip:
-          type: string
-          example: '10001'
-        location:
-          type: string
-          example: New York, USA
-        hardware_id:
-          type: string
-          example: 89f3221e-2138-48c9-bbe2-8f68-806e6f6e6963
-        language:
-          type: string
-          example: es-ES
-        timezone:
-          type: string
-          example: UTC1
-        os:
-          type: string
-          example: Windows 10 Pro [x64]
-        system_name:
-          type: string
-          example: DESKTOP-42R6V1I
-        guid:
-          type: string
-          example: 91788e64-8fdf-11eb-8f68-806e6f6e6963
-        machine_id:
-          type: string
-          example: 89f3221e-2138-48c9-bbe2-ab615454c7ef
-        date:
-          type: string
-          example: '2021-05-26T08:19:13Z'
-        execution_path:
-          type: string
-          example: C:\Program Files\Example\example.exe
-        antivirus_software:
-          type: array
-          items:
-            type: string
-            example: Norton Antivirus
-        work_dir:
-          type: string
-          example: C:\Users\appdata
-        oem_id:
-          type: string
-          example: 00000000-0000-0000-0000-0000
-        screen_size:
-          type: string
-          example: 1920x1080
-        uac:
-          type: string
-          example: AllowAll
-        process_elevation:
-          type: boolean
-          example: true
-        keyboard_layouts:
-          type: array
-          items:
-            type: string
-            example: English (United States)
-        hardwares:
-          type: array
-          items:
-            type: string
-            example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
     MalwareDataItem:
       type: object
       properties:
@@ -2044,105 +1928,6 @@ components:
               example: identified
         risk_assessment:
           $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    CredentialDataItem:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Systemic hex ID of the record
-          example: 66c4d3912b183418f7743576
-        passwords:
-          type: array
-          items:
-            type: string
-          example:
-          - password1
-          - password2
-        published_date:
-          type: string
-          description: Date when the credential list data was published onto the asset
-          example: '2025-01-20T19:04:39Z'
-        combos:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                example: example.com
-              password:
-                type: string
-                example: password1
-              url:
-                type: string
-                example: https://example.com/login
-        risk_assessment:
-          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    EmailsSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    EmailsMalwareLogsSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailMalwareLogsSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    EmailStatistics:
-      type: object
-      properties:
-        unique_email_count:
-          type: integer
-          description: Number of unique email addresses that were affected by any incident (This number is always **1** for single email statistics)
-          example: 1
-        unique_password_count:
-          type: integer
-          description: Number of unique passwords
-          example: 3
-        password_count:
-          type: integer
-          description: Total number of passwords
-          example: 5
-        breached_email_count:
-          type: integer
-          description: Total number of email appearances in data breaches
-          example: 4
-        malware_affected_email_count:
-          type: integer
-          description: Total number of email appearances in malware infections
-          example: 1
-        stolen_email_count:
-          type: integer
-          description: Total number of email appearances in stolen credential lists
-          example: 2
-        database_count:
-          type: integer
-          description: Number of unique data breaches that this email appears in
-          example: 3
-        malware_infection_count:
-          type: integer
-          description: Number of unique malware infections that this email appears in
-          example: 1
-        credential_list_count:
-          type: integer
-          description: Number of unique stolen credential lists that this email appears in
-          example: 2
     EmailLiteSample:
       type: object
       properties:
@@ -2164,13 +1949,42 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CredentialDataItem'
-    EmailsAtoPreventionSample:
+    EmailAtoPreventionSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: email@example.com
+        password:
+          type: array
+          items:
+            type: string
+          example:
+          - password1
+          - password2
+    EmailsMalwareLogsSample:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/EmailAtoPreventionSample'
+            $ref: '#/components/schemas/EmailMalwareLogsSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailsCredentialListsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailCredentialListsSample'
         limit:
           type: integer
           example: 10
@@ -2222,32 +2036,40 @@ components:
                     type: string
                     description: Recommendation text
                     example: Avoid using your publicly known information in passwords. Threat actors routinely use other known information, such as email addresses, phone numbers, pet names, dates of birth, first/last names and other data in stuffing attacks to uncover passwords that were otherwise never leaked online.
-    EmailMalwareLogsSample:
+    CredentialDataItem:
       type: object
       properties:
         id:
           type: string
-          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
-        email:
-          type: string
-          example: example@example.com
-        malware_logs:
+          description: Systemic hex ID of the record
+          example: 66c4d3912b183418f7743576
+        passwords:
           type: array
           items:
-            $ref: '#/components/schemas/MalwareDataItem'
-    EmailCredentialListsSample:
-      type: object
-      properties:
-        id:
+            type: string
+          example:
+          - password1
+          - password2
+        published_date:
           type: string
-          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
-        email:
-          type: string
-          example: example@example.com
-        credential_lists:
+          description: Date when the credential list data was published onto the asset
+          example: '2025-01-20T19:04:39Z'
+        combos:
           type: array
           items:
-            $ref: '#/components/schemas/CredentialDataItem'
+            type: object
+            properties:
+              domain:
+                type: string
+                example: example.com
+              password:
+                type: string
+                example: password1
+              url:
+                type: string
+                example: https://example.com/login
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
     MalwareDataItemLite:
       type: object
       properties:
@@ -2293,6 +2115,45 @@ components:
                   application:
                     type: string
                     example: Google Chrome
+    EmailsDatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailMalwareLogsSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+    EmailsAtoPreventionSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAtoPreventionSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
     EmailsAtoFiltered:
       required:
       - emails_sha256
@@ -2344,6 +2205,71 @@ components:
         offset:
           type: integer
           example: 0
+    EmailsLiteSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailLiteSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailDatabasesSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+    EmailStatistics:
+      type: object
+      properties:
+        unique_email_count:
+          type: integer
+          description: Number of unique email addresses that were affected by any incident (This number is always **1** for single email statistics)
+          example: 1
+        unique_password_count:
+          type: integer
+          description: Number of unique passwords
+          example: 3
+        password_count:
+          type: integer
+          description: Total number of passwords
+          example: 5
+        breached_email_count:
+          type: integer
+          description: Total number of email appearances in data breaches
+          example: 4
+        malware_affected_email_count:
+          type: integer
+          description: Total number of email appearances in malware infections
+          example: 1
+        stolen_email_count:
+          type: integer
+          description: Total number of email appearances in stolen credential lists
+          example: 2
+        database_count:
+          type: integer
+          description: Number of unique data breaches that this email appears in
+          example: 3
+        malware_infection_count:
+          type: integer
+          description: Number of unique malware infections that this email appears in
+          example: 1
+        credential_list_count:
+          type: integer
+          description: Number of unique stolen credential lists that this email appears in
+          example: 2
     Emails:
       required:
       - data
@@ -2363,46 +2289,129 @@ components:
         offset:
           type: integer
           example: 0
-  headers:
-    X-Quota-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the period
-    X-Quota-Limit:
-      schema:
-        type: integer
-      description: Quota limit per minute
-    X-RateLimit-Reset:
+    MalwareLogSystemInfoSampleItem:
+      type: object
+      properties:
+        ip:
+          type: string
+          example: 192.168.1.1
+        username:
+          type: string
+          example: diego.lebon
+        country:
+          type: string
+          example: US
+        zip:
+          type: string
+          example: '10001'
+        location:
+          type: string
+          example: New York, USA
+        hardware_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-8f68-806e6f6e6963
+        language:
+          type: string
+          example: es-ES
+        timezone:
+          type: string
+          example: UTC1
+        os:
+          type: string
+          example: Windows 10 Pro [x64]
+        system_name:
+          type: string
+          example: DESKTOP-42R6V1I
+        guid:
+          type: string
+          example: 91788e64-8fdf-11eb-8f68-806e6f6e6963
+        machine_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-ab615454c7ef
+        date:
+          type: string
+          example: '2021-05-26T08:19:13Z'
+        execution_path:
+          type: string
+          example: C:\Program Files\Example\example.exe
+        antivirus_software:
+          type: array
+          items:
+            type: string
+            example: Norton Antivirus
+        work_dir:
+          type: string
+          example: C:\Users\appdata
+        oem_id:
+          type: string
+          example: 00000000-0000-0000-0000-0000
+        screen_size:
+          type: string
+          example: 1920x1080
+        uac:
+          type: string
+          example: AllowAll
+        process_elevation:
+          type: boolean
+          example: true
+        keyboard_layouts:
+          type: array
+          items:
+            type: string
+            example: English (United States)
+        hardwares:
+          type: array
+          items:
+            type: string
+            example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
+    EmailAtoFiltered:
+      required:
+      - email_sha256
+      type: object
+      properties:
+        email_sha256:
+          type: string
+          description: A SHA256 hashed email address to generate fuzzed passwords for
+          example: 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        database_ids:
+          type: array
+          description: A list of datbase IDs to generate fuzzed passwords
+          items:
+            type: string
+          example:
+          - 5f4e1f2e4b1d4d4e4b1d4d4e
+          - 5f4e1f2e4b1d4d4e4b1d4d4f
+        malware_ids:
+          type: array
+          description: A list of malware IDs to generate fuzzed passwords
+          items:
+            type: string
+          example:
+          - 5f4e1f2e4b1d4d4e4b1d4d4e
+          - 5f4e1f2e4b1d4d4e4b1d4d4f
+        credential_list_ids:
+          type: array
+          description: A list of credential list IDs to generate fuzzed passwords
+          items:
+            type: string
+          example:
+          - 5f4e1f2e4b1d4d4e4b1d4d4e
+          - 5f4e1f2e4b1d4d4e4b1d4d4f
+        fuzzing_intensity:
+          type: integer
+          description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+          default: 1
+  parameters:
+    Domain:
+      name: domain
+      in: path
+      required: true
       schema:
         type: string
-        format: date-time
-      description: Date and time when rate limit counter resets
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Request limit per minute
-  parameters:
     Offset:
       name: offset
       in: query
       description: Offset the results by an integer
-      schema:
-        type: integer
-    FuzzingIntensity:
-      name: fuzzing-intensity
-      in: query
-      description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
-      schema:
-        type: integer
-    Limit:
-      name: limit
-      in: query
-      description: Limit the count of records in results
-      required: false
       schema:
         type: integer
     Email:
@@ -2412,12 +2421,41 @@ components:
       description: Hashed lower-cased email address using SHA256 algorithm
       schema:
         type: string
-    Domain:
-      name: domain
-      in: path
-      required: true
+    Limit:
+      name: limit
+      in: query
+      description: Limit the count of records in results
+      required: false
+      schema:
+        type: integer
+    FuzzingIntensity:
+      name: fuzzing-intensity
+      in: query
+      description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+      schema:
+        type: integer
+  headers:
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+    X-RateLimit-Reset:
       schema:
         type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
   securitySchemes:
     BasicAuth:
       type: http

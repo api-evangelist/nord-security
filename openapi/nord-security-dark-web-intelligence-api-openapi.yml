@@ -3,22 +3,7 @@ info:
   title: NordStellar Enterprise Data Dark Web Intelligence API
   description: '## Overview
 
-    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
-
-    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
-
-
-    **Key Features**:
-
-    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
-
-    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
-
-    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
-
-    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
-
-    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.'
   version: '3.1'
 servers:
 - url: /api/v3/data
@@ -801,6 +786,162 @@ paths:
       - ApiKeyAuth: []
 components:
   schemas:
+    EnrichmentData:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the company
+        domain:
+          type: string
+          description: Domain of the company
+        website:
+          type: string
+          description: Website of the company
+        industry:
+          type: string
+          description: Industry of the company (Raw string, unprocessed)
+        type:
+          type: string
+          description: Type of the company (Private, LLD, etc.) (Raw string, unprocessed)
+        size_range:
+          type: string
+          description: Size range of the company - "1-10 employees", "11-50 employees", etc.
+        revenue_range:
+          type: string
+          description: Revenue range of the company - "$1M-$10M", "$10M-$50M", etc. including currency sign
+        company_logo_base64:
+          type: string
+          description: Base64 encoded company logo. 50x50px
+        location:
+          $ref: '#/components/schemas/LocationData'
+          description: Enrichment location data
+        socials:
+          type: array
+          description: List of social media URLs associated with the company
+          items:
+            $ref: '#/components/schemas/SocialMediaURL'
+    ForumThread:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Internal ID of the record
+        content:
+          $ref: '#/components/schemas/ScrapedContent'
+        metadata:
+          $ref: '#/components/schemas/ScrapedContentMetadata'
+        target_data:
+          $ref: '#/components/schemas/WebTargetData'
+    TelegramSearchResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TelegramMessage'
+        total_results:
+          type: integer
+          description: Total number of records found
+    RansomwareSearchRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/SearchQuery'
+        highlight_params:
+          $ref: '#/components/schemas/HighlightParams'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    ScreenshotRequest:
+      required:
+      - source_type
+      - identifier
+      type: object
+      properties:
+        source_type:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          description: 'List of source types
+
+            Enum values:
+
+            - 0 - SOURCE_TYPE_UNSPECIFIED
+
+            - 1 - SOURCE_TYPE_FORUM
+
+            - 2 - SOURCE_TYPE_TELEGRAM
+
+            - 3 - SOURCE_TYPE_RANSOMWARE
+
+            - 4 - SOURCE_TYPE_MARKETPLACE
+
+            '
+        identifier:
+          type: string
+          description: Identifier for the scraped content
+        properties:
+          description: Parameters for the image resizing (optional)
+          $ref: '#/components/schemas/ImageProperties'
+    TelegramMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Internal ID of the record
+        external_id:
+          type: integer
+          description: External ID of the message (in Telegram API)
+        content:
+          $ref: '#/components/schemas/ScrapedContent'
+        metadata:
+          $ref: '#/components/schemas/ScrapedContentMetadata'
+        target_data:
+          $ref: '#/components/schemas/TelegramTargetData'
+        file_data:
+          $ref: '#/components/schemas/TelegramFileData'
+    TelegramFileData:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: Name of the file attached to the message
+        file_size_bytes:
+          type: integer
+          description: Size of the file attached to the message
+    ScrapedContentMetadata:
+      type: object
+      properties:
+        tags:
+          type: array
+          description: List of tags associated with the content
+          items:
+            type: string
+        date_scraped:
+          type: string
+          description: Date when the record was scraped
+        date_updated:
+          type: string
+          description: Date when the record was last updated
+        screenshot_identifier:
+          type: string
+          description: Identifier for scraped content screenshot retrieval
+    TelegramTargetData:
+      type: object
+      properties:
+        external_channel_id:
+          type: integer
+          description: External ID of the Telegram channel
+        channel_name:
+          type: string
+          description: Name of the Telegram channel
+        channel_identifier:
+          type: string
+          description: Identifier of the Telegram channel
     ScrapedContent:
       type: object
       properties:
@@ -844,6 +985,247 @@ components:
         url_hash:
           type: string
           description: Hash of the URL
+    RansomData:
+      type: object
+      properties:
+        claim_url:
+          type: string
+          description: Complete ransomware incident claim URL
+        victim_name:
+          type: string
+          description: Name of the ransomware victim organization
+        victim_domain:
+          type: string
+          description: Domain name of the ransomware victim organization website
+    Error:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            body:
+              type: string
+              description: Error description
+    TagsResponse:
+      type: object
+      properties:
+        tags:
+          type: array
+          description: List of scraped content tags based on type
+          items:
+            type: string
+    HighlightParams:
+      type: object
+      description: 'Optional object that is used for matched phrase highlights in the search results.
+
+        All keywords that are matched by the query will be wrapped with passed starting and ending tags.
+
+        Highlighting is applied on all of the fields the phrase is matched in.
+
+        '
+      properties:
+        pre_tags:
+          type: array
+          description: List of opening wrapper tags (applied in the order they are listed)
+          items:
+            type: string
+            enum:
+            - <span class='text-highlight'>
+        post_tags:
+          type: array
+          description: List of closing wrapper tags (applied in the reverse order)
+          items:
+            type: string
+            enum:
+            - </span>
+    MarketplacePost:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Internal ID of the record
+        display_price:
+          type: string
+          description: Display price of the marketplace post (with currency)
+        type:
+          type: array
+          description: 'List of marketplace types
+
+            Enum values:
+
+            - 0 - MARKETPLACE_TYPE_UNSPECIFIED
+
+            - 1 - MARKETPLACE_TYPE_LOGS
+
+            - 2 - MARKETPLACE_TYPE_CREDIT_CARDS
+
+            - 3 - MARKETPLACE_TYPE_HOSTS
+
+            - 4 - MARKETPLACE_TYPE_SEND
+
+            - 5 - MARKETPLACE_TYPE_WEB_MAIL
+
+            - 6 - MARKETPLACE_TYPE_LEADS
+
+            - 7 - MARKETPLACE_TYPE_ACCOUNTS
+
+            - 8 - MARKETPLACE_TYPE_OTHER'
+          items:
+            type: integer
+            enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+        content:
+          $ref: '#/components/schemas/ScrapedContent'
+        metadata:
+          $ref: '#/components/schemas/ScrapedContentMetadata'
+        target_data:
+          $ref: '#/components/schemas/WebTargetData'
+    LocationData:
+      type: object
+      properties:
+        country:
+          type: string
+          description: Country name of the company
+        country_iso2:
+          type: string
+          description: Country ISO2 code
+        location:
+          type: string
+          description: Country, city & state of the company
+        full_address:
+          type: string
+          description: Full address including street, city, state, country, and postal code
+    DateRange:
+      type: object
+      properties:
+        date_from:
+          type: string
+          description: 'Start date of the range.
+
+            Supported date formats:
+
+            - "2006-01-02T15:04:05Z"
+
+            - "2006-01-02 15:04:05 -0700 MST"
+
+            - "2006-01-02 15:04:05"
+
+            '
+        date_to:
+          type: string
+          description: 'End date of the range.
+
+            Supported date formats:
+
+            - "2006-01-02T15:04:05Z"
+
+            - "2006-01-02 15:04:05 -0700 MST"
+
+            - "2006-01-02 15:04:05"
+
+            '
+        mode:
+          type: string
+          enum:
+          - DATE_RANGE_MODE_UNSPECIFIED
+          - DATE_RANGE_MODE_INCLUDE
+          - DATE_RANGE_MODE_EXCLUDE
+          default: DATE_RANGE_MODE_UNSPECIFIED
+          description: 'Filter mode for the date range.
+
+            - UNSPECIFIED/INCLUDE: results within [date_from, date_to] (default, current behavior).
+
+            - EXCLUDE: results outside the range (date < date_from OR date > date_to).
+
+            Open-ended ranges are supported independently per bound:
+
+            only date_from set — INCLUDE: date >= date_from, EXCLUDE: date < date_from.
+
+            Only date_to set — INCLUDE: date <= date_to, EXCLUDE: date > date_to.
+
+            '
+    SearchQuery:
+      type: object
+      description: Object that is used for Lucene query & date filtering in the search request
+      properties:
+        query:
+          type: string
+          description: 'The search query string in Lucene syntax
+
+            Available fields in the query:
+
+            - "tags"
+
+            - "content"
+
+            - "title"
+
+            - "author_name"
+
+            - "channel_name" (Telegram only)
+
+            - "site_domain_name" (Forums only)
+
+            '
+        date_posted_range:
+          $ref: '#/components/schemas/DateRange'
+        date_scraped_range:
+          $ref: '#/components/schemas/DateRange'
+    RansomwareSearchResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RansomwareIncident'
+        total_results:
+          type: integer
+          description: Total number of records found
+    ForumSearchRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/SearchQuery'
+        highlight_params:
+          $ref: '#/components/schemas/HighlightParams'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    MarketplaceSearchResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketplacePost'
+        total_results:
+          type: integer
+          description: Total number of records found
+    MarketplaceSearchRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/SearchQuery'
+        highlight_params:
+          $ref: '#/components/schemas/HighlightParams'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    TelegramSearchRequest:
+      type: object
+      properties:
+        query:
+          $ref: '#/components/schemas/SearchQuery'
+        highlight_params:
+          $ref: '#/components/schemas/HighlightParams'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     RansomwareIncident:
       type: object
       properties:
@@ -917,53 +1299,6 @@ components:
         url:
           type: string
           description: URL of the social media profile
-    RansomwareSearchRequest:
-      type: object
-      properties:
-        query:
-          $ref: '#/components/schemas/SearchQuery'
-        highlight_params:
-          $ref: '#/components/schemas/HighlightParams'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    TelegramTargetData:
-      type: object
-      properties:
-        external_channel_id:
-          type: integer
-          description: External ID of the Telegram channel
-        channel_name:
-          type: string
-          description: Name of the Telegram channel
-        channel_identifier:
-          type: string
-          description: Identifier of the Telegram channel
-    TelegramMessage:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Internal ID of the record
-        external_id:
-          type: integer
-          description: External ID of the message (in Telegram API)
-        content:
-          $ref: '#/components/schemas/ScrapedContent'
-        metadata:
-          $ref: '#/components/schemas/ScrapedContentMetadata'
-        target_data:
-          $ref: '#/components/schemas/TelegramTargetData'
-        file_data:
-          $ref: '#/components/schemas/TelegramFileData'
-    TelegramFileData:
-      type: object
-      properties:
-        file_name:
-          type: string
-          description: Name of the file attached to the message
-        file_size_bytes:
-          type: integer
-          description: Size of the file attached to the message
     ForumSearchResponse:
       type: object
       properties:
@@ -974,204 +1309,6 @@ components:
         total_results:
           type: integer
           description: Total number of records found
-    ForumSearchRequest:
-      type: object
-      properties:
-        query:
-          $ref: '#/components/schemas/SearchQuery'
-        highlight_params:
-          $ref: '#/components/schemas/HighlightParams'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    MarketplacePost:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Internal ID of the record
-        display_price:
-          type: string
-          description: Display price of the marketplace post (with currency)
-        type:
-          type: array
-          description: 'List of marketplace types
-
-            Enum values:
-
-            - 0 - MARKETPLACE_TYPE_UNSPECIFIED
-
-            - 1 - MARKETPLACE_TYPE_LOGS
-
-            - 2 - MARKETPLACE_TYPE_CREDIT_CARDS
-
-            - 3 - MARKETPLACE_TYPE_HOSTS
-
-            - 4 - MARKETPLACE_TYPE_SEND
-
-            - 5 - MARKETPLACE_TYPE_WEB_MAIL
-
-            - 6 - MARKETPLACE_TYPE_LEADS
-
-            - 7 - MARKETPLACE_TYPE_ACCOUNTS
-
-            - 8 - MARKETPLACE_TYPE_OTHER'
-          items:
-            type: integer
-            enum:
-            - 0
-            - 1
-            - 2
-            - 3
-            - 4
-            - 5
-            - 6
-            - 7
-            - 8
-        content:
-          $ref: '#/components/schemas/ScrapedContent'
-        metadata:
-          $ref: '#/components/schemas/ScrapedContentMetadata'
-        target_data:
-          $ref: '#/components/schemas/WebTargetData'
-    Error:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            body:
-              type: string
-              description: Error description
-    MarketplaceSearchResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/MarketplacePost'
-        total_results:
-          type: integer
-          description: Total number of records found
-    TelegramSearchRequest:
-      type: object
-      properties:
-        query:
-          $ref: '#/components/schemas/SearchQuery'
-        highlight_params:
-          $ref: '#/components/schemas/HighlightParams'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    SearchQuery:
-      type: object
-      description: Object that is used for Lucene query & date filtering in the search request
-      properties:
-        query:
-          type: string
-          description: 'The search query string in Lucene syntax
-
-            Available fields in the query:
-
-            - "tags"
-
-            - "content"
-
-            - "title"
-
-            - "author_name"
-
-            - "channel_name" (Telegram only)
-
-            - "site_domain_name" (Forums only)
-
-            '
-        date_posted_range:
-          $ref: '#/components/schemas/DateRange'
-        date_scraped_range:
-          $ref: '#/components/schemas/DateRange'
-    DateRange:
-      type: object
-      properties:
-        date_from:
-          type: string
-          description: 'Start date of the range.
-
-            Supported date formats:
-
-            - "2006-01-02T15:04:05Z"
-
-            - "2006-01-02 15:04:05 -0700 MST"
-
-            - "2006-01-02 15:04:05"
-
-            '
-        date_to:
-          type: string
-          description: 'End date of the range.
-
-            Supported date formats:
-
-            - "2006-01-02T15:04:05Z"
-
-            - "2006-01-02 15:04:05 -0700 MST"
-
-            - "2006-01-02 15:04:05"
-
-            '
-        mode:
-          type: string
-          enum:
-          - DATE_RANGE_MODE_UNSPECIFIED
-          - DATE_RANGE_MODE_INCLUDE
-          - DATE_RANGE_MODE_EXCLUDE
-          default: DATE_RANGE_MODE_UNSPECIFIED
-          description: 'Filter mode for the date range.
-
-            - UNSPECIFIED/INCLUDE: results within [date_from, date_to] (default, current behavior).
-
-            - EXCLUDE: results outside the range (date < date_from OR date > date_to).
-
-            Open-ended ranges are supported independently per bound:
-
-            only date_from set — INCLUDE: date >= date_from, EXCLUDE: date < date_from.
-
-            Only date_to set — INCLUDE: date <= date_to, EXCLUDE: date > date_to.
-
-            '
-    ScreenshotRequest:
-      required:
-      - source_type
-      - identifier
-      type: object
-      properties:
-        source_type:
-          type: integer
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          description: 'List of source types
-
-            Enum values:
-
-            - 0 - SOURCE_TYPE_UNSPECIFIED
-
-            - 1 - SOURCE_TYPE_FORUM
-
-            - 2 - SOURCE_TYPE_TELEGRAM
-
-            - 3 - SOURCE_TYPE_RANSOMWARE
-
-            - 4 - SOURCE_TYPE_MARKETPLACE
-
-            '
-        identifier:
-          type: string
-          description: Identifier for the scraped content
-        properties:
-          description: Parameters for the image resizing (optional)
-          $ref: '#/components/schemas/ImageProperties'
     Pagination:
       type: object
       properties:
@@ -1181,24 +1318,6 @@ components:
         offset:
           type: integer
           description: The number of items to skip
-    WebTargetData:
-      type: object
-      properties:
-        site_url:
-          type: string
-          description: URL of the web target from which the content was scraped
-        site_domain_name:
-          type: string
-          description: Domain name of the web target (Only in forums)
-        onion_domain_name:
-          type: string
-          description: Onion name of the web target (Only in forums)
-        site_subdomain_url:
-          type: string
-          description: Subdomain URL of the web target (Only in forums)
-        display_name:
-          type: string
-          description: Display name of the target from which the content was scraped
     TagsSearchRequest:
       required:
       - source_types
@@ -1229,109 +1348,6 @@ components:
             - 2
             - 3
             - 4
-    TelegramSearchResponse:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/TelegramMessage'
-        total_results:
-          type: integer
-          description: Total number of records found
-    EnrichmentData:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the company
-        domain:
-          type: string
-          description: Domain of the company
-        website:
-          type: string
-          description: Website of the company
-        industry:
-          type: string
-          description: Industry of the company (Raw string, unprocessed)
-        type:
-          type: string
-          description: Type of the company (Private, LLD, etc.) (Raw string, unprocessed)
-        size_range:
-          type: string
-          description: Size range of the company - "1-10 employees", "11-50 employees", etc.
-        revenue_range:
-          type: string
-          description: Revenue range of the company - "$1M-$10M", "$10M-$50M", etc. including currency sign
-        company_logo_base64:
-          type: string
-          description: Base64 encoded company logo. 50x50px
-        location:
-          $ref: '#/components/schemas/LocationData'
-          description: Enrichment location data
-        socials:
-          type: array
-          description: List of social media URLs associated with the company
-          items:
-            $ref: '#/components/schemas/SocialMediaURL'
-    ForumThread:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Internal ID of the record
-        content:
-          $ref: '#/components/schemas/ScrapedContent'
-        metadata:
-          $ref: '#/components/schemas/ScrapedContentMetadata'
-        target_data:
-          $ref: '#/components/schemas/WebTargetData'
-    ScrapedContentMetadata:
-      type: object
-      properties:
-        tags:
-          type: array
-          description: List of tags associated with the content
-          items:
-            type: string
-        date_scraped:
-          type: string
-          description: Date when the record was scraped
-        date_updated:
-          type: string
-          description: Date when the record was last updated
-        screenshot_identifier:
-          type: string
-          description: Identifier for scraped content screenshot retrieval
-    MarketplaceSearchRequest:
-      type: object
-      properties:
-        query:
-          $ref: '#/components/schemas/SearchQuery'
-        highlight_params:
-          $ref: '#/components/schemas/HighlightParams'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-    RansomData:
-      type: object
-      properties:
-        claim_url:
-          type: string
-          description: Complete ransomware incident claim URL
-        victim_name:
-          type: string
-          description: Name of the ransomware victim organization
-        victim_domain:
-          type: string
-          description: Domain name of the ransomware victim organization website
-    TagsResponse:
-      type: object
-      properties:
-        tags:
-          type: array
-          description: List of scraped content tags based on type
-          items:
-            type: string
     ImageProperties:
       type: object
       properties:
@@ -1344,55 +1360,24 @@ components:
         quality:
           type: integer
           description: Quality ratio of the resized image (Max 100)
-    RansomwareSearchResponse:
+    WebTargetData:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/RansomwareIncident'
-        total_results:
-          type: integer
-          description: Total number of records found
-    HighlightParams:
-      type: object
-      description: 'Optional object that is used for matched phrase highlights in the search results.
-
-        All keywords that are matched by the query will be wrapped with passed starting and ending tags.
-
-        Highlighting is applied on all of the fields the phrase is matched in.
-
-        '
-      properties:
-        pre_tags:
-          type: array
-          description: List of opening wrapper tags (applied in the order they are listed)
-          items:
-            type: string
-            enum:
-            - <span class='text-highlight'>
-        post_tags:
-          type: array
-          description: List of closing wrapper tags (applied in the reverse order)
-          items:
-            type: string
-            enum:
-            - </span>
-    LocationData:
-      type: object
-      properties:
-        country:
+        site_url:
           type: string
-          description: Country name of the company
-        country_iso2:
+          description: URL of the web target from which the content was scraped
+        site_domain_name:
           type: string
-          description: Country ISO2 code
-        location:
+          description: Domain name of the web target (Only in forums)
+        onion_domain_name:
           type: string
-          description: Country, city & state of the company
-        full_address:
+          description: Onion name of the web target (Only in forums)
+        site_subdomain_url:
           type: string
-          description: Full address including street, city, state, country, and postal code
+          description: Subdomain URL of the web target (Only in forums)
+        display_name:
+          type: string
+          description: Display name of the target from which the content was scraped
   securitySchemes:
     BasicAuth:
       type: http

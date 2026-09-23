@@ -3,22 +3,7 @@ info:
   title: NordStellar Enterprise Data API User Management API
   description: '## Overview
 
-    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
-
-    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
-
-
-    **Key Features**:
-
-    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
-
-    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
-
-    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
-
-    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
-
-    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.'
   version: '3.1'
 servers:
 - url: /api/v3/data
@@ -268,7 +253,66 @@ paths:
       security:
       - BasicAuth: []
 components:
+  headers:
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-RateLimit-Reset:
+      schema:
+        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
   schemas:
+    SubscriptionEndpoint:
+      required:
+      - endpoint-url
+      type: object
+      properties:
+        url:
+          type: string
+          description: Subscription webhook endpoint URL
+          example: https://example.com/webhook
+        username:
+          type: string
+          description: Subscription webhook endpoint BasicAuth username
+          example: username
+        password:
+          type: string
+          description: Subscription webhook endpoint BasicAuth password (hidden)
+          example: password
+    SubscriptionEndpointSample:
+      type: object
+      properties:
+        url:
+          type: string
+          example: https://api.example.com/v1/subscriptions/webhook
+        username:
+          type: string
+          example: username
+        password:
+          type: string
+          example: password123
+    GetAccessToken:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Client token ID
+          example: my-token
+    AccessToken:
+      type: object
+      properties:
+        id:
+          type: string
+          example: my-token
+        token:
+          type: string
+          example: a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a
     UserDetails:
       type: object
       properties:
@@ -287,51 +331,6 @@ components:
           - id: token2
         endpoint:
           $ref: '#/components/schemas/SubscriptionEndpointSample'
-    GetAccessToken:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Client token ID
-          example: my-token
-    AccessToken:
-      type: object
-      properties:
-        id:
-          type: string
-          example: my-token
-        token:
-          type: string
-          example: a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a
-    SubscriptionEndpointSample:
-      type: object
-      properties:
-        url:
-          type: string
-          example: https://api.example.com/v1/subscriptions/webhook
-        username:
-          type: string
-          example: username
-        password:
-          type: string
-          example: password123
-    SubscriptionEndpoint:
-      required:
-      - endpoint-url
-      type: object
-      properties:
-        url:
-          type: string
-          description: Subscription webhook endpoint URL
-          example: https://example.com/webhook
-        username:
-          type: string
-          description: Subscription webhook endpoint BasicAuth username
-          example: username
-        password:
-          type: string
-          description: Subscription webhook endpoint BasicAuth password (hidden)
-          example: password
   parameters:
     TokenId:
       name: id
@@ -340,20 +339,6 @@ components:
       description: A token id to lookup.
       schema:
         type: string
-  headers:
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Request limit per minute
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
-    X-RateLimit-Reset:
-      schema:
-        type: string
-        format: date-time
-      description: Date and time when rate limit counter resets
   securitySchemes:
     BasicAuth:
       type: http

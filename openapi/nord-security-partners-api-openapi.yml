@@ -17,7 +17,7 @@ paths:
     post:
       tags:
       - Partners
-      summary: Invite multiple administrators to a partner.
+      summary: Invite multiple administrators to a partner
       description: 'Invite multiple administrators to a partner account in a single request. Sends emails with registration instructions.
 
         Response lists successful and failed invitations.'
@@ -110,11 +110,13 @@ paths:
                 status: 500
                 detail: Something went wrong
                 instance: /v1/resource/123
+      operationId: postV1PartnersByPartnerIdAdministratorInvitations
+      x-operation-id-source: derived
   /v1/partners/{partner-id}/usage-reports:
     get:
       tags:
       - Partners
-      summary: Retrieves historical usage data for a specific partner.
+      summary: Retrieves historical usage data for a specific partner
       description: 'Retrieves historical usage data for a specific partner organization.
 
         Data includes daily snapshots of billable/non-billable asset counts, plan group, and project breakdowns. Supports date filtering.'
@@ -227,11 +229,13 @@ paths:
                 status: 500
                 detail: Something went wrong
                 instance: /v1/resource/123
+      operationId: getV1PartnersByPartnerIdUsageReports
+      x-operation-id-source: derived
   /v1/partners/{partner-id}:
     get:
       tags:
       - Partners
-      summary: Retrieves detailed information about a specific partner.
+      summary: Retrieves detailed information about a specific partner
       description: 'Provides comprehensive information about a specific partner.
 
         Includes basic profile information and usage statistics, including billable and non-billable asset counts.
@@ -324,11 +328,13 @@ paths:
                 status: 500
                 detail: Something went wrong
                 instance: /v1/resource/123
+      operationId: getV1PartnersByPartnerId
+      x-operation-id-source: derived
   /v1/partners:
     get:
       tags:
       - Partners
-      summary: Retrieves list of partners for a specific organization.
+      summary: Retrieves list of partners for a specific organization
       description: 'Retrieves a paginated list of all partner organizations. Each partner entry includes basic identifying information.
 
         Supports `limit` and `offset` query params for pagination. Partners are listed by creation date, most recent first.'
@@ -407,10 +413,12 @@ paths:
                 status: 500
                 detail: Something went wrong
                 instance: /v1/resource/123
+      operationId: getV1Partners
+      x-operation-id-source: derived
     post:
       tags:
       - Partners
-      summary: Creates a new partner.
+      summary: Creates a new partner
       description: Creates a new partner. Requires partner email domain, title, optional billing and package selection.
       requestBody:
         content:
@@ -494,19 +502,177 @@ paths:
                 status: 500
                 detail: Something went wrong
                 instance: /v1/resource/123
+      operationId: postV1Partners
+      x-operation-id-source: derived
 components:
   schemas:
-    InviteAdmin.Contract.FailedPartnerAdmin:
+    ListPartners.Contracts.Partner:
       required:
-      - details
-      - request
+      - id
+      - title
       type: object
       properties:
-        request:
-          $ref: '#/components/schemas/InviteAdmin.Contract.PartnerAdmin'
-        details:
+        id:
           type: string
-          description: The reason why the invitation failed.
+          description: Unique identifier of the partner
+          format: uuid
+        title:
+          type: string
+          description: Title of the partner
+      additionalProperties: false
+    CreatePartner.Contract.Request:
+      type: object
+      properties:
+        email_domain:
+          type: string
+          description: Email domain associated with the partner.
+        title:
+          type: string
+          description: Title of the partner.
+        package_id:
+          type: integer
+          description: Unique identifier of the package.
+          format: int32
+        billing_information:
+          $ref: '#/components/schemas/CreatePartner.Contract.BillingInformationRequest'
+      additionalProperties: false
+    CreatePartner.Contract.Response:
+      required:
+      - billing_information
+      - email_domain
+      - id
+      - package_id
+      - title
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the partner.
+          format: uuid
+        email_domain:
+          type: string
+          description: Email domain associated with the partner.
+        title:
+          type: string
+          description: Title of the partner.
+        package_id:
+          type: integer
+          description: Unique identified of the package.
+          format: int32
+        billing_information:
+          $ref: '#/components/schemas/CreatePartner.Contract.BillingInformationResponse'
+      additionalProperties: false
+    Partners.GetUsageReports.PartnerUsageReportModel:
+      required:
+      - billable_assets_count
+      - billable_domains_count
+      - date
+      - non_billable_assets_count
+      - non_billable_domains_count
+      - plan_group
+      - projects
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date of the report in ISO 8601 format (YYYY-MM-DD).
+        billable_assets_count:
+          type: integer
+          description: Number of assets that are billable.
+          format: int32
+        non_billable_assets_count:
+          type: integer
+          description: Number of assets that are not billable.
+          format: int32
+        billable_domains_count:
+          type: integer
+          description: Number of domains that are billable.
+          format: int32
+        non_billable_domains_count:
+          type: integer
+          description: Number of domains that are not billable.
+          format: int32
+        plan_group:
+          type: string
+          description: Pricing group of the partner.
+        projects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Partners.GetUsageReports.ProjectUsageReport'
+          description: Collection of projects associated with the partner.
+      additionalProperties: false
+    CreatePartner.Contract.BillingInformationRequest:
+      type: object
+      properties:
+        country:
+          type: string
+          description: Country code in ISO 3166-1 alpha-2 format.
+        city:
+          type: string
+          description: City name.
+        address_line1:
+          type: string
+          description: Address line 1, typically the street address.
+        address_line2:
+          type:
+          - string
+          - 'null'
+          description: Address line 2, typically used for additional address information (e.g., apartment number).
+        postal_code:
+          type: string
+          description: Postal code or ZIP code for the address.
+        state:
+          type:
+          - string
+          - 'null'
+          description: State or province name, if applicable.
+      additionalProperties: false
+    ListPartners.Contracts.Response:
+      required:
+      - items
+      type: object
+      properties:
+        self:
+          type: string
+          description: Url link pointing to the same page
+        next:
+          type:
+          - string
+          - 'null'
+          description: Url link pointing to the next page
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListPartners.Contracts.Partner'
+          description: Collection of partners
+      additionalProperties: false
+    Partners.GetPartner.Project:
+      required:
+      - assets_count
+      - domains_count
+      - is_billable
+      - project_id
+      - project_name
+      type: object
+      properties:
+        project_id:
+          type: string
+          description: Unique identifier of the project.
+          format: uuid
+        project_name:
+          type: string
+          description: Name of the project.
+        is_billable:
+          type: boolean
+          description: Is the project billable.
+        assets_count:
+          type: integer
+          description: Count of assets in the project.
+          format: int32
+        domains_count:
+          type: integer
+          description: Count of domains in the project.
+          format: int32
       additionalProperties: false
     CreatePartner.Contract.BillingInformationResponse:
       required:
@@ -541,22 +707,115 @@ components:
           - 'null'
           description: State or province name, if applicable.
       additionalProperties: false
-    Partners.GetPartner.Project:
+    InviteAdmin.Contract.FailedPartnerAdmin:
+      required:
+      - details
+      - request
+      type: object
+      properties:
+        request:
+          $ref: '#/components/schemas/InviteAdmin.Contract.PartnerAdmin'
+        details:
+          type: string
+          description: The reason why the invitation failed.
+      additionalProperties: false
+    InviteAdmin.Contract.PartnerAdmin:
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email address of the partner admin that was invited.
+        user_name:
+          type:
+          - string
+          - 'null'
+          description: Optional name for the partner admin. If not provided, it is derived from the email address.
+      additionalProperties: false
+    InviteAdmin.Contract.Response:
+      required:
+      - failed
+      - successful
+      type: object
+      properties:
+        successful:
+          type: array
+          items:
+            $ref: '#/components/schemas/InviteAdmin.Contract.SucceededPartnerAdmin'
+          description: Collection of successfully invited partner admins.
+        failed:
+          type: array
+          items:
+            $ref: '#/components/schemas/InviteAdmin.Contract.FailedPartnerAdmin'
+          description: Collection of partner admins that failed to be invited.
+      additionalProperties: false
+    ValidationProblemDetails:
+      required:
+      - detail
+      - instance
+      - status
+      - title
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+          description: A URI reference that identifies the type of the problem.
+        title:
+          type: string
+          description: A short summary of the type of the problem.
+        status:
+          maximum: 599
+          minimum: 400
+          type: integer
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+          format: int32
+        detail:
+          type: string
+          description: An explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          description: A unique identifier of this occurrence of the problem. Include it in your support request.
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: A map of problems with the request that need to be solved by the requester, wherein the key is the source of the problem, and the value is its details.
+      additionalProperties: {}
+      description: Error information that describes why the request has failed. Format conforms to IETF's RFC 9457.
+      externalDocs:
+        description: RFC 9457 "Problem Details for HTTP APIs" by Internet Engineering Task Force
+        url: https://datatracker.ietf.org/doc/html/rfc9457
+    InviteAdmin.Contract.SucceededPartnerAdmin:
+      required:
+      - email
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier of the partner admin that was successfully invited.
+          format: uuid
+        email:
+          type: string
+          description: Email address of the partner admin that was successfully invited.
+      additionalProperties: false
+    Partners.GetUsageReports.ProjectUsageReport:
       required:
       - assets_count
       - domains_count
       - is_billable
       - project_id
-      - project_name
       type: object
       properties:
         project_id:
           type: string
           description: Unique identifier of the project.
           format: uuid
-        project_name:
-          type: string
-          description: Name of the project.
         is_billable:
           type: boolean
           description: Is the project billable.
@@ -568,32 +827,6 @@ components:
           type: integer
           description: Count of domains in the project.
           format: int32
-      additionalProperties: false
-    CreatePartner.Contract.BillingInformationRequest:
-      type: object
-      properties:
-        country:
-          type: string
-          description: Country code in ISO 3166-1 alpha-2 format.
-        city:
-          type: string
-          description: City name.
-        address_line1:
-          type: string
-          description: Address line 1, typically the street address.
-        address_line2:
-          type:
-          - string
-          - 'null'
-          description: Address line 2, typically used for additional address information (e.g., apartment number).
-        postal_code:
-          type: string
-          description: Postal code or ZIP code for the address.
-        state:
-          type:
-          - string
-          - 'null'
-          description: State or province name, if applicable.
       additionalProperties: false
     Partners.GetPartner.Response:
       required:
@@ -639,173 +872,6 @@ components:
             $ref: '#/components/schemas/Partners.GetPartner.Project'
           description: Collection of projects associated with the partner.
       additionalProperties: false
-    InviteAdmin.Contract.PartnerAdmin:
-      required:
-      - email
-      type: object
-      properties:
-        email:
-          type: string
-          description: Email address of the partner admin that was invited.
-        user_name:
-          type:
-          - string
-          - 'null'
-          description: Optional name for the partner admin. If not provided, it is derived from the email address.
-      additionalProperties: false
-    CreatePartner.Contract.Response:
-      required:
-      - billing_information
-      - email_domain
-      - id
-      - package_id
-      - title
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the partner.
-          format: uuid
-        email_domain:
-          type: string
-          description: Email domain associated with the partner.
-        title:
-          type: string
-          description: Title of the partner.
-        package_id:
-          type: integer
-          description: Unique identified of the package.
-          format: int32
-        billing_information:
-          $ref: '#/components/schemas/CreatePartner.Contract.BillingInformationResponse'
-      additionalProperties: false
-    InviteAdmin.Contract.SucceededPartnerAdmin:
-      required:
-      - email
-      - id
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the partner admin that was successfully invited.
-          format: uuid
-        email:
-          type: string
-          description: Email address of the partner admin that was successfully invited.
-      additionalProperties: false
-    ListPartners.Contracts.Partner:
-      required:
-      - id
-      - title
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the partner
-          format: uuid
-        title:
-          type: string
-          description: Title of the partner
-      additionalProperties: false
-    Partners.GetUsageReports.ProjectUsageReport:
-      required:
-      - assets_count
-      - domains_count
-      - is_billable
-      - project_id
-      type: object
-      properties:
-        project_id:
-          type: string
-          description: Unique identifier of the project.
-          format: uuid
-        is_billable:
-          type: boolean
-          description: Is the project billable.
-        assets_count:
-          type: integer
-          description: Count of assets in the project.
-          format: int32
-        domains_count:
-          type: integer
-          description: Count of domains in the project.
-          format: int32
-      additionalProperties: false
-    CreatePartner.Contract.Request:
-      type: object
-      properties:
-        email_domain:
-          type: string
-          description: Email domain associated with the partner.
-        title:
-          type: string
-          description: Title of the partner.
-        package_id:
-          type: integer
-          description: Unique identifier of the package.
-          format: int32
-        billing_information:
-          $ref: '#/components/schemas/CreatePartner.Contract.BillingInformationRequest'
-      additionalProperties: false
-    ListPartners.Contracts.Response:
-      required:
-      - items
-      type: object
-      properties:
-        self:
-          type: string
-          description: Url link pointing to the same page
-        next:
-          type:
-          - string
-          - 'null'
-          description: Url link pointing to the next page
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ListPartners.Contracts.Partner'
-          description: Collection of partners
-      additionalProperties: false
-    ValidationProblemDetails:
-      required:
-      - detail
-      - instance
-      - status
-      - title
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-          description: A URI reference that identifies the type of the problem.
-        title:
-          type: string
-          description: A short summary of the type of the problem.
-        status:
-          maximum: 599
-          minimum: 400
-          type: integer
-          description: The HTTP status code generated by the origin server for this occurrence of the problem.
-          format: int32
-        detail:
-          type: string
-          description: An explanation specific to this occurrence of the problem.
-        instance:
-          type: string
-          description: A unique identifier of this occurrence of the problem. Include it in your support request.
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: A map of problems with the request that need to be solved by the requester, wherein the key is the source of the problem, and the value is its details.
-      additionalProperties: {}
-      description: Error information that describes why the request has failed. Format conforms to IETF's RFC 9457.
-      externalDocs:
-        description: RFC 9457 "Problem Details for HTTP APIs" by Internet Engineering Task Force
-        url: https://datatracker.ietf.org/doc/html/rfc9457
     ProblemDetails:
       required:
       - detail
@@ -839,62 +905,6 @@ components:
       externalDocs:
         description: RFC 9457 "Problem Details for HTTP APIs" by Internet Engineering Task Force
         url: https://datatracker.ietf.org/doc/html/rfc9457
-    Partners.GetUsageReports.PartnerUsageReportModel:
-      required:
-      - billable_assets_count
-      - billable_domains_count
-      - date
-      - non_billable_assets_count
-      - non_billable_domains_count
-      - plan_group
-      - projects
-      type: object
-      properties:
-        date:
-          type: string
-          description: Date of the report in ISO 8601 format (YYYY-MM-DD).
-        billable_assets_count:
-          type: integer
-          description: Number of assets that are billable.
-          format: int32
-        non_billable_assets_count:
-          type: integer
-          description: Number of assets that are not billable.
-          format: int32
-        billable_domains_count:
-          type: integer
-          description: Number of domains that are billable.
-          format: int32
-        non_billable_domains_count:
-          type: integer
-          description: Number of domains that are not billable.
-          format: int32
-        plan_group:
-          type: string
-          description: Pricing group of the partner.
-        projects:
-          type: array
-          items:
-            $ref: '#/components/schemas/Partners.GetUsageReports.ProjectUsageReport'
-          description: Collection of projects associated with the partner.
-      additionalProperties: false
-    InviteAdmin.Contract.Response:
-      required:
-      - failed
-      - successful
-      type: object
-      properties:
-        successful:
-          type: array
-          items:
-            $ref: '#/components/schemas/InviteAdmin.Contract.SucceededPartnerAdmin'
-          description: Collection of successfully invited partner admins.
-        failed:
-          type: array
-          items:
-            $ref: '#/components/schemas/InviteAdmin.Contract.FailedPartnerAdmin'
-          description: Collection of partner admins that failed to be invited.
-      additionalProperties: false
   securitySchemes:
     ApiKey:
       type: apiKey

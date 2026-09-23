@@ -3,22 +3,7 @@ info:
   title: NordStellar Enterprise Data Phone Intelligence API
   description: '## Overview
 
-    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.
-
-    This API allows you to proactively protect your users by detecting when their sensitive information has been compromised in data breaches across the internet.
-
-
-    **Key Features**:
-
-    - **Real-time Breach Monitoring**: Receive immediate notifications when user data appears in newly discovered data breaches.
-
-    - **Zero-Knowledge Architecture**: Search for compromised sensitive data (credit cards, national identification numbers) using secure hash-based methods that never transmit the actual sensitive information.
-
-    - **Comprehensive Data Sources**: Access intelligence from multiple sources including corporate data breaches, malware infection logs, and stolen credential lists.
-
-    - **Flexible Integration Options**: Support for webhook notifications, bulk operations, and subscription management to fit your organization''s unique requirements.
-
-    - **Enterprise-Grade Security**: Secure authentication methods, rate limiting, and quota management to ensure responsible and controlled API usage.'
+    The NordStellar Enterprise Data API provides comprehensive access to our data breach intelligence platform, enabling organizations to integrate real-time security monitoring and alerting capabilities directly into their existing infrastructure.'
   version: '3.1'
 servers:
 - url: /api/v3/data
@@ -486,30 +471,8 @@ paths:
       security:
       - ApiKeyAuth: []
 components:
-  headers:
-    X-Quota-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the period
-    X-Quota-Limit:
-      schema:
-        type: integer
-      description: Quota limit per minute
-    X-RateLimit-Reset:
-      schema:
-        type: string
-        format: date-time
-      description: Date and time when rate limit counter resets
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Request limit per minute
   schemas:
-    PhoneSample:
+    PhoneDatabasesSample:
       type: object
       properties:
         id:
@@ -523,12 +486,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DatabaseDataItem'
+    PhoneMalwareLogsSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
+          type: string
+          example: '13855550193'
+          description: International format phone number
         malware_logs:
           type: array
           items:
             $ref: '#/components/schemas/MalwareDataItem'
-        risk_assessment:
-          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
     DatabaseDataItem:
       type: object
       properties:
@@ -563,94 +534,45 @@ components:
                 - password2
         risk_assessment:
           $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    MalwareLogSystemInfoSampleItem:
+    Phone:
+      required:
+      - data
       type: object
       properties:
-        ip:
-          type: string
-          example: 192.168.1.1
-        username:
-          type: string
-          example: diego.lebon
-        country:
-          type: string
-          example: US
-        zip:
-          type: string
-          example: '10001'
-        location:
-          type: string
-          example: New York, USA
-        hardware_id:
-          type: string
-          example: 89f3221e-2138-48c9-bbe2-8f68-806e6f6e6963
-        language:
-          type: string
-          example: es-ES
-        timezone:
-          type: string
-          example: UTC1
-        os:
-          type: string
-          example: Windows 10 Pro [x64]
-        system_name:
-          type: string
-          example: DESKTOP-42R6V1I
-        guid:
-          type: string
-          example: 91788e64-8fdf-11eb-8f68-806e6f6e6963
-        machine_id:
-          type: string
-          example: 89f3221e-2138-48c9-bbe2-ab615454c7ef
-        date:
-          type: string
-          example: '2021-05-26T08:19:13Z'
-        execution_path:
-          type: string
-          example: C:\Program Files\Example\example.exe
-        antivirus_software:
+        phones_sha256:
           type: array
+          description: A list of SHA256 hashed phone numbers to lookup
           items:
             type: string
-            example: Norton Antivirus
-        work_dir:
-          type: string
-          example: C:\Users\appdata
-        oem_id:
-          type: string
-          example: 00000000-0000-0000-0000-0000
-        screen_size:
-          type: string
-          example: 1920x1080
-        uac:
-          type: string
-          example: AllowAll
-        process_elevation:
-          type: boolean
-          example: true
-        keyboard_layouts:
-          type: array
-          items:
-            type: string
-            example: English (United States)
-        hardwares:
-          type: array
-          items:
-            type: string
-            example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
-    PhonesDatabasesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneDatabasesSample'
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
         limit:
+          description: Default is the maximum limit of 100 records
           type: integer
           example: 10
         offset:
           type: integer
           example: 0
+    PhoneSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
+          type: string
+          example: '13855550193'
+          description: International format phone number
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
     MalwareDataItem:
       type: object
       properties:
@@ -1019,79 +941,6 @@ components:
               example: identified
         risk_assessment:
           $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    PhonesMalwareLogsSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneMalwareLogsSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    PhoneMalwareLogsSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
-        phone:
-          type: string
-          example: '13855550193'
-          description: International format phone number
-        malware_logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareDataItem'
-    Phone:
-      required:
-      - data
-      type: object
-      properties:
-        phones_sha256:
-          type: array
-          description: A list of SHA256 hashed phone numbers to lookup
-          items:
-            type: string
-          example:
-          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
-        limit:
-          description: Default is the maximum limit of 100 records
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    PhoneDatabasesSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
-        phone:
-          type: string
-          example: '13855550193'
-          description: International format phone number
-        databases:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseDataItem'
-    PhonesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
     EmailSample:
       type: object
       properties:
@@ -1137,6 +986,142 @@ components:
                     type: string
                     description: Recommendation text
                     example: Avoid using your publicly known information in passwords. Threat actors routinely use other known information, such as email addresses, phone numbers, pet names, dates of birth, first/last names and other data in stuffing attacks to uncover passwords that were otherwise never leaked online.
+    PhonesDatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhonesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhonesMalwareLogsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneMalwareLogsSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    MalwareLogSystemInfoSampleItem:
+      type: object
+      properties:
+        ip:
+          type: string
+          example: 192.168.1.1
+        username:
+          type: string
+          example: diego.lebon
+        country:
+          type: string
+          example: US
+        zip:
+          type: string
+          example: '10001'
+        location:
+          type: string
+          example: New York, USA
+        hardware_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-8f68-806e6f6e6963
+        language:
+          type: string
+          example: es-ES
+        timezone:
+          type: string
+          example: UTC1
+        os:
+          type: string
+          example: Windows 10 Pro [x64]
+        system_name:
+          type: string
+          example: DESKTOP-42R6V1I
+        guid:
+          type: string
+          example: 91788e64-8fdf-11eb-8f68-806e6f6e6963
+        machine_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-ab615454c7ef
+        date:
+          type: string
+          example: '2021-05-26T08:19:13Z'
+        execution_path:
+          type: string
+          example: C:\Program Files\Example\example.exe
+        antivirus_software:
+          type: array
+          items:
+            type: string
+            example: Norton Antivirus
+        work_dir:
+          type: string
+          example: C:\Users\appdata
+        oem_id:
+          type: string
+          example: 00000000-0000-0000-0000-0000
+        screen_size:
+          type: string
+          example: 1920x1080
+        uac:
+          type: string
+          example: AllowAll
+        process_elevation:
+          type: boolean
+          example: true
+        keyboard_layouts:
+          type: array
+          items:
+            type: string
+            example: English (United States)
+        hardwares:
+          type: array
+          items:
+            type: string
+            example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
+  headers:
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+    X-RateLimit-Reset:
+      schema:
+        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
   parameters:
     Phone:
       name: phone-sha256

@@ -2,7 +2,10 @@ openapi: 3.2.0
 info:
   title: Company Risk Scoring Results API
   version: 0.1.0
-  description: "**Company Risk Scoring API v0.1.0**\n\nThis API provides a comprehensive service for evaluating the cybersecurity risk associated with external companies, primarily identified by their domain name. It's designed for B2B use cases like vendor risk management, cyber insurance underwriting, or competitive analysis.\n\n**Key Features:**\n\n* **Company Onboarding:** Add companies to the system for monitoring, either automatically by domain or manually with additional details.\n* **Security Scanning:** Initiate asynchronous scans against a company's domain to gather security data. Track scan job progress.\n* **Detailed Risk Categories:** Retrieve granular security assessment results for specific areas:\n    * Software Patching & Vulnerabilities\n    * Web Application Security\n    * Email Security (SPF, DMARC)\n    * System Reputation (IP blacklisting, abuse reports)\n    * SSL/TLS Configuration Strength\n    * System Hosting Environment (Cloud/CDN usage, ISP diversity)\n    * Data Breach History (Exposed credentials, breach dates)\n* **Overall Security Score:** Get a consolidated security score derived from individual category assessments.\n* **Company Firmographics:** Access essential company details like name, website, revenue, employee count, location, industry, and more.\n* **Flexible Data Retrieval:** Fetch results for individual risk categories or retrieve a combined report with all data points for a specific domain and scan job.\n* **Search & Listing:** List onboarded companies with pagination and search capabilities.\n\n**Authentication:**\n\nAccess requires either an API Key provided in the `X-API-Key` header or standard HTTP Basic Authentication."
+  description: '**Company Risk Scoring API v0.1.0**
+
+
+    This API provides a comprehensive service for evaluating the cybersecurity risk associated with external companies, primarily identified by their domain name.'
 tags:
 - name: Results
 paths:
@@ -304,161 +307,88 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    SSLConfiguration:
+    CombinedResponse:
       properties:
+        company_details:
+          $ref: '#/components/schemas/CompanyDetails'
         security_score:
-          type: number
-          title: Security Score
-          description: Overall security score for SSL/TLS configuration (0-10)
-          default: 10
-        total_issues:
-          type: integer
-          title: Total Issues
-          description: 'Key issue count: Total number of SSL/TLS configuration issues detected'
-          default: 0
-        issue_totals_by_criteria:
-          allOf:
-          - $ref: '#/components/schemas/SSLConfigurationIssueBrakedown'
-          description: Breakdown of issues by different SSL/TLS criteria
-        issues:
-          items:
-            $ref: '#/components/schemas/SSLConfigurationIssue'
-          type: array
-          title: Issues
-          description: Detailed list of SSL/TLS configuration issues
+          $ref: '#/components/schemas/SecurityScore'
+        software_patching:
+          $ref: '#/components/schemas/SoftwarePatching'
+        web_application_security:
+          $ref: '#/components/schemas/WebApplicationSecurity'
+        email_security:
+          $ref: '#/components/schemas/EmailSecurity'
+        system_reputation:
+          $ref: '#/components/schemas/SystemReputation'
+        ssl_configuration:
+          $ref: '#/components/schemas/SSLConfiguration'
+        system_hosting:
+          $ref: '#/components/schemas/SystemHosting'
+        data_breach:
+          $ref: '#/components/schemas/DataBreach'
       type: object
-      title: SSLConfiguration
-      examples:
-      - issue_totals_by_criteria:
-          certificate_path_validation: 6
-          certificate_signatures: 26
-          certificate_types: 26
-          ciphers: 26
-          ciphersuites: 0
-          maximum_certificate_lifespan: 9
-          tls_versions: 26
-          tls_vulnerability_renegotiation: 0
-        issues:
-        - criteria: certificate_types
-          description: Deployed certificate types are {'rsa'}, should have at least one of {'ecdsa'}.
-          instances:
-          - auth-admin.partners.examplecorp.com
-          - external-api.partners.examplecorp.com
-        security_score: 2.14
-        total_issues: 119
-    Vulnerability:
+      required:
+      - company_details
+      - security_score
+      - software_patching
+      - web_application_security
+      - email_security
+      - system_reputation
+      - ssl_configuration
+      - system_hosting
+      - data_breach
+      title: CombinedResponse
+    EmailSecurityScanResults:
       properties:
-        cve:
+        domain:
           type: string
-          title: Cve
-        cvss:
+          title: Domain
+        spf_record:
           anyOf:
-          - type: number
+          - type: string
           - type: 'null'
-          title: Cvss
-          default: 0
-        cvss_v2:
+          title: Spf Record
+        dmarc_record:
           anyOf:
-          - type: number
+          - type: string
           - type: 'null'
-          title: Cvss V2
-          default: 0
-        epss:
+          title: Dmarc Record
+        dmarc_policy:
           anyOf:
-          - type: number
+          - type: string
           - type: 'null'
-          title: Epss
-          default: 0
-        summary:
+          title: Dmarc Policy
+        spoofable:
+          type: integer
+          title: Spoofable
+        spoofable_comment:
           type: string
-          title: Summary
+          title: Spoofable Comment
+          default: ''
+      type: object
+      required:
+      - domain
+      - spoofable
+      title: EmailSecurityScanResults
+    SSLConfigurationIssue:
+      properties:
+        criteria:
+          type: string
+          title: Criteria
+        description:
+          type: string
+          title: Description
         instances:
           items:
             type: string
           type: array
           title: Instances
-        risk_category:
-          anyOf:
-          - $ref: '#/components/schemas/RiskCategory'
-          - type: 'null'
-          description: Risk category of the vulnerability
       type: object
       required:
-      - cve
-      - summary
-      title: Vulnerability
-    CategoryScores:
-      properties:
-        software_patching:
-          type: number
-          title: Software Patching
-          default: 10
-        web_application_security:
-          type: number
-          title: Web Application Security
-          default: 10
-        email_security:
-          type: number
-          title: Email Security
-          default: 10
-        system_reputation:
-          type: number
-          title: System Reputation
-          default: 10
-        system_hosting:
-          type: number
-          title: System Hosting
-          default: 10
-        data_breach:
-          type: number
-          title: Data Breach
-          default: 10
-        ssl_configuration:
-          type: number
-          title: Ssl Configuration
-          default: 10
-      type: object
-      title: CategoryScores
-    SSLConfigurationIssueBrakedown:
-      properties:
-        certificate_path_validation:
-          type: integer
-          title: Certificate Path Validation
-          default: 0
-        maximum_certificate_lifespan:
-          type: integer
-          title: Maximum Certificate Lifespan
-          default: 0
-        certificate_types:
-          type: integer
-          title: Certificate Types
-          default: 0
-        certificate_signatures:
-          type: integer
-          title: Certificate Signatures
-          default: 0
-        tls_versions:
-          type: integer
-          title: Tls Versions
-          default: 0
-        ciphers:
-          type: integer
-          title: Ciphers
-          default: 0
-        ciphersuites:
-          type: integer
-          title: Ciphersuites
-          default: 0
-        tls_vulnerability_renegotiation:
-          type: integer
-          title: Tls Vulnerability Renegotiation
-          default: 0
-        tls_vulnerability_robot:
-          type: integer
-          title: Tls Vulnerability Robot
-          default: 0
-      type: object
-      title: SSLConfigurationIssueBrakedown
+      - criteria
+      - description
+      title: SSLConfigurationIssue
     DataBreach:
       properties:
         security_score:
@@ -552,139 +482,15 @@ components:
         total_exposed_records: 12838
         total_incidents: 1114
         unique_email_count: 503
-    SystemReputationScanResult:
-      properties:
-        ip_address:
-          type: string
-          title: Ip Address
-          description: The IP address that was scanned for reputation issues
-        abuse_confidence_score:
-          type: integer
-          title: Abuse Confidence Score
-          description: A score indicating the confidence level of potential abuse associated with this IP address (0-100)
-        abuse_tags:
-          items:
-            type: string
-          type: array
-          title: Abuse Tags
-          description: List of tags describing the types of abuse associated with this IP address
-      type: object
-      required:
-      - ip_address
-      - abuse_confidence_score
-      title: SystemReputationScanResult
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CEOData:
-      properties:
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-          description: First name of the CEO
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-          description: Last name of the CEO
-        title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Title
-          description: Title of the CEO
-      type: object
-      title: CEOData
-    Service:
-      properties:
-        port:
-          type: integer
-          title: Port
-        count:
-          type: integer
-          title: Count
-        service:
-          type: string
-          title: Service
-        instances:
-          items:
-            type: string
-          type: array
-          title: Instances
-      type: object
-      required:
-      - port
-      - count
-      - service
-      - instances
-      title: Service
-    EmailSecurity:
-      properties:
-        security_score:
-          type: number
-          title: Security Score
-          description: Overall security score for email security (0-10)
-          default: 10
-        total_issues:
-          type: integer
-          title: Total Issues
-          description: 'Key issue count: Total number of email security issues detected'
-          default: 0
-        total_potentially_spoofable:
-          type: integer
-          title: Total Potentially Spoofable
-          description: Number of domains potentially vulnerable to email spoofing
-          default: 0
-        total_spoofable:
-          type: integer
-          title: Total Spoofable
-          description: Number of domains definitely vulnerable to email spoofing
-          default: 0
-        total_non_spoofable:
-          type: integer
-          title: Total Non Spoofable
-          description: Number of domains not vulnerable to email spoofing
-          default: 0
-        scan_results:
-          items:
-            $ref: '#/components/schemas/EmailSecurityScanResults'
-          type: array
-          title: Scan Results
-          description: Detailed results of email security scans
-      type: object
-      title: EmailSecurity
-      examples:
-      - scan_results:
-        - dmarc_policy: none
-          dmarc_record: v=DMARC1; p=none; rua=mailto:dmarc@examplecorp.com; ruf=mailto:dmarc@examplecorp.com; fo=1
-          domain: examplecorp.com
-          spf_record: v=spf1 include:spf.protection.outlook.com include:_spf.mlsend.com include:spf.serveriai.lt include:_spf.google.com include:_spf-dc55.sapsf.eu include:mail.zendesk.com ip4:192.0.2.1 ip4:192.0.2.2 ip4:192.0.2.3  -all
-          spoofable: 4
-          spoofable_comment: Spoofing might be possible (mailbox dependent) for this domain.
-        security_score: 9.74
-        total_potentially_spoofable: 2
-        total_spoofable: 0
+    RiskCategory:
+      type: string
+      enum:
+      - INFO
+      - LOW
+      - MEDIUM
+      - HIGH
+      - CRITICAL
+      title: RiskCategory
     SecurityScore:
       properties:
         date_created:
@@ -745,366 +551,6 @@ components:
           description: 2 domains potentially spoofable
           index: 5
         overall_score: 5.789391684921029
-    CompanyDetails:
-      properties:
-        name:
-          type: string
-          title: Name
-          description: Full name of the company
-          default: ''
-        shorthand_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Shorthand Name
-          description: Short or common name of the company
-        website:
-          type: string
-          title: Website
-          description: Official website of the company
-          default: ''
-        domain:
-          type: string
-          title: Domain
-          description: Primary domain name of the company
-          default: ''
-        revenue:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Revenue
-          description: Annual revenue of the company in USD
-          default: 0
-        revenue_range:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Revenue Range
-          description: Range of the company's annual revenue
-        company_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Company Type
-          description: Type of company (e.g., Private, Public)
-        employee_count:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Employee Count
-          description: Number of employees in the company
-          default: 0
-        employee_count_range:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Employee Count Range
-          description: Range of the number of employees
-        year_founded:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Year Founded
-          description: Year the company was established
-        location_data:
-          anyOf:
-          - $ref: '#/components/schemas/LocationData'
-          - type: 'null'
-          description: Detailed location information of the company
-        contact_data:
-          anyOf:
-          - $ref: '#/components/schemas/ContactData'
-          - type: 'null'
-          description: Social media contact information
-        ceo_data:
-          anyOf:
-          - $ref: '#/components/schemas/CEOData'
-          - type: 'null'
-          description: Information about the company's CEO
-        competitor_list:
-          items:
-            type: object
-          type: array
-          title: Competitor List
-          description: List of company's competitors
-        funding_list:
-          items:
-            type: object
-          type: array
-          title: Funding List
-          description: List of funding rounds or investments
-        industry_list:
-          items:
-            type: string
-          type: array
-          title: Industry List
-          description: List of industries the company operates in
-        related_company_list:
-          items:
-            type: string
-          type: array
-          title: Related Company List
-          description: List of related companies
-        related_company_domain_list:
-          items:
-            type: string
-          type: array
-          title: Related Company Domain List
-          description: List of domains of related companies
-        total_funding:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Total Funding
-          description: Total funding received by the company
-        linkedin_description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Linkedin Description
-          description: Company description from LinkedIn
-        owler_description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Owler Description
-          description: Company description from Owler
-        g2_description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: G2 Description
-          description: Company description from G2
-      type: object
-      title: CompanyDetails
-      examples:
-      - ceo_data:
-          first_name: Jane
-          last_name: Doe
-          title: CEO
-        company_type: Private
-        competitor_list:
-        - name: Example Competitor A
-          url: https://www.example.com/competitorA
-        - name: Example Competitor B
-          url: https://www.example.com/competitorB
-        contact_data:
-          facebook: https://www.facebook.com/ExampleCompany
-          linkedin: https://www.linkedin.com/company/examplecompany/
-        domain: examplecorp.com
-        employee_count: 1500
-        employee_count_range: 1,001-5,000 employees
-        funding_list: []
-        industry_list:
-        - Technology Solutions
-        - Cloud Services
-        - Data Analytics
-        linkedin_description: "About ExampleCorp\n\nExampleCorp is a leading provider of innovative technology solutions, helping businesses transform their operations. We deliver cutting-edge cloud services and data analytics to drive growth and efficiency. Our goal is to empower our clients with the tools they need to succeed in the digital age. \n\nWe are committed to excellence, collaboration, and sustainable practices. Join us in shaping the future of technology."
-        location_data:
-          city: Techville
-          country_code: US
-          country_name: United States
-          full_address: 123 Innovation Drive, Techville, CA 90210
-          state: California
-          street: 123 Innovation Drive
-          zipcode: '90210'
-        name: ExampleCorp Inc.
-        owler_description: ExampleCorp provides B2B technology solutions, focusing on cloud infrastructure and data management services for various industries.
-        g2_description: ExampleCorp is highly rated on G2 for its customer support and ease of use in the cloud services category.
-        related_company_domain_list: []
-        related_company_list: []
-        revenue: 500000000
-        revenue_range: $500M - $1B (USD)
-        shorthand_name: examplecorp
-        website: https://www.examplecorp.com
-        year_founded: '2010'
-    WebApplicationSecurity:
-      properties:
-        total_vulnerabilities:
-          type: integer
-          title: Total Vulnerabilities
-          description: 'Key issue count: Total number of web application vulnerabilities detected'
-          default: 0
-        security_score:
-          type: number
-          title: Security Score
-          description: Overall security score for web application security (0-10)
-          default: 10
-        critical_vulnerabilities:
-          type: integer
-          title: Critical Vulnerabilities
-          description: Number of critical web application vulnerabilities
-          default: 0
-        high_vulnerabilities:
-          type: integer
-          title: High Vulnerabilities
-          description: Number of high-risk web application vulnerabilities
-          default: 0
-        medium_vulnerabilities:
-          type: integer
-          title: Medium Vulnerabilities
-          description: Number of medium-risk web application vulnerabilities
-          default: 0
-        low_vulnerabilities:
-          type: integer
-          title: Low Vulnerabilities
-          description: Number of low-risk web application vulnerabilities
-          default: 0
-        scan_results:
-          items:
-            $ref: '#/components/schemas/WebApplicationSecurityScanResult'
-          type: array
-          title: Scan Results
-          description: Detailed results of web application security scans
-      type: object
-      title: WebApplicationSecurity
-      examples:
-      - critical_vulnerabilities: 1
-        high_vulnerabilities: 0
-        low_vulnerabilities: 17
-        medium_vulnerabilities: 3
-        scan_results:
-        - description: Outdated and vulnerable version of Apache Struts detected, potentially leading to remote code execution.
-          instances:
-          - app.examplecorp.com:8080
-          name: Apache Struts RCE Vulnerability (CVE-2017-5638)
-          severity: critical
-        - description: A weak cipher is defined as an encryption/decryption algorithm that uses a key of insufficient length.
-          instances:
-          - auth.partners.examplecorp.com:443
-          - cdn.partners.examplecorp.com:443
-          name: Weak Cipher Suites Detection
-          severity: low
-        security_score: 7.5
-        total_vulnerabilities: 21
-    EmailSecurityScanResults:
-      properties:
-        domain:
-          type: string
-          title: Domain
-        spf_record:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Spf Record
-        dmarc_record:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Dmarc Record
-        dmarc_policy:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Dmarc Policy
-        spoofable:
-          type: integer
-          title: Spoofable
-        spoofable_comment:
-          type: string
-          title: Spoofable Comment
-          default: ''
-      type: object
-      required:
-      - domain
-      - spoofable
-      title: EmailSecurityScanResults
-    SecurityScoreHighlight:
-      properties:
-        category:
-          type: string
-          title: Category
-          description: Category of the security highlight
-        description:
-          type: string
-          title: Description
-          description: Description of the security highlight
-        index:
-          type: integer
-          title: Index
-          description: Index of the highlight for ordering
-      type: object
-      required:
-      - category
-      - description
-      - index
-      title: SecurityScoreHighlight
-    ContactData:
-      properties:
-        facebook:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Facebook
-          description: Company's Facebook page URL
-        linkedin:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Linkedin
-          description: Company's LinkedIn page URL
-      type: object
-      title: ContactData
-    SystemReputation:
-      properties:
-        security_score:
-          type: number
-          title: Security Score
-          description: Overall security score for system reputation (0-10)
-          default: 10
-        total_issues:
-          type: integer
-          title: Total Issues
-          description: 'Key issue count: Total number of IP addresses with reputation issues'
-          default: 0
-        scan_results:
-          items:
-            $ref: '#/components/schemas/SystemReputationScanResult'
-          type: array
-          title: Scan Results
-          description: Detailed results of system reputation scans
-      type: object
-      title: SystemReputation
-      examples:
-      - scan_results:
-        - abuse_confidence_score: 20
-          abuse_tags:
-          - web_scan
-          - ssh_brute_force
-          ip_address: 203.0.113.1
-        - abuse_confidence_score: 5
-          abuse_tags:
-          - port_scan
-          ip_address: 198.51.100.1
-        security_score: 9.2
-        total_issues: 2
-    SSLConfigurationIssue:
-      properties:
-        criteria:
-          type: string
-          title: Criteria
-        description:
-          type: string
-          title: Description
-        instances:
-          items:
-            type: string
-          type: array
-          title: Instances
-      type: object
-      required:
-      - criteria
-      - description
-      title: SSLConfigurationIssue
-    RiskCategory:
-      type: string
-      enum:
-      - INFO
-      - LOW
-      - MEDIUM
-      - HIGH
-      - CRITICAL
-      title: RiskCategory
     SoftwarePatching:
       properties:
         security_score:
@@ -1283,60 +729,17 @@ components:
         - Amazon.com, Inc.
         - Google LLC
         - Hetzner Online GmbH
-    HTTPValidationError:
+    Service:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CombinedResponse:
-      properties:
-        company_details:
-          $ref: '#/components/schemas/CompanyDetails'
-        security_score:
-          $ref: '#/components/schemas/SecurityScore'
-        software_patching:
-          $ref: '#/components/schemas/SoftwarePatching'
-        web_application_security:
-          $ref: '#/components/schemas/WebApplicationSecurity'
-        email_security:
-          $ref: '#/components/schemas/EmailSecurity'
-        system_reputation:
-          $ref: '#/components/schemas/SystemReputation'
-        ssl_configuration:
-          $ref: '#/components/schemas/SSLConfiguration'
-        system_hosting:
-          $ref: '#/components/schemas/SystemHosting'
-        data_breach:
-          $ref: '#/components/schemas/DataBreach'
-      type: object
-      required:
-      - company_details
-      - security_score
-      - software_patching
-      - web_application_security
-      - email_security
-      - system_reputation
-      - ssl_configuration
-      - system_hosting
-      - data_breach
-      title: CombinedResponse
-    WebApplicationSecurityScanResult:
-      properties:
-        name:
+        port:
+          type: integer
+          title: Port
+        count:
+          type: integer
+          title: Count
+        service:
           type: string
-          title: Name
-        severity:
-          type: string
-          title: Severity
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
+          title: Service
         instances:
           items:
             type: string
@@ -1344,9 +747,299 @@ components:
           title: Instances
       type: object
       required:
-      - name
-      - severity
-      title: WebApplicationSecurityScanResult
+      - port
+      - count
+      - service
+      - instances
+      title: Service
+    ContactData:
+      properties:
+        facebook:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Facebook
+          description: Company's Facebook page URL
+        linkedin:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Linkedin
+          description: Company's LinkedIn page URL
+      type: object
+      title: ContactData
+    SystemReputationScanResult:
+      properties:
+        ip_address:
+          type: string
+          title: Ip Address
+          description: The IP address that was scanned for reputation issues
+        abuse_confidence_score:
+          type: integer
+          title: Abuse Confidence Score
+          description: A score indicating the confidence level of potential abuse associated with this IP address (0-100)
+        abuse_tags:
+          items:
+            type: string
+          type: array
+          title: Abuse Tags
+          description: List of tags describing the types of abuse associated with this IP address
+      type: object
+      required:
+      - ip_address
+      - abuse_confidence_score
+      title: SystemReputationScanResult
+    EmailSecurity:
+      properties:
+        security_score:
+          type: number
+          title: Security Score
+          description: Overall security score for email security (0-10)
+          default: 10
+        total_issues:
+          type: integer
+          title: Total Issues
+          description: 'Key issue count: Total number of email security issues detected'
+          default: 0
+        total_potentially_spoofable:
+          type: integer
+          title: Total Potentially Spoofable
+          description: Number of domains potentially vulnerable to email spoofing
+          default: 0
+        total_spoofable:
+          type: integer
+          title: Total Spoofable
+          description: Number of domains definitely vulnerable to email spoofing
+          default: 0
+        total_non_spoofable:
+          type: integer
+          title: Total Non Spoofable
+          description: Number of domains not vulnerable to email spoofing
+          default: 0
+        scan_results:
+          items:
+            $ref: '#/components/schemas/EmailSecurityScanResults'
+          type: array
+          title: Scan Results
+          description: Detailed results of email security scans
+      type: object
+      title: EmailSecurity
+      examples:
+      - scan_results:
+        - dmarc_policy: none
+          dmarc_record: v=DMARC1; p=none; rua=mailto:dmarc@examplecorp.com; ruf=mailto:dmarc@examplecorp.com; fo=1
+          domain: examplecorp.com
+          spf_record: v=spf1 include:spf.protection.outlook.com include:_spf.mlsend.com include:spf.serveriai.lt include:_spf.google.com include:_spf-dc55.sapsf.eu include:mail.zendesk.com ip4:192.0.2.1 ip4:192.0.2.2 ip4:192.0.2.3  -all
+          spoofable: 4
+          spoofable_comment: Spoofing might be possible (mailbox dependent) for this domain.
+        security_score: 9.74
+        total_potentially_spoofable: 2
+        total_spoofable: 0
+    CategoryScores:
+      properties:
+        software_patching:
+          type: number
+          title: Software Patching
+          default: 10
+        web_application_security:
+          type: number
+          title: Web Application Security
+          default: 10
+        email_security:
+          type: number
+          title: Email Security
+          default: 10
+        system_reputation:
+          type: number
+          title: System Reputation
+          default: 10
+        system_hosting:
+          type: number
+          title: System Hosting
+          default: 10
+        data_breach:
+          type: number
+          title: Data Breach
+          default: 10
+        ssl_configuration:
+          type: number
+          title: Ssl Configuration
+          default: 10
+      type: object
+      title: CategoryScores
+    CompanyDetails:
+      properties:
+        name:
+          type: string
+          title: Name
+          description: Full name of the company
+          default: ''
+        shorthand_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Shorthand Name
+          description: Short or common name of the company
+        website:
+          type: string
+          title: Website
+          description: Official website of the company
+          default: ''
+        domain:
+          type: string
+          title: Domain
+          description: Primary domain name of the company
+          default: ''
+        revenue:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Revenue
+          description: Annual revenue of the company in USD
+          default: 0
+        revenue_range:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Revenue Range
+          description: Range of the company's annual revenue
+        company_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Company Type
+          description: Type of company (e.g., Private, Public)
+        employee_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Employee Count
+          description: Number of employees in the company
+          default: 0
+        employee_count_range:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Employee Count Range
+          description: Range of the number of employees
+        year_founded:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Year Founded
+          description: Year the company was established
+        location_data:
+          anyOf:
+          - $ref: '#/components/schemas/LocationData'
+          - type: 'null'
+          description: Detailed location information of the company
+        contact_data:
+          anyOf:
+          - $ref: '#/components/schemas/ContactData'
+          - type: 'null'
+          description: Social media contact information
+        ceo_data:
+          anyOf:
+          - $ref: '#/components/schemas/CEOData'
+          - type: 'null'
+          description: Information about the company's CEO
+        competitor_list:
+          items:
+            type: object
+          type: array
+          title: Competitor List
+          description: List of company's competitors
+        funding_list:
+          items:
+            type: object
+          type: array
+          title: Funding List
+          description: List of funding rounds or investments
+        industry_list:
+          items:
+            type: string
+          type: array
+          title: Industry List
+          description: List of industries the company operates in
+        related_company_list:
+          items:
+            type: string
+          type: array
+          title: Related Company List
+          description: List of related companies
+        related_company_domain_list:
+          items:
+            type: string
+          type: array
+          title: Related Company Domain List
+          description: List of domains of related companies
+        total_funding:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Total Funding
+          description: Total funding received by the company
+        linkedin_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Linkedin Description
+          description: Company description from LinkedIn
+        owler_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owler Description
+          description: Company description from Owler
+        g2_description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: G2 Description
+          description: Company description from G2
+      type: object
+      title: CompanyDetails
+      examples:
+      - ceo_data:
+          first_name: Jane
+          last_name: Doe
+          title: CEO
+        company_type: Private
+        competitor_list:
+        - name: Example Competitor A
+          url: https://www.example.com/competitorA
+        - name: Example Competitor B
+          url: https://www.example.com/competitorB
+        contact_data:
+          facebook: https://www.facebook.com/ExampleCompany
+          linkedin: https://www.linkedin.com/company/examplecompany/
+        domain: examplecorp.com
+        employee_count: 1500
+        employee_count_range: 1,001-5,000 employees
+        funding_list: []
+        industry_list:
+        - Technology Solutions
+        - Cloud Services
+        - Data Analytics
+        linkedin_description: "About ExampleCorp\n\nExampleCorp is a leading provider of innovative technology solutions, helping businesses transform their operations. We deliver cutting-edge cloud services and data analytics to drive growth and efficiency. Our goal is to empower our clients with the tools they need to succeed in the digital age. \n\nWe are committed to excellence, collaboration, and sustainable practices. Join us in shaping the future of technology."
+        location_data:
+          city: Techville
+          country_code: US
+          country_name: United States
+          full_address: 123 Innovation Drive, Techville, CA 90210
+          state: California
+          street: 123 Innovation Drive
+          zipcode: '90210'
+        name: ExampleCorp Inc.
+        owler_description: ExampleCorp provides B2B technology solutions, focusing on cloud infrastructure and data management services for various industries.
+        g2_description: ExampleCorp is highly rated on G2 for its customer support and ease of use in the cloud services category.
+        related_company_domain_list: []
+        related_company_list: []
+        revenue: 500000000
+        revenue_range: $500M - $1B (USD)
+        shorthand_name: examplecorp
+        website: https://www.examplecorp.com
+        year_founded: '2010'
     LocationData:
       properties:
         city:
@@ -1393,6 +1086,316 @@ components:
           description: Complete address of the company
       type: object
       title: LocationData
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Vulnerability:
+      properties:
+        cve:
+          type: string
+          title: Cve
+        cvss:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Cvss
+          default: 0
+        cvss_v2:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Cvss V2
+          default: 0
+        epss:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Epss
+          default: 0
+        summary:
+          type: string
+          title: Summary
+        instances:
+          items:
+            type: string
+          type: array
+          title: Instances
+        risk_category:
+          anyOf:
+          - $ref: '#/components/schemas/RiskCategory'
+          - type: 'null'
+          description: Risk category of the vulnerability
+      type: object
+      required:
+      - cve
+      - summary
+      title: Vulnerability
+    WebApplicationSecurity:
+      properties:
+        total_vulnerabilities:
+          type: integer
+          title: Total Vulnerabilities
+          description: 'Key issue count: Total number of web application vulnerabilities detected'
+          default: 0
+        security_score:
+          type: number
+          title: Security Score
+          description: Overall security score for web application security (0-10)
+          default: 10
+        critical_vulnerabilities:
+          type: integer
+          title: Critical Vulnerabilities
+          description: Number of critical web application vulnerabilities
+          default: 0
+        high_vulnerabilities:
+          type: integer
+          title: High Vulnerabilities
+          description: Number of high-risk web application vulnerabilities
+          default: 0
+        medium_vulnerabilities:
+          type: integer
+          title: Medium Vulnerabilities
+          description: Number of medium-risk web application vulnerabilities
+          default: 0
+        low_vulnerabilities:
+          type: integer
+          title: Low Vulnerabilities
+          description: Number of low-risk web application vulnerabilities
+          default: 0
+        scan_results:
+          items:
+            $ref: '#/components/schemas/WebApplicationSecurityScanResult'
+          type: array
+          title: Scan Results
+          description: Detailed results of web application security scans
+      type: object
+      title: WebApplicationSecurity
+      examples:
+      - critical_vulnerabilities: 1
+        high_vulnerabilities: 0
+        low_vulnerabilities: 17
+        medium_vulnerabilities: 3
+        scan_results:
+        - description: Outdated and vulnerable version of Apache Struts detected, potentially leading to remote code execution.
+          instances:
+          - app.examplecorp.com:8080
+          name: Apache Struts RCE Vulnerability (CVE-2017-5638)
+          severity: critical
+        - description: A weak cipher is defined as an encryption/decryption algorithm that uses a key of insufficient length.
+          instances:
+          - auth.partners.examplecorp.com:443
+          - cdn.partners.examplecorp.com:443
+          name: Weak Cipher Suites Detection
+          severity: low
+        security_score: 7.5
+        total_vulnerabilities: 21
+    SSLConfiguration:
+      properties:
+        security_score:
+          type: number
+          title: Security Score
+          description: Overall security score for SSL/TLS configuration (0-10)
+          default: 10
+        total_issues:
+          type: integer
+          title: Total Issues
+          description: 'Key issue count: Total number of SSL/TLS configuration issues detected'
+          default: 0
+        issue_totals_by_criteria:
+          allOf:
+          - $ref: '#/components/schemas/SSLConfigurationIssueBrakedown'
+          description: Breakdown of issues by different SSL/TLS criteria
+        issues:
+          items:
+            $ref: '#/components/schemas/SSLConfigurationIssue'
+          type: array
+          title: Issues
+          description: Detailed list of SSL/TLS configuration issues
+      type: object
+      title: SSLConfiguration
+      examples:
+      - issue_totals_by_criteria:
+          certificate_path_validation: 6
+          certificate_signatures: 26
+          certificate_types: 26
+          ciphers: 26
+          ciphersuites: 0
+          maximum_certificate_lifespan: 9
+          tls_versions: 26
+          tls_vulnerability_renegotiation: 0
+        issues:
+        - criteria: certificate_types
+          description: Deployed certificate types are {'rsa'}, should have at least one of {'ecdsa'}.
+          instances:
+          - auth-admin.partners.examplecorp.com
+          - external-api.partners.examplecorp.com
+        security_score: 2.14
+        total_issues: 119
+    SystemReputation:
+      properties:
+        security_score:
+          type: number
+          title: Security Score
+          description: Overall security score for system reputation (0-10)
+          default: 10
+        total_issues:
+          type: integer
+          title: Total Issues
+          description: 'Key issue count: Total number of IP addresses with reputation issues'
+          default: 0
+        scan_results:
+          items:
+            $ref: '#/components/schemas/SystemReputationScanResult'
+          type: array
+          title: Scan Results
+          description: Detailed results of system reputation scans
+      type: object
+      title: SystemReputation
+      examples:
+      - scan_results:
+        - abuse_confidence_score: 20
+          abuse_tags:
+          - web_scan
+          - ssh_brute_force
+          ip_address: 203.0.113.1
+        - abuse_confidence_score: 5
+          abuse_tags:
+          - port_scan
+          ip_address: 198.51.100.1
+        security_score: 9.2
+        total_issues: 2
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    WebApplicationSecurityScanResult:
+      properties:
+        name:
+          type: string
+          title: Name
+        severity:
+          type: string
+          title: Severity
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        instances:
+          items:
+            type: string
+          type: array
+          title: Instances
+      type: object
+      required:
+      - name
+      - severity
+      title: WebApplicationSecurityScanResult
+    SSLConfigurationIssueBrakedown:
+      properties:
+        certificate_path_validation:
+          type: integer
+          title: Certificate Path Validation
+          default: 0
+        maximum_certificate_lifespan:
+          type: integer
+          title: Maximum Certificate Lifespan
+          default: 0
+        certificate_types:
+          type: integer
+          title: Certificate Types
+          default: 0
+        certificate_signatures:
+          type: integer
+          title: Certificate Signatures
+          default: 0
+        tls_versions:
+          type: integer
+          title: Tls Versions
+          default: 0
+        ciphers:
+          type: integer
+          title: Ciphers
+          default: 0
+        ciphersuites:
+          type: integer
+          title: Ciphersuites
+          default: 0
+        tls_vulnerability_renegotiation:
+          type: integer
+          title: Tls Vulnerability Renegotiation
+          default: 0
+        tls_vulnerability_robot:
+          type: integer
+          title: Tls Vulnerability Robot
+          default: 0
+      type: object
+      title: SSLConfigurationIssueBrakedown
+    SecurityScoreHighlight:
+      properties:
+        category:
+          type: string
+          title: Category
+          description: Category of the security highlight
+        description:
+          type: string
+          title: Description
+          description: Description of the security highlight
+        index:
+          type: integer
+          title: Index
+          description: Index of the highlight for ordering
+      type: object
+      required:
+      - category
+      - description
+      - index
+      title: SecurityScoreHighlight
+    CEOData:
+      properties:
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+          description: First name of the CEO
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          description: Last name of the CEO
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+          description: Title of the CEO
+      type: object
+      title: CEOData
   securitySchemes:
     APIKeyHeader:
       type: apiKey

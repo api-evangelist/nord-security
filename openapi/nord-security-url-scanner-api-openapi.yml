@@ -8,14 +8,14 @@ servers:
 security:
 - ApiKeyAuth: []
 tags:
-- name: URL scanner
+- name: URL Scanner
   description: ''
 paths:
   /v2/cybersec/urlscanner/config:
     get:
       operationId: urlScannerConfig
       tags:
-      - URL scanner
+      - URL Scanner
       summary: Get config
       responses:
         '200':
@@ -181,7 +181,70 @@ paths:
         '503':
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
+  responses:
+    AuthServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904178
+                  message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    ServiceForbidden:
+      description: Service is forbidden for the user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service is forbidden for the user:
+              value:
+                errors:
+                  code: 100166
+                  message: Service is forbidden for the user
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
   schemas:
+    ListFormat:
+      type: string
+      enum:
+      - abp
+      - zone
+      - domain
+      - queryparam
+      description: List content format
+    ListCategory:
+      type: string
+      enum:
+      - adblock
+      - tracking
+      - malwaresec
+      - broken-apps
+      - urlstripping
+      - cookies
     ListAction:
       type: string
       enum:
@@ -190,6 +253,54 @@ components:
       - no-mitm
       - redirect
       description: Action to take when ant item is matched in this list
+    ListIdentifier:
+      type: string
+      example: kPayrrMJP0d4nEPl
+    CybersecList:
+      type: object
+      properties:
+        action:
+          $ref: '#/components/schemas/ListAction'
+        category:
+          $ref: '#/components/schemas/ListCategory'
+        format:
+          $ref: '#/components/schemas/ListFormat'
+        identifier:
+          $ref: '#/components/schemas/ListIdentifier'
+        latest_version:
+          $ref: '#/components/schemas/ListVersion'
+        latest_version_checksum:
+          $ref: '#/components/schemas/Sha1Checksum'
+        uri:
+          description: List content download URL
+          type: string
+          example: /v1/cybersec/lists/adblock/kPayrrMJP0d4nEPl
+        language:
+          type: string
+          example: en
+    Sha1Checksum:
+      type: string
+      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
+    ListVersion:
+      type: string
+      example: 20200501120000
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
     UrlscannerConfigResponse:
       type: object
       properties:
@@ -237,117 +348,6 @@ components:
               minimum: 0
             unit:
               type: string
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
-    Sha1Checksum:
-      type: string
-      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
-    CybersecList:
-      type: object
-      properties:
-        action:
-          $ref: '#/components/schemas/ListAction'
-        category:
-          $ref: '#/components/schemas/ListCategory'
-        format:
-          $ref: '#/components/schemas/ListFormat'
-        identifier:
-          $ref: '#/components/schemas/ListIdentifier'
-        latest_version:
-          $ref: '#/components/schemas/ListVersion'
-        latest_version_checksum:
-          $ref: '#/components/schemas/Sha1Checksum'
-        uri:
-          description: List content download URL
-          type: string
-          example: /v1/cybersec/lists/adblock/kPayrrMJP0d4nEPl
-        language:
-          type: string
-          example: en
-    ListFormat:
-      type: string
-      enum:
-      - abp
-      - zone
-      - domain
-      - queryparam
-      description: List content format
-    ListCategory:
-      type: string
-      enum:
-      - adblock
-      - tracking
-      - malwaresec
-      - broken-apps
-      - urlstripping
-      - cookies
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
-    ListVersion:
-      type: string
-      example: 20200501120000
-    ListIdentifier:
-      type: string
-      example: kPayrrMJP0d4nEPl
-  responses:
-    AuthServiceUnavailable:
-      description: Service unavailable
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Service unavailable:
-              value:
-                errors:
-                  code: 904178
-                  message: Service temporary unavailable
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    InvalidCredentials:
-      description: Invalid credentials
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Invalid credentials:
-              value:
-                errors:
-                  code: 100104
-                  message: Invalid credentials
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    ServiceForbidden:
-      description: Service is forbidden for the user
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Service is forbidden for the user:
-              value:
-                errors:
-                  code: 100166
-                  message: Service is forbidden for the user
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
   securitySchemes:
     ApiKeyAuth:
       type: http
