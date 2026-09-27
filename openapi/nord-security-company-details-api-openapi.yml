@@ -150,156 +150,6 @@ paths:
       - HTTPBasic: []
 components:
   schemas:
-    LocationData:
-      properties:
-        city:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: City
-          description: City where the company is located
-        state:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: State
-          description: State or region where the company is located
-        street:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Street
-          description: Street address of the company
-        zipcode:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Zipcode
-          description: Postal code of the company's location
-        country_code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Country Code
-          description: Two-letter country code
-        country_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Country Name
-          description: Full name of the country
-        full_address:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Full Address
-          description: Complete address of the company
-      type: object
-      title: LocationData
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ContactData:
-      properties:
-        facebook:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Facebook
-          description: Company's Facebook page URL
-        linkedin:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Linkedin
-          description: Company's LinkedIn page URL
-      type: object
-      title: ContactData
-    CompanyDetailsListResponse:
-      properties:
-        data:
-          items:
-            $ref: '#/components/schemas/CompanyDetails'
-          type: array
-          title: Data
-        total:
-          type: integer
-          title: Total
-        limit:
-          type: integer
-          title: Limit
-        offset:
-          type: integer
-          title: Offset
-      type: object
-      required:
-      - data
-      - total
-      - limit
-      - offset
-      title: CompanyDetailsListResponse
-    CompanyOnboardingResponse:
-      properties:
-        domain:
-          type: string
-          title: Domain
-        company_details:
-          anyOf:
-          - $ref: '#/components/schemas/CompanyDetails'
-          - type: 'null'
-      type: object
-      required:
-      - domain
-      title: CompanyOnboardingResponse
-    CEOData:
-      properties:
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-          description: First name of the CEO
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-          description: Last name of the CEO
-        title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Title
-          description: Title of the CEO
-      type: object
-      title: CEOData
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     CompanyDetails:
       properties:
         name:
@@ -473,6 +323,97 @@ components:
         shorthand_name: examplecorp
         website: https://www.examplecorp.com
         year_founded: '2010'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CEOData:
+      properties:
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+          description: First name of the CEO
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          description: Last name of the CEO
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+          description: Title of the CEO
+      type: object
+      title: CEOData
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CompanyDetailsListResponse:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CompanyDetails'
+          type: array
+          title: Data
+        total:
+          type: integer
+          title: Total
+        limit:
+          type: integer
+          title: Limit
+        offset:
+          type: integer
+          title: Offset
+      type: object
+      required:
+      - data
+      - total
+      - limit
+      - offset
+      title: CompanyDetailsListResponse
+    ContactData:
+      properties:
+        facebook:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Facebook
+          description: Company's Facebook page URL
+        linkedin:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Linkedin
+          description: Company's LinkedIn page URL
+      type: object
+      title: ContactData
     CompanyOnboardingManualRequest:
       properties:
         domain:
@@ -486,6 +427,65 @@ components:
       - domain
       - employee_count
       title: CompanyOnboardingManualRequest
+    LocationData:
+      properties:
+        city:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: City
+          description: City where the company is located
+        state:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: State
+          description: State or region where the company is located
+        street:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Street
+          description: Street address of the company
+        zipcode:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Zipcode
+          description: Postal code of the company's location
+        country_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country Code
+          description: Two-letter country code
+        country_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country Name
+          description: Full name of the country
+        full_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Full Address
+          description: Complete address of the company
+      type: object
+      title: LocationData
+    CompanyOnboardingResponse:
+      properties:
+        domain:
+          type: string
+          title: Domain
+        company_details:
+          anyOf:
+          - $ref: '#/components/schemas/CompanyDetails'
+          - type: 'null'
+      type: object
+      required:
+      - domain
+      title: CompanyOnboardingResponse
   securitySchemes:
     APIKeyHeader:
       type: apiKey

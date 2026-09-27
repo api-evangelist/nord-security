@@ -472,34 +472,6 @@ paths:
       - ApiKeyAuth: []
 components:
   schemas:
-    PhoneDatabasesSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
-        phone:
-          type: string
-          example: '13855550193'
-          description: International format phone number
-        databases:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseDataItem'
-    PhoneMalwareLogsSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
-        phone:
-          type: string
-          example: '13855550193'
-          description: International format phone number
-        malware_logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareDataItem'
     DatabaseDataItem:
       type: object
       properties:
@@ -553,7 +525,33 @@ components:
         offset:
           type: integer
           example: 0
-    PhoneSample:
+    PhonesMalwareLogsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneMalwareLogsSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhonesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhoneDatabasesSample:
       type: object
       properties:
         id:
@@ -567,12 +565,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DatabaseDataItem'
-        malware_logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareDataItem'
-        risk_assessment:
-          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
     MalwareDataItem:
       type: object
       properties:
@@ -941,6 +933,53 @@ components:
               example: identified
         risk_assessment:
           $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    PhonesDatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhoneSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
+          type: string
+          example: '13855550193'
+          description: International format phone number
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    PhoneMalwareLogsSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
+          type: string
+          example: '13855550193'
+          description: International format phone number
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
     EmailSample:
       type: object
       properties:
@@ -986,45 +1025,6 @@ components:
                     type: string
                     description: Recommendation text
                     example: Avoid using your publicly known information in passwords. Threat actors routinely use other known information, such as email addresses, phone numbers, pet names, dates of birth, first/last names and other data in stuffing attacks to uncover passwords that were otherwise never leaked online.
-    PhonesDatabasesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneDatabasesSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    PhonesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    PhonesMalwareLogsSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneMalwareLogsSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
     MalwareLogSystemInfoSampleItem:
       type: object
       properties:
@@ -1101,10 +1101,6 @@ components:
             type: string
             example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
   headers:
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
     X-Quota-Remaining:
       schema:
         type: integer
@@ -1113,15 +1109,19 @@ components:
       schema:
         type: integer
       description: Request limit per minute
-    X-Quota-Limit:
+    X-RateLimit-Remaining:
       schema:
         type: integer
-      description: Quota limit per minute
+      description: The number of requests left for the time window
     X-RateLimit-Reset:
       schema:
         type: string
         format: date-time
       description: Date and time when rate limit counter resets
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
   parameters:
     Phone:
       name: phone-sha256

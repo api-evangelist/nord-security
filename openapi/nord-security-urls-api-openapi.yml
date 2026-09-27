@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   description: Cybersec API documentation
   version: 1.0.0
-  title: Cybersec URLS API
+  title: Cybersec URLs API
 servers:
 - url: https://cybersec.nordstellar.com
 security:
@@ -276,37 +276,145 @@ paths:
         '503':
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
+  schemas:
+    UrlCheckResponse:
+      type: object
+      properties:
+        urls:
+          type: array
+          items:
+            $ref: '#/components/schemas/UrlCheckResult'
+        cache:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                format: uri-reference
+              ttl:
+                type: number
+              categories:
+                $ref: '#/components/schemas/UrlCategories'
+    UrlCheckResult:
+      type: object
+      properties:
+        url:
+          type: string
+          format: uri
+        status:
+          $ref: '#/components/schemas/UrlCheckStatus'
+        categories:
+          $ref: '#/components/schemas/UrlCategories'
+        category_details:
+          $ref: '#/components/schemas/UrlCategoryDetails'
+    AllowedDomainsItem:
+      type: object
+      properties:
+        url:
+          type: string
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/UrlCategory'
+    UrlCategory:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      description: "Category identifiers:\n * `0` - Unknown URL category\n * `1` - Either the URL is missing from the database, or it is known to be clean\n * `2` - Malware\n * `3` - Phishing\n * `4` - Spam\n * `5` - Potentially Unwanted Application / Web page containing PUAs\n * `6` - Potentially Unwanted Search Engine\n * `7` - Scam\n"
+    UrlCheckRequest:
+      type: object
+      required:
+      - urls
+      properties:
+        urls:
+          type: array
+          items:
+            type: string
+            format: uri
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+    AllowedDomains:
+      type: object
+      properties:
+        whitelist:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllowedDomainsItem'
+        exceptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllowedDomainsItem'
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    UrlCategoriesResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              category:
+                $ref: '#/components/schemas/UrlCategory'
+              name:
+                type: string
+              block:
+                type: boolean
+              subcategories:
+                $ref: '#/components/schemas/UrlCategoryDetails'
+    AllowedDomainsHashed:
+      type: object
+      properties:
+        whitelist:
+          type: array
+          items:
+            type: string
+        exceptions:
+          type: object
+        additionalProperties:
+          $ref: '#/components/schemas/UrlCategory'
+    UrlCategoryDetails:
+      type: object
+      properties:
+        '7':
+          type: array
+          description: Scam
+          items:
+            type: number
+            description: "Scam subcategory identifiers:\n * `1` B2B scam\n * `2` Chargeback money recovery scam\n * `3` Cryptocurrency scam\n * `4` Dating and romance scam\n * `5` Employment scam\n * `6` Fake IT and tech support scam\n * `7` Illegal products and services scam\n * `8` Intellectual property violation scam\n * `9` Investment scam\n * `10` Malware scam\n * `11` Online shopping scam\n * `12` Phishing scam\n * `13` Fake website scam\n * `14` Spam and abuse scam\n * `15` Subscription scam\n * `16` Other scam\n"
+    UrlCategories:
+      type: array
+      items:
+        $ref: '#/components/schemas/UrlCategory'
+    UrlCheckStatus:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      description: "Codes:\n * `0` - Check performed successfully\n * `1` - URL check failed. URL is either malformed or an unknown error has occurred\n * `2` - Check is pending in backend, repeat a request for this url later\n"
   responses:
-    AuthServiceUnavailable:
-      description: Service unavailable
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Service unavailable:
-              value:
-                errors:
-                  code: 904178
-                  message: Service temporary unavailable
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    ContentTooLarge:
-      description: Content too large
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Content too large:
-              value:
-                errors:
-                  code: 904168
-                  message: Url requested is too large. Limit is 65535
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
     UnprocessableEntity:
       description: Unprocessable Entity
       content:
@@ -322,6 +430,21 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
+    AuthServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904178
+                  message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
     ServiceForbidden:
       description: Service is forbidden for the user
       content:
@@ -334,6 +457,21 @@ components:
                 errors:
                   code: 100166
                   message: Service is forbidden for the user
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    ContentTooLarge:
+      description: Content too large
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Content too large:
+              value:
+                errors:
+                  code: 904168
+                  message: Url requested is too large. Limit is 65535
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -367,144 +505,6 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-  schemas:
-    UrlCheckStatus:
-      type: number
-      enum:
-      - 0
-      - 1
-      - 2
-      description: "Codes:\n * `0` - Check performed successfully\n * `1` - URL check failed. URL is either malformed or an unknown error has occurred\n * `2` - Check is pending in backend, repeat a request for this url later\n"
-    UrlCategoryDetails:
-      type: object
-      properties:
-        '7':
-          type: array
-          description: Scam
-          items:
-            type: number
-            description: "Scam subcategory identifiers:\n * `1` B2B scam\n * `2` Chargeback money recovery scam\n * `3` Cryptocurrency scam\n * `4` Dating and romance scam\n * `5` Employment scam\n * `6` Fake IT and tech support scam\n * `7` Illegal products and services scam\n * `8` Intellectual property violation scam\n * `9` Investment scam\n * `10` Malware scam\n * `11` Online shopping scam\n * `12` Phishing scam\n * `13` Fake website scam\n * `14` Spam and abuse scam\n * `15` Subscription scam\n * `16` Other scam\n"
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
-    UrlCategory:
-      type: number
-      enum:
-      - 0
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      description: "Category identifiers:\n * `0` - Unknown URL category\n * `1` - Either the URL is missing from the database, or it is known to be clean\n * `2` - Malware\n * `3` - Phishing\n * `4` - Spam\n * `5` - Potentially Unwanted Application / Web page containing PUAs\n * `6` - Potentially Unwanted Search Engine\n * `7` - Scam\n"
-    UrlCategories:
-      type: array
-      items:
-        $ref: '#/components/schemas/UrlCategory'
-    UrlCategoriesResponse:
-      type: object
-      properties:
-        categories:
-          type: array
-          items:
-            type: object
-            properties:
-              category:
-                $ref: '#/components/schemas/UrlCategory'
-              name:
-                type: string
-              block:
-                type: boolean
-              subcategories:
-                $ref: '#/components/schemas/UrlCategoryDetails'
-    UrlCheckRequest:
-      type: object
-      required:
-      - urls
-      properties:
-        urls:
-          type: array
-          items:
-            type: string
-            format: uri
-    UrlCheckResult:
-      type: object
-      properties:
-        url:
-          type: string
-          format: uri
-        status:
-          $ref: '#/components/schemas/UrlCheckStatus'
-        categories:
-          $ref: '#/components/schemas/UrlCategories'
-        category_details:
-          $ref: '#/components/schemas/UrlCategoryDetails'
-    UrlCheckResponse:
-      type: object
-      properties:
-        urls:
-          type: array
-          items:
-            $ref: '#/components/schemas/UrlCheckResult'
-        cache:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                format: uri-reference
-              ttl:
-                type: number
-              categories:
-                $ref: '#/components/schemas/UrlCategories'
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
-    AllowedDomains:
-      type: object
-      properties:
-        whitelist:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllowedDomainsItem'
-        exceptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllowedDomainsItem'
-    AllowedDomainsItem:
-      type: object
-      properties:
-        url:
-          type: string
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/UrlCategory'
-    AllowedDomainsHashed:
-      type: object
-      properties:
-        whitelist:
-          type: array
-          items:
-            type: string
-        exceptions:
-          type: object
-        additionalProperties:
-          $ref: '#/components/schemas/UrlCategory'
   securitySchemes:
     ApiKeyAuth:
       type: http

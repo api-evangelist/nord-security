@@ -1475,33 +1475,91 @@ paths:
       security:
       - ApiKeyAuth: []
 components:
+  parameters:
+    FuzzingIntensity:
+      name: fuzzing-intensity
+      in: query
+      description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+      schema:
+        type: integer
+    Domain:
+      name: domain
+      in: path
+      required: true
+      schema:
+        type: string
+    Email:
+      name: email-sha256
+      in: path
+      required: true
+      description: Hashed lower-cased email address using SHA256 algorithm
+      schema:
+        type: string
+    Offset:
+      name: offset
+      in: query
+      description: Offset the results by an integer
+      schema:
+        type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Limit the count of records in results
+      required: false
+      schema:
+        type: integer
   schemas:
-    EmailsSample:
+    EmailsAtoFiltered:
+      required:
+      - emails_sha256
       type: object
       properties:
         data:
           type: array
+          description: A list of SHA256 hashed email addresses together with source IDs to generate fuzzed passwords
           items:
-            $ref: '#/components/schemas/EmailSample'
+            type: object
+            properties:
+              email_sha256:
+                type: string
+                description: A SHA256 hashed email address to generate fuzzed passwords for
+                example: e9e7d0a8f5792167a054b4b1788fbe0bf0eb3d8ba8a6eee8ef42d3d7acb67f18
+              database_ids:
+                type: array
+                description: A list of datbase IDs to generate fuzzed passwords
+                items:
+                  type: string
+                example:
+                - 5f4e1f2e4b1d4d4e4b1d4d4e
+                - 5f4e1f2e4b1d4d4e4b1d4d4f
+              malware_ids:
+                type: array
+                description: A list of malware IDs to generate fuzzed passwords
+                items:
+                  type: string
+                example:
+                - 5f4e1f2e4b1d4d4e4b1d4d4e
+                - 5f4e1f2e4b1d4d4e4b1d4d4f
+              credential_list_ids:
+                type: array
+                description: A list of credential list IDs to generate fuzzed passwords
+                items:
+                  type: string
+                example:
+                - 5f4e1f2e4b1d4d4e4b1d4d4e
+                - 5f4e1f2e4b1d4d4e4b1d4d4f
+        fuzzing_intensity:
+          type: integer
+          description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+          default: 1
+          example: 1
         limit:
+          description: Default is the maximum limit of 5 records
           type: integer
           example: 10
         offset:
           type: integer
           example: 0
-    EmailCredentialListsSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
-        email:
-          type: string
-          example: example@example.com
-        credential_lists:
-          type: array
-          items:
-            $ref: '#/components/schemas/CredentialDataItem'
     DatabaseDataItem:
       type: object
       properties:
@@ -1536,6 +1594,240 @@ components:
                 - password2
         risk_assessment:
           $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    CredentialDataItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 66c4d3912b183418f7743576
+        passwords:
+          type: array
+          items:
+            type: string
+          example:
+          - password1
+          - password2
+        published_date:
+          type: string
+          description: Date when the credential list data was published onto the asset
+          example: '2025-01-20T19:04:39Z'
+        combos:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                example: example.com
+              password:
+                type: string
+                example: password1
+              url:
+                type: string
+                example: https://example.com/login
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    EmailSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+        credential_lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialDataItem'
+        risk_assessment:
+          type: object
+          properties:
+            level:
+              type: string
+              description: 'Risk level, one of the following: info, low, medium, high, critical'
+              example: high
+            recommendations_enabled:
+              type: string
+              description: If true, user has enabled recommendations for this request. If false, recommendations are not provided. This field is taken from user provided query parameter of the same name.
+              example: 'true'
+            recommendations:
+              type: array
+              items:
+                type: object
+                properties:
+                  leaked_data_category:
+                    type: string
+                    description: Pretty name of general data category that triggered this recommendation
+                    example: Password
+                  recommendation:
+                    type: string
+                    description: Recommendation text
+                    example: Avoid using your publicly known information in passwords. Threat actors routinely use other known information, such as email addresses, phone numbers, pet names, dates of birth, first/last names and other data in stuffing attacks to uncover passwords that were otherwise never leaked online.
+    EmailLiteSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItemLite'
+        credential_lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialDataItem'
+    Emails:
+      required:
+      - data
+      type: object
+      properties:
+        emails_sha256:
+          type: array
+          description: A list of SHA256 hashed lower-case email addresses to lookup
+          items:
+            type: string
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        limit:
+          description: Default is the maximum limit of 100 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailMalwareLogsSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+    EmailsDatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailStatistics:
+      type: object
+      properties:
+        unique_email_count:
+          type: integer
+          description: Number of unique email addresses that were affected by any incident (This number is always **1** for single email statistics)
+          example: 1
+        unique_password_count:
+          type: integer
+          description: Number of unique passwords
+          example: 3
+        password_count:
+          type: integer
+          description: Total number of passwords
+          example: 5
+        breached_email_count:
+          type: integer
+          description: Total number of email appearances in data breaches
+          example: 4
+        malware_affected_email_count:
+          type: integer
+          description: Total number of email appearances in malware infections
+          example: 1
+        stolen_email_count:
+          type: integer
+          description: Total number of email appearances in stolen credential lists
+          example: 2
+        database_count:
+          type: integer
+          description: Number of unique data breaches that this email appears in
+          example: 3
+        malware_infection_count:
+          type: integer
+          description: Number of unique malware infections that this email appears in
+          example: 1
+        credential_list_count:
+          type: integer
+          description: Number of unique stolen credential lists that this email appears in
+          example: 2
+    EmailsAtoPreventionSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAtoPreventionSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    EmailAtoFiltered:
+      required:
+      - email_sha256
+      type: object
+      properties:
+        email_sha256:
+          type: string
+          description: A SHA256 hashed email address to generate fuzzed passwords for
+          example: 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        database_ids:
+          type: array
+          description: A list of datbase IDs to generate fuzzed passwords
+          items:
+            type: string
+          example:
+          - 5f4e1f2e4b1d4d4e4b1d4d4e
+          - 5f4e1f2e4b1d4d4e4b1d4d4f
+        malware_ids:
+          type: array
+          description: A list of malware IDs to generate fuzzed passwords
+          items:
+            type: string
+          example:
+          - 5f4e1f2e4b1d4d4e4b1d4d4e
+          - 5f4e1f2e4b1d4d4e4b1d4d4f
+        credential_list_ids:
+          type: array
+          description: A list of credential list IDs to generate fuzzed passwords
+          items:
+            type: string
+          example:
+          - 5f4e1f2e4b1d4d4e4b1d4d4e
+          - 5f4e1f2e4b1d4d4e4b1d4d4f
+        fuzzing_intensity:
+          type: integer
+          description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
+          default: 1
     EmailsAto:
       required:
       - emails_sha256
@@ -1928,7 +2220,7 @@ components:
               example: identified
         risk_assessment:
           $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    EmailLiteSample:
+    EmailCredentialListsSample:
       type: object
       properties:
         id:
@@ -1937,34 +2229,10 @@ components:
         email:
           type: string
           example: example@example.com
-        databases:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseDataItem'
-        malware_logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareDataItemLite'
         credential_lists:
           type: array
           items:
             $ref: '#/components/schemas/CredentialDataItem'
-    EmailAtoPreventionSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
-        email:
-          type: string
-          example: email@example.com
-        password:
-          type: array
-          items:
-            type: string
-          example:
-          - password1
-          - password2
     EmailsMalwareLogsSample:
       type: object
       properties:
@@ -1991,85 +2259,19 @@ components:
         offset:
           type: integer
           example: 0
-    EmailSample:
+    EmailsSample:
       type: object
       properties:
-        id:
-          type: string
-          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
-        email:
-          type: string
-          example: example@example.com
-        databases:
+        data:
           type: array
           items:
-            $ref: '#/components/schemas/DatabaseDataItem'
-        malware_logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareDataItem'
-        credential_lists:
-          type: array
-          items:
-            $ref: '#/components/schemas/CredentialDataItem'
-        risk_assessment:
-          type: object
-          properties:
-            level:
-              type: string
-              description: 'Risk level, one of the following: info, low, medium, high, critical'
-              example: high
-            recommendations_enabled:
-              type: string
-              description: If true, user has enabled recommendations for this request. If false, recommendations are not provided. This field is taken from user provided query parameter of the same name.
-              example: 'true'
-            recommendations:
-              type: array
-              items:
-                type: object
-                properties:
-                  leaked_data_category:
-                    type: string
-                    description: Pretty name of general data category that triggered this recommendation
-                    example: Password
-                  recommendation:
-                    type: string
-                    description: Recommendation text
-                    example: Avoid using your publicly known information in passwords. Threat actors routinely use other known information, such as email addresses, phone numbers, pet names, dates of birth, first/last names and other data in stuffing attacks to uncover passwords that were otherwise never leaked online.
-    CredentialDataItem:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Systemic hex ID of the record
-          example: 66c4d3912b183418f7743576
-        passwords:
-          type: array
-          items:
-            type: string
-          example:
-          - password1
-          - password2
-        published_date:
-          type: string
-          description: Date when the credential list data was published onto the asset
-          example: '2025-01-20T19:04:39Z'
-        combos:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                example: example.com
-              password:
-                type: string
-                example: password1
-              url:
-                type: string
-                example: https://example.com/login
-        risk_assessment:
-          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+            $ref: '#/components/schemas/EmailSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
     MalwareDataItemLite:
       type: object
       properties:
@@ -2115,96 +2317,6 @@ components:
                   application:
                     type: string
                     example: Google Chrome
-    EmailsDatabasesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailDatabasesSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    EmailMalwareLogsSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
-        email:
-          type: string
-          example: example@example.com
-        malware_logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareDataItem'
-    EmailsAtoPreventionSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/EmailAtoPreventionSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    EmailsAtoFiltered:
-      required:
-      - emails_sha256
-      type: object
-      properties:
-        data:
-          type: array
-          description: A list of SHA256 hashed email addresses together with source IDs to generate fuzzed passwords
-          items:
-            type: object
-            properties:
-              email_sha256:
-                type: string
-                description: A SHA256 hashed email address to generate fuzzed passwords for
-                example: e9e7d0a8f5792167a054b4b1788fbe0bf0eb3d8ba8a6eee8ef42d3d7acb67f18
-              database_ids:
-                type: array
-                description: A list of datbase IDs to generate fuzzed passwords
-                items:
-                  type: string
-                example:
-                - 5f4e1f2e4b1d4d4e4b1d4d4e
-                - 5f4e1f2e4b1d4d4e4b1d4d4f
-              malware_ids:
-                type: array
-                description: A list of malware IDs to generate fuzzed passwords
-                items:
-                  type: string
-                example:
-                - 5f4e1f2e4b1d4d4e4b1d4d4e
-                - 5f4e1f2e4b1d4d4e4b1d4d4f
-              credential_list_ids:
-                type: array
-                description: A list of credential list IDs to generate fuzzed passwords
-                items:
-                  type: string
-                example:
-                - 5f4e1f2e4b1d4d4e4b1d4d4e
-                - 5f4e1f2e4b1d4d4e4b1d4d4f
-        fuzzing_intensity:
-          type: integer
-          description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
-          default: 1
-          example: 1
-        limit:
-          description: Default is the maximum limit of 5 records
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
     EmailsLiteSample:
       type: object
       properties:
@@ -2218,6 +2330,22 @@ components:
         offset:
           type: integer
           example: 0
+    EmailAtoPreventionSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: email@example.com
+        password:
+          type: array
+          items:
+            type: string
+          example:
+          - password1
+          - password2
     EmailDatabasesSample:
       type: object
       properties:
@@ -2231,64 +2359,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DatabaseDataItem'
-    EmailStatistics:
-      type: object
-      properties:
-        unique_email_count:
-          type: integer
-          description: Number of unique email addresses that were affected by any incident (This number is always **1** for single email statistics)
-          example: 1
-        unique_password_count:
-          type: integer
-          description: Number of unique passwords
-          example: 3
-        password_count:
-          type: integer
-          description: Total number of passwords
-          example: 5
-        breached_email_count:
-          type: integer
-          description: Total number of email appearances in data breaches
-          example: 4
-        malware_affected_email_count:
-          type: integer
-          description: Total number of email appearances in malware infections
-          example: 1
-        stolen_email_count:
-          type: integer
-          description: Total number of email appearances in stolen credential lists
-          example: 2
-        database_count:
-          type: integer
-          description: Number of unique data breaches that this email appears in
-          example: 3
-        malware_infection_count:
-          type: integer
-          description: Number of unique malware infections that this email appears in
-          example: 1
-        credential_list_count:
-          type: integer
-          description: Number of unique stolen credential lists that this email appears in
-          example: 2
-    Emails:
-      required:
-      - data
-      type: object
-      properties:
-        emails_sha256:
-          type: array
-          description: A list of SHA256 hashed lower-case email addresses to lookup
-          items:
-            type: string
-          example:
-          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
-        limit:
-          description: Default is the maximum limit of 100 records
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
     MalwareLogSystemInfoSampleItem:
       type: object
       properties:
@@ -2364,81 +2434,7 @@ components:
           items:
             type: string
             example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
-    EmailAtoFiltered:
-      required:
-      - email_sha256
-      type: object
-      properties:
-        email_sha256:
-          type: string
-          description: A SHA256 hashed email address to generate fuzzed passwords for
-          example: 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
-        database_ids:
-          type: array
-          description: A list of datbase IDs to generate fuzzed passwords
-          items:
-            type: string
-          example:
-          - 5f4e1f2e4b1d4d4e4b1d4d4e
-          - 5f4e1f2e4b1d4d4e4b1d4d4f
-        malware_ids:
-          type: array
-          description: A list of malware IDs to generate fuzzed passwords
-          items:
-            type: string
-          example:
-          - 5f4e1f2e4b1d4d4e4b1d4d4e
-          - 5f4e1f2e4b1d4d4e4b1d4d4f
-        credential_list_ids:
-          type: array
-          description: A list of credential list IDs to generate fuzzed passwords
-          items:
-            type: string
-          example:
-          - 5f4e1f2e4b1d4d4e4b1d4d4e
-          - 5f4e1f2e4b1d4d4e4b1d4d4f
-        fuzzing_intensity:
-          type: integer
-          description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
-          default: 1
-  parameters:
-    Domain:
-      name: domain
-      in: path
-      required: true
-      schema:
-        type: string
-    Offset:
-      name: offset
-      in: query
-      description: Offset the results by an integer
-      schema:
-        type: integer
-    Email:
-      name: email-sha256
-      in: path
-      required: true
-      description: Hashed lower-cased email address using SHA256 algorithm
-      schema:
-        type: string
-    Limit:
-      name: limit
-      in: query
-      description: Limit the count of records in results
-      required: false
-      schema:
-        type: integer
-    FuzzingIntensity:
-      name: fuzzing-intensity
-      in: query
-      description: Fuzzing intensity level parameter, which ranges from 0 to 10, 0 being no fuzzing, only original password returned, and 10 being the biggest rule set that returns over 50,000 fuzzed passwords per original password.
-      schema:
-        type: integer
   headers:
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
     X-Quota-Remaining:
       schema:
         type: integer
@@ -2447,15 +2443,19 @@ components:
       schema:
         type: integer
       description: Request limit per minute
-    X-Quota-Limit:
+    X-RateLimit-Remaining:
       schema:
         type: integer
-      description: Quota limit per minute
+      description: The number of requests left for the time window
     X-RateLimit-Reset:
       schema:
         type: string
         format: date-time
       description: Date and time when rate limit counter resets
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
   securitySchemes:
     BasicAuth:
       type: http

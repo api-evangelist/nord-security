@@ -92,6 +92,21 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   responses:
+    ResourcesExhausted:
+      description: Service resources exhausted
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Too many requests:
+              value:
+                errors:
+                  code: 904174
+                  message: Too many requests, try again later
+      headers:
+        X-RateLimit-Retry-After:
+          $ref: '#/components/schemas/X-RateLimit-Retry-After'
     AuthServiceUnavailable:
       description: Service unavailable
       content:
@@ -104,21 +119,6 @@ components:
                 errors:
                   code: 904178
                   message: Service temporary unavailable
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    UnprocessableEntity:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Content too large:
-              value:
-                errors:
-                  code: 904175
-                  message: Exceeded the limit of 20 records to check in a batch
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -152,22 +152,39 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    ResourcesExhausted:
-      description: Service resources exhausted
+    UnprocessableEntity:
+      description: Unprocessable Entity
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Too many requests:
+            Content too large:
               value:
                 errors:
-                  code: 904174
-                  message: Too many requests, try again later
+                  code: 904175
+                  message: Exceeded the limit of 20 records to check in a batch
       headers:
-        X-RateLimit-Retry-After:
-          $ref: '#/components/schemas/X-RateLimit-Retry-After'
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
     X-RateLimit-Retry-After:
       type: string
       format: rfc3999
@@ -185,23 +202,6 @@ components:
             type: string
             example: 0x43fbzxc24jg234f34
           description: List of crypto addresses to be checked
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
   securitySchemes:
     ApiKeyAuth:
       type: http

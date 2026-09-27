@@ -253,57 +253,7 @@ paths:
       security:
       - BasicAuth: []
 components:
-  headers:
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
-    X-RateLimit-Reset:
-      schema:
-        type: string
-        format: date-time
-      description: Date and time when rate limit counter resets
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Request limit per minute
   schemas:
-    SubscriptionEndpoint:
-      required:
-      - endpoint-url
-      type: object
-      properties:
-        url:
-          type: string
-          description: Subscription webhook endpoint URL
-          example: https://example.com/webhook
-        username:
-          type: string
-          description: Subscription webhook endpoint BasicAuth username
-          example: username
-        password:
-          type: string
-          description: Subscription webhook endpoint BasicAuth password (hidden)
-          example: password
-    SubscriptionEndpointSample:
-      type: object
-      properties:
-        url:
-          type: string
-          example: https://api.example.com/v1/subscriptions/webhook
-        username:
-          type: string
-          example: username
-        password:
-          type: string
-          example: password123
-    GetAccessToken:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Client token ID
-          example: my-token
     AccessToken:
       type: object
       properties:
@@ -331,6 +281,56 @@ components:
           - id: token2
         endpoint:
           $ref: '#/components/schemas/SubscriptionEndpointSample'
+    SubscriptionEndpointSample:
+      type: object
+      properties:
+        url:
+          type: string
+          example: https://api.example.com/v1/subscriptions/webhook
+        username:
+          type: string
+          example: username
+        password:
+          type: string
+          example: password123
+    SubscriptionEndpoint:
+      required:
+      - endpoint-url
+      type: object
+      properties:
+        url:
+          type: string
+          description: Subscription webhook endpoint URL
+          example: https://example.com/webhook
+        username:
+          type: string
+          description: Subscription webhook endpoint BasicAuth username
+          example: username
+        password:
+          type: string
+          description: Subscription webhook endpoint BasicAuth password (hidden)
+          example: password
+    GetAccessToken:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Client token ID
+          example: my-token
+  headers:
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
+    X-RateLimit-Reset:
+      schema:
+        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
   parameters:
     TokenId:
       name: id

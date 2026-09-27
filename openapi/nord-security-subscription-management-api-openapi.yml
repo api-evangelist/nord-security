@@ -752,18 +752,45 @@ paths:
       - ApiKeyAuth: []
 components:
   schemas:
-    AssetSubscriptions:
+    DomainSubscriptions:
       required:
       - subscription_identifier
       type: object
       properties:
         subscription_identifiers:
           type: array
-          description: Up to 200 **SHA-256** hashed email addresses or phone numbers (only digits)
+          description: Up to 200 raw email address domains, e.g. ["example.com", "example.org"]
           items:
             type: string
           example:
-          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+          - example.com
+          - example.org
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: false
+    SubscriptionsSample:
+      type: object
+      properties:
+        subscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    ZKSubscription:
+      required:
+      - subscription_identifier
+      type: object
+      properties:
+        subscription_identifier:
+          type: string
+          description: '**Argon2ID** or **SHA1** hashed credit card or national ID number.'
+          example: 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
         dispatch_on_update:
           type: boolean
           description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
@@ -788,19 +815,15 @@ components:
           type: boolean
           description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
           example: true
-    DomainSubscriptions:
+    DomainSubscription:
       required:
       - subscription_identifier
       type: object
       properties:
-        subscription_identifiers:
-          type: array
-          description: Up to 200 raw email address domains, e.g. ["example.com", "example.org"]
-          items:
-            type: string
-          example:
-          - example.com
-          - example.org
+        subscription_identifier:
+          type: string
+          description: Raw email address domain, e.g. "example.com"
+          example: example.com
         dispatch_on_update:
           type: boolean
           description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
@@ -818,19 +841,29 @@ components:
           type: boolean
           description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
           example: false
-    SubscriptionsSample:
+    CreatedSubscriptionsSample:
       type: object
       properties:
         subscriptions:
           type: array
           items:
             $ref: '#/components/schemas/SubscriptionSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
+    AssetSubscriptions:
+      required:
+      - subscription_identifier
+      type: object
+      properties:
+        subscription_identifiers:
+          type: array
+          description: Up to 200 **SHA-256** hashed email addresses or phone numbers (only digits)
+          items:
+            type: string
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        dispatch_on_update:
+          type: boolean
+          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
+          example: false
     ZKSubscriptions:
       required:
       - subscription_identifier
@@ -847,40 +880,14 @@ components:
           type: boolean
           description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
           example: false
-    ZKSubscription:
-      required:
-      - subscription_identifier
-      type: object
-      properties:
-        subscription_identifier:
-          type: string
-          description: '**Argon2ID** or **SHA1** hashed credit card or national ID number.'
-          example: 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
-        dispatch_on_update:
-          type: boolean
-          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
-          example: false
-    CreatedSubscriptionsSample:
-      type: object
-      properties:
-        subscriptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/SubscriptionSample'
-    DomainSubscription:
-      required:
-      - subscription_identifier
-      type: object
-      properties:
-        subscription_identifier:
-          type: string
-          description: Raw email address domain, e.g. "example.com"
-          example: example.com
-        dispatch_on_update:
-          type: boolean
-          description: Dispatch alert on existing data breach updates, e.g. when more data keys are added to the data
-          example: false
   parameters:
+    SubscriptionId:
+      name: id
+      in: path
+      required: true
+      description: Subscription ID which was provided upon subscription creation
+      schema:
+        type: string
     Offset:
       name: offset
       in: query
@@ -894,18 +901,7 @@ components:
       required: false
       schema:
         type: integer
-    SubscriptionId:
-      name: id
-      in: path
-      required: true
-      description: Subscription ID which was provided upon subscription creation
-      schema:
-        type: string
   headers:
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
     X-Quota-Remaining:
       schema:
         type: integer
@@ -914,15 +910,19 @@ components:
       schema:
         type: integer
       description: Request limit per minute
-    X-Quota-Limit:
+    X-RateLimit-Remaining:
       schema:
         type: integer
-      description: Quota limit per minute
+      description: The number of requests left for the time window
     X-RateLimit-Reset:
       schema:
         type: string
         format: date-time
       description: Date and time when rate limit counter resets
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
   securitySchemes:
     BasicAuth:
       type: http

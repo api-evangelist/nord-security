@@ -96,21 +96,6 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    UnprocessableEntity:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Content too large:
-              value:
-                errors:
-                  code: 904175
-                  message: Exceeded the limit of 20 records to check in a batch
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
     ServiceForbidden:
       description: Service is forbidden for the user
       content:
@@ -141,12 +126,22 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
+    UnprocessableEntity:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Content too large:
+              value:
+                errors:
+                  code: 904175
+                  message: Exceeded the limit of 20 records to check in a batch
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
   schemas:
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
     ErrorResponse:
       type: object
       properties:
@@ -159,27 +154,6 @@ components:
             message:
               type: string
               example: Some error
-    ApplicationsCheckResponse:
-      type: array
-      items:
-        type: object
-        properties:
-          name:
-            type: string
-            example: Google Chrome
-          version:
-            type: string
-            example: 1.0.0
-          description:
-            type: string
-            example: Memory leak for big form inputs
-          fixed_version:
-            type: string
-            example: 1.2.0
-          severity:
-            type: number
-            format: float
-            example: 9.5
     ApplicationsCheckRequest:
       type: object
       properties:
@@ -202,6 +176,32 @@ components:
               version:
                 type: string
                 example: 1.0.0
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    ApplicationsCheckResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            example: Google Chrome
+          version:
+            type: string
+            example: 1.0.0
+          description:
+            type: string
+            example: Memory leak for big form inputs
+          fixed_version:
+            type: string
+            example: 1.2.0
+          severity:
+            type: number
+            format: float
+            example: 9.5
   securitySchemes:
     ApiKeyAuth:
       type: http

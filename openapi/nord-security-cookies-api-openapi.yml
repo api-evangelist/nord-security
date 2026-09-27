@@ -74,21 +74,21 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   responses:
-    AuthServiceUnavailable:
-      description: Service unavailable
+    ResourcesExhausted:
+      description: Service resources exhausted
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Service unavailable:
+            Too many requests:
               value:
                 errors:
-                  code: 904178
-                  message: Service temporary unavailable
+                  code: 904174
+                  message: Too many requests, try again later
       headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
+        X-RateLimit-Retry-After:
+          $ref: '#/components/schemas/X-RateLimit-Retry-After'
     UnprocessableEntity:
       description: Unprocessable Entity
       content:
@@ -101,6 +101,21 @@ components:
                 errors:
                   code: 904175
                   message: Exceeded the limit of 20 records to check in a batch
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    AuthServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904178
+                  message: Service temporary unavailable
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -134,27 +149,19 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    ResourcesExhausted:
-      description: Service resources exhausted
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Too many requests:
-              value:
-                errors:
-                  code: 904174
-                  message: Too many requests, try again later
-      headers:
-        X-RateLimit-Retry-After:
-          $ref: '#/components/schemas/X-RateLimit-Retry-After'
   schemas:
-    X-RateLimit-Retry-After:
-      type: string
-      format: rfc3999
-      example: '2024-03-25T15:19:06.000Z'
-      description: Time when requests to the resource aren't limited.
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
     CookiesCheckRequest:
       type: object
       properties:
@@ -164,6 +171,16 @@ components:
             type: string
             example: '12345678'
           description: List of cookie hashes (8 char) to be checked
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    X-RateLimit-Retry-After:
+      type: string
+      format: rfc3999
+      example: '2024-03-25T15:19:06.000Z'
+      description: Time when requests to the resource aren't limited.
     CookiesCheckResponse:
       type: object
       properties:
@@ -179,23 +196,6 @@ components:
               domain:
                 type: string
                 example: the-leaked-domain-here.com
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
   securitySchemes:
     ApiKeyAuth:
       type: http

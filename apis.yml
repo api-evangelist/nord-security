@@ -75,7 +75,7 @@ apis:
   baseURL: https://platform-mcp.nordstellar.com/mcp
   tags:
   - MCP
-  - agent-native
+  - Agent-Native
   - Threat Intelligence
   - GraphQL
   tags_raw:

@@ -127,58 +127,6 @@ paths:
         '503':
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
-  schemas:
-    MlModelInfo:
-      type: object
-      properties:
-        name:
-          type: string
-          description: ML Model name
-          example: model-win32
-        project_id:
-          type: string
-          description: Gitlab project ID where the model is stored
-          example: '1234'
-        project_name:
-          type: string
-          description: Gitlab project name where the model is stored
-          example: quickscan
-        url:
-          type: string
-          format: uri
-          description: Url where the model file is stored
-          example: https://path-to-s3
-        identifier:
-          type: string
-          description: ML Model version identifier
-          example: 2.0.0
-        threshold_low:
-          type: number
-          format: float
-          description: Lower limit for ML model threshold
-          example: 0.78
-        threshold_high:
-          type: number
-          format: float
-          description: Higher limit for ML model threshold
-          example: 0.98
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
   responses:
     AuthServiceUnavailable:
       description: Service unavailable
@@ -225,6 +173,58 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+    MlModelInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ML Model name
+          example: model-win32
+        project_id:
+          type: string
+          description: Gitlab project ID where the model is stored
+          example: '1234'
+        project_name:
+          type: string
+          description: Gitlab project name where the model is stored
+          example: quickscan
+        url:
+          type: string
+          format: uri
+          description: Url where the model file is stored
+          example: https://path-to-s3
+        identifier:
+          type: string
+          description: ML Model version identifier
+          example: 2.0.0
+        threshold_low:
+          type: number
+          format: float
+          description: Lower limit for ML model threshold
+          example: 0.78
+        threshold_high:
+          type: number
+          format: float
+          description: Higher limit for ML model threshold
+          example: 0.98
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
   securitySchemes:
     ApiKeyAuth:
       type: http
