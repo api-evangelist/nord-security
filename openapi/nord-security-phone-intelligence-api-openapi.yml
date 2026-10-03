@@ -471,100 +471,29 @@ paths:
       security:
       - ApiKeyAuth: []
 components:
+  headers:
+    X-RateLimit-Reset:
+      schema:
+        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
   schemas:
-    DatabaseDataItem:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Identifier in the following format {domain}_{top level domain}
-          example: example_com
-        id:
-          type: string
-          description: Systemic hex ID of the record
-          example: 66c4d3912b183418f7743576
-        published_date:
-          type: string
-          description: Date when the database data was published onto the asset
-          example: '2025-01-20T19:04:39Z'
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              key:
-                type: string
-                description: Key of the data point, complete list can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
-                example: password
-              value:
-                type: array
-                items:
-                  type: string
-                description: Value of the data point
-                example:
-                - password1
-                - password2
-        risk_assessment:
-          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    Phone:
-      required:
-      - data
-      type: object
-      properties:
-        phones_sha256:
-          type: array
-          description: A list of SHA256 hashed phone numbers to lookup
-          items:
-            type: string
-          example:
-          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
-        limit:
-          description: Default is the maximum limit of 100 records
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    PhonesMalwareLogsSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneMalwareLogsSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    PhonesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    PhoneDatabasesSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
-        phone:
-          type: string
-          example: '13855550193'
-          description: International format phone number
-        databases:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseDataItem'
     MalwareDataItem:
       type: object
       properties:
@@ -933,53 +862,6 @@ components:
               example: identified
         risk_assessment:
           $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    PhonesDatabasesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneDatabasesSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    PhoneSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
-        phone:
-          type: string
-          example: '13855550193'
-          description: International format phone number
-        databases:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseDataItem'
-        malware_logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareDataItem'
-        risk_assessment:
-          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    PhoneMalwareLogsSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
-        phone:
-          type: string
-          example: '13855550193'
-          description: International format phone number
-        malware_logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareDataItem'
     EmailSample:
       type: object
       properties:
@@ -1025,6 +907,106 @@ components:
                     type: string
                     description: Recommendation text
                     example: Avoid using your publicly known information in passwords. Threat actors routinely use other known information, such as email addresses, phone numbers, pet names, dates of birth, first/last names and other data in stuffing attacks to uncover passwords that were otherwise never leaked online.
+    PhonesDatabasesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    DatabaseDataItem:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Identifier in the following format {domain}_{top level domain}
+          example: example_com
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 66c4d3912b183418f7743576
+        published_date:
+          type: string
+          description: Date when the database data was published onto the asset
+          example: '2025-01-20T19:04:39Z'
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                description: Key of the data point, complete list can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
+                example: password
+              value:
+                type: array
+                items:
+                  type: string
+                description: Value of the data point
+                example:
+                - password1
+                - password2
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    Phone:
+      required:
+      - data
+      type: object
+      properties:
+        phones_sha256:
+          type: array
+          description: A list of SHA256 hashed phone numbers to lookup
+          items:
+            type: string
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        limit:
+          description: Default is the maximum limit of 100 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhoneDatabasesSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
+          type: string
+          example: '13855550193'
+          description: International format phone number
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+    PhoneSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
+          type: string
+          example: '13855550193'
+          description: International format phone number
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
     MalwareLogSystemInfoSampleItem:
       type: object
       properties:
@@ -1100,28 +1082,46 @@ components:
           items:
             type: string
             example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
-  headers:
-    X-Quota-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the period
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Request limit per minute
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
-    X-RateLimit-Reset:
-      schema:
-        type: string
-        format: date-time
-      description: Date and time when rate limit counter resets
-    X-Quota-Limit:
-      schema:
-        type: integer
-      description: Quota limit per minute
+    PhoneMalwareLogsSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
+          type: string
+          example: '13855550193'
+          description: International format phone number
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+    PhonesSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhonesMalwareLogsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneMalwareLogsSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
   parameters:
     Phone:
       name: phone-sha256

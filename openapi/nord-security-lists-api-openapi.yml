@@ -344,21 +344,6 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   schemas:
-    Sha1Checksum:
-      type: string
-      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
-    ListVersion:
-      type: string
-      example: 20200501120000
-    ListCategory:
-      type: string
-      enum:
-      - adblock
-      - tracking
-      - malwaresec
-      - broken-apps
-      - urlstripping
-      - cookies
     ErrorResponse:
       type: object
       properties:
@@ -371,19 +356,6 @@ components:
             message:
               type: string
               example: Some error
-    ListFormat:
-      type: string
-      enum:
-      - abp
-      - zone
-      - domain
-      - queryparam
-      description: List content format
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
     CybersecList:
       type: object
       properties:
@@ -406,6 +378,34 @@ components:
         language:
           type: string
           example: en
+    ListVersion:
+      type: string
+      example: 20200501120000
+    ListCategory:
+      type: string
+      enum:
+      - adblock
+      - tracking
+      - malwaresec
+      - broken-apps
+      - urlstripping
+      - cookies
+    ListIdentifier:
+      type: string
+      example: kPayrrMJP0d4nEPl
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    ListFormat:
+      type: string
+      enum:
+      - abp
+      - zone
+      - domain
+      - queryparam
+      description: List content format
     ListAction:
       type: string
       enum:
@@ -414,44 +414,22 @@ components:
       - no-mitm
       - redirect
       description: Action to take when ant item is matched in this list
-    ListIdentifier:
+    Sha1Checksum:
       type: string
-      example: kPayrrMJP0d4nEPl
-  parameters:
-    ListCategory:
-      name: listCategory
-      in: path
-      schema:
-        $ref: '#/components/schemas/ListCategory'
-      description: List category
-      required: true
-    ListVersion:
-      name: version
-      in: query
-      schema:
-        $ref: '#/components/schemas/ListVersion'
-      description: List version
-      required: false
-    ListIdentifier:
-      name: listIdentifier
-      in: path
-      schema:
-        $ref: '#/components/schemas/ListIdentifier'
-      description: List identfier
-      required: true
+      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
   responses:
-    AuthServiceUnavailable:
-      description: Service unavailable
+    InvalidCredentials:
+      description: Invalid credentials
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Service unavailable:
+            Invalid credentials:
               value:
                 errors:
-                  code: 904178
-                  message: Service temporary unavailable
+                  code: 100104
+                  message: Invalid credentials
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -470,21 +448,43 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    InvalidCredentials:
-      description: Invalid credentials
+    AuthServiceUnavailable:
+      description: Service unavailable
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Invalid credentials:
+            Service unavailable:
               value:
                 errors:
-                  code: 100104
-                  message: Invalid credentials
+                  code: 904178
+                  message: Service temporary unavailable
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
+  parameters:
+    ListIdentifier:
+      name: listIdentifier
+      in: path
+      schema:
+        $ref: '#/components/schemas/ListIdentifier'
+      description: List identfier
+      required: true
+    ListCategory:
+      name: listCategory
+      in: path
+      schema:
+        $ref: '#/components/schemas/ListCategory'
+      description: List category
+      required: true
+    ListVersion:
+      name: version
+      in: query
+      schema:
+        $ref: '#/components/schemas/ListVersion'
+      description: List version
+      required: false
   securitySchemes:
     ApiKeyAuth:
       type: http

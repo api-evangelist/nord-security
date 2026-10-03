@@ -69,21 +69,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ScanJobsResponse:
+    HTTPValidationError:
       properties:
-        domain:
-          type: string
-          title: Domain
-        scan_jobs:
+        detail:
           items:
-            $ref: '#/components/schemas/ScanJobResult'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Scan Jobs
+          title: Detail
       type: object
-      required:
-      - domain
-      - scan_jobs
-      title: ScanJobsResponse
+      title: HTTPValidationError
     ScanJobResult:
       properties:
         id:
@@ -111,15 +105,6 @@ components:
       - date_updated
       - finished
       title: ScanJobResult
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -141,6 +126,21 @@ components:
       - msg
       - type
       title: ValidationError
+    ScanJobsResponse:
+      properties:
+        domain:
+          type: string
+          title: Domain
+        scan_jobs:
+          items:
+            $ref: '#/components/schemas/ScanJobResult'
+          type: array
+          title: Scan Jobs
+      type: object
+      required:
+      - domain
+      - scan_jobs
+      title: ScanJobsResponse
     SubmitScanResponse:
       properties:
         scan_job_id:

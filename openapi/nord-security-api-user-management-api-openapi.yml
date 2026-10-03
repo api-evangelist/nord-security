@@ -253,6 +253,20 @@ paths:
       security:
       - BasicAuth: []
 components:
+  headers:
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
+    X-RateLimit-Reset:
+      schema:
+        type: string
+        format: date-time
+      description: Date and time when rate limit counter resets
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Request limit per minute
   schemas:
     AccessToken:
       type: object
@@ -263,6 +277,13 @@ components:
         token:
           type: string
           example: a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a
+    GetAccessToken:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Client token ID
+          example: my-token
     UserDetails:
       type: object
       properties:
@@ -310,27 +331,6 @@ components:
           type: string
           description: Subscription webhook endpoint BasicAuth password (hidden)
           example: password
-    GetAccessToken:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Client token ID
-          example: my-token
-  headers:
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Request limit per minute
-    X-RateLimit-Reset:
-      schema:
-        type: string
-        format: date-time
-      description: Date and time when rate limit counter resets
   parameters:
     TokenId:
       name: id

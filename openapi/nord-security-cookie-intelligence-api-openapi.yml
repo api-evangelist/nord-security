@@ -163,15 +163,6 @@ paths:
       security:
       - ApiKeyAuth: []
 components:
-  headers:
-    X-Quota-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the period
-    X-Quota-Limit:
-      schema:
-        type: integer
-      description: Quota limit per minute
   schemas:
     ZeroKnowledgeCookieSample:
       type: object
@@ -232,6 +223,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ZeroKnowledgeCookieSample'
+  headers:
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
   parameters:
     HashRange:
       name: hash-range

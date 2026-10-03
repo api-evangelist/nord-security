@@ -385,75 +385,27 @@ paths:
       security:
       - ApiKeyAuth: []
 components:
+  parameters:
+    Offset:
+      name: offset
+      in: query
+      description: Offset the results by an integer
+      schema:
+        type: integer
+    Limit:
+      name: limit
+      in: query
+      description: Limit the count of records in results
+      required: false
+      schema:
+        type: integer
+    Domain:
+      name: domain
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
-    CredentialDataItem:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Systemic hex ID of the record
-          example: 66c4d3912b183418f7743576
-        passwords:
-          type: array
-          items:
-            type: string
-          example:
-          - password1
-          - password2
-        published_date:
-          type: string
-          description: Date when the credential list data was published onto the asset
-          example: '2025-01-20T19:04:39Z'
-        combos:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-                example: example.com
-              password:
-                type: string
-                example: password1
-              url:
-                type: string
-                example: https://example.com/login
-        risk_assessment:
-          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    DatabaseDataItem:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Identifier in the following format {domain}_{top level domain}
-          example: example_com
-        id:
-          type: string
-          description: Systemic hex ID of the record
-          example: 66c4d3912b183418f7743576
-        published_date:
-          type: string
-          description: Date when the database data was published onto the asset
-          example: '2025-01-20T19:04:39Z'
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              key:
-                type: string
-                description: Key of the data point, complete list can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
-                example: password
-              value:
-                type: array
-                items:
-                  type: string
-                description: Value of the data point
-                example:
-                - password1
-                - password2
-        risk_assessment:
-          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
     EmailSample:
       type: object
       properties:
@@ -520,97 +472,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CredentialDataItem'
-    DatabaseSample:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Identifier in the following format {domain}_{top level domain}
-          example: example_com
-        id:
-          type: string
-          description: Systemic hex ID of the record
-          example: 6698de5af71724f56f4076df
-        breach_date:
-          type: string
-          example: '2024-01-16T00:00:00Z'
-        data_keys:
-          type: array
-          items:
-            type: string
-          description: List of data keys that are exposed in the database, all possible values can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
-          example:
-          - alternate_email
-          - bio
-          - email
-          - homepage
-          - name
-          - profile_picture
-          - username
-        description:
-          type: string
-          example: On July 18, 2024, a database related to the example.com website was found circulating the web. The potential data leak reportedly occurred on January 16, 2024. Over 15 million email addresses were exposed, together with social media, credential and personal data. Leaked records include username, name, home page, bio, Parent email address and Profile picture's URL. The validity of the data exposed couldn't be verified. Yet we're still informing you about a potential data leak – but keep in mind there's a chance of it being a false positive.
-        logo_url:
-          type: string
-          example: null
-        name:
-          type: string
-          example: example.com
-        published_date:
-          type: string
-          example: '2024-07-18T09:20:26Z'
-        unique_email_count:
-          type: integer
-          example: 15111576
-        unique_phone_count:
-          type: integer
-          example: 123516
-        type:
-          type: string
-          description: Type of the database - identified (has a domain or name), unidentified or collection
-          example: identified
-        domain:
-          type: string
-          example: example.com
-    EmailStatistics:
-      type: object
-      properties:
-        unique_email_count:
-          type: integer
-          description: Number of unique email addresses that were affected by any incident (This number is always **1** for single email statistics)
-          example: 1
-        unique_password_count:
-          type: integer
-          description: Number of unique passwords
-          example: 3
-        password_count:
-          type: integer
-          description: Total number of passwords
-          example: 5
-        breached_email_count:
-          type: integer
-          description: Total number of email appearances in data breaches
-          example: 4
-        malware_affected_email_count:
-          type: integer
-          description: Total number of email appearances in malware infections
-          example: 1
-        stolen_email_count:
-          type: integer
-          description: Total number of email appearances in stolen credential lists
-          example: 2
-        database_count:
-          type: integer
-          description: Number of unique data breaches that this email appears in
-          example: 3
-        malware_infection_count:
-          type: integer
-          description: Number of unique malware infections that this email appears in
-          example: 1
-        credential_list_count:
-          type: integer
-          description: Number of unique stolen credential lists that this email appears in
-          example: 2
     MalwareDataItem:
       type: object
       properties:
@@ -979,19 +840,131 @@ components:
               example: identified
         risk_assessment:
           $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    EmailsSample:
+    DatabaseSample:
       type: object
       properties:
-        data:
+        identifier:
+          type: string
+          description: Identifier in the following format {domain}_{top level domain}
+          example: example_com
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 6698de5af71724f56f4076df
+        breach_date:
+          type: string
+          example: '2024-01-16T00:00:00Z'
+        data_keys:
           type: array
           items:
-            $ref: '#/components/schemas/EmailSample'
-        limit:
+            type: string
+          description: List of data keys that are exposed in the database, all possible values can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
+          example:
+          - alternate_email
+          - bio
+          - email
+          - homepage
+          - name
+          - profile_picture
+          - username
+        description:
+          type: string
+          example: On July 18, 2024, a database related to the example.com website was found circulating the web. The potential data leak reportedly occurred on January 16, 2024. Over 15 million email addresses were exposed, together with social media, credential and personal data. Leaked records include username, name, home page, bio, Parent email address and Profile picture's URL. The validity of the data exposed couldn't be verified. Yet we're still informing you about a potential data leak – but keep in mind there's a chance of it being a false positive.
+        logo_url:
+          type: string
+          example: null
+        name:
+          type: string
+          example: example.com
+        published_date:
+          type: string
+          example: '2024-07-18T09:20:26Z'
+        unique_email_count:
           type: integer
-          example: 10
-        offset:
+          example: 15111576
+        unique_phone_count:
           type: integer
-          example: 0
+          example: 123516
+        type:
+          type: string
+          description: Type of the database - identified (has a domain or name), unidentified or collection
+          example: identified
+        domain:
+          type: string
+          example: example.com
+    CredentialDataItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 66c4d3912b183418f7743576
+        passwords:
+          type: array
+          items:
+            type: string
+          example:
+          - password1
+          - password2
+        published_date:
+          type: string
+          description: Date when the credential list data was published onto the asset
+          example: '2025-01-20T19:04:39Z'
+        combos:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+                example: example.com
+              password:
+                type: string
+                example: password1
+              url:
+                type: string
+                example: https://example.com/login
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    EmailStatistics:
+      type: object
+      properties:
+        unique_email_count:
+          type: integer
+          description: Number of unique email addresses that were affected by any incident (This number is always **1** for single email statistics)
+          example: 1
+        unique_password_count:
+          type: integer
+          description: Number of unique passwords
+          example: 3
+        password_count:
+          type: integer
+          description: Total number of passwords
+          example: 5
+        breached_email_count:
+          type: integer
+          description: Total number of email appearances in data breaches
+          example: 4
+        malware_affected_email_count:
+          type: integer
+          description: Total number of email appearances in malware infections
+          example: 1
+        stolen_email_count:
+          type: integer
+          description: Total number of email appearances in stolen credential lists
+          example: 2
+        database_count:
+          type: integer
+          description: Number of unique data breaches that this email appears in
+          example: 3
+        malware_infection_count:
+          type: integer
+          description: Number of unique malware infections that this email appears in
+          example: 1
+        credential_list_count:
+          type: integer
+          description: Number of unique stolen credential lists that this email appears in
+          example: 2
     EmailsLiteSample:
       type: object
       properties:
@@ -1050,6 +1023,53 @@ components:
                   application:
                     type: string
                     example: Google Chrome
+    DatabaseDataItem:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Identifier in the following format {domain}_{top level domain}
+          example: example_com
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 66c4d3912b183418f7743576
+        published_date:
+          type: string
+          description: Date when the database data was published onto the asset
+          example: '2025-01-20T19:04:39Z'
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                description: Key of the data point, complete list can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
+                example: password
+              value:
+                type: array
+                items:
+                  type: string
+                description: Value of the data point
+                example:
+                - password1
+                - password2
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    EmailsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
     MalwareLogSystemInfoSampleItem:
       type: object
       properties:
@@ -1126,47 +1146,27 @@ components:
             type: string
             example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
   headers:
-    X-Quota-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the period
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Request limit per minute
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the time window
     X-RateLimit-Reset:
       schema:
         type: string
         format: date-time
       description: Date and time when rate limit counter resets
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the time window
     X-Quota-Limit:
       schema:
         type: integer
       description: Quota limit per minute
-  parameters:
-    Domain:
-      name: domain
-      in: path
-      required: true
-      schema:
-        type: string
-    Offset:
-      name: offset
-      in: query
-      description: Offset the results by an integer
+    X-RateLimit-Limit:
       schema:
         type: integer
-    Limit:
-      name: limit
-      in: query
-      description: Limit the count of records in results
-      required: false
-      schema:
-        type: integer
+      description: Request limit per minute
   securitySchemes:
     BasicAuth:
       type: http

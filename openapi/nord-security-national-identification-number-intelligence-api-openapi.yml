@@ -337,6 +337,13 @@ components:
           example:
           - '00000'
           - fffff
+    ZeroKnowledgeMultiSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZeroKnowledgeSample'
     ZeroKnowledgeSample:
       type: object
       properties:
@@ -371,17 +378,6 @@ components:
                       - password
                       - nin
                       - surname
-    ZeroKnowledgeSaltSample:
-      type: object
-      properties:
-        sha256_prefix:
-          type: string
-          example: 915af
-          description: Corresponding input for generated salt
-        salt:
-          type: string
-          description: Zero knowledge lookup salt, calculated using request input
-          example: 0e4f4b0e81bad42097299d18869f8d7f
     HashRangesSample:
       required:
       - hash_ranges
@@ -407,13 +403,17 @@ components:
         offset:
           type: integer
           example: 0
-    ZeroKnowledgeMultiSample:
+    ZeroKnowledgeSaltSample:
       type: object
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ZeroKnowledgeSample'
+        sha256_prefix:
+          type: string
+          example: 915af
+          description: Corresponding input for generated salt
+        salt:
+          type: string
+          description: Zero knowledge lookup salt, calculated using request input
+          example: 0e4f4b0e81bad42097299d18869f8d7f
     ZeroKnowledgeSaltsSample:
       type: object
       properties:
@@ -422,12 +422,6 @@ components:
           items:
             $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
   parameters:
-    Hash:
-      name: hash
-      in: path
-      required: true
-      schema:
-        type: string
     HashType:
       name: hash-type
       in: path
@@ -444,6 +438,12 @@ components:
         type: string
     HashRange:
       name: hash-range
+      in: path
+      required: true
+      schema:
+        type: string
+    Hash:
+      name: hash
       in: path
       required: true
       schema:
