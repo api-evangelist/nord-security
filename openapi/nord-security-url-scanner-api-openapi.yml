@@ -182,43 +182,6 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
-    CybersecList:
-      type: object
-      properties:
-        action:
-          $ref: '#/components/schemas/ListAction'
-        category:
-          $ref: '#/components/schemas/ListCategory'
-        format:
-          $ref: '#/components/schemas/ListFormat'
-        identifier:
-          $ref: '#/components/schemas/ListIdentifier'
-        latest_version:
-          $ref: '#/components/schemas/ListVersion'
-        latest_version_checksum:
-          $ref: '#/components/schemas/Sha1Checksum'
-        uri:
-          description: List content download URL
-          type: string
-          example: /v1/cybersec/lists/adblock/kPayrrMJP0d4nEPl
-        language:
-          type: string
-          example: en
-    ListVersion:
-      type: string
-      example: 20200501120000
     ListCategory:
       type: string
       enum:
@@ -228,14 +191,31 @@ components:
       - broken-apps
       - urlstripping
       - cookies
+    ListFormat:
+      type: string
+      enum:
+      - abp
+      - zone
+      - domain
+      - queryparam
+      description: List content format
+    ListVersion:
+      type: string
+      example: 20200501120000
+    ListAction:
+      type: string
+      enum:
+      - block
+      - allow
+      - no-mitm
+      - redirect
+      description: Action to take when ant item is matched in this list
     ListIdentifier:
       type: string
       example: kPayrrMJP0d4nEPl
-    X-Correlation-ID:
+    Sha1Checksum:
       type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
+      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
     UrlscannerConfigResponse:
       type: object
       properties:
@@ -283,41 +263,46 @@ components:
               minimum: 0
             unit:
               type: string
-    ListFormat:
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+    X-Correlation-ID:
       type: string
-      enum:
-      - abp
-      - zone
-      - domain
-      - queryparam
-      description: List content format
-    ListAction:
-      type: string
-      enum:
-      - block
-      - allow
-      - no-mitm
-      - redirect
-      description: Action to take when ant item is matched in this list
-    Sha1Checksum:
-      type: string
-      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    CybersecList:
+      type: object
+      properties:
+        action:
+          $ref: '#/components/schemas/ListAction'
+        category:
+          $ref: '#/components/schemas/ListCategory'
+        format:
+          $ref: '#/components/schemas/ListFormat'
+        identifier:
+          $ref: '#/components/schemas/ListIdentifier'
+        latest_version:
+          $ref: '#/components/schemas/ListVersion'
+        latest_version_checksum:
+          $ref: '#/components/schemas/Sha1Checksum'
+        uri:
+          description: List content download URL
+          type: string
+          example: /v1/cybersec/lists/adblock/kPayrrMJP0d4nEPl
+        language:
+          type: string
+          example: en
   responses:
-    InvalidCredentials:
-      description: Invalid credentials
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Invalid credentials:
-              value:
-                errors:
-                  code: 100104
-                  message: Invalid credentials
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
     ServiceForbidden:
       description: Service is forbidden for the user
       content:
@@ -345,6 +330,21 @@ components:
                 errors:
                   code: 904178
                   message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'

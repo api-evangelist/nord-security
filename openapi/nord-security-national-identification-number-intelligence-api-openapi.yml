@@ -324,6 +324,24 @@ paths:
       - ApiKeyAuth: []
 components:
   schemas:
+    ZeroKnowledgeSaltSample:
+      type: object
+      properties:
+        sha256_prefix:
+          type: string
+          example: 915af
+          description: Corresponding input for generated salt
+        salt:
+          type: string
+          description: Zero knowledge lookup salt, calculated using request input
+          example: 0e4f4b0e81bad42097299d18869f8d7f
+    ZeroKnowledgeSaltsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
     ZeroKnowledgeSaltsEndpoint:
       required:
       - sha256_prefixes
@@ -337,13 +355,6 @@ components:
           example:
           - '00000'
           - fffff
-    ZeroKnowledgeMultiSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ZeroKnowledgeSample'
     ZeroKnowledgeSample:
       type: object
       properties:
@@ -403,30 +414,31 @@ components:
         offset:
           type: integer
           example: 0
-    ZeroKnowledgeSaltSample:
-      type: object
-      properties:
-        sha256_prefix:
-          type: string
-          example: 915af
-          description: Corresponding input for generated salt
-        salt:
-          type: string
-          description: Zero knowledge lookup salt, calculated using request input
-          example: 0e4f4b0e81bad42097299d18869f8d7f
-    ZeroKnowledgeSaltsSample:
+    ZeroKnowledgeMultiSample:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
+            $ref: '#/components/schemas/ZeroKnowledgeSample'
   parameters:
     HashType:
       name: hash-type
       in: path
       required: true
       description: "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints.  "
+      schema:
+        type: string
+    Hash:
+      name: hash
+      in: path
+      required: true
+      schema:
+        type: string
+    HashRange:
+      name: hash-range
+      in: path
+      required: true
       schema:
         type: string
     HashPrefix:
@@ -436,27 +448,15 @@ components:
       description: First 5 symbols of SHA256 hash of the lookup value
       schema:
         type: string
-    HashRange:
-      name: hash-range
-      in: path
-      required: true
-      schema:
-        type: string
-    Hash:
-      name: hash
-      in: path
-      required: true
-      schema:
-        type: string
   headers:
-    X-Quota-Limit:
-      schema:
-        type: integer
-      description: Quota limit per minute
     X-Quota-Remaining:
       schema:
         type: integer
       description: The number of requests left for the period
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
   securitySchemes:
     BasicAuth:
       type: http

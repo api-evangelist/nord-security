@@ -129,19 +129,6 @@ paths:
       - ApiKeyAuth: []
 components:
   schemas:
-    ZeroKnowledgeSaltsEndpoint:
-      required:
-      - sha256_prefixes
-      type: object
-      properties:
-        sha256_prefixes:
-          type: array
-          description: A list of first 5 symbols of SHA256 hashes of the lookup values
-          items:
-            type: string
-          example:
-          - '00000'
-          - fffff
     ZeroKnowledgeSaltSample:
       type: object
       properties:
@@ -160,6 +147,28 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
+    ZeroKnowledgeSaltsEndpoint:
+      required:
+      - sha256_prefixes
+      type: object
+      properties:
+        sha256_prefixes:
+          type: array
+          description: A list of first 5 symbols of SHA256 hashes of the lookup values
+          items:
+            type: string
+          example:
+          - '00000'
+          - fffff
+  headers:
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
   parameters:
     HashPrefix:
       name: sha256-prefix
@@ -168,15 +177,6 @@ components:
       description: First 5 symbols of SHA256 hash of the lookup value
       schema:
         type: string
-  headers:
-    X-Quota-Limit:
-      schema:
-        type: integer
-      description: Quota limit per minute
-    X-Quota-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the period
   securitySchemes:
     BasicAuth:
       type: http

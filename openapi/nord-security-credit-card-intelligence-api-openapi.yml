@@ -454,78 +454,64 @@ paths:
       security:
       - ApiKeyAuth: []
 components:
+  headers:
+    X-Quota-Limit:
+      schema:
+        type: integer
+      description: Quota limit per minute
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
   schemas:
-    ZeroKnowledgeSaltsEndpoint:
-      required:
-      - sha256_prefixes
+    ZeroKnowledgeSaltsSample:
       type: object
-      properties:
-        sha256_prefixes:
-          type: array
-          description: A list of first 5 symbols of SHA256 hashes of the lookup values
-          items:
-            type: string
-          example:
-          - '00000'
-          - fffff
-    ZeroKnowledgeMultiLiteSample:
-      type: object
-      description: Paginated bulk credit card zero-knowledge response (lite variant with malware log details).
       properties:
         data:
           type: array
-          description: One entry per requested hash range (structure matches lite CC-by-hash grouping).
           items:
-            $ref: '#/components/schemas/ZeroKnowledgeLiteSample'
-        limit:
-          type: integer
-          description: Pagination limit applied to this response (validated against the maximum bulk size).
-          example: 10
-        offset:
-          type: integer
-          description: Pagination offset applied to this response.
-          example: 0
-    ZeroKnowledgeSaltSample:
+            $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
+    ZeroKnowledgeSample:
       type: object
       properties:
-        sha256_prefix:
+        hash:
           type: string
-          example: 915af
-          description: Corresponding input for generated salt
-        salt:
-          type: string
-          description: Zero knowledge lookup salt, calculated using request input
-          example: 0e4f4b0e81bad42097299d18869f8d7f
-    MalwareLogDetailsLite:
+        data:
+          type: array
+          description: Contains data grouped by **origin**.
+          items:
+            type: object
+            properties:
+              origin:
+                type: string
+                example: databases
+                description: Contains data origin (either **databases** or **malware_logs**)
+              data:
+                type: array
+                description: Contains origin items with leaked data keys.
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Origin record id.
+                      example: 66c4d3912b183418f7743576
+                    compromised_data:
+                      type: array
+                      description: Compromised data keys
+                      items:
+                        type: string
+                      example:
+                      - password
+                      - nin
+                      - surname
+    ZeroKnowledgeMultiSample:
       type: object
-      description: Malware log metadata attached when **origin** is **malware_logs** and details were loaded from the malware-log service. For other origins this object is present but typically has empty or default-shaped fields.
       properties:
-        id:
-          type: string
-          description: Malware log document id.
-          example: 66c4d3912b183418f7743576
-        identifier:
-          type: string
-          description: Malware log identifier (e.g. infection or log label).
-          example: log-2024-01-redline
-        type:
-          type: string
-          description: Malware or stealer family/type when known.
-          example: redline
-        published_date:
-          type: string
-          format: date-time
-          nullable: true
-          description: When the malware log was published.
-          example: '2024-01-15T10:30:00Z'
-        updated_date:
-          type: string
-          format: date-time
-          nullable: true
-          description: When the malware log record was last updated.
-          example: '2024-01-16T08:00:00Z'
-        system_info:
-          $ref: '#/components/schemas/MalwareLogSystemInfoSampleItem'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZeroKnowledgeSample'
     ZeroKnowledgeLiteSample:
       type: object
       properties:
@@ -564,20 +550,6 @@ components:
                       - surname
                     malware_details:
                       $ref: '#/components/schemas/MalwareLogDetailsLite'
-    ZeroKnowledgeMultiSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ZeroKnowledgeSample'
-    ZeroKnowledgeSaltsSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
     HashRangesSample:
       required:
       - hash_ranges
@@ -678,40 +650,77 @@ components:
           items:
             type: string
             example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
-    ZeroKnowledgeSample:
+    ZeroKnowledgeSaltSample:
       type: object
       properties:
-        hash:
+        sha256_prefix:
           type: string
+          example: 915af
+          description: Corresponding input for generated salt
+        salt:
+          type: string
+          description: Zero knowledge lookup salt, calculated using request input
+          example: 0e4f4b0e81bad42097299d18869f8d7f
+    ZeroKnowledgeMultiLiteSample:
+      type: object
+      description: Paginated bulk credit card zero-knowledge response (lite variant with malware log details).
+      properties:
         data:
           type: array
-          description: Contains data grouped by **origin**.
+          description: One entry per requested hash range (structure matches lite CC-by-hash grouping).
           items:
-            type: object
-            properties:
-              origin:
-                type: string
-                example: databases
-                description: Contains data origin (either **databases** or **malware_logs**)
-              data:
-                type: array
-                description: Contains origin items with leaked data keys.
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Origin record id.
-                      example: 66c4d3912b183418f7743576
-                    compromised_data:
-                      type: array
-                      description: Compromised data keys
-                      items:
-                        type: string
-                      example:
-                      - password
-                      - nin
-                      - surname
+            $ref: '#/components/schemas/ZeroKnowledgeLiteSample'
+        limit:
+          type: integer
+          description: Pagination limit applied to this response (validated against the maximum bulk size).
+          example: 10
+        offset:
+          type: integer
+          description: Pagination offset applied to this response.
+          example: 0
+    ZeroKnowledgeSaltsEndpoint:
+      required:
+      - sha256_prefixes
+      type: object
+      properties:
+        sha256_prefixes:
+          type: array
+          description: A list of first 5 symbols of SHA256 hashes of the lookup values
+          items:
+            type: string
+          example:
+          - '00000'
+          - fffff
+    MalwareLogDetailsLite:
+      type: object
+      description: Malware log metadata attached when **origin** is **malware_logs** and details were loaded from the malware-log service. For other origins this object is present but typically has empty or default-shaped fields.
+      properties:
+        id:
+          type: string
+          description: Malware log document id.
+          example: 66c4d3912b183418f7743576
+        identifier:
+          type: string
+          description: Malware log identifier (e.g. infection or log label).
+          example: log-2024-01-redline
+        type:
+          type: string
+          description: Malware or stealer family/type when known.
+          example: redline
+        published_date:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the malware log was published.
+          example: '2024-01-15T10:30:00Z'
+        updated_date:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the malware log record was last updated.
+          example: '2024-01-16T08:00:00Z'
+        system_info:
+          $ref: '#/components/schemas/MalwareLogSystemInfoSampleItem'
     ZeroKnowledgePartialCreditCardsSample:
       type: object
       properties:
@@ -720,20 +729,6 @@ components:
           description: Count of compromised credit cards that match partial hash
           example: 10
   parameters:
-    HashType:
-      name: hash-type
-      in: path
-      required: true
-      description: "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints.  "
-      schema:
-        type: string
-    HashPrefix:
-      name: sha256-prefix
-      in: path
-      required: true
-      description: First 5 symbols of SHA256 hash of the lookup value
-      schema:
-        type: string
     Hash:
       name: hash
       in: path
@@ -746,15 +741,20 @@ components:
       required: true
       schema:
         type: string
-  headers:
-    X-Quota-Remaining:
+    HashPrefix:
+      name: sha256-prefix
+      in: path
+      required: true
+      description: First 5 symbols of SHA256 hash of the lookup value
       schema:
-        type: integer
-      description: The number of requests left for the period
-    X-Quota-Limit:
+        type: string
+    HashType:
+      name: hash-type
+      in: path
+      required: true
+      description: "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints.  "
       schema:
-        type: integer
-      description: Quota limit per minute
+        type: string
   securitySchemes:
     BasicAuth:
       type: http

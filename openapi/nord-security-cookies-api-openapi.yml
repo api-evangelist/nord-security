@@ -73,84 +73,7 @@ paths:
         '503':
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
-  schemas:
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
-    CookiesCheckResponse:
-      type: object
-      properties:
-        cookies:
-          type: array
-          items:
-            type: object
-            properties:
-              hash:
-                type: string
-                example: 7fdd4cb8d64ca4f37e697cf77d580feaf3823d62860b3fd3429108332feea153
-                description: This hash is composed by a hashed combination of domain + cookie-hash
-              domain:
-                type: string
-                example: the-leaked-domain-here.com
-    X-RateLimit-Retry-After:
-      type: string
-      format: rfc3999
-      example: '2024-03-25T15:19:06.000Z'
-      description: Time when requests to the resource aren't limited.
-    CookiesCheckRequest:
-      type: object
-      properties:
-        short_cookie_sha256:
-          type: array
-          items:
-            type: string
-            example: '12345678'
-          description: List of cookie hashes (8 char) to be checked
   responses:
-    UnprocessableEntity:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Content too large:
-              value:
-                errors:
-                  code: 904175
-                  message: Exceeded the limit of 20 records to check in a batch
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    InvalidCredentials:
-      description: Invalid credentials
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Invalid credentials:
-              value:
-                errors:
-                  code: 100104
-                  message: Invalid credentials
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
     ServiceForbidden:
       description: Service is forbidden for the user
       content:
@@ -163,6 +86,36 @@ components:
                 errors:
                   code: 100166
                   message: Service is forbidden for the user
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    AuthServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904178
+                  message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    UnprocessableEntity:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Content too large:
+              value:
+                errors:
+                  code: 904175
+                  message: Exceeded the limit of 20 records to check in a batch
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -181,21 +134,68 @@ components:
       headers:
         X-RateLimit-Retry-After:
           $ref: '#/components/schemas/X-RateLimit-Retry-After'
-    AuthServiceUnavailable:
-      description: Service unavailable
+    InvalidCredentials:
+      description: Invalid credentials
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Service unavailable:
+            Invalid credentials:
               value:
                 errors:
-                  code: 904178
-                  message: Service temporary unavailable
+                  code: 100104
+                  message: Invalid credentials
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
+  schemas:
+    CookiesCheckRequest:
+      type: object
+      properties:
+        short_cookie_sha256:
+          type: array
+          items:
+            type: string
+            example: '12345678'
+          description: List of cookie hashes (8 char) to be checked
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+    X-RateLimit-Retry-After:
+      type: string
+      format: rfc3999
+      example: '2024-03-25T15:19:06.000Z'
+      description: Time when requests to the resource aren't limited.
+    CookiesCheckResponse:
+      type: object
+      properties:
+        cookies:
+          type: array
+          items:
+            type: object
+            properties:
+              hash:
+                type: string
+                example: 7fdd4cb8d64ca4f37e697cf77d580feaf3823d62860b3fd3429108332feea153
+                description: This hash is composed by a hashed combination of domain + cookie-hash
+              domain:
+                type: string
+                example: the-leaked-domain-here.com
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
   securitySchemes:
     ApiKeyAuth:
       type: http

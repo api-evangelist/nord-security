@@ -80,7 +80,90 @@ paths:
         '503':
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
+  responses:
+    ServiceForbidden:
+      description: Service is forbidden for the user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service is forbidden for the user:
+              value:
+                errors:
+                  code: 100166
+                  message: Service is forbidden for the user
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    AuthServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904178
+                  message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    UnprocessableEntity:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Content too large:
+              value:
+                errors:
+                  code: 904175
+                  message: Exceeded the limit of 20 records to check in a batch
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
   schemas:
+    ApplicationsCheckRequest:
+      type: object
+      properties:
+        os:
+          type: string
+          description: OS from which applications are being checked. This field is optional, used for logging only, and will be used for filtering in next phases
+          example: Windows
+        os_version:
+          type: string
+          description: OS version from which applications are being checked. This field is optional, used for logging only, and will be used for filtering in next phases
+          example: 11.0.1
+        applications:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: Google Chrome
+              version:
+                type: string
+                example: 1.0.0
     ErrorResponse:
       type: object
       properties:
@@ -119,89 +202,6 @@ components:
       format: uuid
       example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
       description: Unique identifier for correlating requests, responses and logs across distributed services
-    ApplicationsCheckRequest:
-      type: object
-      properties:
-        os:
-          type: string
-          description: OS from which applications are being checked. This field is optional, used for logging only, and will be used for filtering in next phases
-          example: Windows
-        os_version:
-          type: string
-          description: OS version from which applications are being checked. This field is optional, used for logging only, and will be used for filtering in next phases
-          example: 11.0.1
-        applications:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                example: Google Chrome
-              version:
-                type: string
-                example: 1.0.0
-  responses:
-    UnprocessableEntity:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Content too large:
-              value:
-                errors:
-                  code: 904175
-                  message: Exceeded the limit of 20 records to check in a batch
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    InvalidCredentials:
-      description: Invalid credentials
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Invalid credentials:
-              value:
-                errors:
-                  code: 100104
-                  message: Invalid credentials
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    ServiceForbidden:
-      description: Service is forbidden for the user
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Service is forbidden for the user:
-              value:
-                errors:
-                  code: 100166
-                  message: Service is forbidden for the user
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    AuthServiceUnavailable:
-      description: Service unavailable
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Service unavailable:
-              value:
-                errors:
-                  code: 904178
-                  message: Service temporary unavailable
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
   securitySchemes:
     ApiKeyAuth:
       type: http

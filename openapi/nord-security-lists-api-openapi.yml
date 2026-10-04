@@ -344,6 +344,40 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   schemas:
+    ListCategory:
+      type: string
+      enum:
+      - adblock
+      - tracking
+      - malwaresec
+      - broken-apps
+      - urlstripping
+      - cookies
+    ListFormat:
+      type: string
+      enum:
+      - abp
+      - zone
+      - domain
+      - queryparam
+      description: List content format
+    ListVersion:
+      type: string
+      example: 20200501120000
+    ListAction:
+      type: string
+      enum:
+      - block
+      - allow
+      - no-mitm
+      - redirect
+      description: Action to take when ant item is matched in this list
+    ListIdentifier:
+      type: string
+      example: kPayrrMJP0d4nEPl
+    Sha1Checksum:
+      type: string
+      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
     ErrorResponse:
       type: object
       properties:
@@ -356,6 +390,11 @@ components:
             message:
               type: string
               example: Some error
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
     CybersecList:
       type: object
       properties:
@@ -378,61 +417,7 @@ components:
         language:
           type: string
           example: en
-    ListVersion:
-      type: string
-      example: 20200501120000
-    ListCategory:
-      type: string
-      enum:
-      - adblock
-      - tracking
-      - malwaresec
-      - broken-apps
-      - urlstripping
-      - cookies
-    ListIdentifier:
-      type: string
-      example: kPayrrMJP0d4nEPl
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
-    ListFormat:
-      type: string
-      enum:
-      - abp
-      - zone
-      - domain
-      - queryparam
-      description: List content format
-    ListAction:
-      type: string
-      enum:
-      - block
-      - allow
-      - no-mitm
-      - redirect
-      description: Action to take when ant item is matched in this list
-    Sha1Checksum:
-      type: string
-      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
   responses:
-    InvalidCredentials:
-      description: Invalid credentials
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Invalid credentials:
-              value:
-                errors:
-                  code: 100104
-                  message: Invalid credentials
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
     ServiceForbidden:
       description: Service is forbidden for the user
       content:
@@ -463,14 +448,22 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
   parameters:
-    ListIdentifier:
-      name: listIdentifier
-      in: path
-      schema:
-        $ref: '#/components/schemas/ListIdentifier'
-      description: List identfier
-      required: true
     ListCategory:
       name: listCategory
       in: path
@@ -485,6 +478,13 @@ components:
         $ref: '#/components/schemas/ListVersion'
       description: List version
       required: false
+    ListIdentifier:
+      name: listIdentifier
+      in: path
+      schema:
+        $ref: '#/components/schemas/ListIdentifier'
+      description: List identfier
+      required: true
   securitySchemes:
     ApiKeyAuth:
       type: http
