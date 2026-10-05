@@ -1,0 +1,67 @@
+slug: nord-security
+provider: Nord Security
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: Applications
+  spec_file: nord-security-applications-api-openapi.yml
+  capability_id: BC-620.40
+  capability_id_l1: BC-620
+  capability_name: Vulnerability Management
+  confidence: 0.85
+  evidence: POST /v2/cybersec/applications/check — "Perform a applications vulnerabilities check"
+  reason: The single operation checks applications for known vulnerabilities (ApplicationsCheckRequest/Response),
+    which is squarely vulnerability scanning within Cybersecurity Management. 'Applications' here is a
+    security-scan target, not IT application lifecycle management.
+- tag: Events
+  spec_file: nord-security-events-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.8
+  evidence: GET /v1/events/malware-infections/{event-id} "Retrieves malware infection event details";
+    PATCH /v1/events/{event-id}/is_resolved "Resolves an event"
+  reason: Events here are security findings (data breaches, malware infections, open ports, vulnerabilities,
+    dark-web posts) that can be retrieved and resolved, with Models.RiskLevel and Models.Asset schemas
+    — a detection-and-response workflow, not generic application eventing.
+- tag: Malware Logs Intelligence
+  spec_file: nord-security-malware-logs-intelligence-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.75
+  evidence: POST /data-source/malware-log/details "Bulk Malware Log Details Lookup"; GET /data-source/malware-log/secrets/type/{type}/id
+    "Malware Log IDs With Secrets Lookup"
+  reason: Operations query infostealer malware logs, exposed credentials and leaked secrets — cyber threat
+    intelligence supporting detection and response to compromised assets.
+- tag: Dark Web Intelligence
+  spec_file: nord-security-dark-web-intelligence-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.72
+  evidence: POST /scraped-content/ransomware "Scraped ransomware content search"; schema "RansomwareIncident"
+  reason: Operations search scraped dark-web forum, Telegram, marketplace and ransomware content, i.e.
+    cyber threat intelligence feeding detection and response. Threat Detection & Response is the closest
+    candidate; confidence moderated because the surface is intelligence retrieval rather than full SOC/incident
+    workflow.
+- tag: Files
+  spec_file: nord-security-files-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.7
+  evidence: POST /v2/cybersec/files/upload/{sha256} "Upload a file for malware check"; schema "FileCheckStatus"
+  reason: Although the tag reads like file storage plumbing, the operations submit files for malware verdicts
+    and ML malware-model training, which is threat detection. Confidence moderated because part of the
+    surface (extensions, mime-types, upload) is supporting technical machinery.
