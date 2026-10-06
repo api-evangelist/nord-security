@@ -46,7 +46,7 @@ x-tier: profiled
 x-tier-reason: enrichment
 specificationVersion: '0.23'
 created: '2026-08-01'
-modified: '2026-08-01'
+modified: '2026-10-06'
 tags:
 - Cybersecurity
 - Threat Intelligence
@@ -1396,6 +1396,10 @@ apis:
   - type: Examples
     url: https://docs.nordstellar.com/platform/integrations-api/code-examples
 common:
+- url: https://nordsecurity.com/blog/
+  type: Blog
+- url: https://nordsecurity.com/blog/feed/
+  type: BlogRSS
 - type: CapabilityMap
   url: capabilities/nord-security-capability-edges.yml
   name: Nord Security Business Capability Map
