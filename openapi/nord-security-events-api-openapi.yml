@@ -3990,75 +3990,74 @@ paths:
     - url: https://platform-integration-api.nordstellar.com
 components:
   schemas:
-    MalwareInfection.CreditCard:
+    DomainPermutation.ServiceBanners:
       required:
-      - card_holder_name
-      - card_number
-      - cvv
-      - expires_on
+      - http
+      - smtp
       type: object
       properties:
-        card_holder_name:
-          type: string
-        card_number:
-          type: string
-        cvv:
-          type: string
-        expires_on:
+        http:
+          type:
+          - string
+          - 'null'
+        smtp:
           type:
           - string
           - 'null'
       additionalProperties: false
-    Models.Asset:
+    DarkWebMarketplace.MarketplaceType:
+      enum:
+      - Unspecified
+      - Logs
+      - CreditCards
+      type: string
+    MalwareInfection.File:
       required:
-      - type
-      - value
+      - path
       type: object
       properties:
-        type:
-          $ref: '#/components/schemas/Models.AssetType'
-        value:
+        path:
           type: string
       additionalProperties: false
-    DomainPermutation.Threat:
+    MalwareInfection.DeviceInfo:
       required:
-      - confidence
-      - evidences
-      - severity
-      - type
+      - hardware_id
+      - ip
+      - machine_id
+      - os
+      - system_name
+      - user_name
       type: object
       properties:
-        type:
+        ip:
           type: string
-        confidence:
-          type: number
-          format: double
-        evidences:
-          type: array
-          items:
-            type: string
-        severity:
-          $ref: '#/components/schemas/Models.RiskLevel'
+        hardware_id:
+          type: string
+        machine_id:
+          type: string
+        os:
+          type: string
+        user_name:
+          type: string
+        system_name:
+          type: string
       additionalProperties: false
-    DarkWebMarketplace.DarkWebMarketplacePost:
+    Models.DarkWebTelegramPost:
       required:
       - author
+      - channel_name
+      - channel_title
       - content
       - dark_web_monitoring_rule_name
       - date_added
       - id
       - is_resolved
-      - marketplace_title
-      - marketplace_type
       - module
       - posted_at
-      - price
       - project_id
       - query
       - risk_level
       - scraped_at
-      - site_domain_name
-      - site_subdomain_url
       - tags
       - type
       - url
@@ -4089,27 +4088,17 @@ components:
             type: string
         dark_web_monitoring_rule_name:
           type: string
-        marketplace_title:
+        channel_name:
           type: string
-        site_domain_name:
+        channel_title:
           type: string
-        site_subdomain_url:
-          type: string
-        price:
-          type: string
-        marketplace_type:
-          $ref: '#/components/schemas/DarkWebMarketplace.MarketplaceType'
         author:
           type: string
         posted_at:
-          type:
-          - string
-          - 'null'
+          type: string
           format: date-time
         scraped_at:
-          type:
-          - string
-          - 'null'
+          type: string
           format: date-time
         url:
           type: string
@@ -4118,215 +4107,78 @@ components:
         query:
           type: string
       additionalProperties: false
-    Models.EventType:
-      enum:
-      - UNKNOWN
-      - DATA_BREACH
-      - COMBO_LIST
-      - MALWARE_INFECTION
-      - OPEN_PORT
-      - VULNERABILITY
-      - DARK_WEB_FORUM_POST
-      - DARK_WEB_TELEGRAM_POST
-      - DOMAIN_PERMUTATION
-      - DARK_WEB_RANSOMWARE_POST
-      - DARK_WEB_MARKETPLACE_POST
-      type: string
-    MalwareInfection.DomainCookies:
+    MalwareInfection.Autofill:
       required:
-      - cookies
-      - domain
-      - expired_cookies_count
-      - valid_cookies_count
+      - browser
+      - name
+      - value
       type: object
       properties:
-        domain:
+        name:
           type: string
-        expired_cookies_count:
-          type: integer
-          format: int32
-        valid_cookies_count:
-          type: integer
-          format: int32
-        cookies:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareInfection.Cookie'
+        value:
+          type: string
+        browser:
+          type: string
       additionalProperties: false
-    DomainPermutation.DomainPermutation:
+    MalwareInfection.Credentials:
       required:
-      - ai_analysis
-      - date_added
-      - detected_at
-      - domain
-      - geo_ips
-      - id
-      - is_resolved
-      - mail_servers
-      - module
-      - name_servers
-      - original_domain
-      - permutation_type
-      - project_id
-      - redirects
-      - risk_level
-      - service_banners
-      - tags
-      - threat_analysis
-      - type
-      - whois
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        project_id:
-          type: string
-          format: uuid
-        type:
-          $ref: '#/components/schemas/Models.EventType'
-        module:
-          $ref: '#/components/schemas/Models.ModuleType'
-        risk_level:
-          $ref: '#/components/schemas/Models.RiskLevel'
-        is_resolved:
-          type: boolean
-        date_added:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        tags:
-          type: array
-          items:
-            type: string
-        original_domain:
-          type: string
-        domain:
-          type: string
-        permutation_type:
-          type: string
-        detected_at:
-          type: string
-          format: date-time
-        geo_ips:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainPermutation.GeoIp'
-        whois:
-          $ref: '#/components/schemas/DomainPermutation.WhoisInfo'
-        service_banners:
-          $ref: '#/components/schemas/DomainPermutation.ServiceBanners'
-        threat_analysis:
-          $ref: '#/components/schemas/DomainPermutation.ThreatAnalysis'
-        redirects:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainPermutation.Redirect'
-        ai_analysis:
-          $ref: '#/components/schemas/DomainPermutation.AiAnalysis'
-        name_servers:
-          type: array
-          items:
-            type: string
-        mail_servers:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-    DomainPermutation.Redirect:
-      required:
-      - status_code
+      - application
+      - email
+      - is_corporate
+      - password
       - url
+      - username
       type: object
       properties:
         url:
           type: string
-        status_code:
-          type: integer
-          format: int32
+        application:
+          type: string
+        email:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        is_corporate:
+          type: boolean
       additionalProperties: false
-    Models.AssetType:
-      enum:
-      - UNKNOWN
-      - EMAIL
-      - PHONE
-      - IP
-      - DARK_WEB_MONITORING_RULE
-      - DOMAIN
-      type: string
-    DomainPermutation.Recommendation:
+    DomainPermutation.WhoisInfo:
       required:
-      - action
-      - rationale
+      - contacts
+      - expiration_date
+      - name
+      - organization
+      - registrar
+      - registration_date
       type: object
       properties:
-        action:
+        name:
           type:
           - string
           - 'null'
-        rationale:
+        organization:
+          type:
+          - string
+          - 'null'
+        registrar:
+          type:
+          - string
+          - 'null'
+        contacts:
+          type:
+          - string
+          - 'null'
+        registration_date:
+          type:
+          - string
+          - 'null'
+        expiration_date:
           type:
           - string
           - 'null'
       additionalProperties: false
-    MalwareInfection.File:
-      required:
-      - path
-      type: object
-      properties:
-        path:
-          type: string
-      additionalProperties: false
-    DarkWebMarketplace.MarketplaceType:
-      enum:
-      - Unspecified
-      - Logs
-      - CreditCards
-      type: string
-    MalwareInfection.Location:
-      required:
-      - country
-      - date
-      - language
-      - location_name
-      - time_zone
-      - zip_code
-      type: object
-      properties:
-        zip_code:
-          type: string
-        country:
-          type: string
-        location_name:
-          type: string
-        language:
-          type: string
-        time_zone:
-          type: string
-        date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      additionalProperties: false
-    Models.ModuleType:
-      enum:
-      - UNKNOWN
-      - LEAKED_DATA
-      - EXTERNAL_VULNERABILITIES
-      - DARK_WEB_MONITORING
-      - DOMAIN_SQUATTING
-      type: string
-    Models.RiskLevel:
-      enum:
-      - UNKNOWN
-      - INFORMATIONAL
-      - LOW
-      - MEDIUM
-      - HIGH
-      - CRITICAL
-      type: string
     DataBreach.DataBreach:
       required:
       - asset
@@ -4385,420 +4237,31 @@ components:
           items:
             $ref: '#/components/schemas/DataBreach.DataPoint'
       additionalProperties: false
-    MalwareInfection.Autofill:
+    MalwareInfection.Location:
       required:
-      - browser
-      - name
-      - value
-      type: object
-      properties:
-        name:
-          type: string
-        value:
-          type: string
-        browser:
-          type: string
-      additionalProperties: false
-    Models.ComboList:
-      required:
-      - asset
-      - date_added
-      - id
-      - is_resolved
-      - module
-      - passwords
-      - project_id
-      - risk_level
-      - tags
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        project_id:
-          type: string
-          format: uuid
-        type:
-          $ref: '#/components/schemas/Models.EventType'
-        module:
-          $ref: '#/components/schemas/Models.ModuleType'
-        risk_level:
-          $ref: '#/components/schemas/Models.RiskLevel'
-        is_resolved:
-          type: boolean
-        date_added:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        asset:
-          $ref: '#/components/schemas/Models.Asset'
-        tags:
-          type: array
-          items:
-            type: string
-        passwords:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-    Models.OpenPort:
-      required:
-      - asset
-      - date_added
-      - id
-      - is_resolved
-      - module
-      - port_number
-      - risk_level
-      - service
-      - service_data
-      - tags
-      - title
-      - transport_protocol
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        type:
-          $ref: '#/components/schemas/Models.EventType'
-        module:
-          $ref: '#/components/schemas/Models.ModuleType'
-        risk_level:
-          $ref: '#/components/schemas/Models.RiskLevel'
-        is_resolved:
-          type: boolean
-        date_added:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        asset:
-          $ref: '#/components/schemas/Models.Asset'
-        tags:
-          type: array
-          items:
-            type: string
-        port_number:
-          type: integer
-          format: int32
-        transport_protocol:
-          type:
-          - string
-          - 'null'
-        service:
-          type:
-          - string
-          - 'null'
-        service_data:
-          type:
-          - string
-          - 'null'
-        title:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    DarkWebRansomware.Social:
-      required:
-      - type
-      - url
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/DarkWebRansomware.SocialMediaType'
-        url:
-          type: string
-      additionalProperties: false
-    DataBreach.DataBreachType:
-      enum:
-      - UNKNOWN
-      - IDENTIFIED
-      - UNIDENTIFIED
-      - COLLECTION
-      type: string
-    Resolve.CommandResult:
-      type: object
-      properties:
-        event_projection_id:
-          type: string
-          format: uuid
-        is_resolved:
-          type: boolean
-      additionalProperties: false
-    DataBreach.DataPoint:
-      required:
-      - data_key
-      - values
-      type: object
-      properties:
-        data_key:
-          type: string
-        values:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-    DarkWebRansomware.DarkWebRansomwarePost:
-      required:
-      - author
-      - dark_web_monitoring_rule_name
-      - date_added
-      - id
-      - is_resolved
-      - module
-      - posted_at
-      - project_id
-      - query
-      - ransomware_title
-      - risk_level
-      - scraped_at
-      - tags
-      - type
-      - url
-      - victim_information
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        project_id:
-          type: string
-          format: uuid
-        type:
-          $ref: '#/components/schemas/Models.EventType'
-        module:
-          $ref: '#/components/schemas/Models.ModuleType'
-        risk_level:
-          $ref: '#/components/schemas/Models.RiskLevel'
-        is_resolved:
-          type: boolean
-        date_added:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        tags:
-          type: array
-          items:
-            type: string
-        dark_web_monitoring_rule_name:
-          type: string
-        ransomware_title:
-          type: string
-        author:
-          type: string
-        posted_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        scraped_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        url:
-          type: string
-        victim_information:
-          $ref: '#/components/schemas/DarkWebRansomware.Victim'
-        query:
-          type: string
-      additionalProperties: false
-    DomainPermutation.AiAnalysis:
-      required:
-      - recommendations
-      - threats
-      type: object
-      properties:
-        threats:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainPermutation.Threat'
-        recommendations:
-          type: array
-          items:
-            $ref: '#/components/schemas/DomainPermutation.Recommendation'
-      additionalProperties: false
-    DarkWebRansomware.Country:
-      required:
-      - iso2
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-        iso2:
-          type: string
-      additionalProperties: false
-    ProblemDetails:
-      required:
-      - detail
-      - instance
-      - status
-      - title
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-          description: A URI reference that identifies the type of the problem.
-        title:
-          type: string
-          description: A short summary of the type of the problem.
-        status:
-          maximum: 599
-          minimum: 400
-          type: integer
-          description: The HTTP status code generated by the origin server for this occurrence of the problem.
-          format: int32
-        detail:
-          type: string
-          description: An explanation specific to this occurrence of the problem.
-        instance:
-          type: string
-          description: A unique identifier of this occurrence of the problem. Include it in your support request.
-      additionalProperties: {}
-      description: Error information that describes why the request has failed. Format conforms to IETF's RFC 9457.
-      externalDocs:
-        description: RFC 9457 "Problem Details for HTTP APIs" by Internet Engineering Task Force
-        url: https://datatracker.ietf.org/doc/html/rfc9457
-    DarkWebRansomware.Victim:
-      required:
-      - address_location
-      - company_name
-      - company_size
-      - company_type
       - country
-      - industry
-      - revenue_range
-      - socials
-      - website
+      - date
+      - language
+      - location_name
+      - time_zone
+      - zip_code
       type: object
       properties:
-        company_name:
-          type: string
-        website:
-          type: string
-        industry:
+        zip_code:
           type: string
         country:
-          $ref: '#/components/schemas/DarkWebRansomware.Country'
-        company_type:
           type: string
-        company_size:
+        location_name:
           type: string
-        revenue_range:
+        language:
           type: string
-        address_location:
+        time_zone:
           type: string
-        socials:
-          type: array
-          items:
-            $ref: '#/components/schemas/DarkWebRansomware.Social'
-      additionalProperties: false
-    DomainPermutation.ServiceBanners:
-      required:
-      - http
-      - smtp
-      type: object
-      properties:
-        http:
-          type:
-          - string
-          - 'null'
-        smtp:
-          type:
-          - string
-          - 'null'
-      additionalProperties: false
-    MalwareInfection.MalwareInfection:
-      required:
-      - asset
-      - corporate_auto_fills
-      - corporate_domain_cookies
-      - credentials
-      - credit_cards
-      - date_added
-      - device_info
-      - files
-      - id
-      - identifier
-      - infection_date
-      - is_resolved
-      - location
-      - module
-      - project_id
-      - risk_level
-      - stealer_name
-      - tags
-      - type
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        project_id:
-          type: string
-          format: uuid
-        type:
-          $ref: '#/components/schemas/Models.EventType'
-        stealer_name:
-          type:
-          - string
-          - 'null'
-        identifier:
-          type: string
-        module:
-          $ref: '#/components/schemas/Models.ModuleType'
-        risk_level:
-          $ref: '#/components/schemas/Models.RiskLevel'
-        is_resolved:
-          type: boolean
-        date_added:
+        date:
           type:
           - string
           - 'null'
           format: date-time
-        infection_date:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        asset:
-          $ref: '#/components/schemas/Models.Asset'
-        tags:
-          type: array
-          items:
-            type: string
-        files:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareInfection.File'
-        corporate_domain_cookies:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareInfection.DomainCookies'
-        credentials:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareInfection.Credentials'
-        corporate_auto_fills:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareInfection.Autofill'
-        credit_cards:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareInfection.CreditCard'
-        device_info:
-          $ref: '#/components/schemas/MalwareInfection.DeviceInfo'
-        location:
-          $ref: '#/components/schemas/MalwareInfection.Location'
       additionalProperties: false
     Models.Vulnerability:
       required:
@@ -4885,37 +4348,597 @@ components:
           items:
             type: string
       additionalProperties: false
-    DomainPermutation.WhoisInfo:
+    Models.ModuleType:
+      enum:
+      - UNKNOWN
+      - LEAKED_DATA
+      - EXTERNAL_VULNERABILITIES
+      - DARK_WEB_MONITORING
+      - DOMAIN_SQUATTING
+      type: string
+    DomainPermutation.DomainPermutation:
       required:
-      - contacts
-      - expiration_date
+      - ai_analysis
+      - date_added
+      - detected_at
+      - domain
+      - geo_ips
+      - id
+      - is_resolved
+      - mail_servers
+      - module
+      - name_servers
+      - original_domain
+      - permutation_type
+      - project_id
+      - redirects
+      - risk_level
+      - service_banners
+      - tags
+      - threat_analysis
+      - type
+      - whois
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        project_id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/Models.EventType'
+        module:
+          $ref: '#/components/schemas/Models.ModuleType'
+        risk_level:
+          $ref: '#/components/schemas/Models.RiskLevel'
+        is_resolved:
+          type: boolean
+        date_added:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        tags:
+          type: array
+          items:
+            type: string
+        original_domain:
+          type: string
+        domain:
+          type: string
+        permutation_type:
+          type: string
+        detected_at:
+          type: string
+          format: date-time
+        geo_ips:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPermutation.GeoIp'
+        whois:
+          $ref: '#/components/schemas/DomainPermutation.WhoisInfo'
+        service_banners:
+          $ref: '#/components/schemas/DomainPermutation.ServiceBanners'
+        threat_analysis:
+          $ref: '#/components/schemas/DomainPermutation.ThreatAnalysis'
+        redirects:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPermutation.Redirect'
+        ai_analysis:
+          $ref: '#/components/schemas/DomainPermutation.AiAnalysis'
+        name_servers:
+          type: array
+          items:
+            type: string
+        mail_servers:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+    DomainPermutation.Threat:
+      required:
+      - confidence
+      - evidences
+      - severity
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+        confidence:
+          type: number
+          format: double
+        evidences:
+          type: array
+          items:
+            type: string
+        severity:
+          $ref: '#/components/schemas/Models.RiskLevel'
+      additionalProperties: false
+    MalwareInfection.Cookie:
+      required:
+      - expired_for
+      - expires_on
       - name
-      - organization
-      - registrar
-      - registration_date
+      - value
       type: object
       properties:
         name:
+          type: string
+        value:
+          type: string
+        expires_on:
           type:
           - string
           - 'null'
-        organization:
+          format: date-time
+        expired_for:
+          type:
+          - number
+          - 'null'
+          format: double
+      additionalProperties: false
+    Models.ComboList:
+      required:
+      - asset
+      - date_added
+      - id
+      - is_resolved
+      - module
+      - passwords
+      - project_id
+      - risk_level
+      - tags
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        project_id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/Models.EventType'
+        module:
+          $ref: '#/components/schemas/Models.ModuleType'
+        risk_level:
+          $ref: '#/components/schemas/Models.RiskLevel'
+        is_resolved:
+          type: boolean
+        date_added:
           type:
           - string
           - 'null'
-        registrar:
+          format: date-time
+        asset:
+          $ref: '#/components/schemas/Models.Asset'
+        tags:
+          type: array
+          items:
+            type: string
+        passwords:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+    Resolve.EventState:
+      type: object
+      properties:
+        is_resolved:
+          type:
+          - boolean
+          - 'null'
+      additionalProperties: false
+    DarkWebRansomware.Social:
+      required:
+      - type
+      - url
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DarkWebRansomware.SocialMediaType'
+        url:
+          type: string
+      additionalProperties: false
+    DarkWebRansomware.Country:
+      required:
+      - iso2
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+        iso2:
+          type: string
+      additionalProperties: false
+    MalwareInfection.CreditCard:
+      required:
+      - card_holder_name
+      - card_number
+      - cvv
+      - expires_on
+      type: object
+      properties:
+        card_holder_name:
+          type: string
+        card_number:
+          type: string
+        cvv:
+          type: string
+        expires_on:
           type:
           - string
           - 'null'
-        contacts:
+      additionalProperties: false
+    Models.Asset:
+      required:
+      - type
+      - value
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/Models.AssetType'
+        value:
+          type: string
+      additionalProperties: false
+    MalwareInfection.DomainCookies:
+      required:
+      - cookies
+      - domain
+      - expired_cookies_count
+      - valid_cookies_count
+      type: object
+      properties:
+        domain:
+          type: string
+        expired_cookies_count:
+          type: integer
+          format: int32
+        valid_cookies_count:
+          type: integer
+          format: int32
+        cookies:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareInfection.Cookie'
+      additionalProperties: false
+    Models.EventType:
+      enum:
+      - UNKNOWN
+      - DATA_BREACH
+      - COMBO_LIST
+      - MALWARE_INFECTION
+      - OPEN_PORT
+      - VULNERABILITY
+      - DARK_WEB_FORUM_POST
+      - DARK_WEB_TELEGRAM_POST
+      - DOMAIN_PERMUTATION
+      - DARK_WEB_RANSOMWARE_POST
+      - DARK_WEB_MARKETPLACE_POST
+      type: string
+    Models.AssetType:
+      enum:
+      - UNKNOWN
+      - EMAIL
+      - PHONE
+      - IP
+      - DARK_WEB_MONITORING_RULE
+      - DOMAIN
+      type: string
+    DomainPermutation.Redirect:
+      required:
+      - status_code
+      - url
+      type: object
+      properties:
+        url:
+          type: string
+        status_code:
+          type: integer
+          format: int32
+      additionalProperties: false
+    DomainPermutation.Recommendation:
+      required:
+      - action
+      - rationale
+      type: object
+      properties:
+        action:
           type:
           - string
           - 'null'
-        registration_date:
+        rationale:
           type:
           - string
           - 'null'
-        expiration_date:
+      additionalProperties: false
+    Models.OpenPort:
+      required:
+      - asset
+      - date_added
+      - id
+      - is_resolved
+      - module
+      - port_number
+      - risk_level
+      - service
+      - service_data
+      - tags
+      - title
+      - transport_protocol
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/Models.EventType'
+        module:
+          $ref: '#/components/schemas/Models.ModuleType'
+        risk_level:
+          $ref: '#/components/schemas/Models.RiskLevel'
+        is_resolved:
+          type: boolean
+        date_added:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        asset:
+          $ref: '#/components/schemas/Models.Asset'
+        tags:
+          type: array
+          items:
+            type: string
+        port_number:
+          type: integer
+          format: int32
+        transport_protocol:
+          type:
+          - string
+          - 'null'
+        service:
+          type:
+          - string
+          - 'null'
+        service_data:
+          type:
+          - string
+          - 'null'
+        title:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+    DomainPermutation.ThreatAnalysis:
+      required:
+      - content_similarity
+      - visual_similarity
+      type: object
+      properties:
+        content_similarity:
+          type:
+          - number
+          - 'null'
+          format: double
+        visual_similarity:
+          type:
+          - number
+          - 'null'
+          format: double
+      additionalProperties: false
+    DataBreach.DataBreachType:
+      enum:
+      - UNKNOWN
+      - IDENTIFIED
+      - UNIDENTIFIED
+      - COLLECTION
+      type: string
+    DomainPermutation.AiAnalysis:
+      required:
+      - recommendations
+      - threats
+      type: object
+      properties:
+        threats:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPermutation.Threat'
+        recommendations:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainPermutation.Recommendation'
+      additionalProperties: false
+    MalwareInfection.MalwareInfection:
+      required:
+      - asset
+      - corporate_auto_fills
+      - corporate_domain_cookies
+      - credentials
+      - credit_cards
+      - date_added
+      - device_info
+      - files
+      - id
+      - identifier
+      - infection_date
+      - is_resolved
+      - location
+      - module
+      - project_id
+      - risk_level
+      - stealer_name
+      - tags
+      - type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        project_id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/Models.EventType'
+        stealer_name:
+          type:
+          - string
+          - 'null'
+        identifier:
+          type: string
+        module:
+          $ref: '#/components/schemas/Models.ModuleType'
+        risk_level:
+          $ref: '#/components/schemas/Models.RiskLevel'
+        is_resolved:
+          type: boolean
+        date_added:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        infection_date:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        asset:
+          $ref: '#/components/schemas/Models.Asset'
+        tags:
+          type: array
+          items:
+            type: string
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareInfection.File'
+        corporate_domain_cookies:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareInfection.DomainCookies'
+        credentials:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareInfection.Credentials'
+        corporate_auto_fills:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareInfection.Autofill'
+        credit_cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareInfection.CreditCard'
+        device_info:
+          $ref: '#/components/schemas/MalwareInfection.DeviceInfo'
+        location:
+          $ref: '#/components/schemas/MalwareInfection.Location'
+      additionalProperties: false
+    DarkWebRansomware.SocialMediaType:
+      enum:
+      - Unspecified
+      - Facebook
+      - Linkedin
+      - Twitter
+      - Crunchbase
+      - Instagram
+      - Youtube
+      - Github
+      - Reddit
+      - Discord
+      - Pinterest
+      - Tiktok
+      type: string
+    ValidationProblemDetails:
+      required:
+      - detail
+      - instance
+      - status
+      - title
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+          description: A URI reference that identifies the type of the problem.
+        title:
+          type: string
+          description: A short summary of the type of the problem.
+        status:
+          maximum: 599
+          minimum: 400
+          type: integer
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+          format: int32
+        detail:
+          type: string
+          description: An explanation specific to this occurrence of the problem.
+        instance:
+          type: string
+          description: A unique identifier of this occurrence of the problem. Include it in your support request.
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: A map of problems with the request that need to be solved by the requester, wherein the key is the source of the problem, and the value is its details.
+      additionalProperties: {}
+      description: Error information that describes why the request has failed. Format conforms to IETF's RFC 9457.
+      externalDocs:
+        description: RFC 9457 "Problem Details for HTTP APIs" by Internet Engineering Task Force
+        url: https://datatracker.ietf.org/doc/html/rfc9457
+    DarkWebRansomware.Victim:
+      required:
+      - address_location
+      - company_name
+      - company_size
+      - company_type
+      - country
+      - industry
+      - revenue_range
+      - socials
+      - website
+      type: object
+      properties:
+        company_name:
+          type: string
+        website:
+          type: string
+        industry:
+          type: string
+        country:
+          $ref: '#/components/schemas/DarkWebRansomware.Country'
+        company_type:
+          type: string
+        company_size:
+          type: string
+        revenue_range:
+          type: string
+        address_location:
+          type: string
+        socials:
+          type: array
+          items:
+            $ref: '#/components/schemas/DarkWebRansomware.Social'
+      additionalProperties: false
+    DomainPermutation.GeoIp:
+      required:
+      - address
+      - country_code_iso2
+      type: object
+      properties:
+        address:
+          type: string
+        country_name:
+          type:
+          - string
+          - 'null'
+        country_code_iso2:
           type:
           - string
           - 'null'
@@ -4988,37 +5011,43 @@ components:
         query:
           type: string
       additionalProperties: false
-    DarkWebRansomware.SocialMediaType:
+    Models.RiskLevel:
       enum:
-      - Unspecified
-      - Facebook
-      - Linkedin
-      - Twitter
-      - Crunchbase
-      - Instagram
-      - Youtube
-      - Github
-      - Reddit
-      - Discord
-      - Pinterest
-      - Tiktok
+      - UNKNOWN
+      - INFORMATIONAL
+      - LOW
+      - MEDIUM
+      - HIGH
+      - CRITICAL
       type: string
-    Models.DarkWebTelegramPost:
+    Resolve.CommandResult:
+      type: object
+      properties:
+        event_projection_id:
+          type: string
+          format: uuid
+        is_resolved:
+          type: boolean
+      additionalProperties: false
+    DarkWebMarketplace.DarkWebMarketplacePost:
       required:
       - author
-      - channel_name
-      - channel_title
       - content
       - dark_web_monitoring_rule_name
       - date_added
       - id
       - is_resolved
+      - marketplace_title
+      - marketplace_type
       - module
       - posted_at
+      - price
       - project_id
       - query
       - risk_level
       - scraped_at
+      - site_domain_name
+      - site_subdomain_url
       - tags
       - type
       - url
@@ -5049,17 +5078,27 @@ components:
             type: string
         dark_web_monitoring_rule_name:
           type: string
-        channel_name:
+        marketplace_title:
           type: string
-        channel_title:
+        site_domain_name:
           type: string
+        site_subdomain_url:
+          type: string
+        price:
+          type: string
+        marketplace_type:
+          $ref: '#/components/schemas/DarkWebMarketplace.MarketplaceType'
         author:
           type: string
         posted_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
         scraped_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
         url:
           type: string
@@ -5068,47 +5107,7 @@ components:
         query:
           type: string
       additionalProperties: false
-    MalwareInfection.Credentials:
-      required:
-      - application
-      - email
-      - is_corporate
-      - password
-      - url
-      - username
-      type: object
-      properties:
-        url:
-          type: string
-        application:
-          type: string
-        email:
-          type: string
-        username:
-          type: string
-        password:
-          type: string
-        is_corporate:
-          type: boolean
-      additionalProperties: false
-    DomainPermutation.ThreatAnalysis:
-      required:
-      - content_similarity
-      - visual_similarity
-      type: object
-      properties:
-        content_similarity:
-          type:
-          - number
-          - 'null'
-          format: double
-        visual_similarity:
-          type:
-          - number
-          - 'null'
-          format: double
-      additionalProperties: false
-    ValidationProblemDetails:
+    ProblemDetails:
       required:
       - detail
       - instance
@@ -5136,104 +5135,259 @@ components:
         instance:
           type: string
           description: A unique identifier of this occurrence of the problem. Include it in your support request.
-        errors:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: A map of problems with the request that need to be solved by the requester, wherein the key is the source of the problem, and the value is its details.
       additionalProperties: {}
       description: Error information that describes why the request has failed. Format conforms to IETF's RFC 9457.
       externalDocs:
         description: RFC 9457 "Problem Details for HTTP APIs" by Internet Engineering Task Force
         url: https://datatracker.ietf.org/doc/html/rfc9457
-    Resolve.EventState:
-      type: object
-      properties:
-        is_resolved:
-          type:
-          - boolean
-          - 'null'
-      additionalProperties: false
-    MalwareInfection.Cookie:
+    DataBreach.DataPoint:
       required:
-      - expired_for
-      - expires_on
-      - name
-      - value
+      - data_key
+      - values
       type: object
       properties:
-        name:
+        data_key:
           type: string
-        value:
+        values:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+    DarkWebRansomware.DarkWebRansomwarePost:
+      required:
+      - author
+      - dark_web_monitoring_rule_name
+      - date_added
+      - id
+      - is_resolved
+      - module
+      - posted_at
+      - project_id
+      - query
+      - ransomware_title
+      - risk_level
+      - scraped_at
+      - tags
+      - type
+      - url
+      - victim_information
+      type: object
+      properties:
+        id:
           type: string
-        expires_on:
+          format: uuid
+        project_id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/Models.EventType'
+        module:
+          $ref: '#/components/schemas/Models.ModuleType'
+        risk_level:
+          $ref: '#/components/schemas/Models.RiskLevel'
+        is_resolved:
+          type: boolean
+        date_added:
           type:
           - string
           - 'null'
           format: date-time
-        expired_for:
-          type:
-          - number
-          - 'null'
-          format: double
-      additionalProperties: false
-    MalwareInfection.DeviceInfo:
-      required:
-      - hardware_id
-      - ip
-      - machine_id
-      - os
-      - system_name
-      - user_name
-      type: object
-      properties:
-        ip:
+        tags:
+          type: array
+          items:
+            type: string
+        dark_web_monitoring_rule_name:
           type: string
-        hardware_id:
+        ransomware_title:
           type: string
-        machine_id:
+        author:
           type: string
-        os:
-          type: string
-        user_name:
-          type: string
-        system_name:
-          type: string
-      additionalProperties: false
-    DomainPermutation.GeoIp:
-      required:
-      - address
-      - country_code_iso2
-      type: object
-      properties:
-        address:
-          type: string
-        country_name:
+        posted_at:
           type:
           - string
           - 'null'
-        country_code_iso2:
+          format: date-time
+        scraped_at:
           type:
           - string
           - 'null'
+          format: date-time
+        url:
+          type: string
+        victim_information:
+          $ref: '#/components/schemas/DarkWebRansomware.Victim'
+        query:
+          type: string
       additionalProperties: false
-    Models.EventTypeV2:
+    AttackSurfaceVulnerability.AttackSurfaceVulnerabilitySourceType:
       enum:
-      - UNKNOWN
-      - DATA_BREACH
-      - COMBO_LIST
-      - MALWARE_INFECTION
-      - DARK_WEB_FORUM_POST
-      - DARK_WEB_TELEGRAM_POST
-      - DOMAIN_PERMUTATION
-      - DARK_WEB_RANSOMWARE_POST
-      - DARK_WEB_MARKETPLACE_POST
-      - ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY
-      - ATTACK_SURFACE_NETWORK_SERVICE_VULNERABILITY
-      - ATTACK_SURFACE_DNS_VULNERABILITY
+      - WEB_APPLICATION
+      - NETWORK_SERVICE
+      - DNS
       type: string
+    AttackSurfaceVulnerability.AttackSurfaceDnsVulnerability:
+      required:
+      - asset_id
+      - asset_value
+      - cve_id
+      - cvss2_score
+      - cvss3_score
+      - cvss_vector
+      - cwe_ids
+      - description
+      - detected_at
+      - epss_score
+      - evidence_curl_command
+      - evidence_data
+      - evidence_extracted_data
+      - evidence_file_path
+      - evidence_host
+      - evidence_http_request
+      - evidence_http_response
+      - evidence_network_data
+      - evidence_port
+      - evidence_raw_response
+      - evidence_scheme
+      - evidence_target
+      - evidence_url
+      - id
+      - impact_description
+      - is_resolved
+      - is_verified
+      - module
+      - project_id
+      - references
+      - remediation_instructions
+      - risk_level
+      - source_type
+      - tags
+      - title
+      - type
+      - updated_at
+      - vulnerability_type
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: '#/components/schemas/Models.EventTypeV2'
+        project_id:
+          type: string
+          format: uuid
+        asset_id:
+          type: string
+          format: uuid
+        asset_value:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        is_verified:
+          type: boolean
+        source_type:
+          $ref: '#/components/schemas/AttackSurfaceVulnerability.AttackSurfaceVulnerabilitySourceType'
+        vulnerability_type:
+          $ref: '#/components/schemas/AttackSurfaceVulnerability.AttackSurfaceVulnerabilityType'
+        tags:
+          type: array
+          items:
+            type: string
+        impact_description:
+          type: string
+        remediation_instructions:
+          type: string
+        references:
+          type: array
+          items:
+            type: string
+        risk_level:
+          $ref: '#/components/schemas/Models.RiskLevel'
+        cve_id:
+          type:
+          - string
+          - 'null'
+        cwe_ids:
+          type: array
+          items:
+            type: string
+        cvss2_score:
+          type: number
+          format: double
+        cvss3_score:
+          type: number
+          format: double
+        cvss_vector:
+          type: string
+        epss_score:
+          type: number
+          format: double
+        evidence_url:
+          type:
+          - string
+          - 'null'
+        evidence_data:
+          type:
+          - string
+          - 'null'
+        evidence_curl_command:
+          type:
+          - string
+          - 'null'
+        evidence_http_request:
+          type:
+          - string
+          - 'null'
+        evidence_http_response:
+          type:
+          - string
+          - 'null'
+        evidence_network_data:
+          type:
+          - string
+          - 'null'
+        evidence_file_path:
+          type:
+          - string
+          - 'null'
+        evidence_target:
+          type:
+          - string
+          - 'null'
+        evidence_host:
+          type:
+          - string
+          - 'null'
+        evidence_port:
+          type:
+          - string
+          - 'null'
+        evidence_scheme:
+          type:
+          - string
+          - 'null'
+        evidence_raw_response:
+          type:
+          - string
+          - 'null'
+        evidence_extracted_data:
+          type: array
+          items:
+            type: string
+        is_resolved:
+          type: boolean
+        detected_at:
+          type: string
+          format: date-time
+        updated_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        module:
+          $ref: '#/components/schemas/Models.ModuleTypeV2'
+      additionalProperties: false
     Models.ModuleTypeV2:
       enum:
       - UNKNOWN
@@ -5241,12 +5395,6 @@ components:
       - DARK_WEB_MONITORING
       - DOMAIN_SQUATTING
       - ATTACK_SURFACE
-      type: string
-    AttackSurfaceVulnerability.AttackSurfaceVulnerabilitySourceType:
-      enum:
-      - WEB_APPLICATION
-      - NETWORK_SERVICE
-      - DNS
       type: string
     AttackSurfaceVulnerability.AttackSurfaceWebApplicationVulnerability:
       required:
@@ -5414,211 +5562,6 @@ components:
           - integer
           - 'null'
           format: int32
-        module:
-          $ref: '#/components/schemas/Models.ModuleTypeV2'
-      additionalProperties: false
-    AttackSurfaceVulnerability.AttackSurfaceVulnerabilityType:
-      enum:
-      - UNSPECIFIED
-      - CVE
-      - SERVICE_DETECTION
-      - SSL_PROTOCOL
-      - SSL_CERTIFICATE
-      - SSL_COMPLIANCE
-      - DNS_SPOOFING
-      - DNS_SPF
-      - DNS_DMARC
-      - DEFAULT_CREDENTIALS
-      - AUTH_BYPASS
-      - MISCONFIGURATION
-      - EXPOSURE
-      - XSS
-      - SQL_INJECTION
-      - REMOTE_CODE_EXECUTION
-      - LOCAL_FILE_INCLUSION
-      - REMOTE_FILE_INCLUSION
-      - SERVER_SIDE_REQUEST_FORGERY
-      - XML_EXTERNAL_ENTITY
-      - INFORMATION_DISCLOSURE
-      - COMPLIANCE
-      - EXPLOIT
-      - DETECTION
-      - PATH_TRAVERSAL
-      - FILE_UPLOAD
-      - OPEN_REDIRECT
-      - SERVER_SIDE_TEMPLATE_INJECTION
-      - DESERIALIZATION
-      - BACKDOOR
-      - TAKEOVER
-      - COMMAND_INJECTION
-      - INSECURE_DIRECT_OBJECT_REFERENCE
-      - CROSS_SITE_REQUEST_FORGERY
-      - UNAUTHENTICATED_ACCESS
-      - TOKEN_LEAK
-      - CLOUD_MISCONFIGURATION
-      - INTERNET_OF_THINGS
-      - PASSIVE_CVE
-      type: string
-    AttackSurfaceVulnerability.AttackSurfaceDnsVulnerability:
-      required:
-      - asset_id
-      - asset_value
-      - cve_id
-      - cvss2_score
-      - cvss3_score
-      - cvss_vector
-      - cwe_ids
-      - description
-      - detected_at
-      - epss_score
-      - evidence_curl_command
-      - evidence_data
-      - evidence_extracted_data
-      - evidence_file_path
-      - evidence_host
-      - evidence_http_request
-      - evidence_http_response
-      - evidence_network_data
-      - evidence_port
-      - evidence_raw_response
-      - evidence_scheme
-      - evidence_target
-      - evidence_url
-      - id
-      - impact_description
-      - is_resolved
-      - is_verified
-      - module
-      - project_id
-      - references
-      - remediation_instructions
-      - risk_level
-      - source_type
-      - tags
-      - title
-      - type
-      - updated_at
-      - vulnerability_type
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        type:
-          $ref: '#/components/schemas/Models.EventTypeV2'
-        project_id:
-          type: string
-          format: uuid
-        asset_id:
-          type: string
-          format: uuid
-        asset_value:
-          type: string
-        title:
-          type: string
-        description:
-          type: string
-        is_verified:
-          type: boolean
-        source_type:
-          $ref: '#/components/schemas/AttackSurfaceVulnerability.AttackSurfaceVulnerabilitySourceType'
-        vulnerability_type:
-          $ref: '#/components/schemas/AttackSurfaceVulnerability.AttackSurfaceVulnerabilityType'
-        tags:
-          type: array
-          items:
-            type: string
-        impact_description:
-          type: string
-        remediation_instructions:
-          type: string
-        references:
-          type: array
-          items:
-            type: string
-        risk_level:
-          $ref: '#/components/schemas/Models.RiskLevel'
-        cve_id:
-          type:
-          - string
-          - 'null'
-        cwe_ids:
-          type: array
-          items:
-            type: string
-        cvss2_score:
-          type: number
-          format: double
-        cvss3_score:
-          type: number
-          format: double
-        cvss_vector:
-          type: string
-        epss_score:
-          type: number
-          format: double
-        evidence_url:
-          type:
-          - string
-          - 'null'
-        evidence_data:
-          type:
-          - string
-          - 'null'
-        evidence_curl_command:
-          type:
-          - string
-          - 'null'
-        evidence_http_request:
-          type:
-          - string
-          - 'null'
-        evidence_http_response:
-          type:
-          - string
-          - 'null'
-        evidence_network_data:
-          type:
-          - string
-          - 'null'
-        evidence_file_path:
-          type:
-          - string
-          - 'null'
-        evidence_target:
-          type:
-          - string
-          - 'null'
-        evidence_host:
-          type:
-          - string
-          - 'null'
-        evidence_port:
-          type:
-          - string
-          - 'null'
-        evidence_scheme:
-          type:
-          - string
-          - 'null'
-        evidence_raw_response:
-          type:
-          - string
-          - 'null'
-        evidence_extracted_data:
-          type: array
-          items:
-            type: string
-        is_resolved:
-          type: boolean
-        detected_at:
-          type: string
-          format: date-time
-        updated_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
         module:
           $ref: '#/components/schemas/Models.ModuleTypeV2'
       additionalProperties: false
@@ -5806,6 +5749,63 @@ components:
         module:
           $ref: '#/components/schemas/Models.ModuleTypeV2'
       additionalProperties: false
+    AttackSurfaceVulnerability.AttackSurfaceVulnerabilityType:
+      enum:
+      - UNSPECIFIED
+      - CVE
+      - SERVICE_DETECTION
+      - SSL_PROTOCOL
+      - SSL_CERTIFICATE
+      - SSL_COMPLIANCE
+      - DNS_SPOOFING
+      - DNS_SPF
+      - DNS_DMARC
+      - DEFAULT_CREDENTIALS
+      - AUTH_BYPASS
+      - MISCONFIGURATION
+      - EXPOSURE
+      - XSS
+      - SQL_INJECTION
+      - REMOTE_CODE_EXECUTION
+      - LOCAL_FILE_INCLUSION
+      - REMOTE_FILE_INCLUSION
+      - SERVER_SIDE_REQUEST_FORGERY
+      - XML_EXTERNAL_ENTITY
+      - INFORMATION_DISCLOSURE
+      - COMPLIANCE
+      - EXPLOIT
+      - DETECTION
+      - PATH_TRAVERSAL
+      - FILE_UPLOAD
+      - OPEN_REDIRECT
+      - SERVER_SIDE_TEMPLATE_INJECTION
+      - DESERIALIZATION
+      - BACKDOOR
+      - TAKEOVER
+      - COMMAND_INJECTION
+      - INSECURE_DIRECT_OBJECT_REFERENCE
+      - CROSS_SITE_REQUEST_FORGERY
+      - UNAUTHENTICATED_ACCESS
+      - TOKEN_LEAK
+      - CLOUD_MISCONFIGURATION
+      - INTERNET_OF_THINGS
+      - PASSIVE_CVE
+      type: string
+    Models.EventTypeV2:
+      enum:
+      - UNKNOWN
+      - DATA_BREACH
+      - COMBO_LIST
+      - MALWARE_INFECTION
+      - DARK_WEB_FORUM_POST
+      - DARK_WEB_TELEGRAM_POST
+      - DOMAIN_PERMUTATION
+      - DARK_WEB_RANSOMWARE_POST
+      - DARK_WEB_MARKETPLACE_POST
+      - ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY
+      - ATTACK_SURFACE_NETWORK_SERVICE_VULNERABILITY
+      - ATTACK_SURFACE_DNS_VULNERABILITY
+      type: string
     DarkWebMarketplace.DarkWebMarketplacePostV3:
       required:
       - author
@@ -5884,34 +5884,6 @@ components:
         query:
           type: string
       additionalProperties: false
-    DarkWebMarketplace.MarketplaceTypeV3:
-      enum:
-      - Unspecified
-      - Logs
-      - CreditCards
-      - Hosts
-      - Send
-      - WebMail
-      - Leads
-      - Accounts
-      - Other
-      type: string
-    Models.EventTypeV3:
-      enum:
-      - UNKNOWN
-      - DATA_BREACH
-      - COMBO_LIST
-      - MALWARE_INFECTION
-      - DARK_WEB_FORUM_POST
-      - DARK_WEB_TELEGRAM_POST
-      - DOMAIN_PERMUTATION
-      - DARK_WEB_RANSOMWARE_POST
-      - DARK_WEB_MARKETPLACE_POST
-      - ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY
-      - ATTACK_SURFACE_NETWORK_SERVICE_VULNERABILITY
-      - ATTACK_SURFACE_DNS_VULNERABILITY
-      - CONSUMER_CREDENTIAL
-      type: string
     Models.ConsumerCredential:
       required:
       - asset_id
@@ -5995,10 +5967,38 @@ components:
           items:
             type: string
       additionalProperties: false
+    DarkWebMarketplace.MarketplaceTypeV3:
+      enum:
+      - Unspecified
+      - Logs
+      - CreditCards
+      - Hosts
+      - Send
+      - WebMail
+      - Leads
+      - Accounts
+      - Other
+      type: string
     Models.ConsumerCredentialSourceType:
       enum:
       - COMBO_LIST
       - MALWARE_INFECTION
+      type: string
+    Models.EventTypeV3:
+      enum:
+      - UNKNOWN
+      - DATA_BREACH
+      - COMBO_LIST
+      - MALWARE_INFECTION
+      - DARK_WEB_FORUM_POST
+      - DARK_WEB_TELEGRAM_POST
+      - DOMAIN_PERMUTATION
+      - DARK_WEB_RANSOMWARE_POST
+      - DARK_WEB_MARKETPLACE_POST
+      - ATTACK_SURFACE_WEB_APPLICATION_VULNERABILITY
+      - ATTACK_SURFACE_NETWORK_SERVICE_VULNERABILITY
+      - ATTACK_SURFACE_DNS_VULNERABILITY
+      - CONSUMER_CREDENTIAL
       type: string
   securitySchemes:
     Bearer:

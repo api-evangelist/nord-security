@@ -140,13 +140,6 @@ components:
           type: string
           description: Zero knowledge lookup salt, calculated using request input
           example: 0e4f4b0e81bad42097299d18869f8d7f
-    ZeroKnowledgeSaltsSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
     ZeroKnowledgeSaltsEndpoint:
       required:
       - sha256_prefixes
@@ -160,15 +153,22 @@ components:
           example:
           - '00000'
           - fffff
+    ZeroKnowledgeSaltsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
   headers:
-    X-Quota-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the period
     X-Quota-Limit:
       schema:
         type: integer
       description: Quota limit per minute
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
   parameters:
     HashPrefix:
       name: sha256-prefix

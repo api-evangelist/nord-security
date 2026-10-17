@@ -74,21 +74,6 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   responses:
-    ServiceForbidden:
-      description: Service is forbidden for the user
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Service is forbidden for the user:
-              value:
-                errors:
-                  code: 100166
-                  message: Service is forbidden for the user
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
     AuthServiceUnavailable:
       description: Service unavailable
       content:
@@ -101,6 +86,21 @@ components:
                 errors:
                   code: 904178
                   message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    InvalidCredentials:
+      description: Invalid credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Invalid credentials:
+              value:
+                errors:
+                  code: 100104
+                  message: Invalid credentials
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -119,6 +119,21 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
+    ServiceForbidden:
+      description: Service is forbidden for the user
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service is forbidden for the user:
+              value:
+                errors:
+                  code: 100166
+                  message: Service is forbidden for the user
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
     ResourcesExhausted:
       description: Service resources exhausted
       content:
@@ -134,31 +149,7 @@ components:
       headers:
         X-RateLimit-Retry-After:
           $ref: '#/components/schemas/X-RateLimit-Retry-After'
-    InvalidCredentials:
-      description: Invalid credentials
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Invalid credentials:
-              value:
-                errors:
-                  code: 100104
-                  message: Invalid credentials
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
   schemas:
-    CookiesCheckRequest:
-      type: object
-      properties:
-        short_cookie_sha256:
-          type: array
-          items:
-            type: string
-            example: '12345678'
-          description: List of cookie hashes (8 char) to be checked
     ErrorResponse:
       type: object
       properties:
@@ -171,11 +162,15 @@ components:
             message:
               type: string
               example: Some error
-    X-RateLimit-Retry-After:
-      type: string
-      format: rfc3999
-      example: '2024-03-25T15:19:06.000Z'
-      description: Time when requests to the resource aren't limited.
+    CookiesCheckRequest:
+      type: object
+      properties:
+        short_cookie_sha256:
+          type: array
+          items:
+            type: string
+            example: '12345678'
+          description: List of cookie hashes (8 char) to be checked
     CookiesCheckResponse:
       type: object
       properties:
@@ -191,6 +186,11 @@ components:
               domain:
                 type: string
                 example: the-leaked-domain-here.com
+    X-RateLimit-Retry-After:
+      type: string
+      format: rfc3999
+      example: '2024-03-25T15:19:06.000Z'
+      description: Time when requests to the resource aren't limited.
     X-Correlation-ID:
       type: string
       format: uuid

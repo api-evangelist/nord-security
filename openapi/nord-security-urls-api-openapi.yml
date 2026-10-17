@@ -277,52 +277,23 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   schemas:
-    UrlCategoryDetails:
+    ErrorResponse:
       type: object
       properties:
-        '7':
-          type: array
-          description: Scam
-          items:
-            type: number
-            description: "Scam subcategory identifiers:\n * `1` B2B scam\n * `2` Chargeback money recovery scam\n * `3` Cryptocurrency scam\n * `4` Dating and romance scam\n * `5` Employment scam\n * `6` Fake IT and tech support scam\n * `7` Illegal products and services scam\n * `8` Intellectual property violation scam\n * `9` Investment scam\n * `10` Malware scam\n * `11` Online shopping scam\n * `12` Phishing scam\n * `13` Fake website scam\n * `14` Spam and abuse scam\n * `15` Subscription scam\n * `16` Other scam\n"
-    UrlCheckRequest:
-      type: object
-      required:
-      - urls
-      properties:
-        urls:
-          type: array
-          items:
-            type: string
-            format: uri
-    UrlCheckStatus:
-      type: number
-      enum:
-      - 0
-      - 1
-      - 2
-      description: "Codes:\n * `0` - Check performed successfully\n * `1` - URL check failed. URL is either malformed or an unknown error has occurred\n * `2` - Check is pending in backend, repeat a request for this url later\n"
-    UrlCategoriesResponse:
-      type: object
-      properties:
-        categories:
-          type: array
-          items:
-            type: object
-            properties:
-              category:
-                $ref: '#/components/schemas/UrlCategory'
-              name:
-                type: string
-              block:
-                type: boolean
-              subcategories:
-                $ref: '#/components/schemas/UrlCategoryDetails'
-    UrlCategories:
-      type: array
-      items:
-        $ref: '#/components/schemas/UrlCategory'
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
     UrlCheckResult:
       type: object
       properties:
@@ -344,18 +315,70 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/UrlCategory'
-    UrlCategory:
+    UrlCheckRequest:
+      type: object
+      required:
+      - urls
+      properties:
+        urls:
+          type: array
+          items:
+            type: string
+            format: uri
+    UrlCategoryDetails:
+      type: object
+      properties:
+        '7':
+          type: array
+          description: Scam
+          items:
+            type: number
+            description: "Scam subcategory identifiers:\n * `1` B2B scam\n * `2` Chargeback money recovery scam\n * `3` Cryptocurrency scam\n * `4` Dating and romance scam\n * `5` Employment scam\n * `6` Fake IT and tech support scam\n * `7` Illegal products and services scam\n * `8` Intellectual property violation scam\n * `9` Investment scam\n * `10` Malware scam\n * `11` Online shopping scam\n * `12` Phishing scam\n * `13` Fake website scam\n * `14` Spam and abuse scam\n * `15` Subscription scam\n * `16` Other scam\n"
+    UrlCheckStatus:
       type: number
       enum:
       - 0
       - 1
       - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      description: "Category identifiers:\n * `0` - Unknown URL category\n * `1` - Either the URL is missing from the database, or it is known to be clean\n * `2` - Malware\n * `3` - Phishing\n * `4` - Spam\n * `5` - Potentially Unwanted Application / Web page containing PUAs\n * `6` - Potentially Unwanted Search Engine\n * `7` - Scam\n"
+      description: "Codes:\n * `0` - Check performed successfully\n * `1` - URL check failed. URL is either malformed or an unknown error has occurred\n * `2` - Check is pending in backend, repeat a request for this url later\n"
+    AllowedDomainsHashed:
+      type: object
+      properties:
+        whitelist:
+          type: array
+          items:
+            type: string
+        exceptions:
+          type: object
+        additionalProperties:
+          $ref: '#/components/schemas/UrlCategory'
+    AllowedDomains:
+      type: object
+      properties:
+        whitelist:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllowedDomainsItem'
+        exceptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AllowedDomainsItem'
+    UrlCategoriesResponse:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              category:
+                $ref: '#/components/schemas/UrlCategory'
+              name:
+                type: string
+              block:
+                type: boolean
+              subcategories:
+                $ref: '#/components/schemas/UrlCategoryDetails'
     UrlCheckResponse:
       type: object
       properties:
@@ -375,61 +398,23 @@ components:
                 type: number
               categories:
                 $ref: '#/components/schemas/UrlCategories'
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
-    X-Correlation-ID:
-      type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
-    AllowedDomains:
-      type: object
-      properties:
-        whitelist:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllowedDomainsItem'
-        exceptions:
-          type: array
-          items:
-            $ref: '#/components/schemas/AllowedDomainsItem'
-    AllowedDomainsHashed:
-      type: object
-      properties:
-        whitelist:
-          type: array
-          items:
-            type: string
-        exceptions:
-          type: object
-        additionalProperties:
-          $ref: '#/components/schemas/UrlCategory'
+    UrlCategory:
+      type: number
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      description: "Category identifiers:\n * `0` - Unknown URL category\n * `1` - Either the URL is missing from the database, or it is known to be clean\n * `2` - Malware\n * `3` - Phishing\n * `4` - Spam\n * `5` - Potentially Unwanted Application / Web page containing PUAs\n * `6` - Potentially Unwanted Search Engine\n * `7` - Scam\n"
+    UrlCategories:
+      type: array
+      items:
+        $ref: '#/components/schemas/UrlCategory'
   responses:
-    InternalServerError:
-      description: Internal server error
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Internal server error:
-              value:
-                errors:
-                  code: 904177
-                  message: An unexpected condition is encountered
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
     InvalidCredentials:
       description: Invalid credentials
       content:
@@ -442,36 +427,6 @@ components:
                 errors:
                   code: 100104
                   message: Invalid credentials
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    UnprocessableEntity:
-      description: Unprocessable Entity
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Content too large:
-              value:
-                errors:
-                  code: 904175
-                  message: Exceeded the limit of 20 records to check in a batch
-      headers:
-        X-Correlation-ID:
-          $ref: '#/components/schemas/X-Correlation-ID'
-    AuthServiceUnavailable:
-      description: Service unavailable
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          examples:
-            Service unavailable:
-              value:
-                errors:
-                  code: 904178
-                  message: Service temporary unavailable
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -502,6 +457,51 @@ components:
                 errors:
                   code: 904168
                   message: Url requested is too large. Limit is 65535
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    AuthServiceUnavailable:
+      description: Service unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Service unavailable:
+              value:
+                errors:
+                  code: 904178
+                  message: Service temporary unavailable
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    UnprocessableEntity:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Content too large:
+              value:
+                errors:
+                  code: 904175
+                  message: Exceeded the limit of 20 records to check in a batch
+      headers:
+        X-Correlation-ID:
+          $ref: '#/components/schemas/X-Correlation-ID'
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            Internal server error:
+              value:
+                errors:
+                  code: 904177
+                  message: An unexpected condition is encountered
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'

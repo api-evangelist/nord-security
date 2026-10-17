@@ -472,6 +472,94 @@ paths:
       - ApiKeyAuth: []
 components:
   schemas:
+    MalwareLogSystemInfoSampleItem:
+      type: object
+      properties:
+        ip:
+          type: string
+          example: 192.168.1.1
+        username:
+          type: string
+          example: diego.lebon
+        country:
+          type: string
+          example: US
+        zip:
+          type: string
+          example: '10001'
+        location:
+          type: string
+          example: New York, USA
+        hardware_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-8f68-806e6f6e6963
+        language:
+          type: string
+          example: es-ES
+        timezone:
+          type: string
+          example: UTC1
+        os:
+          type: string
+          example: Windows 10 Pro [x64]
+        system_name:
+          type: string
+          example: DESKTOP-42R6V1I
+        guid:
+          type: string
+          example: 91788e64-8fdf-11eb-8f68-806e6f6e6963
+        machine_id:
+          type: string
+          example: 89f3221e-2138-48c9-bbe2-ab615454c7ef
+        date:
+          type: string
+          example: '2021-05-26T08:19:13Z'
+        execution_path:
+          type: string
+          example: C:\Program Files\Example\example.exe
+        antivirus_software:
+          type: array
+          items:
+            type: string
+            example: Norton Antivirus
+        work_dir:
+          type: string
+          example: C:\Users\appdata
+        oem_id:
+          type: string
+          example: 00000000-0000-0000-0000-0000
+        screen_size:
+          type: string
+          example: 1920x1080
+        uac:
+          type: string
+          example: AllowAll
+        process_elevation:
+          type: boolean
+          example: true
+        keyboard_layouts:
+          type: array
+          items:
+            type: string
+            example: English (United States)
+        hardwares:
+          type: array
+          items:
+            type: string
+            example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
+    PhonesMalwareLogsSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneMalwareLogsSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
     PhoneDatabasesSample:
       type: object
       properties:
@@ -493,150 +581,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PhoneSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    PhonesMalwareLogsSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneMalwareLogsSample'
-        limit:
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    Phone:
-      required:
-      - data
-      type: object
-      properties:
-        phones_sha256:
-          type: array
-          description: A list of SHA256 hashed phone numbers to lookup
-          items:
-            type: string
-          example:
-          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
-        limit:
-          description: Default is the maximum limit of 100 records
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    EmailSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
-        email:
-          type: string
-          example: example@example.com
-        databases:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseDataItem'
-        malware_logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareDataItem'
-        credential_lists:
-          type: array
-          items:
-            $ref: '#/components/schemas/CredentialDataItem'
-        risk_assessment:
-          type: object
-          properties:
-            level:
-              type: string
-              description: 'Risk level, one of the following: info, low, medium, high, critical'
-              example: high
-            recommendations_enabled:
-              type: string
-              description: If true, user has enabled recommendations for this request. If false, recommendations are not provided. This field is taken from user provided query parameter of the same name.
-              example: 'true'
-            recommendations:
-              type: array
-              items:
-                type: object
-                properties:
-                  leaked_data_category:
-                    type: string
-                    description: Pretty name of general data category that triggered this recommendation
-                    example: Password
-                  recommendation:
-                    type: string
-                    description: Recommendation text
-                    example: Avoid using your publicly known information in passwords. Threat actors routinely use other known information, such as email addresses, phone numbers, pet names, dates of birth, first/last names and other data in stuffing attacks to uncover passwords that were otherwise never leaked online.
-    PhoneSample:
-      type: object
-      properties:
-        id:
-          type: string
-          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
-        phone:
-          type: string
-          example: '13855550193'
-          description: International format phone number
-        databases:
-          type: array
-          items:
-            $ref: '#/components/schemas/DatabaseDataItem'
-        malware_logs:
-          type: array
-          items:
-            $ref: '#/components/schemas/MalwareDataItem'
-        risk_assessment:
-          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    DatabaseDataItem:
-      type: object
-      properties:
-        identifier:
-          type: string
-          description: Identifier in the following format {domain}_{top level domain}
-          example: example_com
-        id:
-          type: string
-          description: Systemic hex ID of the record
-          example: 66c4d3912b183418f7743576
-        published_date:
-          type: string
-          description: Date when the database data was published onto the asset
-          example: '2025-01-20T19:04:39Z'
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              key:
-                type: string
-                description: Key of the data point, complete list can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
-                example: password
-              value:
-                type: array
-                items:
-                  type: string
-                description: Value of the data point
-                example:
-                - password1
-                - password2
-        risk_assessment:
-          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    PhonesDatabasesSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneDatabasesSample'
         limit:
           type: integer
           example: 10
@@ -1011,81 +955,58 @@ components:
               example: identified
         risk_assessment:
           $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
-    MalwareLogSystemInfoSampleItem:
+    PhonesDatabasesSample:
       type: object
       properties:
-        ip:
-          type: string
-          example: 192.168.1.1
-        username:
-          type: string
-          example: diego.lebon
-        country:
-          type: string
-          example: US
-        zip:
-          type: string
-          example: '10001'
-        location:
-          type: string
-          example: New York, USA
-        hardware_id:
-          type: string
-          example: 89f3221e-2138-48c9-bbe2-8f68-806e6f6e6963
-        language:
-          type: string
-          example: es-ES
-        timezone:
-          type: string
-          example: UTC1
-        os:
-          type: string
-          example: Windows 10 Pro [x64]
-        system_name:
-          type: string
-          example: DESKTOP-42R6V1I
-        guid:
-          type: string
-          example: 91788e64-8fdf-11eb-8f68-806e6f6e6963
-        machine_id:
-          type: string
-          example: 89f3221e-2138-48c9-bbe2-ab615454c7ef
-        date:
-          type: string
-          example: '2021-05-26T08:19:13Z'
-        execution_path:
-          type: string
-          example: C:\Program Files\Example\example.exe
-        antivirus_software:
+        data:
           type: array
           items:
-            type: string
-            example: Norton Antivirus
-        work_dir:
+            $ref: '#/components/schemas/PhoneDatabasesSample'
+        limit:
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
+    PhoneSample:
+      type: object
+      properties:
+        id:
           type: string
-          example: C:\Users\appdata
-        oem_id:
+          example: 631dadc9288c13b61bb83c480292c11154b35b5bb777a4946980de62f70477eb
+        phone:
           type: string
-          example: 00000000-0000-0000-0000-0000
-        screen_size:
-          type: string
-          example: 1920x1080
-        uac:
-          type: string
-          example: AllowAll
-        process_elevation:
-          type: boolean
-          example: true
-        keyboard_layouts:
+          example: '13855550193'
+          description: International format phone number
+        databases:
           type: array
           items:
-            type: string
-            example: English (United States)
-        hardwares:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
           type: array
           items:
+            $ref: '#/components/schemas/MalwareDataItem'
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    Phone:
+      required:
+      - data
+      type: object
+      properties:
+        phones_sha256:
+          type: array
+          description: A list of SHA256 hashed phone numbers to lookup
+          items:
             type: string
-            example: Intel(R) Core(TM) i7-9700 CPU @ 3.00GHz
+          example:
+          - 2fc8583f3be53fcf1a6e0f972869478e392ef2a6f62b7b3735ca53af921ea304
+        limit:
+          description: Default is the maximum limit of 100 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
     PhoneMalwareLogsSample:
       type: object
       properties:
@@ -1100,11 +1021,86 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MalwareDataItem'
+    DatabaseDataItem:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: Identifier in the following format {domain}_{top level domain}
+          example: example_com
+        id:
+          type: string
+          description: Systemic hex ID of the record
+          example: 66c4d3912b183418f7743576
+        published_date:
+          type: string
+          description: Date when the database data was published onto the asset
+          example: '2025-01-20T19:04:39Z'
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+                description: Key of the data point, complete list can be found [HERE](https://docs.nordstellar.com/enterprise-apis/product-integrations/data-categories#data-points)
+                example: password
+              value:
+                type: array
+                items:
+                  type: string
+                description: Value of the data point
+                example:
+                - password1
+                - password2
+        risk_assessment:
+          $ref: '#/components/schemas/EmailSample/properties/risk_assessment'
+    EmailSample:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 2a539d6520266b56c3b0c525b9e6128858baeccb5ee9b694a2906e123c8d6dd3
+        email:
+          type: string
+          example: example@example.com
+        databases:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatabaseDataItem'
+        malware_logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MalwareDataItem'
+        credential_lists:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialDataItem'
+        risk_assessment:
+          type: object
+          properties:
+            level:
+              type: string
+              description: 'Risk level, one of the following: info, low, medium, high, critical'
+              example: high
+            recommendations_enabled:
+              type: string
+              description: If true, user has enabled recommendations for this request. If false, recommendations are not provided. This field is taken from user provided query parameter of the same name.
+              example: 'true'
+            recommendations:
+              type: array
+              items:
+                type: object
+                properties:
+                  leaked_data_category:
+                    type: string
+                    description: Pretty name of general data category that triggered this recommendation
+                    example: Password
+                  recommendation:
+                    type: string
+                    description: Recommendation text
+                    example: Avoid using your publicly known information in passwords. Threat actors routinely use other known information, such as email addresses, phone numbers, pet names, dates of birth, first/last names and other data in stuffing attacks to uncover passwords that were otherwise never leaked online.
   headers:
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Request limit per minute
     X-Quota-Limit:
       schema:
         type: integer
@@ -1113,15 +1109,19 @@ components:
       schema:
         type: integer
       description: The number of requests left for the time window
-    X-Quota-Remaining:
+    X-RateLimit-Limit:
       schema:
         type: integer
-      description: The number of requests left for the period
+      description: Request limit per minute
     X-RateLimit-Reset:
       schema:
         type: string
         format: date-time
       description: Date and time when rate limit counter resets
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
   parameters:
     Phone:
       name: phone-sha256

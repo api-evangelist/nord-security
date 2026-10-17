@@ -324,6 +324,38 @@ paths:
       - ApiKeyAuth: []
 components:
   schemas:
+    ZeroKnowledgeMultiSample:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZeroKnowledgeSample'
+    HashRangesSample:
+      required:
+      - hash_ranges
+      - hash_type
+      type: object
+      properties:
+        hash_ranges:
+          type: array
+          description: A list of hash ranges (5 hexadecimal characters) to lookup zero knowledge data
+          items:
+            type: string
+          example:
+          - '00000'
+          - fffff
+        hash_type:
+          type: string
+          description: "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints."
+          example: argon2id
+        limit:
+          description: Default is the maximum limit of 500 records
+          type: integer
+          example: 10
+        offset:
+          type: integer
+          example: 0
     ZeroKnowledgeSaltSample:
       type: object
       properties:
@@ -335,26 +367,6 @@ components:
           type: string
           description: Zero knowledge lookup salt, calculated using request input
           example: 0e4f4b0e81bad42097299d18869f8d7f
-    ZeroKnowledgeSaltsSample:
-      type: object
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
-    ZeroKnowledgeSaltsEndpoint:
-      required:
-      - sha256_prefixes
-      type: object
-      properties:
-        sha256_prefixes:
-          type: array
-          description: A list of first 5 symbols of SHA256 hashes of the lookup values
-          items:
-            type: string
-          example:
-          - '00000'
-          - fffff
     ZeroKnowledgeSample:
       type: object
       properties:
@@ -389,50 +401,38 @@ components:
                       - password
                       - nin
                       - surname
-    HashRangesSample:
+    ZeroKnowledgeSaltsEndpoint:
       required:
-      - hash_ranges
-      - hash_type
+      - sha256_prefixes
       type: object
       properties:
-        hash_ranges:
+        sha256_prefixes:
           type: array
-          description: A list of hash ranges (5 hexadecimal characters) to lookup zero knowledge data
+          description: A list of first 5 symbols of SHA256 hashes of the lookup values
           items:
             type: string
           example:
           - '00000'
           - fffff
-        hash_type:
-          type: string
-          description: "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints."
-          example: argon2id
-        limit:
-          description: Default is the maximum limit of 500 records
-          type: integer
-          example: 10
-        offset:
-          type: integer
-          example: 0
-    ZeroKnowledgeMultiSample:
+    ZeroKnowledgeSaltsSample:
       type: object
       properties:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/ZeroKnowledgeSample'
+            $ref: '#/components/schemas/ZeroKnowledgeSaltSample'
   parameters:
+    Hash:
+      name: hash
+      in: path
+      required: true
+      schema:
+        type: string
     HashType:
       name: hash-type
       in: path
       required: true
       description: "One of the following: **sha1**, **argon2id**.   When using **argon2id**, follow these steps:\n1. **Produce a SHA-256 hash** of the initial value.  \n\n2. **Retrieve the secret salt**  \n   - Take the first 5 characters of the SHA-256 hex string.  \n   - Call the endpoint: **/v3/data/zero-knowledge/salt/{first5}**.  \n   - The endpoint returns JSON containing the salt.\n   - ⚠️ The `salt` field is a **hex-encoded string**.  \n     You must decode it to raw bytes (e.g. `bytes.fromhex(salt)` in Python).  \n     Do **not** use the string value directly as text (`salt.encode(...)`) because it will produce a different final hash.\n\n\n3. **Derive the Argon2id hash** \n   - Input: Initial raw value (not the SHA-256 hash)\n   - Algorithm: **argon2id**  \n   - Parameters:  \n     - Memory: **64 MB (65536 KiB)**  \n     - Iterations: **4**  \n     - Parallelism: **1**  \n     - Key Length: **32 bytes**  \n     - Salt: the raw bytes from step 2  \n   - The output must be the **bare hex-encoded digest** (no Argon2 parameters).  \n\n\n4. **Use the produced hash** to query zero-knowledge endpoints.  "
-      schema:
-        type: string
-    Hash:
-      name: hash
-      in: path
-      required: true
       schema:
         type: string
     HashRange:
@@ -449,14 +449,14 @@ components:
       schema:
         type: string
   headers:
-    X-Quota-Remaining:
-      schema:
-        type: integer
-      description: The number of requests left for the period
     X-Quota-Limit:
       schema:
         type: integer
       description: Quota limit per minute
+    X-Quota-Remaining:
+      schema:
+        type: integer
+      description: The number of requests left for the period
   securitySchemes:
     BasicAuth:
       type: http

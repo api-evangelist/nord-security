@@ -344,6 +344,9 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   schemas:
+    ListIdentifier:
+      type: string
+      example: kPayrrMJP0d4nEPl
     ListCategory:
       type: string
       enum:
@@ -353,31 +356,6 @@ components:
       - broken-apps
       - urlstripping
       - cookies
-    ListFormat:
-      type: string
-      enum:
-      - abp
-      - zone
-      - domain
-      - queryparam
-      description: List content format
-    ListVersion:
-      type: string
-      example: 20200501120000
-    ListAction:
-      type: string
-      enum:
-      - block
-      - allow
-      - no-mitm
-      - redirect
-      description: Action to take when ant item is matched in this list
-    ListIdentifier:
-      type: string
-      example: kPayrrMJP0d4nEPl
-    Sha1Checksum:
-      type: string
-      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
     ErrorResponse:
       type: object
       properties:
@@ -390,11 +368,12 @@ components:
             message:
               type: string
               example: Some error
-    X-Correlation-ID:
+    Sha1Checksum:
       type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
+      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
+    ListVersion:
+      type: string
+      example: 20200501120000
     CybersecList:
       type: object
       properties:
@@ -417,19 +396,40 @@ components:
         language:
           type: string
           example: en
+    ListFormat:
+      type: string
+      enum:
+      - abp
+      - zone
+      - domain
+      - queryparam
+      description: List content format
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    ListAction:
+      type: string
+      enum:
+      - block
+      - allow
+      - no-mitm
+      - redirect
+      description: Action to take when ant item is matched in this list
   responses:
-    ServiceForbidden:
-      description: Service is forbidden for the user
+    InvalidCredentials:
+      description: Invalid credentials
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Service is forbidden for the user:
+            Invalid credentials:
               value:
                 errors:
-                  code: 100166
-                  message: Service is forbidden for the user
+                  code: 100104
+                  message: Invalid credentials
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -448,28 +448,28 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    InvalidCredentials:
-      description: Invalid credentials
+    ServiceForbidden:
+      description: Service is forbidden for the user
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Invalid credentials:
+            Service is forbidden for the user:
               value:
                 errors:
-                  code: 100104
-                  message: Invalid credentials
+                  code: 100166
+                  message: Service is forbidden for the user
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
   parameters:
-    ListCategory:
-      name: listCategory
+    ListIdentifier:
+      name: listIdentifier
       in: path
       schema:
-        $ref: '#/components/schemas/ListCategory'
-      description: List category
+        $ref: '#/components/schemas/ListIdentifier'
+      description: List identfier
       required: true
     ListVersion:
       name: version
@@ -478,12 +478,12 @@ components:
         $ref: '#/components/schemas/ListVersion'
       description: List version
       required: false
-    ListIdentifier:
-      name: listIdentifier
+    ListCategory:
+      name: listCategory
       in: path
       schema:
-        $ref: '#/components/schemas/ListIdentifier'
-      description: List identfier
+        $ref: '#/components/schemas/ListCategory'
+      description: List category
       required: true
   securitySchemes:
     ApiKeyAuth:

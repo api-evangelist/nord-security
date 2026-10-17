@@ -307,6 +307,527 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ContactData:
+      properties:
+        facebook:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Facebook
+          description: Company's Facebook page URL
+        linkedin:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Linkedin
+          description: Company's LinkedIn page URL
+      type: object
+      title: ContactData
+    DataBreach:
+      properties:
+        security_score:
+          type: number
+          title: Security Score
+          description: Overall security score for data breach assessment (0-10)
+          default: 10
+        total_incidents:
+          type: integer
+          title: Total Incidents
+          description: 'Key issue count: Total number of data breach incidents detected'
+          default: 0
+        exposed_data_points:
+          items:
+            type: string
+          type: array
+          title: Exposed Data Points
+          description: Types of data exposed in breaches
+        latest_breach_date:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Latest Breach Date
+          description: Date of the most recent breach (ISO format)
+        corporate_credential_count:
+          type: integer
+          title: Corporate Credential Count
+          description: Number of corporate credentials found in breaches
+        total_credential_count:
+          type: integer
+          title: Total Credential Count
+          description: Total number of credentials found in breaches
+        password_reuse_count:
+          type: integer
+          title: Password Reuse Count
+          description: Number of reused passwords detected
+        password_reuse_count_per_employee:
+          type: integer
+          title: Password Reuse Count Per Employee
+          description: Number of employees who reuse passwords
+        unique_email_count:
+          type: integer
+          title: Unique Email Count
+          description: Number of unique email addresses found in breaches
+        days_since_latest_breach:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Days Since Latest Breach
+          description: Number of days since the most recent breach
+        total_exposed_records:
+          type: integer
+          title: Total Exposed Records
+          description: Total number of records exposed in all breaches
+        corporate_credential_percentage:
+          type: number
+          title: Corporate Credential Percentage
+          description: Percentage of corporate credentials among all exposed credentials
+        password_reuse_percentage:
+          type: number
+          title: Password Reuse Percentage
+          description: Percentage of passwords that are reused
+      type: object
+      required:
+      - exposed_data_points
+      - corporate_credential_count
+      - total_credential_count
+      - password_reuse_count
+      - password_reuse_count_per_employee
+      - unique_email_count
+      - total_exposed_records
+      - corporate_credential_percentage
+      - password_reuse_percentage
+      title: DataBreach
+      examples:
+      - corporate_credential_count: 445
+        corporate_credential_percentage: 3.47
+        days_since_latest_breach: 0
+        exposed_data_points:
+        - email
+        - password
+        - name
+        - address
+        - phone
+        - date_of_birth
+        latest_breach_date: '2024-08-14T07:24:49.079000'
+        password_reuse_count: 63
+        password_reuse_percentage: 12.52
+        security_score: 0
+        total_credential_count: 12838
+        total_exposed_records: 12838
+        total_incidents: 1114
+        unique_email_count: 503
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CategoryScores:
+      properties:
+        software_patching:
+          type: number
+          title: Software Patching
+          default: 10
+        web_application_security:
+          type: number
+          title: Web Application Security
+          default: 10
+        email_security:
+          type: number
+          title: Email Security
+          default: 10
+        system_reputation:
+          type: number
+          title: System Reputation
+          default: 10
+        system_hosting:
+          type: number
+          title: System Hosting
+          default: 10
+        data_breach:
+          type: number
+          title: Data Breach
+          default: 10
+        ssl_configuration:
+          type: number
+          title: Ssl Configuration
+          default: 10
+      type: object
+      title: CategoryScores
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LocationData:
+      properties:
+        city:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: City
+          description: City where the company is located
+        state:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: State
+          description: State or region where the company is located
+        street:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Street
+          description: Street address of the company
+        zipcode:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Zipcode
+          description: Postal code of the company's location
+        country_code:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country Code
+          description: Two-letter country code
+        country_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Country Name
+          description: Full name of the country
+        full_address:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Full Address
+          description: Complete address of the company
+      type: object
+      title: LocationData
+    WebApplicationSecurity:
+      properties:
+        total_vulnerabilities:
+          type: integer
+          title: Total Vulnerabilities
+          description: 'Key issue count: Total number of web application vulnerabilities detected'
+          default: 0
+        security_score:
+          type: number
+          title: Security Score
+          description: Overall security score for web application security (0-10)
+          default: 10
+        critical_vulnerabilities:
+          type: integer
+          title: Critical Vulnerabilities
+          description: Number of critical web application vulnerabilities
+          default: 0
+        high_vulnerabilities:
+          type: integer
+          title: High Vulnerabilities
+          description: Number of high-risk web application vulnerabilities
+          default: 0
+        medium_vulnerabilities:
+          type: integer
+          title: Medium Vulnerabilities
+          description: Number of medium-risk web application vulnerabilities
+          default: 0
+        low_vulnerabilities:
+          type: integer
+          title: Low Vulnerabilities
+          description: Number of low-risk web application vulnerabilities
+          default: 0
+        scan_results:
+          items:
+            $ref: '#/components/schemas/WebApplicationSecurityScanResult'
+          type: array
+          title: Scan Results
+          description: Detailed results of web application security scans
+      type: object
+      title: WebApplicationSecurity
+      examples:
+      - critical_vulnerabilities: 1
+        high_vulnerabilities: 0
+        low_vulnerabilities: 17
+        medium_vulnerabilities: 3
+        scan_results:
+        - description: Outdated and vulnerable version of Apache Struts detected, potentially leading to remote code execution.
+          instances:
+          - app.examplecorp.com:8080
+          name: Apache Struts RCE Vulnerability (CVE-2017-5638)
+          severity: critical
+        - description: A weak cipher is defined as an encryption/decryption algorithm that uses a key of insufficient length.
+          instances:
+          - auth.partners.examplecorp.com:443
+          - cdn.partners.examplecorp.com:443
+          name: Weak Cipher Suites Detection
+          severity: low
+        security_score: 7.5
+        total_vulnerabilities: 21
+    Service:
+      properties:
+        port:
+          type: integer
+          title: Port
+        count:
+          type: integer
+          title: Count
+        service:
+          type: string
+          title: Service
+        instances:
+          items:
+            type: string
+          type: array
+          title: Instances
+      type: object
+      required:
+      - port
+      - count
+      - service
+      - instances
+      title: Service
+    Vulnerability:
+      properties:
+        cve:
+          type: string
+          title: Cve
+        cvss:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Cvss
+          default: 0
+        cvss_v2:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Cvss V2
+          default: 0
+        epss:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Epss
+          default: 0
+        summary:
+          type: string
+          title: Summary
+        instances:
+          items:
+            type: string
+          type: array
+          title: Instances
+        risk_category:
+          anyOf:
+          - $ref: '#/components/schemas/RiskCategory'
+          - type: 'null'
+          description: Risk category of the vulnerability
+      type: object
+      required:
+      - cve
+      - summary
+      title: Vulnerability
+    SoftwarePatching:
+      properties:
+        security_score:
+          type: number
+          title: Security Score
+          description: Overall security score for software patching (0-10)
+          default: 10
+        total_vulnerabilities:
+          type: integer
+          title: Total Vulnerabilities
+          description: 'Key issue count: Total number of vulnerabilities found across all systems'
+          default: 0
+        critical_vulnerabilities:
+          type: integer
+          title: Critical Vulnerabilities
+          description: Number of critical vulnerabilities (CVSS score >= 9)
+          default: 0
+        high_vulnerabilities:
+          type: integer
+          title: High Vulnerabilities
+          description: Number of high vulnerabilities (7 <= CVSS score < 9)
+          default: 0
+        medium_vulnerabilities:
+          type: integer
+          title: Medium Vulnerabilities
+          description: Number of medium vulnerabilities (4 <= CVSS score < 7)
+          default: 0
+        low_vulnerabilities:
+          type: integer
+          title: Low Vulnerabilities
+          description: Number of low vulnerabilities (0 < CVSS score < 4)
+          default: 0
+        total_services:
+          type: integer
+          title: Total Services
+          description: Total number of services detected
+          default: 0
+        vulnerability_density:
+          type: number
+          title: Vulnerability Density
+          description: Average number of vulnerabilities per service
+          default: 0
+        total_ips_found:
+          type: integer
+          title: Total Ips Found
+          description: Total number of unique IP addresses scanned
+          default: 0
+        vulnerabilities:
+          items:
+            $ref: '#/components/schemas/Vulnerability'
+          type: array
+          title: Vulnerabilities
+          description: List of detailed vulnerability information
+        services:
+          items:
+            $ref: '#/components/schemas/Service'
+          type: array
+          title: Services
+          description: List of detected services
+      type: object
+      title: SoftwarePatching
+      examples:
+      - critical_vulnerabilities: 2
+        high_vulnerabilities: 3
+        low_vulnerabilities: 1
+        medium_vulnerabilities: 12
+        security_score: 6.11
+        services:
+        - count: 2
+          instances:
+          - 198.51.100.1:22
+          - 198.51.100.2:22
+          port: 22
+          service: OpenSSH
+        total_ips_found: 15
+        total_services: 41
+        total_vulnerabilities: 18
+        vulnerabilities:
+        - cve: CVE-2023-38408
+          cvss: 9.8
+          epss: 0.02751
+          instances:
+          - 198.51.100.1:22
+          summary: The PKCS#11 feature in ssh-agent in OpenSSH before 9.3p2 has an insufficiently trustworthy search path, leading to remote code execution if an agent is forwarded to an attacker-controlled system.
+        vulnerability_density: 0.44
+    SystemReputationScanResult:
+      properties:
+        ip_address:
+          type: string
+          title: Ip Address
+          description: The IP address that was scanned for reputation issues
+        abuse_confidence_score:
+          type: integer
+          title: Abuse Confidence Score
+          description: A score indicating the confidence level of potential abuse associated with this IP address (0-100)
+        abuse_tags:
+          items:
+            type: string
+          type: array
+          title: Abuse Tags
+          description: List of tags describing the types of abuse associated with this IP address
+      type: object
+      required:
+      - ip_address
+      - abuse_confidence_score
+      title: SystemReputationScanResult
+    SecurityScoreHighlight:
+      properties:
+        category:
+          type: string
+          title: Category
+          description: Category of the security highlight
+        description:
+          type: string
+          title: Description
+          description: Description of the security highlight
+        index:
+          type: integer
+          title: Index
+          description: Index of the highlight for ordering
+      type: object
+      required:
+      - category
+      - description
+      - index
+      title: SecurityScoreHighlight
+    WebApplicationSecurityScanResult:
+      properties:
+        name:
+          type: string
+          title: Name
+        severity:
+          type: string
+          title: Severity
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        instances:
+          items:
+            type: string
+          type: array
+          title: Instances
+      type: object
+      required:
+      - name
+      - severity
+      title: WebApplicationSecurityScanResult
+    EmailSecurityScanResults:
+      properties:
+        domain:
+          type: string
+          title: Domain
+        spf_record:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Spf Record
+        dmarc_record:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dmarc Record
+        dmarc_policy:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Dmarc Policy
+        spoofable:
+          type: integer
+          title: Spoofable
+        spoofable_comment:
+          type: string
+          title: Spoofable Comment
+          default: ''
+      type: object
+      required:
+      - domain
+      - spoofable
+      title: EmailSecurityScanResults
     CompanyDetails:
       properties:
         name:
@@ -480,6 +1001,38 @@ components:
         shorthand_name: examplecorp
         website: https://www.examplecorp.com
         year_founded: '2010'
+    CombinedResponse:
+      properties:
+        company_details:
+          $ref: '#/components/schemas/CompanyDetails'
+        security_score:
+          $ref: '#/components/schemas/SecurityScore'
+        software_patching:
+          $ref: '#/components/schemas/SoftwarePatching'
+        web_application_security:
+          $ref: '#/components/schemas/WebApplicationSecurity'
+        email_security:
+          $ref: '#/components/schemas/EmailSecurity'
+        system_reputation:
+          $ref: '#/components/schemas/SystemReputation'
+        ssl_configuration:
+          $ref: '#/components/schemas/SSLConfiguration'
+        system_hosting:
+          $ref: '#/components/schemas/SystemHosting'
+        data_breach:
+          $ref: '#/components/schemas/DataBreach'
+      type: object
+      required:
+      - company_details
+      - security_score
+      - software_patching
+      - web_application_security
+      - email_security
+      - system_reputation
+      - ssl_configuration
+      - system_hosting
+      - data_breach
+      title: CombinedResponse
     SystemHosting:
       properties:
         security_score:
@@ -573,79 +1126,48 @@ components:
         - Amazon.com, Inc.
         - Google LLC
         - Hetzner Online GmbH
-    HTTPValidationError:
+    SSLConfiguration:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CombinedResponse:
-      properties:
-        company_details:
-          $ref: '#/components/schemas/CompanyDetails'
         security_score:
-          $ref: '#/components/schemas/SecurityScore'
-        software_patching:
-          $ref: '#/components/schemas/SoftwarePatching'
-        web_application_security:
-          $ref: '#/components/schemas/WebApplicationSecurity'
-        email_security:
-          $ref: '#/components/schemas/EmailSecurity'
-        system_reputation:
-          $ref: '#/components/schemas/SystemReputation'
-        ssl_configuration:
-          $ref: '#/components/schemas/SSLConfiguration'
-        system_hosting:
-          $ref: '#/components/schemas/SystemHosting'
-        data_breach:
-          $ref: '#/components/schemas/DataBreach'
+          type: number
+          title: Security Score
+          description: Overall security score for SSL/TLS configuration (0-10)
+          default: 10
+        total_issues:
+          type: integer
+          title: Total Issues
+          description: 'Key issue count: Total number of SSL/TLS configuration issues detected'
+          default: 0
+        issue_totals_by_criteria:
+          allOf:
+          - $ref: '#/components/schemas/SSLConfigurationIssueBrakedown'
+          description: Breakdown of issues by different SSL/TLS criteria
+        issues:
+          items:
+            $ref: '#/components/schemas/SSLConfigurationIssue'
+          type: array
+          title: Issues
+          description: Detailed list of SSL/TLS configuration issues
       type: object
-      required:
-      - company_details
-      - security_score
-      - software_patching
-      - web_application_security
-      - email_security
-      - system_reputation
-      - ssl_configuration
-      - system_hosting
-      - data_breach
-      title: CombinedResponse
-    CategoryScores:
-      properties:
-        software_patching:
-          type: number
-          title: Software Patching
-          default: 10
-        web_application_security:
-          type: number
-          title: Web Application Security
-          default: 10
-        email_security:
-          type: number
-          title: Email Security
-          default: 10
-        system_reputation:
-          type: number
-          title: System Reputation
-          default: 10
-        system_hosting:
-          type: number
-          title: System Hosting
-          default: 10
-        data_breach:
-          type: number
-          title: Data Breach
-          default: 10
-        ssl_configuration:
-          type: number
-          title: Ssl Configuration
-          default: 10
-      type: object
-      title: CategoryScores
+      title: SSLConfiguration
+      examples:
+      - issue_totals_by_criteria:
+          certificate_path_validation: 6
+          certificate_signatures: 26
+          certificate_types: 26
+          ciphers: 26
+          ciphersuites: 0
+          maximum_certificate_lifespan: 9
+          tls_versions: 26
+          tls_vulnerability_renegotiation: 0
+        issues:
+        - criteria: certificate_types
+          description: Deployed certificate types are {'rsa'}, should have at least one of {'ecdsa'}.
+          instances:
+          - auth-admin.partners.examplecorp.com
+          - external-api.partners.examplecorp.com
+        security_score: 2.14
+        total_issues: 119
     SecurityScore:
       properties:
         date_created:
@@ -706,17 +1228,14 @@ components:
           description: 2 domains potentially spoofable
           index: 5
         overall_score: 5.789391684921029
-    Service:
+    SSLConfigurationIssue:
       properties:
-        port:
-          type: integer
-          title: Port
-        count:
-          type: integer
-          title: Count
-        service:
+        criteria:
           type: string
-          title: Service
+          title: Criteria
+        description:
+          type: string
+          title: Description
         instances:
           items:
             type: string
@@ -724,54 +1243,9 @@ components:
           title: Instances
       type: object
       required:
-      - port
-      - count
-      - service
-      - instances
-      title: Service
-    CEOData:
-      properties:
-        first_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: First Name
-          description: First name of the CEO
-        last_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Name
-          description: Last name of the CEO
-        title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Title
-          description: Title of the CEO
-      type: object
-      title: CEOData
-    SystemReputationScanResult:
-      properties:
-        ip_address:
-          type: string
-          title: Ip Address
-          description: The IP address that was scanned for reputation issues
-        abuse_confidence_score:
-          type: integer
-          title: Abuse Confidence Score
-          description: A score indicating the confidence level of potential abuse associated with this IP address (0-100)
-        abuse_tags:
-          items:
-            type: string
-          type: array
-          title: Abuse Tags
-          description: List of tags describing the types of abuse associated with this IP address
-      type: object
-      required:
-      - ip_address
-      - abuse_confidence_score
-      title: SystemReputationScanResult
+      - criteria
+      - description
+      title: SSLConfigurationIssue
     SSLConfigurationIssueBrakedown:
       properties:
         certificate_path_validation:
@@ -812,38 +1286,61 @@ components:
           default: 0
       type: object
       title: SSLConfigurationIssueBrakedown
-    EmailSecurityScanResults:
+    SystemReputation:
       properties:
-        domain:
-          type: string
-          title: Domain
-        spf_record:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Spf Record
-        dmarc_record:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Dmarc Record
-        dmarc_policy:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Dmarc Policy
-        spoofable:
+        security_score:
+          type: number
+          title: Security Score
+          description: Overall security score for system reputation (0-10)
+          default: 10
+        total_issues:
           type: integer
-          title: Spoofable
-        spoofable_comment:
-          type: string
-          title: Spoofable Comment
-          default: ''
+          title: Total Issues
+          description: 'Key issue count: Total number of IP addresses with reputation issues'
+          default: 0
+        scan_results:
+          items:
+            $ref: '#/components/schemas/SystemReputationScanResult'
+          type: array
+          title: Scan Results
+          description: Detailed results of system reputation scans
       type: object
-      required:
-      - domain
-      - spoofable
-      title: EmailSecurityScanResults
+      title: SystemReputation
+      examples:
+      - scan_results:
+        - abuse_confidence_score: 20
+          abuse_tags:
+          - web_scan
+          - ssh_brute_force
+          ip_address: 203.0.113.1
+        - abuse_confidence_score: 5
+          abuse_tags:
+          - port_scan
+          ip_address: 198.51.100.1
+        security_score: 9.2
+        total_issues: 2
+    CEOData:
+      properties:
+        first_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: First Name
+          description: First name of the CEO
+        last_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Name
+          description: Last name of the CEO
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+          description: Title of the CEO
+      type: object
+      title: CEOData
     EmailSecurity:
       properties:
         security_score:
@@ -890,483 +1387,6 @@ components:
         security_score: 9.74
         total_potentially_spoofable: 2
         total_spoofable: 0
-    DataBreach:
-      properties:
-        security_score:
-          type: number
-          title: Security Score
-          description: Overall security score for data breach assessment (0-10)
-          default: 10
-        total_incidents:
-          type: integer
-          title: Total Incidents
-          description: 'Key issue count: Total number of data breach incidents detected'
-          default: 0
-        exposed_data_points:
-          items:
-            type: string
-          type: array
-          title: Exposed Data Points
-          description: Types of data exposed in breaches
-        latest_breach_date:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Latest Breach Date
-          description: Date of the most recent breach (ISO format)
-        corporate_credential_count:
-          type: integer
-          title: Corporate Credential Count
-          description: Number of corporate credentials found in breaches
-        total_credential_count:
-          type: integer
-          title: Total Credential Count
-          description: Total number of credentials found in breaches
-        password_reuse_count:
-          type: integer
-          title: Password Reuse Count
-          description: Number of reused passwords detected
-        password_reuse_count_per_employee:
-          type: integer
-          title: Password Reuse Count Per Employee
-          description: Number of employees who reuse passwords
-        unique_email_count:
-          type: integer
-          title: Unique Email Count
-          description: Number of unique email addresses found in breaches
-        days_since_latest_breach:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Days Since Latest Breach
-          description: Number of days since the most recent breach
-        total_exposed_records:
-          type: integer
-          title: Total Exposed Records
-          description: Total number of records exposed in all breaches
-        corporate_credential_percentage:
-          type: number
-          title: Corporate Credential Percentage
-          description: Percentage of corporate credentials among all exposed credentials
-        password_reuse_percentage:
-          type: number
-          title: Password Reuse Percentage
-          description: Percentage of passwords that are reused
-      type: object
-      required:
-      - exposed_data_points
-      - corporate_credential_count
-      - total_credential_count
-      - password_reuse_count
-      - password_reuse_count_per_employee
-      - unique_email_count
-      - total_exposed_records
-      - corporate_credential_percentage
-      - password_reuse_percentage
-      title: DataBreach
-      examples:
-      - corporate_credential_count: 445
-        corporate_credential_percentage: 3.47
-        days_since_latest_breach: 0
-        exposed_data_points:
-        - email
-        - password
-        - name
-        - address
-        - phone
-        - date_of_birth
-        latest_breach_date: '2024-08-14T07:24:49.079000'
-        password_reuse_count: 63
-        password_reuse_percentage: 12.52
-        security_score: 0
-        total_credential_count: 12838
-        total_exposed_records: 12838
-        total_incidents: 1114
-        unique_email_count: 503
-    SSLConfiguration:
-      properties:
-        security_score:
-          type: number
-          title: Security Score
-          description: Overall security score for SSL/TLS configuration (0-10)
-          default: 10
-        total_issues:
-          type: integer
-          title: Total Issues
-          description: 'Key issue count: Total number of SSL/TLS configuration issues detected'
-          default: 0
-        issue_totals_by_criteria:
-          allOf:
-          - $ref: '#/components/schemas/SSLConfigurationIssueBrakedown'
-          description: Breakdown of issues by different SSL/TLS criteria
-        issues:
-          items:
-            $ref: '#/components/schemas/SSLConfigurationIssue'
-          type: array
-          title: Issues
-          description: Detailed list of SSL/TLS configuration issues
-      type: object
-      title: SSLConfiguration
-      examples:
-      - issue_totals_by_criteria:
-          certificate_path_validation: 6
-          certificate_signatures: 26
-          certificate_types: 26
-          ciphers: 26
-          ciphersuites: 0
-          maximum_certificate_lifespan: 9
-          tls_versions: 26
-          tls_vulnerability_renegotiation: 0
-        issues:
-        - criteria: certificate_types
-          description: Deployed certificate types are {'rsa'}, should have at least one of {'ecdsa'}.
-          instances:
-          - auth-admin.partners.examplecorp.com
-          - external-api.partners.examplecorp.com
-        security_score: 2.14
-        total_issues: 119
-    LocationData:
-      properties:
-        city:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: City
-          description: City where the company is located
-        state:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: State
-          description: State or region where the company is located
-        street:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Street
-          description: Street address of the company
-        zipcode:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Zipcode
-          description: Postal code of the company's location
-        country_code:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Country Code
-          description: Two-letter country code
-        country_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Country Name
-          description: Full name of the country
-        full_address:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Full Address
-          description: Complete address of the company
-      type: object
-      title: LocationData
-    SystemReputation:
-      properties:
-        security_score:
-          type: number
-          title: Security Score
-          description: Overall security score for system reputation (0-10)
-          default: 10
-        total_issues:
-          type: integer
-          title: Total Issues
-          description: 'Key issue count: Total number of IP addresses with reputation issues'
-          default: 0
-        scan_results:
-          items:
-            $ref: '#/components/schemas/SystemReputationScanResult'
-          type: array
-          title: Scan Results
-          description: Detailed results of system reputation scans
-      type: object
-      title: SystemReputation
-      examples:
-      - scan_results:
-        - abuse_confidence_score: 20
-          abuse_tags:
-          - web_scan
-          - ssh_brute_force
-          ip_address: 203.0.113.1
-        - abuse_confidence_score: 5
-          abuse_tags:
-          - port_scan
-          ip_address: 198.51.100.1
-        security_score: 9.2
-        total_issues: 2
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    Vulnerability:
-      properties:
-        cve:
-          type: string
-          title: Cve
-        cvss:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Cvss
-          default: 0
-        cvss_v2:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Cvss V2
-          default: 0
-        epss:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Epss
-          default: 0
-        summary:
-          type: string
-          title: Summary
-        instances:
-          items:
-            type: string
-          type: array
-          title: Instances
-        risk_category:
-          anyOf:
-          - $ref: '#/components/schemas/RiskCategory'
-          - type: 'null'
-          description: Risk category of the vulnerability
-      type: object
-      required:
-      - cve
-      - summary
-      title: Vulnerability
-    SoftwarePatching:
-      properties:
-        security_score:
-          type: number
-          title: Security Score
-          description: Overall security score for software patching (0-10)
-          default: 10
-        total_vulnerabilities:
-          type: integer
-          title: Total Vulnerabilities
-          description: 'Key issue count: Total number of vulnerabilities found across all systems'
-          default: 0
-        critical_vulnerabilities:
-          type: integer
-          title: Critical Vulnerabilities
-          description: Number of critical vulnerabilities (CVSS score >= 9)
-          default: 0
-        high_vulnerabilities:
-          type: integer
-          title: High Vulnerabilities
-          description: Number of high vulnerabilities (7 <= CVSS score < 9)
-          default: 0
-        medium_vulnerabilities:
-          type: integer
-          title: Medium Vulnerabilities
-          description: Number of medium vulnerabilities (4 <= CVSS score < 7)
-          default: 0
-        low_vulnerabilities:
-          type: integer
-          title: Low Vulnerabilities
-          description: Number of low vulnerabilities (0 < CVSS score < 4)
-          default: 0
-        total_services:
-          type: integer
-          title: Total Services
-          description: Total number of services detected
-          default: 0
-        vulnerability_density:
-          type: number
-          title: Vulnerability Density
-          description: Average number of vulnerabilities per service
-          default: 0
-        total_ips_found:
-          type: integer
-          title: Total Ips Found
-          description: Total number of unique IP addresses scanned
-          default: 0
-        vulnerabilities:
-          items:
-            $ref: '#/components/schemas/Vulnerability'
-          type: array
-          title: Vulnerabilities
-          description: List of detailed vulnerability information
-        services:
-          items:
-            $ref: '#/components/schemas/Service'
-          type: array
-          title: Services
-          description: List of detected services
-      type: object
-      title: SoftwarePatching
-      examples:
-      - critical_vulnerabilities: 2
-        high_vulnerabilities: 3
-        low_vulnerabilities: 1
-        medium_vulnerabilities: 12
-        security_score: 6.11
-        services:
-        - count: 2
-          instances:
-          - 198.51.100.1:22
-          - 198.51.100.2:22
-          port: 22
-          service: OpenSSH
-        total_ips_found: 15
-        total_services: 41
-        total_vulnerabilities: 18
-        vulnerabilities:
-        - cve: CVE-2023-38408
-          cvss: 9.8
-          epss: 0.02751
-          instances:
-          - 198.51.100.1:22
-          summary: The PKCS#11 feature in ssh-agent in OpenSSH before 9.3p2 has an insufficiently trustworthy search path, leading to remote code execution if an agent is forwarded to an attacker-controlled system.
-        vulnerability_density: 0.44
-    SSLConfigurationIssue:
-      properties:
-        criteria:
-          type: string
-          title: Criteria
-        description:
-          type: string
-          title: Description
-        instances:
-          items:
-            type: string
-          type: array
-          title: Instances
-      type: object
-      required:
-      - criteria
-      - description
-      title: SSLConfigurationIssue
-    ContactData:
-      properties:
-        facebook:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Facebook
-          description: Company's Facebook page URL
-        linkedin:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Linkedin
-          description: Company's LinkedIn page URL
-      type: object
-      title: ContactData
-    WebApplicationSecurity:
-      properties:
-        total_vulnerabilities:
-          type: integer
-          title: Total Vulnerabilities
-          description: 'Key issue count: Total number of web application vulnerabilities detected'
-          default: 0
-        security_score:
-          type: number
-          title: Security Score
-          description: Overall security score for web application security (0-10)
-          default: 10
-        critical_vulnerabilities:
-          type: integer
-          title: Critical Vulnerabilities
-          description: Number of critical web application vulnerabilities
-          default: 0
-        high_vulnerabilities:
-          type: integer
-          title: High Vulnerabilities
-          description: Number of high-risk web application vulnerabilities
-          default: 0
-        medium_vulnerabilities:
-          type: integer
-          title: Medium Vulnerabilities
-          description: Number of medium-risk web application vulnerabilities
-          default: 0
-        low_vulnerabilities:
-          type: integer
-          title: Low Vulnerabilities
-          description: Number of low-risk web application vulnerabilities
-          default: 0
-        scan_results:
-          items:
-            $ref: '#/components/schemas/WebApplicationSecurityScanResult'
-          type: array
-          title: Scan Results
-          description: Detailed results of web application security scans
-      type: object
-      title: WebApplicationSecurity
-      examples:
-      - critical_vulnerabilities: 1
-        high_vulnerabilities: 0
-        low_vulnerabilities: 17
-        medium_vulnerabilities: 3
-        scan_results:
-        - description: Outdated and vulnerable version of Apache Struts detected, potentially leading to remote code execution.
-          instances:
-          - app.examplecorp.com:8080
-          name: Apache Struts RCE Vulnerability (CVE-2017-5638)
-          severity: critical
-        - description: A weak cipher is defined as an encryption/decryption algorithm that uses a key of insufficient length.
-          instances:
-          - auth.partners.examplecorp.com:443
-          - cdn.partners.examplecorp.com:443
-          name: Weak Cipher Suites Detection
-          severity: low
-        security_score: 7.5
-        total_vulnerabilities: 21
-    WebApplicationSecurityScanResult:
-      properties:
-        name:
-          type: string
-          title: Name
-        severity:
-          type: string
-          title: Severity
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        instances:
-          items:
-            type: string
-          type: array
-          title: Instances
-      type: object
-      required:
-      - name
-      - severity
-      title: WebApplicationSecurityScanResult
     RiskCategory:
       type: string
       enum:
@@ -1376,26 +1396,6 @@ components:
       - HIGH
       - CRITICAL
       title: RiskCategory
-    SecurityScoreHighlight:
-      properties:
-        category:
-          type: string
-          title: Category
-          description: Category of the security highlight
-        description:
-          type: string
-          title: Description
-          description: Description of the security highlight
-        index:
-          type: integer
-          title: Index
-          description: Index of the highlight for ordering
-      type: object
-      required:
-      - category
-      - description
-      - index
-      title: SecurityScoreHighlight
   securitySchemes:
     APIKeyHeader:
       type: apiKey

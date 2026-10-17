@@ -69,48 +69,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ScanJobsResponse:
-      properties:
-        domain:
-          type: string
-          title: Domain
-        scan_jobs:
-          items:
-            $ref: '#/components/schemas/ScanJobResult'
-          type: array
-          title: Scan Jobs
-      type: object
-      required:
-      - domain
-      - scan_jobs
-      title: ScanJobsResponse
-    ScanJobResult:
-      properties:
-        id:
-          type: string
-          title: Id
-        date_created:
-          type: string
-          format: date-time
-          title: Date Created
-        date_updated:
-          type: string
-          format: date-time
-          title: Date Updated
-        finished:
-          type: boolean
-          title: Finished
-        cancelled:
-          type: boolean
-          title: Cancelled
-          default: false
-      type: object
-      required:
-      - id
-      - date_created
-      - date_updated
-      - finished
-      title: ScanJobResult
     SubmitScanResponse:
       properties:
         scan_job_id:
@@ -141,6 +99,21 @@ components:
       - msg
       - type
       title: ValidationError
+    ScanJobsResponse:
+      properties:
+        domain:
+          type: string
+          title: Domain
+        scan_jobs:
+          items:
+            $ref: '#/components/schemas/ScanJobResult'
+          type: array
+          title: Scan Jobs
+      type: object
+      required:
+      - domain
+      - scan_jobs
+      title: ScanJobsResponse
     HTTPValidationError:
       properties:
         detail:
@@ -150,6 +123,33 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ScanJobResult:
+      properties:
+        id:
+          type: string
+          title: Id
+        date_created:
+          type: string
+          format: date-time
+          title: Date Created
+        date_updated:
+          type: string
+          format: date-time
+          title: Date Updated
+        finished:
+          type: boolean
+          title: Finished
+        cancelled:
+          type: boolean
+          title: Cancelled
+          default: false
+      type: object
+      required:
+      - id
+      - date_created
+      - date_updated
+      - finished
+      title: ScanJobResult
   securitySchemes:
     APIKeyHeader:
       type: apiKey

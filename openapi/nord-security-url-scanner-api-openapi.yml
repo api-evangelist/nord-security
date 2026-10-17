@@ -182,6 +182,9 @@ paths:
           $ref: '#/components/responses/AuthServiceUnavailable'
 components:
   schemas:
+    ListIdentifier:
+      type: string
+      example: kPayrrMJP0d4nEPl
     ListCategory:
       type: string
       enum:
@@ -191,31 +194,18 @@ components:
       - broken-apps
       - urlstripping
       - cookies
-    ListFormat:
-      type: string
-      enum:
-      - abp
-      - zone
-      - domain
-      - queryparam
-      description: List content format
-    ListVersion:
-      type: string
-      example: 20200501120000
-    ListAction:
-      type: string
-      enum:
-      - block
-      - allow
-      - no-mitm
-      - redirect
-      description: Action to take when ant item is matched in this list
-    ListIdentifier:
-      type: string
-      example: kPayrrMJP0d4nEPl
-    Sha1Checksum:
-      type: string
-      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
+    ErrorResponse:
+      type: object
+      properties:
+        errors:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 123
+            message:
+              type: string
+              example: Some error
     UrlscannerConfigResponse:
       type: object
       properties:
@@ -263,23 +253,9 @@ components:
               minimum: 0
             unit:
               type: string
-    ErrorResponse:
-      type: object
-      properties:
-        errors:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 123
-            message:
-              type: string
-              example: Some error
-    X-Correlation-ID:
+    Sha1Checksum:
       type: string
-      format: uuid
-      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
-      description: Unique identifier for correlating requests, responses and logs across distributed services
+      example: 82751542dc5cd0ce4b0b78d61302ca058f8dac12
     CybersecList:
       type: object
       properties:
@@ -302,19 +278,43 @@ components:
         language:
           type: string
           example: en
+    ListVersion:
+      type: string
+      example: 20200501120000
+    ListFormat:
+      type: string
+      enum:
+      - abp
+      - zone
+      - domain
+      - queryparam
+      description: List content format
+    X-Correlation-ID:
+      type: string
+      format: uuid
+      example: ddd58a90-57c3-4bd1-a9ed-649a9451f0a7
+      description: Unique identifier for correlating requests, responses and logs across distributed services
+    ListAction:
+      type: string
+      enum:
+      - block
+      - allow
+      - no-mitm
+      - redirect
+      description: Action to take when ant item is matched in this list
   responses:
-    ServiceForbidden:
-      description: Service is forbidden for the user
+    InvalidCredentials:
+      description: Invalid credentials
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Service is forbidden for the user:
+            Invalid credentials:
               value:
                 errors:
-                  code: 100166
-                  message: Service is forbidden for the user
+                  code: 100104
+                  message: Invalid credentials
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
@@ -333,18 +333,18 @@ components:
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
-    InvalidCredentials:
-      description: Invalid credentials
+    ServiceForbidden:
+      description: Service is forbidden for the user
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           examples:
-            Invalid credentials:
+            Service is forbidden for the user:
               value:
                 errors:
-                  code: 100104
-                  message: Invalid credentials
+                  code: 100166
+                  message: Service is forbidden for the user
       headers:
         X-Correlation-ID:
           $ref: '#/components/schemas/X-Correlation-ID'
