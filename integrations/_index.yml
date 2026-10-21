@@ -15,3 +15,72 @@
   relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
+- slug: nord-security-go-module-proxy
+  label: Go module proxy
+  partner_name: Go module proxy
+  category: official SDK (Go)
+  type: register
+  channel: package-registry
+  evidence: https://pkg.go.dev/github.com/NordSecurity/libtelio-go
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: Go module proxy (public registry JSON)
+    spec_file: null
+    language: Go
+    packages:
+    - name: github.com/NordSecurity/libtelio-go
+      version: v8.0.1+incompatible
+      released: '2026-10-09'
+      released_field: Time
+      lapsed: false
+      page: https://pkg.go.dev/github.com/NordSecurity/libtelio-go
+      repo_leg: github-org:nordsecurity
+      publisher_leg: org:nordsecurity
+      matched_by: github-org
+    current: true
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
+- slug: nord-security-app-defense-alliance-certified-products
+  label: App Defense Alliance certified products
+  partner_name: App Defense Alliance certified products
+  category: mobile app security certification
+  type: register
+  channel: standard-directory
+  evidence: https://cert.appdefensealliance.org/certifications/10166
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: App Defense Alliance certified products (cert.appdefensealliance.org/certifications)
+    standard: ADA Mobile Application Security Profile / OWASP MASVS (MASA)
+    spec_file: null
+    role: ada-certified-developer
+    registered_name: Nord Security
+    register_id: https://cert.appdefensealliance.org/certifications/10166
+    matched_domain: nordvpn.com
+    matched_by: domain+verified
+    domain_source: package id (reverse domain)
+    certified_products:
+    - product: Mobile application (ADA Mobile App Profile / MASA)
+      product_type: Mobile application (ADA Mobile App Profile / MASA)
+      certifier: App Defense Alliance (authorized lab + certification body)
+      example_product: NordVPN – fast VPN for privacy
+      example_certificate: https://cert.appdefensealliance.org/certifications/10166
+      assurance_levels: []
+      newest_expiry: '2026-12-08'
+      lapsed: false
+      lapsed_note: lapsed = no certificate of this type is Valid and unexpired today
+    products_sample:
+    - NordVPN – fast VPN for privacy
+    labs:
+    - DEKRA
+    signal_note: certified_products = ONE entry per ADA product type (profile family), never per app or certificate;
+      labs are assessors (context, never linked)
+    detected_by: sweep-mobile-sdk-index.py
+    detected: '2026-10-21'
+  status: not-a-workflow
+  arazzo: null
